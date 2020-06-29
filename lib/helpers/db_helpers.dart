@@ -18,7 +18,7 @@ class DBHelpers{
 
   static final String CREATE_TABLE_QURAN_AYAT='''create table $TABLE_QURAN_AYAT (
   $COL_SURA_NO integer primary key,
-  $COL_Ayat_NO integer autoincrement,
+  $COL_Ayat_NO integer not null,
   $COL_ARABIQURAN text not null,
   $COL_BANGLA_MEANING_AYAT text not null,
   $COL_BANGLA_TRANSLATOR_AYAT text not null)''';
@@ -32,10 +32,13 @@ class DBHelpers{
   static Future<Database> open()async{
     final dbpath=await getDatabasesPath();
     final apath=Path.join(dbpath,'islam.db');
-    return openDatabase(apath,version: 1,onCreate: (db,version)async{
+    return openDatabase(apath,version: 2,onCreate: (db,version)async{
       await db.execute(CREATE_TABLE_QURAN_SURA);
-//      await db.execute(CREATE_TABLE_QURAN_AYAT);
 //      await db.execute(CREATE_TABLE_QURAN_MP3);
+    },onUpgrade: (db,oldVersion,newVersion)async{
+      if(newVersion==2){
+        await db.execute(CREATE_TABLE_QURAN_AYAT);
+      }
     });
   }
 
