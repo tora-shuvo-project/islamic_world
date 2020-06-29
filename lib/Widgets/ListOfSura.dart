@@ -17,10 +17,15 @@ class List_of_sura extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
+
             Stack(
               children: <Widget>[
                 Image.asset("images/NumberIcon.png", height: 50, width: 50, fit: BoxFit.cover,),
-                Text(suraNO.toString(),)
+                Container(
+                    width: 50,
+                    height: 50,
+                    alignment: Alignment.center,
+                    child: Text(suraNO.toString(),))
               ],
             ),
 

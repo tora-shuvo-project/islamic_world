@@ -34,8 +34,8 @@ class DBHelpers{
     final apath=Path.join(dbpath,'islam.db');
     return openDatabase(apath,version: 1,onCreate: (db,version)async{
       await db.execute(CREATE_TABLE_QURAN_SURA);
-      await db.execute(CREATE_TABLE_QURAN_AYAT);
-      await db.execute(CREATE_TABLE_QURAN_MP3);
+//      await db.execute(CREATE_TABLE_QURAN_AYAT);
+//      await db.execute(CREATE_TABLE_QURAN_MP3);
     });
   }
 

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:searchtosu/Widgets/ListOfSura.dart';
+import 'package:searchtosu/helpers/query_helpers.dart';
 import 'package:searchtosu/models/quran_sura_models.dart';
 
 class AlQuranPage extends StatefulWidget {
@@ -97,20 +98,36 @@ class _AlQuranPageState extends State<AlQuranPage> {
         body: Column(
           children: <Widget>[
             Container(
-                      height: 30,
+                      height: 70,
                       width: MediaQuery.of(context).size.width,
                      child: Center(child: Text("بسم الله الرحمن الرحيم",
                        style: TextStyle(fontSize: 30, fontWeight: FontWeight.w600),),),
                     ),
-            ListView.builder(
-              shrinkWrap: true,
-              itemBuilder: (context,index)=> List_of_sura(
-              suraNO: quranSuralist[index].suraNo,
-              obotirno: quranSuralist[index].obotirno,
-              ArbiName: quranSuralist[index].arabisuraName,
-              banglaMeaning:quranSuralist[index].banglaMeaning ,
 
-            ), itemCount: quranSuralist.length,)
+
+            Expanded(
+              child: FutureBuilder(
+                  future: QueryHelpers.getAllQuranSuraName(),
+                  builder: (context,AsyncSnapshot<List<QuranSuraModels>> snapshot){
+                    if(snapshot.hasData){
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemBuilder: (context,index)=> List_of_sura(
+                          suraNO: snapshot.data[index].suraNo,
+                          obotirno: snapshot.data[index].obotirno,
+                          ArbiName: snapshot.data[index].arabisuraName,
+                          banglaMeaning:snapshot.data[index].banglaMeaning ,
+
+                        ), itemCount: snapshot.data.length,);
+                    }
+
+                    if(snapshot.hasError){
+                      return Text('Data Fetch problems');
+                    }
+                    return CircularProgressIndicator();
+                  }
+              ),
+            ),
           ],
         )
         

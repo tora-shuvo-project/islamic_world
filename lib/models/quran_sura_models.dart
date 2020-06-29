@@ -8,7 +8,6 @@ final String COL_ARABIA_SURA_NAME='col_arabia_sura_name';
 final String COL_BANGLA_MEANING='col_bangla_meaning';
 final String COL_BANGLA_TRANSLATOR='col_bangla_translator';
 final String COL_OBOTIRNO='col_obotirno';
-final String COL_RUKU_NO='col_ruku_no';
 final String COL_ENGLISH_SURA_NAME='col_english_sura_name';
 
 class QuranSuraModels{

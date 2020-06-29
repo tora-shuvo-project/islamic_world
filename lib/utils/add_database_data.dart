@@ -124,5 +124,6 @@ class AddDatabaseData{
 
   ];
 
+  List<QuranSuraModels> get allSuraList=>_suraModels;
 
 }

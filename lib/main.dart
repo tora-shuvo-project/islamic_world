@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:searchtosu/pages/Al_Quran_Page.dart';
+import 'package:searchtosu/pages/add_database_table_pages.dart';
 
 void main() {
   runApp(MyApp());
