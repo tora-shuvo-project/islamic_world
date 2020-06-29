@@ -8,13 +8,12 @@ class DBHelpers{
 
   static final String CREATE_TABLE_QURAN_SURA='''create table $TABLE_SURA_MODELS(
   $COL_SURA_NO integer primary key,
-  $COL_Ayat_NO integer not null,
+  $COL_Ayat_NO text not null,
   $COL_PARA_NO text not null,
   $COL_ARABIA_SURA_NAME text not null,
   $COL_BANGLA_MEANING text not null,
   $COL_BANGLA_TRANSLATOR text not null,
   $COL_OBOTIRNO text not null,
-  $COL_RUKU_NO text not null,
   $COL_ENGLISH_SURA_NAME text not null)''';
 
   static final String CREATE_TABLE_QURAN_AYAT='''create table $TABLE_QURAN_AYAT (

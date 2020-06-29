@@ -14,26 +14,28 @@ final String COL_ENGLISH_SURA_NAME='col_english_sura_name';
 class QuranSuraModels{
 
   int suraNo;
-  int ayatNo;
+  String ayatNo;
   String paraNo;
   String arabisuraName;
   String banglaMeaning;
   String banglaTranslator;
   String obotirno;
-  String rukuNo;
+  //String rukuNo;
   String englishSuraName;
 
 
-  QuranSuraModels({
-      this.suraNo,
-      this.ayatNo,
+  QuranSuraModels(
+      this.suraNo,//
+      this.banglaMeaning,//
+      this.arabisuraName,//
+      this.banglaTranslator,//
+      this.ayatNo,//
+      this.obotirno,//
+      this.englishSuraName,
       this.paraNo,
-      this.arabisuraName,
-      this.banglaMeaning,
-      this.banglaTranslator,
-      this.obotirno,
-      this.rukuNo,
-      this.englishSuraName});
+      //this.rukuNo,
+
+  );
 
   Map<String,dynamic> tomap(){
     final map=<String,dynamic>{
@@ -44,7 +46,7 @@ class QuranSuraModels{
       COL_BANGLA_MEANING:banglaMeaning,
       COL_BANGLA_TRANSLATOR:banglaTranslator,
       COL_OBOTIRNO:obotirno,
-      COL_RUKU_NO:rukuNo,
+      //COL_RUKU_NO:rukuNo,
       COL_ENGLISH_SURA_NAME:englishSuraName,
     };
     return map;
@@ -58,12 +60,12 @@ class QuranSuraModels{
     banglaMeaning=map[COL_BANGLA_MEANING];
     banglaTranslator=map[COL_BANGLA_TRANSLATOR];
     obotirno=map[COL_OBOTIRNO];
-    rukuNo=map[COL_RUKU_NO];
+    //rukuNo=map[COL_RUKU_NO];
     englishSuraName=map[COL_ENGLISH_SURA_NAME];
   }
 
   @override
   String toString() {
-    return 'QuranSuraModels{suraNo: $suraNo, ayatNo: $ayatNo, paraNo: $paraNo, arabisuraName: $arabisuraName, banglaMeaning: $banglaMeaning, banglaTranslator: $banglaTranslator, obotirno: $obotirno, rukuNo: $rukuNo, englishSuraName: $englishSuraName}';
+    return 'QuranSuraModels{suraNo: $suraNo, ayatNo: $ayatNo, paraNo: $paraNo, arabisuraName: $arabisuraName, banglaMeaning: $banglaMeaning, banglaTranslator: $banglaTranslator, obotirno: $obotirno, englishSuraName: $englishSuraName}';
   }
 }
