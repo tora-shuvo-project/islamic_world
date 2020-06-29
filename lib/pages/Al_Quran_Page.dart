@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:searchtosu/Widgets/ListOfSura.dart';
+import 'package:searchtosu/models/quran_sura_models.dart';
 
 class AlQuranPage extends StatefulWidget {
   @override
@@ -10,6 +12,7 @@ class AlQuranPage extends StatefulWidget {
 }
 
 class _AlQuranPageState extends State<AlQuranPage> {
+  List<QuranSuraModels> quranSuralist = new List();
   TextEditingController searchController = new TextEditingController();
   Widget _appBar(){
     return ClipRRect(
@@ -91,6 +94,26 @@ class _AlQuranPageState extends State<AlQuranPage> {
     return SafeArea(
       child: Scaffold(
         appBar:PreferredSize(child: _appBar(),preferredSize: Size(MediaQuery.of(context).size.width, 120),),
+        body: Column(
+          children: <Widget>[
+            Container(
+                      height: 30,
+                      width: MediaQuery.of(context).size.width,
+                     child: Center(child: Text("بسم الله الرحمن الرحيم",
+                       style: TextStyle(fontSize: 30, fontWeight: FontWeight.w600),),),
+                    ),
+            ListView.builder(
+              shrinkWrap: true,
+              itemBuilder: (context,index)=> List_of_sura(
+              suraNO: quranSuralist[index].suraNo,
+              obotirno: quranSuralist[index].obotirno,
+              ArbiName: quranSuralist[index].arabisuraName,
+              banglaMeaning:quranSuralist[index].banglaMeaning ,
+
+            ), itemCount: quranSuralist.length,)
+          ],
+        )
+        
       ),
     );
   }
