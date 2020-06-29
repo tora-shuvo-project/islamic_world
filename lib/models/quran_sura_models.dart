@@ -23,6 +23,18 @@ class QuranSuraModels{
   String rukuNo;
   String englishSuraName;
 
+
+  QuranSuraModels({
+      this.suraNo,
+      this.ayatNo,
+      this.paraNo,
+      this.arabisuraName,
+      this.banglaMeaning,
+      this.banglaTranslator,
+      this.obotirno,
+      this.rukuNo,
+      this.englishSuraName});
+
   Map<String,dynamic> tomap(){
     final map=<String,dynamic>{
       COL_SURA_NO:suraNo,
