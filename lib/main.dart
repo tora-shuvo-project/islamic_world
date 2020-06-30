@@ -9,9 +9,8 @@ import 'package:searchtosu/helpers/query_helpers.dart';
 import 'package:searchtosu/models/quran_sura_models.dart';
 import 'package:searchtosu/pages/Al_Quran_Page.dart';
 
-import 'package:searchtosu/pages/IntoPage.dart';
-import 'package:searchtosu/pages/add_database_table_pages.dart';
-import 'package:searchtosu/utils/add_database_data.dart';
+import 'package:searchtosu/pages/SplashScreen.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:searchtosu/pages/add_sura_list_screen.dart';
@@ -29,10 +28,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    Future<bool> hasVisited() async {
-      await getVisitingData();
-      setVisitingData();
-    }
+
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -42,7 +38,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
 
-      home:  hasVisited() != null? AlQuranPage(): IntroPage(),
+      home: SplashScreen() ,
 
     );
   }
@@ -57,10 +53,5 @@ getVisitingData() async{
   return alreadyVisited;
 }
 
-
-      home: AddSuraListScreen(),
-    );
-  }
-}
 
 
