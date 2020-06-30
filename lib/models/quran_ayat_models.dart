@@ -13,12 +13,12 @@ class QuranAyatModels{
   String banglaMeaning;
   String banglaTranslator;
 
-  QuranAyatModels({
+  QuranAyatModels(
       this.suraNo,
-      this.ayatNo,
       this.arabiQuran,
       this.banglaMeaning,
-      this.banglaTranslator,});
+      this.banglaTranslator,
+      this.ayatNo,);
 
 
   Map<String,dynamic> toMap(){
