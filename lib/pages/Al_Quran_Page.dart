@@ -8,12 +8,12 @@ import 'package:searchtosu/helpers/query_helpers.dart';
 import 'package:searchtosu/models/quran_sura_models.dart';
 
 class AlQuranPage extends StatefulWidget {
+  static final route = '/al_quran_page';
   @override
   _AlQuranPageState createState() => _AlQuranPageState();
 }
 
 class _AlQuranPageState extends State<AlQuranPage> {
-  List<QuranSuraModels> quranSuralist = new List();
   TextEditingController searchController = new TextEditingController();
   Widget _appBar(){
     return ClipRRect(
@@ -122,7 +122,7 @@ class _AlQuranPageState extends State<AlQuranPage> {
                     }
 
                     if(snapshot.hasError){
-                      return Text('Data Fetch problems');
+                      return Center(child: Text('Data Fetch problems'));
                     }
                     return CircularProgressIndicator();
                   }

@@ -1,44 +1,36 @@
 
 
-import 'dart:async';
-
-
-
 import 'package:flutter/material.dart';
 import 'package:searchtosu/helpers/query_helpers.dart';
+import 'package:searchtosu/main.dart';
 import 'package:searchtosu/models/quran_sura_models.dart';
 import 'package:searchtosu/pages/Al_Quran_Page.dart';
-import 'package:searchtosu/pages/IntoPage.dart';
-import 'package:searchtosu/pages/add_database_table_pages.dart';
 import 'package:searchtosu/utils/add_database_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  List<QuranSuraModels> quranSuralist = new List();
-
-
-
-  // This widget is the root of your application.
+class IntroPage extends StatelessWidget {
+  static final route = '/into_page';
   @override
   Widget build(BuildContext context) {
-    Future<bool> hasVisited() async {
-      await getVisitingData();
-      setVisitingData();
+    AddDatabaseData addDatabaseData=AddDatabaseData();
+    _addSuraName(){
+      addDatabaseData.allSuraList.forEach((suralist) {
+        QueryHelpers.insertquransura(TABLE_SURA_MODELS, suralist.tomap()).then((value){
+          print(value.toString());
+          print(suralist.paraNo);
+
+        });
+
+      });
     }
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
 
-        primarySwatch: Colors.blue,
-
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return Scaffold(
+      body: Center(
+        child: FlatButton(onPressed: (){
+          _addSuraName();
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> AlQuranPage()));
+        }, child: null),
       ),
-      home:  hasVisited() != null? AlQuranPage(): IntroPage(),
-
     );
   }
 }
@@ -51,6 +43,3 @@ getVisitingData() async{
   bool alreadyVisited = pref.getBool("alreadyVisited") ?? false;
   return alreadyVisited;
 }
-
-
-
