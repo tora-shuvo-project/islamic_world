@@ -45,11 +45,14 @@ class _AyatPageState extends State<AyatPage> {
         CircularProgressIndicator():
         ListView.builder(
             itemCount: ayatmodels.length,
-            itemBuilder: (context,index)=>ListTile(
-              title: Text('${ayatmodels[index].arbiQuran}'),
-              subtitle: Text('${ayatmodels[index].banglaTranslator}'),
-              leading: CircleAvatar(
-                child: Text('${ayatmodels[index].ayatno}'),
+            itemBuilder: (context,index)=>Card(
+              color: ayatmodels.length%2==0?Colors.black.withOpacity(.5):Colors.green.withOpacity(.5),
+              child: ListTile(
+                title: Text('${ayatmodels[index].arbiQuran}'),
+                subtitle: Text('${ayatmodels[index].banglaTranslator}'),
+                leading: CircleAvatar(
+                  child: Text('${ayatmodels[index].ayatno}'),
+                ),
               ),
             )),
       ),
