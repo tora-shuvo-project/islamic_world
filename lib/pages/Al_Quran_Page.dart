@@ -3,6 +3,9 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:searchtosu/DataBaseHelper/Ayat_table_database_helper.dart';
+import 'package:searchtosu/DataBaseHelper/SuraName_table_database_helper.dart';
+import 'package:searchtosu/FinalModels/sura_name_table_model.dart';
 import 'package:searchtosu/Widgets/ListOfSura.dart';
 import 'package:searchtosu/helpers/query_helpers.dart';
 import 'package:searchtosu/models/quran_sura_models.dart';
@@ -14,6 +17,22 @@ class AlQuranPage extends StatefulWidget {
 }
 
 class _AlQuranPageState extends State<AlQuranPage> {
+
+  SuraNameTableDBHelper SuranamedbHelpers=SuraNameTableDBHelper.instance;
+  List<SuraNameTableModel> Suranamesmodel=new List();
+
+  @override
+  void initState() {
+    super.initState();
+
+    SuranamedbHelpers.getAllSuraFromSuraNameTable().then((rows){
+      setState(() {
+        rows.forEach((row) {
+          Suranamesmodel.add(SuraNameTableModel.formMap(row));
+        });
+      });
+    });
+  }
 
   TextEditingController searchController = new TextEditingController();
   Widget _appBar(){
@@ -104,35 +123,49 @@ class _AlQuranPageState extends State<AlQuranPage> {
                      child: Center(child: Text("بسم الله الرحمن الرحيم",
                        style: TextStyle(fontSize: 30, fontWeight: FontWeight.w600),),),
                     ),
+        Expanded(
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemBuilder: (context,index)=> List_of_sura(
+              suraNO: Suranamesmodel[index].suraNo,
+              obotirno: Suranamesmodel[index].obotirno,
+              ArbiName:Suranamesmodel[index].arbiSuraNam,
+              banglaMeaning:Suranamesmodel[index].banglaMeaning,
+
+            ), itemCount: Suranamesmodel.length,),
+        ),
 
 
-            Expanded(
-              child: FutureBuilder(
-                  future: QueryHelpers.getAllQuranSuraName(),
-                  builder: (context,AsyncSnapshot<List<QuranSuraModels>> snapshot){
-                    if(snapshot.hasData){
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        itemBuilder: (context,index)=> List_of_sura(
-                          suraNO: snapshot.data[index].suraNo,
-                          obotirno: snapshot.data[index].obotirno,
-                          ArbiName: snapshot.data[index].arabisuraName,
-                          banglaMeaning:snapshot.data[index].banglaMeaning ,
 
-                        ), itemCount: snapshot.data.length,);
-                    }
-
-                    if(snapshot.hasError){
-                      return Center(child: Text('Data Fetch problems'));
-                    }
-                    return CircularProgressIndicator();
-                  }
-              ),
-            ),
+//            Expanded(
+//              child: FutureBuilder(
+//                  future: QueryHelpers.getAllQuranSuraName(),
+//                  builder: (context,AsyncSnapshot<List<QuranSuraModels>> snapshot){
+//                    if(snapshot.hasData){
+//                      return ListView.builder(
+//                        shrinkWrap: true,
+//                        itemBuilder: (context,index)=> List_of_sura(
+//                          suraNO: snapshot.data[index].suraNo,
+//                          obotirno: snapshot.data[index].obotirno,
+//                          ArbiName: snapshot.data[index].arabisuraName,
+//                          banglaMeaning:snapshot.data[index].banglaMeaning ,
+//
+//                        ), itemCount: snapshot.data.length,);
+//                    }
+//
+//                    if(snapshot.hasError){
+//                      return Center(child: Text('Data Fetch problems'));
+//                    }
+//                    return CircularProgressIndicator();
+//                  }
+//              ),
+//            ),
           ],
         )
         
       ),
     );
   }
+
+
 }
