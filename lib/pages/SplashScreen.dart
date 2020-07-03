@@ -2,7 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:searchtosu/pages/Al_Quran_Page.dart';
+import 'package:searchtosu/pages/sura_list_page.dart';
 
 class SplashScreen extends StatefulWidget {
 
@@ -44,7 +44,7 @@ class Introduction extends StatelessWidget {
                        ),
                        child: FlatButton(
                            onPressed: (){
-                         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> AlQuranPage()));
+                         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> SuraListPage()));
                        }, child: Text("Welcome", style: TextStyle(color: Colors.white),)),
                      ),
                    ),

@@ -3,20 +3,19 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:searchtosu/DataBaseHelper/Ayat_table_database_helper.dart';
-import 'package:searchtosu/DataBaseHelper/SuraName_table_database_helper.dart';
+import 'package:searchtosu/DataBaseHelper/database_helper.dart';
 import 'package:searchtosu/FinalModels/sura_name_table_model.dart';
 import 'package:searchtosu/Widgets/ListOfSura.dart';
 
-class AlQuranPage extends StatefulWidget {
+class SuraListPage extends StatefulWidget {
   static final route = '/al_quran_page';
   @override
-  _AlQuranPageState createState() => _AlQuranPageState();
+  _SuraListPageState createState() => _SuraListPageState();
 }
 
-class _AlQuranPageState extends State<AlQuranPage> {
+class _SuraListPageState extends State<SuraListPage> {
 
-  SuraNameTableDBHelper suranamedbHelpers=SuraNameTableDBHelper.instance;
+  DatabaseHelper suranamedbHelpers=DatabaseHelper.instance;
   List<SuraNameTableModel> suranamesmodel=new List();
 
   @override
@@ -130,7 +129,8 @@ class _AlQuranPageState extends State<AlQuranPage> {
                     suranamesmodel[index].arbiSuraNam,
                     suranamesmodel[index].banglaMeaning,
                   suranamesmodel[index].obotirno,
-                  suranamesmodel[index].suraNo
+                  suranamesmodel[index].suraNo,
+                  suranamesmodel[index].banglaTranslator
                 ),
             itemCount: suranamesmodel.length,),
         ),

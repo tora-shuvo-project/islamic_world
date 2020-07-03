@@ -4,21 +4,16 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 
-class SuraNameTableDBHelper{
+class DatabaseHelper{
   static final databaseName='ISLAM.db';
   static final databaseVersion=1;
-  static final suraNametablename='SuraNameTbl';
-  static final SuraNoColumn='SURANO';
-  static final AyatNOColumn='AYATNO';
-  static final paraNumberColumn='PARANUMBER';
-  static final arbiSuraNameColumn='ARBISURANAME';
-  static final banglameaningColumn='BANGLAMEANING';
-  static final banglaTranslatorColumn='BANGLATRANSLATOR';
-  static final obotirnoColumn='OBOTIRNO';
-  static final englishSuraNameColumn='ENGLISHSURANAME';
+  static final suraTable='SuraNameTbl';
+  static final ayatTable='AyatTbl';
+  static final columnSuraNo='SURANO';
 
-  SuraNameTableDBHelper._privateConstrator();
-  static final SuraNameTableDBHelper instance=SuraNameTableDBHelper._privateConstrator();
+
+  DatabaseHelper._privateConstrator();
+  static final DatabaseHelper instance=DatabaseHelper._privateConstrator();
 
   static Database _database;
   Future<Database> get database async{
@@ -54,16 +49,18 @@ class SuraNameTableDBHelper{
 
   ///CRUD
   ///==========================================================
-  // Insert
-  Future<int> insert(Map<String,dynamic> row)async{
-    Database db=await instance.database;
-    return await db.insert(suraNametablename, row,nullColumnHack: null);
-  }
 
   //Select All
   Future<List> getAllSuraFromSuraNameTable()async{
     Database db=await instance.database;
-    var result=await db.query(suraNametablename);
+    var result=await db.query(suraTable);
+    return result.toList();
+  }
+
+  Future<List> getAllAyatFromAyatTable(int suraNo)async{
+    Database db=await instance.database;
+//    var result=await db.rawQuery('SELECT * FROM $ayatTable WHERE SURANO=$suraNo;');
+    var result=await db.query(ayatTable,where: '$columnSuraNo= ?',whereArgs: [suraNo]);
     return result.toList();
   }
 
