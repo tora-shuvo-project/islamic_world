@@ -3,30 +3,31 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:searchtosu/DataBaseHelper/database_helper.dart';
+import 'package:searchtosu/DataBaseHelper/Ayat_table_database_helper.dart';
+import 'package:searchtosu/DataBaseHelper/SuraName_table_database_helper.dart';
 import 'package:searchtosu/FinalModels/sura_name_table_model.dart';
 import 'package:searchtosu/Widgets/ListOfSura.dart';
 
-class SuraListPage extends StatefulWidget {
+
+class AlQuranPage extends StatefulWidget {
   static final route = '/al_quran_page';
   @override
-  _SuraListPageState createState() => _SuraListPageState();
+  _AlQuranPageState createState() => _AlQuranPageState();
 }
 
-class _SuraListPageState extends State<SuraListPage> {
+class _AlQuranPageState extends State<AlQuranPage> {
 
-  DatabaseHelper suranamedbHelpers=DatabaseHelper.instance;
-  List<SuraNameTableModel> suranamesmodel=new List();
+  SuraNameTableDBHelper SuranamedbHelpers=SuraNameTableDBHelper.instance;
+  List<SuraNameTableModel> Suranamesmodel=new List();
 
   @override
   void initState() {
     super.initState();
 
-    suranamedbHelpers.getAllSuraFromSuraNameTable().then((rows){
+    SuranamedbHelpers.getAllSuraFromSuraNameTable().then((rows){
       setState(() {
         rows.forEach((row) {
-          print(row.toString());
-          suranamesmodel.add(SuraNameTableModel.formMap(row));
+          Suranamesmodel.add(SuraNameTableModel.formMap(row));
         });
       });
     });
@@ -124,15 +125,13 @@ class _SuraListPageState extends State<SuraListPage> {
         Expanded(
           child: ListView.builder(
             shrinkWrap: true,
-            itemBuilder: (context,index)=>
-                List_of_sura(
-                    suranamesmodel[index].arbiSuraNam,
-                    suranamesmodel[index].banglaMeaning,
-                  suranamesmodel[index].obotirno,
-                  suranamesmodel[index].suraNo,
-                  suranamesmodel[index].banglaTranslator
-                ),
-            itemCount: suranamesmodel.length,),
+            itemBuilder: (context,index)=> List_of_sura(
+              suraNO: Suranamesmodel[index].suraNo,
+              obotirno: Suranamesmodel[index].obotirno,
+              ArbiName:Suranamesmodel[index].arbiSuraNam,
+              banglaMeaning:Suranamesmodel[index].banglaMeaning,
+
+            ), itemCount: Suranamesmodel.length,),
         ),
 
           ],
