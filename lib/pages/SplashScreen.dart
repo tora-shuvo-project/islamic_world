@@ -1,14 +1,8 @@
-import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:searchtosu/helpers/query_helpers.dart';
-import 'package:searchtosu/models/quran_sura_models.dart';
 import 'package:searchtosu/pages/Al_Quran_Page.dart';
-
-import 'package:searchtosu/utils/add_quran_sura.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
 
@@ -18,66 +12,21 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  bool visitingSign = false;
-  _checkLogin() async{
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    bool alreadyVisited = pref.getBool("isEntered") ?? false;
-    setState(() {
-      visitingSign = alreadyVisited;
-    });
-  }
-
-  @override
-  void initState() {
-    _checkLogin();
-    super.initState();
-  }
-  @override
-  void dispose() {
-
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: !visitingSign? Introduction(): AlQuranPage(),
+      body: Introduction(),
     );
   }
-
-
 }
 
-//setVisitingData() async{
-//  SharedPreferences pref = await SharedPreferences.getInstance();
-//  pref.setBool("alreadyVisited", true);
-//}
-//getVisitingData() async{
-//  SharedPreferences pref = await SharedPreferences.getInstance();
-//  bool alreadyVisited = pref.getBool("alreadyVisited") ?? false;
-//  return alreadyVisited;
-//}
 class Introduction extends StatelessWidget {
   static final route = '/into_page';
   @override
   Widget build(BuildContext context) {
-    AddQuranSura addDatabaseData=AddQuranSura();
-    _addSuraName(){
-      addDatabaseData.allSuraList.forEach((suralist) {
-        QueryHelpers.insertquransura(TABLE_SURA_MODELS, suralist.tomap()).then((value){
-          print(value.toString());
-          print(suralist.paraNo);
-
-
-        });
-
-      });
-    }
-
     return Scaffold(
-      body:
-
-             Center(
+      body: Center(
                child: Column(
                  mainAxisSize: MainAxisSize.min,
                  mainAxisAlignment: MainAxisAlignment.center,
@@ -95,9 +44,6 @@ class Introduction extends StatelessWidget {
                        ),
                        child: FlatButton(
                            onPressed: (){
-
-                         _addSuraName();
-                         setIsLogin();
                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> AlQuranPage()));
                        }, child: Text("Welcome", style: TextStyle(color: Colors.white),)),
                      ),
@@ -105,16 +51,6 @@ class Introduction extends StatelessWidget {
                  ],
                ),
              ),
-
-
-
-
-
-
     );
   }
-}
-setIsLogin() async{
-  SharedPreferences pref = await SharedPreferences.getInstance();
-  pref.setBool("isEntered", true);
 }

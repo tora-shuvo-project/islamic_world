@@ -8,8 +8,8 @@ class SuraNameTableModel{
     var map=new Map<String,dynamic>();
     map['AYATNO']=ayatNo;
     map['SURANO']=suraNo;
-    map['PARANUMBER']=paraNumber;
-    map['ARBISURANAME']=arbiSuraNam;
+    map['PARANO']=paraNumber;
+    map['ARABISURANAME']=arbiSuraNam;
     map['BANGLAMEANING']=banglaMeaning;
     map['BANGLATRANSLATOR']=banglaTranslator;
     map['OBOTIRNO']=obotirno;
@@ -19,8 +19,8 @@ class SuraNameTableModel{
   SuraNameTableModel.formMap(dynamic map){
     this.ayatNo=map['AYATNO'];
     this.suraNo=map['SURANO'];
-    this.paraNumber=map['PARANUMBER'];
-    this.arbiSuraNam=map['ARBISURANAME'];
+    this.paraNumber=map['PARANO'];
+    this.arbiSuraNam=map['ARABISURANAME'];
     this.banglaMeaning=map['BANGLAMEANING'];
     this.banglaTranslator=map['BANGLATRANSLATOR'];
     this.obotirno=map['OBOTIRNO'];

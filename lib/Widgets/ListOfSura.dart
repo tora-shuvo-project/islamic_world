@@ -7,7 +7,7 @@ class List_of_sura extends StatelessWidget {
   final String  ArbiName, banglaMeaning , obotirno;
   final int suraNO;
 
-  List_of_sura({@required this.suraNO, @required this.ArbiName,@required this.banglaMeaning,@required this.obotirno});
+  List_of_sura(this.ArbiName, this.banglaMeaning, this.obotirno, this.suraNO);
 
   @override
   Widget build(BuildContext context) {
