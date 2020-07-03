@@ -14,6 +14,7 @@ class AlQuranPage extends StatefulWidget {
 }
 
 class _AlQuranPageState extends State<AlQuranPage> {
+
   TextEditingController searchController = new TextEditingController();
   Widget _appBar(){
     return ClipRRect(
