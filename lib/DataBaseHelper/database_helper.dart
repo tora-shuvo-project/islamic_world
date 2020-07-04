@@ -4,36 +4,31 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 
-class SuraNameTableDBHelper{
+class DatabaseHelper{
   static final databaseName='ISLAM.db';
   static final databaseVersion=1;
-  static final suraNametablename='SuraNameTbl';
-  static final SuraNoColumn='SURANO';
-  static final AyatNOColumn='AYATNO';
-  static final paraNumberColumn='PARANUMBER';
-  static final arbiSuraNameColumn='ARBISURANAME';
-  static final banglameaningColumn='BANGLAMEANING';
-  static final banglaTranslatorColumn='BANGLATRANSLATOR';
-  static final obotirnoColumn='OBOTIRNO';
-  static final englishSuraNameColumn='ENGLISHSURANAME';
+  static final suraTable='SuraNameTbl';
+  static final ayatTable='AyatTbl';
+  static final columnSuraNo='SURANO';
 
-  SuraNameTableDBHelper._privateConstrator();
-  static final SuraNameTableDBHelper instance=SuraNameTableDBHelper._privateConstrator();
+
+  DatabaseHelper._privateConstrator();
+  static final DatabaseHelper instance=DatabaseHelper._privateConstrator();
 
   static Database _database;
   Future<Database> get database async{
     if(_database!=null)return _database;
-    _database=await _initSuranNameTableDatabase();
+    _database=await _initDatabase();
     return _database;
   }
 
-  _initSuranNameTableDatabase() async {
+  _initDatabase() async{
     var databasePath=await getDatabasesPath();
     String path=join(databasePath,databaseName);
 
     var exists=await databaseExists(path);
     if(!exists){
-      print('Copy SuraNamme table Database Start');
+      print('Copy Database Start');
 
       try{
         await Directory(dirname(path)).create(recursive: true);
@@ -46,20 +41,26 @@ class SuraNameTableDBHelper{
       await File(path).writeAsBytes(bytes,flush: true);
 
     }else{
-      print('Opening Suraname table existing database');
+      print('Opening existing database');
     }
-    return await openDatabase(path,version: databaseVersion);
 
+    return await openDatabase(path,version: databaseVersion);
   }
-  // Insert SuraFromSuraNameTable
-  Future<int> insertSuraFromSuraNameTable(Map<String,dynamic> row)async{
-    Database db=await instance.database;
-    return await db.insert(suraNametablename, row,nullColumnHack: null);
-  }
-// getting Sura
+
+  ///CRUD
+  ///==========================================================
+
+  //Select All
   Future<List> getAllSuraFromSuraNameTable()async{
     Database db=await instance.database;
-    var result=await db.query(suraNametablename);
+    var result=await db.query(suraTable);
+    return result.toList();
+  }
+
+  Future<List> getAllAyatFromAyatTable(int suraNo)async{
+    Database db=await instance.database;
+//    var result=await db.rawQuery('SELECT * FROM $ayatTable WHERE SURANO=$suraNo;');
+    var result=await db.query(ayatTable,where: '$columnSuraNo= ?',whereArgs: [suraNo]);
     return result.toList();
   }
 
