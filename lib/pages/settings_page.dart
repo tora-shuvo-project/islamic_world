@@ -1,5 +1,6 @@
 import 'package:dropdown_formfield/dropdown_formfield.dart';
 import 'package:flutter/material.dart';
+import 'package:searchtosu/pages/test_page.dart';
 import 'package:searchtosu/utils/utils.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -74,6 +75,14 @@ class _SettingsPageState extends State<SettingsPage> {
               textField: 'display',
               valueField: 'value',
             ),
+          ),
+          RaisedButton(
+            child: Text('Test Screen'),
+            onPressed: (){
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context)=>TestScreen()
+              ));
+            },
           ),
         ],
       ),

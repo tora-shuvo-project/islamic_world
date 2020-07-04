@@ -1,21 +1,21 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:searchtosu/FinalModels/sura_name_table_model.dart';
 import 'package:searchtosu/pages/ayat_page.dart';
 
 class List_of_sura extends StatelessWidget {
 
-  final String  ArbiName, banglaMeaning ,banglauccharon, obotirno,suraname;
-  final int suraNO;
+  final SuraNameTableModel suraNameTableModel;
+  List_of_sura(this.suraNameTableModel);
 
-  List_of_sura(this.ArbiName, this.banglaMeaning, this.banglauccharon, this.obotirno, this.suraNO,this.suraname);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context)=>AyatPage(suraNO,suraname)
+            builder: (context)=>AyatPage(suraNameTableModel)
         ));
       },
       child: Card(
@@ -42,15 +42,15 @@ class List_of_sura extends StatelessWidget {
                       width: 50,
                       height: 50,
                       alignment: Alignment.center,
-                      child: Text(suraNO.toString(),))
+                      child: Text(suraNameTableModel.suraNo.toString(),))
                 ],
               ),
 
               Expanded(
                 child: Column(
                   children: <Widget>[
-                    Text(ArbiName),
-                    Text(banglauccharon)
+                    Text(suraNameTableModel.arbiSuraNam),
+                    Text(suraNameTableModel.banglaTranslator)
                   ],
 
                 ),
@@ -58,8 +58,8 @@ class List_of_sura extends StatelessWidget {
               Expanded(
                 child: Column(
                   children: <Widget>[
-                    Text(banglaMeaning),
-                    Text("("+obotirno+")")
+                    Text(suraNameTableModel.banglaMeaning),
+                    Text("("+suraNameTableModel.obotirno+")")
                   ],
 
                 ),

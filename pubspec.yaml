@@ -33,6 +33,7 @@ dependencies:
   after_layout: ^1.0.7+2
   shared_preferences: ^0.5.7+3
   dropdown_formfield: ^0.1.2
+  flutter_speed_dial: ^1.2.5
 
 dev_dependencies:
   flutter_test:

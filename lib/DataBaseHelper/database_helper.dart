@@ -16,6 +16,7 @@ class DatabaseHelper{
   static final columnEnglishName='ENGLISHSURANAME';
   static final columnBanglaName='BANGLATRANSLATOR';
   static final columnArabi='ARABISURANAME';
+  static final columnobotirno='OBOTIRNO';
 
   DatabaseHelper._privateConstrator();
   static final DatabaseHelper instance=DatabaseHelper._privateConstrator();
@@ -64,7 +65,7 @@ class DatabaseHelper{
 
   Future<List> searchSuraFromSuraNameTable(String name)async{
     Database db=await instance.database;
-    var result=await db.rawQuery(" SELECT * FROM $suraTable WHERE  $columnEnglishName LIKE '%$name%' OR $columnBanglaName LIKE '%${name}%' OR $columnArabi LIKE '%${name}%' ");
+    var result=await db.rawQuery(" SELECT * FROM $suraTable WHERE  $columnEnglishName LIKE '%$name%' OR $columnBanglaName LIKE '%${name}%' OR $columnArabi LIKE '%${name}%' OR $columnSuraNo LIKE '%${name}%' OR $columnobotirno LIKE '%${name}%' ");
     return result.toList();
   }
   

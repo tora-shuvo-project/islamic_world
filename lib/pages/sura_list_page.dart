@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:searchtosu/DataBaseHelper/database_helper.dart';
 import 'package:searchtosu/FinalModels/sura_name_table_model.dart';
@@ -18,6 +19,7 @@ class _SuraListPageState extends State<SuraListPage> {
 
   DatabaseHelper suranamedbHelpers=DatabaseHelper.instance;
   List<SuraNameTableModel> suranamesmodel=new List();
+  bool isSearch=false;
 
   @override
   void initState() {
@@ -104,10 +106,11 @@ class _SuraListPageState extends State<SuraListPage> {
                       controller: searchController,
                       decoration: InputDecoration(
                           border: InputBorder.none,
-                          hintText: "search"
+                          hintText: "search",
                       ),
                       onChanged: (value)async{
                         setState(() {
+                          isSearch=true;
                           suranamesmodel.clear();
                           suranamedbHelpers.searchSuraFromSuraNameTable(value).then((rows){
                             setState(() {
@@ -122,7 +125,26 @@ class _SuraListPageState extends State<SuraListPage> {
                     )),
 
                     Container(
-                        child: Icon(Icons.search)),
+                        child: InkWell(
+                            onTap: (){
+                              setState(() {
+                                if(isSearch){
+                                  searchController.text='';
+                                  isSearch=false;
+                                  FocusScope.of(context).requestFocus(FocusNode());
+                                  suranamesmodel.clear();
+                                  suranamedbHelpers.getAllSuraFromSuraNameTable().then((rows){
+                                    setState(() {
+                                      rows.forEach((row) {
+                                        print(row.toString());
+                                        suranamesmodel.add(SuraNameTableModel.formMap(row));
+                                      });
+                                    });
+                                  });
+                                }
+                              });
+                            },
+                            child: Icon(isSearch?Icons.cancel:Icons.search))),
 
                   ],
                 ),
@@ -161,14 +183,7 @@ class _SuraListPageState extends State<SuraListPage> {
                       shrinkWrap: true,
                       itemBuilder: (context,index)=>
                           List_of_sura(
-
-                            suranamesmodel[index].arbiSuraNam,
-                            suranamesmodel[index].banglaMeaning,
-                            suranamesmodel[index].banglaTranslator,
-                            suranamesmodel[index].obotirno,
-                            suranamesmodel[index].suraNo,
-                            suranamesmodel[index].banglaTranslator,
-
+                            suranamesmodel[index]
                           ),
                       itemCount: suranamesmodel.length,),
 
