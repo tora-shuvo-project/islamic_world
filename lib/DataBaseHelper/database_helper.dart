@@ -1,3 +1,4 @@
+import 'package:searchtosu/FinalModels/audio_models.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'dart:io';
@@ -9,8 +10,9 @@ class DatabaseHelper{
   static final databaseVersion=1;
   static final suraTable='SuraNameTbl';
   static final ayatTable='AyatTbl';
+  static final audioTable='AudioTbl';
   static final columnSuraNo='SURANO';
-
+  static final columnQarename='QARINAME';
 
   DatabaseHelper._privateConstrator();
   static final DatabaseHelper instance=DatabaseHelper._privateConstrator();
@@ -62,6 +64,15 @@ class DatabaseHelper{
 //    var result=await db.rawQuery('SELECT * FROM $ayatTable WHERE SURANO=$suraNo;');
     var result=await db.query(ayatTable,where: '$columnSuraNo= ?',whereArgs: [suraNo]);
     return result.toList();
+  }
+
+  Future<AudioModels> getAudioBySuraAndQareName(int surano,String qarename)async{
+    Database db=await instance.database;
+    final List<Map<String,dynamic>> qareNames=await db.query(audioTable,where: '$columnSuraNo = ? AND $columnQarename = ?',whereArgs: [surano,qarename]);
+    if(qareNames.length>0){
+      return AudioModels.fromMap(qareNames.first);
+    }
+    return null;
   }
 
 }

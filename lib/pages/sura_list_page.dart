@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:searchtosu/DataBaseHelper/database_helper.dart';
 import 'package:searchtosu/FinalModels/sura_name_table_model.dart';
 import 'package:searchtosu/Widgets/ListOfSura.dart';
+import 'package:searchtosu/pages/settings_page.dart';
 
 class SuraListPage extends StatefulWidget {
 
@@ -66,12 +67,21 @@ class _SuraListPageState extends State<SuraListPage> {
                           if(value == 0){
                             //go to profile menu
                           }
+                          else if(value==1){
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context)=>SettingsPage()
+                            ));
+                          }
                         }
                         ,
                         itemBuilder: (context)=>[
                           PopupMenuItem(
                             child: Text('পারাক্রমে'),
                             value: 0,
+                          ),
+                          PopupMenuItem(
+                            child: Text('Settings'),
+                            value: 1,
                           ),
 
                         ]),
