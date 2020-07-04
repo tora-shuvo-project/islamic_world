@@ -66,7 +66,11 @@ class _AyatPageState extends State<AyatPage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Icon(Icons.arrow_back, color: Colors.white,),
+                    InkWell(
+                        onTap:(){
+                          Navigator.of(context).pop();
+                        },
+                        child: Icon(Icons.arrow_back, color: Colors.white,)),
                     SizedBox(width: 10,),
                     Text( '${widget.suraname}', style: TextStyle(color: Colors.white, fontSize: 20),),
 

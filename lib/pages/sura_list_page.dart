@@ -106,6 +106,19 @@ class _SuraListPageState extends State<SuraListPage> {
                           border: InputBorder.none,
                           hintText: "search"
                       ),
+                      onChanged: (value)async{
+                        setState(() {
+                          suranamesmodel.clear();
+                          suranamedbHelpers.searchSuraFromSuraNameTable(value).then((rows){
+                            setState(() {
+                              rows.forEach((row) {
+                                print(row.toString());
+                                suranamesmodel.add(SuraNameTableModel.formMap(row));
+                              });
+                            });
+                          });
+                        });
+                      },
                     )),
 
                     Container(

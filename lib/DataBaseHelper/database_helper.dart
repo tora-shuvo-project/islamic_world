@@ -13,6 +13,9 @@ class DatabaseHelper{
   static final audioTable='AudioTbl';
   static final columnSuraNo='SURANO';
   static final columnQarename='QARINAME';
+  static final columnEnglishName='ENGLISHSURANAME';
+  static final columnBanglaName='BANGLATRANSLATOR';
+  static final columnArabi='ARABISURANAME';
 
   DatabaseHelper._privateConstrator();
   static final DatabaseHelper instance=DatabaseHelper._privateConstrator();
@@ -58,6 +61,13 @@ class DatabaseHelper{
     var result=await db.query(suraTable);
     return result.toList();
   }
+
+  Future<List> searchSuraFromSuraNameTable(String name)async{
+    Database db=await instance.database;
+    var result=await db.rawQuery(" SELECT * FROM $suraTable WHERE  $columnEnglishName LIKE '%$name%' OR $columnBanglaName LIKE '%${name}%' OR $columnArabi LIKE '%${name}%' ");
+    return result.toList();
+  }
+  
 
   Future<List> getAllAyatFromAyatTable(int suraNo)async{
     Database db=await instance.database;
