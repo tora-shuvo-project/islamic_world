@@ -82,7 +82,13 @@ class _SuraListPageState extends State<SuraListPage> {
                           else if(value==1){
                             Navigator.of(context).push(MaterialPageRoute(
                               builder: (context)=>SettingsPage()
-                            ));
+                            )).then((value){
+                              setState(() {
+                                utils.getQareNameFromPreference().then((value){
+                                  qareName=value;
+                                });
+                              });
+                            });
                           }
                         }
                         ,

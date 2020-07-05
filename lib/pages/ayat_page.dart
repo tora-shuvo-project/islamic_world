@@ -16,7 +16,8 @@ import '../FinalModels/ayat_table_model.dart';
 class AyatPage extends StatefulWidget {
 
   final SuraNameTableModel suraNameTableModel;
-  AyatPage(this.suraNameTableModel);
+  final String qareName;
+  AyatPage(this.suraNameTableModel,this.qareName);
 
   @override
   _AyatPageState createState() => _AyatPageState();
@@ -34,8 +35,15 @@ class _AyatPageState extends State<AyatPage> {
   VideoPlayerController _controller;
   Future<void> _initializeVideoPlayerFuture;
   Utils utils;
-  AudioModels audioModels;
   double _value = 17;
+  String _fontName;
+
+  void onSubmit(String result) {
+    print(result);
+    setState(() {
+      _fontName=result;
+    });
+  }
 
   _playAudioButtonClick(){
 
@@ -310,24 +318,24 @@ class _AyatPageState extends State<AyatPage> {
     // TODO: implement initState
     super.initState();
 
-    audioModels=AudioModels();
     utils=Utils();
-    utils.getQareNameFromPreference().then((qarename) {
-      setState(() {
-        suranamedbHelpers.getAudioBySuraAndQareName(widget.suraNameTableModel.suraNo, qarename).then((audioMode){
-          setState(() {
-            audioModels=audioMode;
-            _controller = VideoPlayerController.network(audioMode.suraLink);
-            _initializeVideoPlayerFuture = _controller.initialize();
-          });
-        }).catchError((error){
-          print(error.toString());
-        });
 
-        print(qarename);
+    utils.getFontNameFromPreference().then((fontName){
+      setState(() {
+        print(fontName);
+        _fontName=fontName;
       });
     });
 
+    suranamedbHelpers.getAudioBySuraAndQareName(widget.suraNameTableModel.suraNo, widget.qareName)
+        .then((audioMode){
+      setState(() {
+        _controller = VideoPlayerController.network(audioMode.suraLink);
+        _initializeVideoPlayerFuture = _controller.initialize();
+      });
+    }).catchError((error){
+      print(error.toString());
+    });
 
     suranamedbHelpers.getAllAyatFromAyatTable(widget.suraNameTableModel.suraNo).then((rows){
       setState(() {
@@ -335,6 +343,22 @@ class _AyatPageState extends State<AyatPage> {
           ayatmodels.add(AyatTableModel.formMap(row));
         });
       });
+    });
+
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    suranamedbHelpers.getAudioBySuraAndQareName(widget.suraNameTableModel.suraNo, widget.qareName)
+        .then((audioMode){
+      setState(() {
+        _controller = VideoPlayerController.network(audioMode.suraLink);
+        _initializeVideoPlayerFuture = _controller.initialize();
+      });
+    }).catchError((error){
+      print(error.toString());
     });
 
   }
@@ -387,11 +411,22 @@ class _AyatPageState extends State<AyatPage> {
                                 Expanded(
                                   child: Column(
                                     children: <Widget>[
-                                      arbi?Text('${ayatmodels[index].arbiQuran}', style: TextStyle(color: Colors.black, fontSize: _value),):SizedBox(),
-                                      banglameaning?Text('${ayatmodels[index].banglaTranslator}',
-                                        style: TextStyle(color: Colors.black54, fontSize: _value),):SizedBox(),
-                                      banglauccharon?Text('${ayatmodels[index].banglameaning}',
-                                        style: TextStyle(color: Colors.black54, fontSize: _value),):SizedBox()
+                                      arbi?Text('${ayatmodels[index].arbiQuran.trim()}',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontFamily: _fontName,
+                                            fontSize: _value+6),
+                                      ):SizedBox(),
+                                      banglameaning?Text('${ayatmodels[index].banglaTranslator.trim()}',
+                                        style: TextStyle(
+                                            color: Colors.black54,
+                                            fontFamily: _fontName,
+                                            fontSize: _value-1),):SizedBox(),
+                                      banglauccharon?Text('${ayatmodels[index].banglameaning.trim()}',
+                                        style: TextStyle(
+                                            color: Colors.black54,
+                                            fontFamily: _fontName,
+                                            fontSize: _value-1),):SizedBox()
                                     ],
 
                                   ),
@@ -412,7 +447,7 @@ class _AyatPageState extends State<AyatPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text('${audioModels.qareName}',style: TextStyle(color: Colors.white),),
+                        Text('${widget.qareName}',style: TextStyle(color: Colors.white),),
                         IconButton(icon: Icon(_controller.value.isPlaying ? Icons.pause : Icons.play_arrow,color: Colors.white,),onPressed: (){
                           setState(() {
                             _playAudioButtonClick();
@@ -452,7 +487,9 @@ class _AyatPageState extends State<AyatPage> {
                               color: Colors.white,
                               fontSize: 15,
                             ),
-                            onTap: () => print('FIRST CHILD')
+                            onTap: () {
+                              showDialog(context: context, builder: (context) => MyForm(onSubmit: onSubmit));
+                            }
                         ),
                         SpeedDialChild(
                           labelBackgroundColor: Colors.green,
@@ -540,3 +577,151 @@ class _AyatPageState extends State<AyatPage> {
   }
 
 }
+
+typedef void MyFormCallback(String result);
+class MyForm extends StatefulWidget {
+  final MyFormCallback onSubmit;
+
+  MyForm({this.onSubmit});
+
+  @override
+  _MyFormState createState() => _MyFormState();
+}
+
+class _MyFormState extends State<MyForm> {
+  String value;
+
+  Utils utils;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    utils=Utils();
+    utils.getFontNameFromPreference().then((fontname) {
+      setState(() {
+        value=fontname;
+      });
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+    return SimpleDialog(
+      title: Text("আরবি ফন্ট সিলেক্ট করুন-"),
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.only(left: 10,right: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Expanded(flex: 2,child: Text('Maddina')),
+              Expanded(
+                child: Radio(
+                  groupValue: value,
+                  activeColor: Colors.green,
+                  onChanged: (value) => setState(() {
+                    this.value = value;
+                    Navigator.pop(context);
+                    widget.onSubmit(value);
+                    utils.saveFontNameFromPreference(value);
+                  }),
+                  value: "Maddina",
+                ),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.only(left: 10,right: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Expanded(flex: 2,child: Text('Monserat')),
+              Expanded(
+                child: Radio(
+                  groupValue: value,
+                  activeColor: Colors.green,
+                  onChanged: (value) => setState((){
+                    this.value = value;
+                    Navigator.pop(context);
+                    widget.onSubmit(value);
+                    utils.saveFontNameFromPreference(value);
+                  } ),
+                  value: "Monserat",
+                ),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.only(left: 10,right: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Expanded(flex: 2,child: Text('Mukadimah')),
+              Expanded(
+                child: Radio(
+                  groupValue: value,
+                  activeColor: Colors.green,
+                  onChanged: (value) => setState((){
+                    this.value = value;
+                    Navigator.pop(context);
+                    widget.onSubmit(value);
+                    utils.saveFontNameFromPreference(value);
+                  } ),
+                  value: "Mukadimah",
+                ),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.only(left: 10,right: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Expanded(flex: 2,child: Text('QalamMajid')),
+              Expanded(
+                child: Radio(
+                  groupValue: value,
+                  activeColor: Colors.green,
+                  onChanged: (value) => setState((){
+                    this.value = value;
+                    Navigator.pop(context);
+                    widget.onSubmit(value);
+                    utils.saveFontNameFromPreference(value);
+                  } ),
+                  value: "QalamMajid",
+                ),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.only(left: 10,right: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Expanded(flex: 2,child: Text('utman')),
+              Expanded(
+                child: Radio(
+                  groupValue: value,
+                  activeColor: Colors.green,
+                  onChanged: (value) => setState((){
+                    this.value = value;
+                    Navigator.pop(context);
+                    widget.onSubmit(value);
+                    utils.saveFontNameFromPreference(value);
+                  } ),
+                  value: "utman",
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
