@@ -7,7 +7,8 @@ import 'package:searchtosu/pages/ayat_page.dart';
 class List_of_sura extends StatelessWidget {
 
   final SuraNameTableModel suraNameTableModel;
-  List_of_sura(this.suraNameTableModel);
+  final String qareName;
+  List_of_sura(this.suraNameTableModel,this.qareName);
 
 
   @override
@@ -15,7 +16,7 @@ class List_of_sura extends StatelessWidget {
     return GestureDetector(
       onTap: (){
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context)=>AyatPage(suraNameTableModel)
+            builder: (context)=>AyatPage(suraNameTableModel,qareName)
         ));
       },
       child: Card(

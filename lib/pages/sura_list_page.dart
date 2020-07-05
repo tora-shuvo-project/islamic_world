@@ -8,6 +8,7 @@ import 'package:searchtosu/DataBaseHelper/database_helper.dart';
 import 'package:searchtosu/FinalModels/sura_name_table_model.dart';
 import 'package:searchtosu/Widgets/ListOfSura.dart';
 import 'package:searchtosu/pages/settings_page.dart';
+import 'package:searchtosu/utils/utils.dart';
 
 class SuraListPage extends StatefulWidget {
 
@@ -20,17 +21,26 @@ class _SuraListPageState extends State<SuraListPage> {
   DatabaseHelper suranamedbHelpers=DatabaseHelper.instance;
   List<SuraNameTableModel> suranamesmodel=new List();
   bool isSearch=false;
+  Utils utils;
+  String qareName;
 
   @override
   void initState() {
     super.initState();
 
+    utils=Utils();
+
     suranamedbHelpers.getAllSuraFromSuraNameTable().then((rows){
       setState(() {
         rows.forEach((row) {
-          print(row.toString());
           suranamesmodel.add(SuraNameTableModel.formMap(row));
         });
+      });
+    });
+    utils.getQareNameFromPreference().then((value){
+      setState(() {
+        print(value);
+        qareName=value;
       });
     });
   }
@@ -182,16 +192,12 @@ class _SuraListPageState extends State<SuraListPage> {
                     child: ListView.builder(
                       shrinkWrap: true,
                       itemBuilder: (context,index)=>
-                          List_of_sura(
-                            suranamesmodel[index]
-                          ),
+                          List_of_sura(suranamesmodel[index],qareName),
                       itemCount: suranamesmodel.length,),
 
                   ),
                 ),
               ),
-
-
             ],
           )
 
