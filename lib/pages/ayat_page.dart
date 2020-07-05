@@ -2,6 +2,8 @@
 
 import 'dart:ui';
 
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -9,6 +11,7 @@ import 'package:searchtosu/DataBaseHelper/database_helper.dart';
 import 'package:searchtosu/FinalModels/audio_models.dart';
 import 'package:searchtosu/FinalModels/sura_name_table_model.dart';
 import 'package:searchtosu/utils/utils.dart';
+
 import 'package:video_player/video_player.dart';
 
 import '../FinalModels/ayat_table_model.dart';
@@ -24,15 +27,21 @@ class AyatPage extends StatefulWidget {
 }
 
 class _AyatPageState extends State<AyatPage> {
-
+  Duration duration =  Duration();
+  Duration postition = Duration();
+  AudioPlayer advancedPlayer;
+  AudioCache audioCache;
+  String localFilePath;
+  AudioModels audioModels;
   DatabaseHelper suranamedbHelpers=DatabaseHelper.instance;
   List<AyatTableModel> ayatmodels=new List();
   bool arbi = true;
+  bool isPlaying = true;
   bool banglameaning= true;
   bool banglauccharon = true;
   bool isFullScreen=true;
 
-  VideoPlayerController _controller;
+  //VideoPlayerController _controller;
   Future<void> _initializeVideoPlayerFuture;
   Utils utils;
   double _value = 17;
@@ -45,14 +54,6 @@ class _AyatPageState extends State<AyatPage> {
     });
   }
 
-  _playAudioButtonClick(){
-
-    if (_controller.value.isPlaying) {
-      _controller.pause();
-    } else {
-      _controller.play();
-    }
-  }
 
 
   Widget _appBar(){
@@ -115,8 +116,8 @@ class _AyatPageState extends State<AyatPage> {
                                         child: Row(
                                           children: <Widget>[
                                             Expanded(child: Text('Arabia:',style: TextStyle(
-                                              fontSize: 18,
-                                              color: Colors.blueGrey
+                                                fontSize: 18,
+                                                color: Colors.blueGrey
                                             ),)),
                                             Expanded(flex:2,child: Text('${widget.suraNameTableModel.arbiSuraNam}',style: TextStyle(
                                                 fontSize: 16,
@@ -130,8 +131,8 @@ class _AyatPageState extends State<AyatPage> {
                                         child: Row(
                                           children: <Widget>[
                                             Expanded(child: Text('Meaning:',style: TextStyle(
-                                              fontSize: 18,
-                                              color: Colors.blueGrey
+                                                fontSize: 18,
+                                                color: Colors.blueGrey
                                             ),)),
                                             Expanded(flex:2,child: Text('${widget.suraNameTableModel.banglaMeaning}',style: TextStyle(
                                                 fontSize: 16,
@@ -145,8 +146,8 @@ class _AyatPageState extends State<AyatPage> {
                                         child: Row(
                                           children: <Widget>[
                                             Expanded(child: Text('Sura No:',style: TextStyle(
-                                              fontSize: 18,
-                                              color: Colors.blueGrey
+                                                fontSize: 18,
+                                                color: Colors.blueGrey
                                             ),)),
                                             Expanded(flex:2,child: Text('${widget.suraNameTableModel.suraNo}',style: TextStyle(
                                                 fontSize: 16,
@@ -309,7 +310,6 @@ class _AyatPageState extends State<AyatPage> {
 
   @override
   void dispose() {
-    _controller.dispose();
     super.dispose();
   }
 
@@ -329,9 +329,22 @@ class _AyatPageState extends State<AyatPage> {
 
     suranamedbHelpers.getAudioBySuraAndQareName(widget.suraNameTableModel.suraNo, widget.qareName)
         .then((audioMode){
+      audioModels=AudioModels();
+      utils=Utils();
+      advancedPlayer = AudioPlayer();
+      audioCache = AudioCache(fixedPlayer: advancedPlayer);
+      advancedPlayer.durationHandler =(d)=> setState((){
+
+        duration = d;
+      });
+      advancedPlayer.positionHandler =(p)=> setState((){
+
+        postition = p;
+      });
       setState(() {
-        _controller = VideoPlayerController.network(audioMode.suraLink);
-        _initializeVideoPlayerFuture = _controller.initialize();
+        audioModels=audioMode;
+//        _controller = VideoPlayerController.network(audioMode.suraLink);
+//        _initializeVideoPlayerFuture = _controller.initialize();
       });
     }).catchError((error){
       print(error.toString());
@@ -347,19 +360,28 @@ class _AyatPageState extends State<AyatPage> {
 
   }
 
-  @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-    suranamedbHelpers.getAudioBySuraAndQareName(widget.suraNameTableModel.suraNo, widget.qareName)
-        .then((audioMode){
-      setState(() {
-        _controller = VideoPlayerController.network(audioMode.suraLink);
-        _initializeVideoPlayerFuture = _controller.initialize();
-      });
-    }).catchError((error){
-      print(error.toString());
-    });
+  Widget slider(){
+    return Container(
+      width: 100,
+      child: Slider(
+        activeColor: Color(0xff178723),
+        inactiveColor: Colors.white,
+        value: postition.inSeconds.toDouble(),
+        min: 0.0,
+        max: duration.inSeconds.toDouble(),
+        onChanged: (double value){
+          setState(() {
+
+            seekToSecond(value.toInt());
+            value= value;
+          });
+        },
+      ),
+    );
+  }
+  void seekToSecond(int second){
+    Duration newDuration = Duration(seconds: second);
+    advancedPlayer.seek(newDuration);
 
   }
 
@@ -370,207 +392,292 @@ class _AyatPageState extends State<AyatPage> {
         appBar:PreferredSize(child: _appBar(),preferredSize: Size(MediaQuery.of(context).size.width, 120),),
 
         body:Container(
-          child: ayatmodels.length<=0?
-          CircularProgressIndicator():
-          Stack(
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Expanded(
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: ayatmodels.length,
-                        itemBuilder: (context,index)=>Card(
-                          //    color: ayatmodels.length%2==0?Colors.black.withOpacity(.5):Colors.green.withOpacity(.5),
-                          child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 10),
-                            decoration: BoxDecoration(
-                                border: Border(
-                                    bottom: BorderSide(
-                                        color: Colors.green,
-                                        width: 2
-                                    )
-                                )
-                            ),
-                            child: Row(
+            child: ayatmodels.length<=0?
+            CircularProgressIndicator():
+            Stack(
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    Expanded(
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: ayatmodels.length,
+                          itemBuilder: (context,index)=>Card(
+                            //    color: ayatmodels.length%2==0?Colors.black.withOpacity(.5):Colors.green.withOpacity(.5),
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              decoration: BoxDecoration(
+                                  border: Border(
+                                      bottom: BorderSide(
+                                          color: Colors.green,
+                                          width: 2
+                                      )
+                                  )
+                              ),
+                              child: Row(
 
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Stack(
-                                  children: <Widget>[
-                                    Image.asset("images/ayatnumberIcon.png", height: 40, width: 40, fit: BoxFit.cover,),
-                                    Container(
-                                        width: 40,
-                                        height: 40,
-                                        alignment: Alignment.center,
-                                        child: Text('${ayatmodels[index].ayatno}'))
-                                  ],
-                                ),
-                                SizedBox(width: 10,),
-                                Expanded(
-                                  child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Stack(
                                     children: <Widget>[
-                                      arbi?Text('${ayatmodels[index].arbiQuran.trim()}',
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: _fontName,
-                                            fontSize: _value+6),
-                                      ):SizedBox(),
-                                      banglameaning?Text('${ayatmodels[index].banglaTranslator.trim()}',
-                                        style: TextStyle(
-                                            color: Colors.black54,
-                                            fontFamily: _fontName,
-                                            fontSize: _value-1),):SizedBox(),
-                                      banglauccharon?Text('${ayatmodels[index].banglameaning.trim()}',
-                                        style: TextStyle(
-                                            color: Colors.black54,
-                                            fontFamily: _fontName,
-                                            fontSize: _value-1),):SizedBox()
+                                      Image.asset("images/ayatnumberIcon.png", height: 40, width: 40, fit: BoxFit.cover,),
+                                      Container(
+                                          width: 40,
+                                          height: 40,
+                                          alignment: Alignment.center,
+                                          child: Text('${ayatmodels[index].ayatno}'))
                                     ],
-
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
+                                  SizedBox(width: 10,),
+                                  Expanded(
+                                    child: Column(
+                                      children: <Widget>[
+                                        arbi?Text('${ayatmodels[index].arbiQuran.trim()}',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontFamily: _fontName,
+                                              fontSize: _value+6),
+                                        ):SizedBox(),
+                                        banglameaning?Text('${ayatmodels[index].banglaTranslator.trim()}',
+                                          style: TextStyle(
+                                              color: Colors.black54,
+                                              fontFamily: _fontName,
+                                              fontSize: _value-1),):SizedBox(),
+                                        banglauccharon?Text('${ayatmodels[index].banglameaning.trim()}',
+                                          style: TextStyle(
+                                              color: Colors.black54,
+                                              fontFamily: _fontName,
+                                              fontSize: _value-1),):SizedBox()
+                                      ],
 
-                        )),
-                  ),
-                  isFullScreen?
-                  Container(
-                    height: 60,
-                    alignment: Alignment.centerRight,
-                    padding: EdgeInsets.all(8),
-                    color: Colors.green,
-                    width: double.infinity,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text('${widget.qareName}',style: TextStyle(color: Colors.white),),
-                        IconButton(icon: Icon(_controller.value.isPlaying ? Icons.pause : Icons.play_arrow,color: Colors.white,),onPressed: (){
-                          setState(() {
-                            _playAudioButtonClick();
-                          });
-                        },),
-                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                          )),
                     ),
-                  ):
-                  Container(),
-                ],
-              ),
-              Positioned(
-                  child: Container(
-                    margin: EdgeInsets.only(bottom: 100),
-                    child: SpeedDial(
-                      animatedIcon: AnimatedIcons.menu_close,
-                      animatedIconTheme: IconThemeData(size: 22.0),
-                      // this is ignored if animatedIcon is non null
-                      // child: Icon(Icons.add),
-                      curve: Curves.bounceIn,
-                      overlayColor: Colors.green,
-                      overlayOpacity: 0.0,
-                      backgroundColor: Colors.green,
-                      onOpen: () => print('OPENING DIAL'),
-                      onClose: () => print('DIAL CLOSED'),
-                      tooltip: 'Speed Dial',
-                      heroTag: 'speed-dial-hero-tag',
-                      elevation: 8.0,
-                      shape: CircleBorder(),
-                      children: [
-                        SpeedDialChild(
-                          labelBackgroundColor: Colors.green,
-                            child: Icon(Icons.bubble_chart),
+                    isFullScreen?
+                    Container(
+                      height: 60,
+                      alignment: Alignment.centerRight,
+                      padding: EdgeInsets.all(8),
+                      color: Colors.green,
+                      width: double.infinity,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text('${widget.qareName}',style: TextStyle(color: Colors.white),),
+                          slider(),
+                          IconButton(icon: Icon(isPlaying ? Icons.play_arrow : Icons.pause,color: Colors.white,),onPressed: (){
+                            setState(() {
+                              if(isPlaying){
+                                advancedPlayer.play(audioModels.suraLink);
+
+                                setState(() {
+                                  isPlaying = false;
+                                });
+                              }else{
+                                advancedPlayer.pause();
+
+                                setState(() {
+                                  isPlaying = true;
+                                });
+                              }
+                            });
+                          },),
+
+                          IconButton(icon: Icon(Icons.stop, color: Colors.white,), onPressed: (){
+                            advancedPlayer.stop();
+                            setState(() {
+                              isPlaying = true;
+                            });
+                          }),
+                          PopupMenuButton(
+                              icon: Icon(Icons.more_vert, color: Colors.white,),
+                              onSelected: (value){
+                                if(value == 0){
+                                  //go to profile menu
+                                }
+                                else if(value==1){
+                                  advancedPlayer.setPlaybackRate( playbackRate:  0.25);
+                                }
+                                else if(value==2){
+                                  advancedPlayer.setPlaybackRate( playbackRate:  0.5);
+                                }
+                                else if(value==3){
+                                  advancedPlayer.setPlaybackRate( playbackRate:  .75);
+                                }
+                                else if(value==4){
+                                  advancedPlayer.setPlaybackRate( playbackRate:  1.0);
+                                }
+                                else if(value==5){
+                                  advancedPlayer.setPlaybackRate( playbackRate:  1.25);
+                                }
+                                else if(value==6){
+                                  advancedPlayer.setPlaybackRate( playbackRate:  1.5);
+                                }
+                                else if(value==7){
+                                  advancedPlayer.setPlaybackRate( playbackRate:  2.0);
+                                }
+                              }
+                              ,
+                              itemBuilder: (context)=>[
+                                PopupMenuItem(
+                                  child: Text('Speed'),
+                                  value: 0,
+                                ),
+                                PopupMenuItem(
+                                  child: Text('0.25'),
+                                  value: 1,
+                                ),
+                                PopupMenuItem(
+                                  child: Text('0.5'),
+                                  value: 2,
+                                ),
+                                PopupMenuItem(
+                                  child: Text('.75'),
+                                  value: 3,
+                                ),
+                                PopupMenuItem(
+                                  child: Text('Normal'),
+                                  value: 4,
+                                ),
+                                PopupMenuItem(
+                                  child: Text('1.25'),
+                                  value: 5,
+                                ),
+                                PopupMenuItem(
+                                  child: Text('1.5'),
+                                  value: 6,
+                                ),
+                                PopupMenuItem(
+                                  child: Text('2.0'),
+                                  value: 7,
+                                ),
+
+                              ]),
+
+                        ],
+                      ),
+                    ):
+                    Container(),
+                  ],
+                ),
+                Positioned(
+                    child: Container(
+                      margin: EdgeInsets.only(bottom: 100),
+                      child: SpeedDial(
+                        animatedIcon: AnimatedIcons.menu_close,
+                        animatedIconTheme: IconThemeData(size: 22.0),
+                        // this is ignored if animatedIcon is non null
+                        // child: Icon(Icons.add),
+                        curve: Curves.bounceIn,
+                        overlayColor: Colors.green,
+                        overlayOpacity: 0.0,
+                        backgroundColor: Colors.green,
+                        onOpen: () => print('OPENING DIAL'),
+                        onClose: () => print('DIAL CLOSED'),
+                        tooltip: 'Speed Dial',
+                        heroTag: 'speed-dial-hero-tag',
+                        elevation: 8.0,
+                        shape: CircleBorder(),
+                        children: [
+                          SpeedDialChild(
+                              labelBackgroundColor: Colors.green,
+                              child: Icon(Icons.bubble_chart),
+                              backgroundColor: Colors.green,
+                              label: 'আরবি ফন্ট',
+                              labelStyle: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                              ),
+                              onTap: () {
+                                showDialog(context: context, builder: (context) => MyForm(onSubmit: onSubmit));
+                              }
+                          ),
+                          SpeedDialChild(
+                            labelBackgroundColor: Colors.green,
+                            child: Icon(Icons.font_download),
                             backgroundColor: Colors.green,
-                            label: 'আরবি ফন্ট',
+                            label: 'ফন্ট সাইজ',
                             labelStyle: TextStyle(
                               color: Colors.white,
                               fontSize: 15,
                             ),
                             onTap: () {
-                              showDialog(context: context, builder: (context) => MyForm(onSubmit: onSubmit));
-                            }
-                        ),
-                        SpeedDialChild(
-                          labelBackgroundColor: Colors.green,
-                          child: Icon(Icons.font_download),
-                          backgroundColor: Colors.green,
-                          label: 'ফন্ট সাইজ',
-                          labelStyle: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                          ),
-                          onTap: () {
-                            showModalBottomSheet(context: context, builder: (BuildContext context){
-                              return Container(
-                                  height: 80.0,
-                                  color: Colors.green.withOpacity(.9),
-                                  child: Center(
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: <Widget>[
+                              showModalBottomSheet(context: context, builder: (BuildContext context){
+                                return Container(
+                                    height: 80.0,
+                                    color: Colors.green.withOpacity(.9),
+                                    child: Center(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
 
-                                        Row(
-                                          children: <Widget>[
-                                            Expanded(
-                                                flex:4,
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(8.0),
-                                                  child: Text('Change Font Size',style: TextStyle(
-                                                    fontSize: 18,
-                                                    color: Colors.white
-                                                  ),),
-                                                )),
-                                            Expanded(
-                                              child: IconButton(
-                                                icon: Icon(Icons.remove_circle,color: Colors.white,size: 30,),
-                                                onPressed: (){
-                                                  setState(() {
-                                                    _value--;
-                                                  });
-                                                },
+                                          Row(
+                                            children: <Widget>[
+                                              Expanded(
+                                                  flex:4,
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.all(8.0),
+                                                    child: Text('Change Font Size',style: TextStyle(
+                                                        fontSize: 18,
+                                                        color: Colors.white
+                                                    ),),
+                                                  )),
+                                              Expanded(
+                                                child: IconButton(
+                                                  icon: Icon(Icons.remove_circle,color: Colors.white,size: 30,),
+                                                  onPressed: (){
+                                                    setState(() {
+                                                      _value--;
+                                                    });
+                                                  },
+                                                ),
                                               ),
-                                            ),
-                                            Expanded(
-                                              child: IconButton(
-                                                icon: Icon(Icons.add_circle,color: Colors.white,size: 30,),
-                                                onPressed: (){
-                                                  setState(() {
-                                                    _value++;
-                                                  });
-                                                },
+                                              Expanded(
+                                                child: IconButton(
+                                                  icon: Icon(Icons.add_circle,color: Colors.white,size: 30,),
+                                                  onPressed: (){
+                                                    setState(() {
+                                                      _value++;
+                                                    });
+                                                  },
+                                                ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                              );
-                            });
-                          },
-                        ),
-                        SpeedDialChild(
-                          labelBackgroundColor: Colors.green,
-                          child: Icon(Icons.fullscreen),
-                          backgroundColor: Colors.green,
-                          label: isFullScreen?'সম্পূর্ন স্ক্রিন':'সম্পূর্ন স্ক্রিন বন্ধ করুন',
-                          labelStyle: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                );
+                              });
+                            },
                           ),
-                          onTap: (){
-                            setState(() {
-                              isFullScreen=!isFullScreen;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                  )
-              ),
-            ],
-          )
+                          SpeedDialChild(
+                            labelBackgroundColor: Colors.green,
+                            child: Icon(Icons.fullscreen),
+                            backgroundColor: Colors.green,
+                            label: isFullScreen?'সম্পূর্ন স্ক্রিন':'সম্পূর্ন স্ক্রিন বন্ধ করুন',
+                            labelStyle: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                            ),
+                            onTap: (){
+                              setState(() {
+                                isFullScreen=!isFullScreen;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    )
+                ),
+              ],
+            )
         ),
       ),
     );
