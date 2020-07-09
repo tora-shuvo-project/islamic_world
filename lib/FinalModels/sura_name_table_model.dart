@@ -1,5 +1,5 @@
 class SuraNameTableModel{
-  String ayatNo,paraNumber,arbiSuraNam,banglaMeaning,banglaTranslator,obotirno,englishSuraname;
+  String ayatNo,paraNumber,arbiSuraNam,banglaMeaning,banglaTranslator,obotirno,englishSuraname,keyName;
   int suraNo;
 
   SuraNameTableModel();
@@ -14,6 +14,7 @@ class SuraNameTableModel{
     map['BANGLATRANSLATOR']=banglaTranslator;
     map['OBOTIRNO']=obotirno;
     map['ENGLISHSURANAME']=englishSuraname;
+    map['KEYNAME']=keyName;
   }
 
   SuraNameTableModel.formMap(dynamic map){
@@ -25,5 +26,6 @@ class SuraNameTableModel{
     this.banglaTranslator=map['BANGLATRANSLATOR'];
     this.obotirno=map['OBOTIRNO'];
     this.englishSuraname=map['ENGLISHSURANAME'];
+    this.keyName=map['KEYNAME'];
   }
 }

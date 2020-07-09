@@ -326,28 +326,34 @@ class _AyatPageState extends State<AyatPage> {
         _fontName=fontName;
       });
     });
-
+    print("Ayat Page"+widget.qareName);
+    print(widget.suraNameTableModel.suraNo.toString());
     suranamedbHelpers.getAudioBySuraAndQareName(widget.suraNameTableModel.suraNo, widget.qareName)
         .then((audioMode){
-      audioModels=AudioModels();
-      utils=Utils();
-      advancedPlayer = AudioPlayer();
-      audioCache = AudioCache(fixedPlayer: advancedPlayer);
-      advancedPlayer.durationHandler =(d)=> setState((){
-
-        duration = d;
-      });
-      advancedPlayer.positionHandler =(p)=> setState((){
-
-        postition = p;
-      });
       setState(() {
-        audioModels=audioMode;
+        audioModels=AudioModels();
+        print(audioMode);
+        utils=Utils();
+        advancedPlayer = AudioPlayer();
+        audioCache = AudioCache(fixedPlayer: advancedPlayer);
+        advancedPlayer.durationHandler =(d)=> setState((){
+
+          duration = d;
+        });
+        advancedPlayer.positionHandler =(p)=> setState((){
+
+          postition = p;
+        });
+        setState(() {
+          audioModels=audioMode;
 //        _controller = VideoPlayerController.network(audioMode.suraLink);
 //        _initializeVideoPlayerFuture = _controller.initialize();
+        });
+
       });
     }).catchError((error){
       print(error.toString());
+
     });
 
     suranamedbHelpers.getAllAyatFromAyatTable(widget.suraNameTableModel.suraNo).then((rows){
@@ -414,46 +420,57 @@ class _AyatPageState extends State<AyatPage> {
                                       )
                                   )
                               ),
-                              child: Row(
+                              child: InkWell(
+                                onTap: (){
 
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Stack(
-                                    children: <Widget>[
-                                      Image.asset("images/ayatnumberIcon.png", height: 40, width: 40, fit: BoxFit.cover,),
-                                      Container(
-                                          width: 40,
-                                          height: 40,
-                                          alignment: Alignment.center,
-                                          child: Text('${ayatmodels[index].ayatno}'))
-                                    ],
-                                  ),
-                                  SizedBox(width: 10,),
-                                  Expanded(
-                                    child: Column(
+                                  advancedPlayer.play(ayatmodels[index].ayatAudio.trim());
+
+                                  setState(() {
+                                    isPlaying = false;
+                                  });
+
+                                },
+                                child: Row(
+
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Stack(
                                       children: <Widget>[
-                                        arbi?Text('${ayatmodels[index].arbiQuran.trim()}',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontFamily: _fontName,
-                                              fontSize: _value+6),
-                                        ):SizedBox(),
-                                        banglameaning?Text('${ayatmodels[index].banglaTranslator.trim()}',
-                                          style: TextStyle(
-                                              color: Colors.black54,
-                                              fontFamily: _fontName,
-                                              fontSize: _value-1),):SizedBox(),
-                                        banglauccharon?Text('${ayatmodels[index].banglameaning.trim()}',
-                                          style: TextStyle(
-                                              color: Colors.black54,
-                                              fontFamily: _fontName,
-                                              fontSize: _value-1),):SizedBox()
+                                        Image.asset("images/ayatnumberIcon.png", height: 40, width: 40, fit: BoxFit.cover,),
+                                        Container(
+                                            width: 40,
+                                            height: 40,
+                                            alignment: Alignment.center,
+                                            child: Text('${ayatmodels[index].ayatno}'))
                                       ],
-
                                     ),
-                                  ),
-                                ],
+                                    SizedBox(width: 10,),
+                                    Expanded(
+                                      child: Column(
+                                        children: <Widget>[
+                                          arbi?Text('${ayatmodels[index].arbi_indopak.trim()}',
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontFamily: _fontName,
+                                                fontSize: _value+6),
+                                          ):SizedBox(),
+                                          banglameaning?Text('${ayatmodels[index].banglaTranslator.trim()}',
+                                            style: TextStyle(
+                                                color: Colors.black54,
+                                                fontFamily: _fontName,
+                                                fontSize: _value-1),):SizedBox(),
+                                          banglauccharon?Text('${ayatmodels[index].banglameaning.trim()}',
+                                            style: TextStyle(
+                                                color: Colors.black54,
+                                                fontFamily: _fontName,
+                                                fontSize: _value-1),):SizedBox()
+                                        ],
+
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
 
@@ -469,96 +486,102 @@ class _AyatPageState extends State<AyatPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text('${widget.qareName}',style: TextStyle(color: Colors.white),),
-                          slider(),
-                          IconButton(icon: Icon(isPlaying ? Icons.play_arrow : Icons.pause,color: Colors.white,),onPressed: (){
-                            setState(() {
-                              if(isPlaying){
-                                advancedPlayer.play(audioModels.suraLink);
+                          Expanded(flex:3,child: Text('${widget.qareName}',style: TextStyle(color: Colors.white),)),
+                          Expanded(flex:2,child: slider()),
+                          Expanded(
+                            child: IconButton(icon: Icon(isPlaying ? Icons.play_arrow : Icons.pause,color: Colors.white,),onPressed: (){
+                              setState(() {
+                                if(isPlaying){
+                                  advancedPlayer.play(audioModels.suraLink.trim());
 
-                                setState(() {
-                                  isPlaying = false;
-                                });
-                              }else{
-                                advancedPlayer.pause();
+                                  setState(() {
+                                    isPlaying = false;
+                                  });
+                                }else{
+                                  advancedPlayer.pause();
 
-                                setState(() {
-                                  isPlaying = true;
-                                });
-                              }
-                            });
-                          },),
+                                  setState(() {
+                                    isPlaying = true;
+                                  });
+                                }
+                              });
+                            },),
+                          ),
 
-                          IconButton(icon: Icon(Icons.stop, color: Colors.white,), onPressed: (){
-                            advancedPlayer.stop();
-                            setState(() {
-                              isPlaying = true;
-                            });
-                          }),
-                          PopupMenuButton(
-                              icon: Icon(Icons.more_vert, color: Colors.white,),
-                              onSelected: (value){
-                                if(value == 0){
-                                  //go to profile menu
+                          Expanded(
+                            child: IconButton(icon: Icon(Icons.stop, color: Colors.white,), onPressed: (){
+                              advancedPlayer.stop();
+                              setState(() {
+                                isPlaying = true;
+                              });
+                            }),
+                          ),
+                          Expanded(
+                            child: PopupMenuButton(
+                                icon: Icon(Icons.more_vert, color: Colors.white,),
+                                onSelected: (value){
+                                  if(value == 0){
+                                    //go to profile menu
+                                  }
+                                  else if(value==1){
+                                    advancedPlayer.setPlaybackRate( playbackRate:  0.25);
+                                  }
+                                  else if(value==2){
+                                    advancedPlayer.setPlaybackRate( playbackRate:  0.5);
+                                  }
+                                  else if(value==3){
+                                    advancedPlayer.setPlaybackRate( playbackRate:  .75);
+                                  }
+                                  else if(value==4){
+                                    advancedPlayer.setPlaybackRate( playbackRate:  1.0);
+                                  }
+                                  else if(value==5){
+                                    advancedPlayer.setPlaybackRate( playbackRate:  1.25);
+                                  }
+                                  else if(value==6){
+                                    advancedPlayer.setPlaybackRate( playbackRate:  1.5);
+                                  }
+                                  else if(value==7){
+                                    advancedPlayer.setPlaybackRate( playbackRate:  2.0);
+                                  }
                                 }
-                                else if(value==1){
-                                  advancedPlayer.setPlaybackRate( playbackRate:  0.25);
-                                }
-                                else if(value==2){
-                                  advancedPlayer.setPlaybackRate( playbackRate:  0.5);
-                                }
-                                else if(value==3){
-                                  advancedPlayer.setPlaybackRate( playbackRate:  .75);
-                                }
-                                else if(value==4){
-                                  advancedPlayer.setPlaybackRate( playbackRate:  1.0);
-                                }
-                                else if(value==5){
-                                  advancedPlayer.setPlaybackRate( playbackRate:  1.25);
-                                }
-                                else if(value==6){
-                                  advancedPlayer.setPlaybackRate( playbackRate:  1.5);
-                                }
-                                else if(value==7){
-                                  advancedPlayer.setPlaybackRate( playbackRate:  2.0);
-                                }
-                              }
-                              ,
-                              itemBuilder: (context)=>[
-                                PopupMenuItem(
-                                  child: Text('Speed'),
-                                  value: 0,
-                                ),
-                                PopupMenuItem(
-                                  child: Text('0.25'),
-                                  value: 1,
-                                ),
-                                PopupMenuItem(
-                                  child: Text('0.5'),
-                                  value: 2,
-                                ),
-                                PopupMenuItem(
-                                  child: Text('.75'),
-                                  value: 3,
-                                ),
-                                PopupMenuItem(
-                                  child: Text('Normal'),
-                                  value: 4,
-                                ),
-                                PopupMenuItem(
-                                  child: Text('1.25'),
-                                  value: 5,
-                                ),
-                                PopupMenuItem(
-                                  child: Text('1.5'),
-                                  value: 6,
-                                ),
-                                PopupMenuItem(
-                                  child: Text('2.0'),
-                                  value: 7,
-                                ),
+                                ,
+                                itemBuilder: (context)=>[
+                                  PopupMenuItem(
+                                    child: Text('Speed'),
+                                    value: 0,
+                                  ),
+                                  PopupMenuItem(
+                                    child: Text('0.25'),
+                                    value: 1,
+                                  ),
+                                  PopupMenuItem(
+                                    child: Text('0.5'),
+                                    value: 2,
+                                  ),
+                                  PopupMenuItem(
+                                    child: Text('.75'),
+                                    value: 3,
+                                  ),
+                                  PopupMenuItem(
+                                    child: Text('Normal'),
+                                    value: 4,
+                                  ),
+                                  PopupMenuItem(
+                                    child: Text('1.25'),
+                                    value: 5,
+                                  ),
+                                  PopupMenuItem(
+                                    child: Text('1.5'),
+                                    value: 6,
+                                  ),
+                                  PopupMenuItem(
+                                    child: Text('2.0'),
+                                    value: 7,
+                                  ),
 
-                              ]),
+                                ]),
+                          ),
 
                         ],
                       ),

@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:searchtosu/DataBaseHelper/database_helper.dart';
 import 'package:searchtosu/FinalModels/sura_name_table_model.dart';
 import 'package:searchtosu/Widgets/ListOfSura.dart';
+import 'package:searchtosu/pages/para_wise_page.dart';
 import 'package:searchtosu/pages/settings_page.dart';
 import 'package:searchtosu/utils/utils.dart';
 
@@ -77,7 +78,9 @@ class _SuraListPageState extends State<SuraListPage> {
                         icon: Icon(Icons.more_vert, color: Colors.white,),
                         onSelected: (value){
                           if(value == 0){
-                            //go to profile menu
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context)=>ParaWiseListPage()
+                            ));
                           }
                           else if(value==1){
                             Navigator.of(context).push(MaterialPageRoute(
