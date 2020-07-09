@@ -480,8 +480,19 @@ class _AyatPageState extends State<AyatPage> {
                                             ayatmodels[index].sejda == "0"?Container(): Text("সিজদা", style: TextStyle(fontSize: 14, color: Colors.red),),
                                             IconButton(icon: Icon(Icons.volume_down ,color: Colors.black45,), onPressed: (){
 
-                                               ayatPlayer.play(ayatmodels[index].ayatAudio.trim());
-
+                                              setState(() {
+                                                if(singleAyatplaying) {
+                                                  ayatPlayer.play(ayatmodels[index].ayatAudio.trim());
+                                                  setState(() {
+                                                    singleAyatplaying = false;
+                                                  });
+                                                }else{
+                                                  ayatPlayer.pause();
+                                                  setState(() {
+                                                    singleAyatplaying = true;
+                                                  });
+                                                }
+                                              });
 
 
                                             })
