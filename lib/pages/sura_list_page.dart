@@ -47,6 +47,9 @@ class _SuraListPageState extends State<SuraListPage> {
   }
 
   TextEditingController searchController = new TextEditingController();
+
+
+  //Appbar widget
   Widget _appBar(){
     return Container(
       color: Colors.green,
@@ -175,6 +178,8 @@ class _SuraListPageState extends State<SuraListPage> {
       ),
     );
   }
+
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(

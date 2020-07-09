@@ -23,52 +23,65 @@ class List_of_sura extends StatelessWidget {
         elevation: 0,
         margin: EdgeInsets.symmetric(horizontal: 20),
         child: Container(
-          decoration: BoxDecoration(
-              border: Border(
-                  bottom: BorderSide(
-                      color: Colors.green,
-                      width: 2
-                  )
-              )
-          ),
+
           padding: EdgeInsets.all(10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+          child: 
+          Column(
             children: <Widget>[
+              Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
 
-              Stack(
-                children: <Widget>[
-                  Image.asset("images/NumberIcon.png", height: 50, width: 50, fit: BoxFit.cover,),
-                  Container(
-                      width: 50,
-                      height: 50,
-                      alignment: Alignment.center,
-                      child: Text(suraNameTableModel.suraNo.toString(),))
-                ],
-              ),
+                      Stack(
+                        children: <Widget>[
+                          Image.asset("images/NumberIcon.png", height: 50, width: 50, fit: BoxFit.cover,),
+                          Container(
+                              width: 50,
+                              height: 50,
+                              alignment: Alignment.center,
+                              child: Text(suraNameTableModel.suraNo.toString(),))
+                        ],
+                      ),
 
-              Expanded(
-                child: Column(
-                  children: <Widget>[
-                    Text(suraNameTableModel.arbiSuraNam),
-                    Text(suraNameTableModel.banglaTranslator)
-                  ],
+                      Expanded(
+                        child: Column(
+                          children: <Widget>[
+                            Text(suraNameTableModel.arbiSuraNam),
+                            Text(suraNameTableModel.banglaTranslator)
+                          ],
 
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  children: <Widget>[
-                    Text(suraNameTableModel.banglaMeaning),
-                    Text("("+suraNameTableModel.obotirno+")")
-                  ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          children: <Widget>[
+                            Text(suraNameTableModel.banglaMeaning),
+                            Text("("+suraNameTableModel.obotirno+")")
+                          ],
 
-                ),
-              ),
+                        ),
+                      ),
+                    ],
+                  ),
+             SizedBox(height: 5,),
+             Container(
+                   height: 3,
+                   decoration: BoxDecoration(
+                       gradient: LinearGradient(colors: [
+                         const Color(0xffffffff),
+                         const Color(0xff178723),
+                         const Color(0xffffffff),
+                       ]))
+
+             )
+
             ],
           ),
+            
         ),
       ),
     );
   }
 }
+
+

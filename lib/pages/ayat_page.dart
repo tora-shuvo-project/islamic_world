@@ -1,9 +1,11 @@
 
 
+
 import 'dart:ui';
 
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -12,7 +14,6 @@ import 'package:searchtosu/FinalModels/audio_models.dart';
 import 'package:searchtosu/FinalModels/sura_name_table_model.dart';
 import 'package:searchtosu/utils/utils.dart';
 
-import 'package:video_player/video_player.dart';
 
 import '../FinalModels/ayat_table_model.dart';
 
@@ -29,7 +30,7 @@ class AyatPage extends StatefulWidget {
 class _AyatPageState extends State<AyatPage> {
   Duration duration =  Duration();
   Duration postition = Duration();
-  AudioPlayer advancedPlayer;
+  AudioPlayer advancedPlayer,ayatPlayer;
   AudioCache audioCache;
   String localFilePath;
   AudioModels audioModels;
@@ -40,9 +41,9 @@ class _AyatPageState extends State<AyatPage> {
   bool banglameaning= true;
   bool banglauccharon = true;
   bool isFullScreen=true;
+  bool singleAyatplaying = true;
 
   //VideoPlayerController _controller;
-  Future<void> _initializeVideoPlayerFuture;
   Utils utils;
   double _value = 17;
   String _fontName;
@@ -62,7 +63,7 @@ class _AyatPageState extends State<AyatPage> {
       child: ClipRRect(
         borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30)),
         child: Container(
-          height:120,
+          height:135,
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
               gradient: LinearGradient(colors: [
@@ -70,149 +71,64 @@ class _AyatPageState extends State<AyatPage> {
                 const Color(0xff27AB4B)
               ])
           ),
-          padding: EdgeInsets.symmetric(horizontal: 17,vertical: 15),
+          padding: EdgeInsets.symmetric(horizontal: 17,vertical: 5),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Container(
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Expanded(
-                      child: Row(
-                        children: <Widget>[
-                          InkWell(
+
+                    InkWell(
                               onTap:(){
                                 Navigator.of(context).pop();
                               },
                               child: Icon(Icons.arrow_back, color: Colors.white,)),
-                          SizedBox(width: 10,),
-                          Text( '${widget.suraNameTableModel.banglaTranslator}', style: TextStyle(color: Colors.white, fontSize: 20),),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Container(
-                        alignment: Alignment.centerRight,
+                    Text("بسم الله الرحمن الرحيم", style: TextStyle(color: Colors.white, fontSize: 20)),
+                         //
+                    Container(
                         child: InkWell(
                             onTap: (){
                               showModalBottomSheet(context: context, builder: (BuildContext context){
                                 return Container(
-                                  height: 460,
-                                  child: Column(
-                                    children: <Widget>[
-                                      Container(
-                                        alignment: Alignment.center,
-                                        padding: const EdgeInsets.all(16.0),
-                                        child: Text('সূরা ${widget.suraNameTableModel.banglaTranslator}',style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.green
-                                        ),),
-                                      ),
-                                      SizedBox(height: 1,child: Container(color: Colors.green,),),
-                                      Container(
-                                        padding: const EdgeInsets.all(16.0),
-                                        child: Row(
-                                          children: <Widget>[
-                                            Expanded(child: Text('Arabia:',style: TextStyle(
-                                                fontSize: 18,
-                                                color: Colors.blueGrey
-                                            ),)),
-                                            Expanded(flex:2,child: Text('${widget.suraNameTableModel.arbiSuraNam}',style: TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.green
-                                            ),))
-                                          ],
+                                  color: Color(0xFF737373),
+                                  child: ClipRRect(
+                                    clipBehavior: Clip.hardEdge,
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(25),
+                                        topRight: Radius.circular(25),
+                                        bottomLeft: Radius.circular(0),
+                                        bottomRight: Radius.circular(0)),
+                                    child: Container(
+                                      color: Color(0xFFFFFFFF),
+                                      height: 500,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: const Radius.circular(10),
+                                            topRight: const Radius.circular(10)
+                                          )
                                         ),
+                                        child: bottomNavbar(),
                                       ),
-                                      Container(
-                                        padding: const EdgeInsets.all(16.0),
-                                        child: Row(
-                                          children: <Widget>[
-                                            Expanded(child: Text('Meaning:',style: TextStyle(
-                                                fontSize: 18,
-                                                color: Colors.blueGrey
-                                            ),)),
-                                            Expanded(flex:2,child: Text('${widget.suraNameTableModel.banglaMeaning}',style: TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.green
-                                            ),))
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        padding: const EdgeInsets.all(16.0),
-                                        child: Row(
-                                          children: <Widget>[
-                                            Expanded(child: Text('Sura No:',style: TextStyle(
-                                                fontSize: 18,
-                                                color: Colors.blueGrey
-                                            ),)),
-                                            Expanded(flex:2,child: Text('${widget.suraNameTableModel.suraNo}',style: TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.green
-                                            ),))
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        padding: const EdgeInsets.all(16.0),
-                                        child: Row(
-                                          children: <Widget>[
-                                            Expanded(child: Text('Total Ayat:',style: TextStyle(
-                                                fontSize: 18,
-                                                color: Colors.blueGrey
-                                            ),)),
-                                            Expanded(flex:2,child: Text('${widget.suraNameTableModel.ayatNo}',style: TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.green
-                                            ),))
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        padding: const EdgeInsets.all(16.0),
-                                        child: Row(
-                                          children: <Widget>[
-                                            Expanded(child: Text('Para:',style: TextStyle(
-                                                fontSize: 18,
-                                                color: Colors.blueGrey
-                                            ),)),
-                                            Expanded(flex:2,child: Text('${widget.suraNameTableModel.paraNumber}',style: TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.green
-                                            ),))
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        padding: const EdgeInsets.all(16.0),
-                                        child: Row(
-                                          children: <Widget>[
-                                            Expanded(child: Text('Obotirno:',style: TextStyle(
-                                                fontSize: 18,
-                                                color: Colors.blueGrey
-                                            ),)),
-                                            Expanded(flex:2,child: Text('${widget.suraNameTableModel.obotirno}',style: TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.green
-                                            ),))
-                                          ],
-                                        ),
-                                      ),
-                                    ],
+                                    ),
                                   ),
                                 );
                               });
                             },
                             child: Icon(Icons.info,color: Colors.white,)),
                       ),
-                    ),
+
 
 
                   ],
                 ),
+              ),
+              Container(
+                alignment: Alignment.center,
+                child:Text( '${widget.suraNameTableModel.banglaTranslator}', style: TextStyle(color: Colors.white, fontSize: 20),) ,
               ),
               SizedBox(height: 13,),
               Divider(
@@ -312,6 +228,113 @@ class _AyatPageState extends State<AyatPage> {
     );
   }
 
+  SingleChildScrollView bottomNavbar(){
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          Container(
+            alignment: Alignment.center,
+            padding: const EdgeInsets.all(16.0),
+            child: Text('সূরা ${widget.suraNameTableModel.banglaTranslator}',style: TextStyle(
+                fontSize: 16,
+                color: Colors.green
+            ),),
+          ),
+          SizedBox(height: 1,child: Container(color: Colors.green,),),
+          Container(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              children: <Widget>[
+                Expanded(child: Text('Arabia:',style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.blueGrey
+                ),)),
+                Expanded(flex:2,child: Text('${widget.suraNameTableModel.arbiSuraNam}',style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.green
+                ),))
+              ],
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              children: <Widget>[
+                Expanded(child: Text('Meaning:',style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.blueGrey
+                ),)),
+                Expanded(flex:2,child: Text('${widget.suraNameTableModel.banglaMeaning}',style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.green
+                ),))
+              ],
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              children: <Widget>[
+                Expanded(child: Text('Sura No:',style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.blueGrey
+                ),)),
+                Expanded(flex:2,child: Text('${widget.suraNameTableModel.suraNo}',style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.green
+                ),))
+              ],
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              children: <Widget>[
+                Expanded(child: Text('Total Ayat:',style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.blueGrey
+                ),)),
+                Expanded(flex:2,child: Text('${widget.suraNameTableModel.ayatNo}',style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.green
+                ),))
+              ],
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              children: <Widget>[
+                Expanded(child: Text('Para:',style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.blueGrey
+                ),)),
+                Expanded(flex:2,child: Text('${widget.suraNameTableModel.paraNumber}',style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.green
+                ),))
+              ],
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              children: <Widget>[
+                Expanded(child: Text('Obotirno:',style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.blueGrey
+                ),)),
+                Expanded(flex:2,child: Text('${widget.suraNameTableModel.obotirno}',style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.green
+                ),))
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
   @override
   void dispose() {
     super.dispose();
@@ -338,6 +361,7 @@ class _AyatPageState extends State<AyatPage> {
         audioModels=AudioModels();
         print(audioMode);
         utils=Utils();
+        ayatPlayer = AudioPlayer();
         advancedPlayer = AudioPlayer();
         audioCache = AudioCache(fixedPlayer: advancedPlayer);
         advancedPlayer.durationHandler =(d)=> setState((){
@@ -402,7 +426,7 @@ class _AyatPageState extends State<AyatPage> {
 
     return SafeArea(
       child: Scaffold(
-        appBar:PreferredSize(child: _appBar(),preferredSize: Size(MediaQuery.of(context).size.width, 120),),
+        appBar:PreferredSize(child: _appBar(),preferredSize: Size(MediaQuery.of(context).size.width, 135),),
 
         body:Container(
             child: ayatmodels.length<=0?
@@ -411,68 +435,84 @@ class _AyatPageState extends State<AyatPage> {
               children: <Widget>[
                 Column(
                   children: <Widget>[
+
                     Expanded(
                       child: ListView.builder(
                           shrinkWrap: true,
                           itemCount: ayatmodels.length,
                           itemBuilder: (context,index)=>Card(
                             //    color: ayatmodels.length%2==0?Colors.black.withOpacity(.5):Colors.green.withOpacity(.5),
-                            child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              decoration: BoxDecoration(
-                                  border: Border(
-                                      bottom: BorderSide(
-                                          color: Colors.green,
-                                          width: 2
-                                      )
-                                  )
-                              ),
-                              child: InkWell(
-                                onTap: (){
-                                  advancedPlayer.play(ayatmodels[index].ayatAudio.trim());
-                                  setState(() {
-                                    isPlaying = false;
-                                  });
-                                },
-                                child: Row(
-
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                            child: Container(child: InkWell(
+//                                onTap: (){
+//                                  advancedPlayer.play(ayatmodels[index].ayatAudio.trim());
+//                                  setState(() {
+//                                    isPlaying = false;
+//                                  });
+//                                },
+                                child: Column(
                                   children: <Widget>[
-                                    Stack(
+                                    Row(
+
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: <Widget>[
-                                        Image.asset("images/ayatnumberIcon.png", height: 40, width: 40, fit: BoxFit.cover,),
-                                        Container(
-                                            width: 40,
-                                            height: 40,
-                                            alignment: Alignment.center,
-                                            child: Text('${ayatmodels[index].ayatno}'))
+                                        Column(
+                                          children: <Widget>[
+                                            Stack(
+                                              children: <Widget>[
+                                                Image.asset("images/ayatnumberIcon.png", height: 40, width: 40, fit: BoxFit.cover,),
+                                                Container(
+                                                    width: 40,
+                                                    height: 40,
+                                                    alignment: Alignment.center,
+                                                    child: Text('${ayatmodels[index].ayatno}'))
+                                              ],
+                                            ),
+                                            ayatmodels[index].sejda == "0"?Container(): Text("সিজদা", style: TextStyle(fontSize: 14, color: Colors.red),),
+                                            IconButton(icon: Icon(Icons.volume_down ,color: Colors.black45,), onPressed: (){
+
+                                               ayatPlayer.play(ayatmodels[index].ayatAudio.trim());
+
+
+
+                                            })
+                                          ],
+                                        ),
+                                        SizedBox(width: 10,),
+                                        Expanded(
+                                          child: Column(
+                                            children: <Widget>[
+                                              arbi?Text('${ayatmodels[index].arbi_indopak.trim()}',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontFamily: _fontName,
+                                                    fontSize: _value+6),
+                                              ):SizedBox(),
+                                              banglameaning?Text('${ayatmodels[index].banglaTranslator.trim()}',
+                                                style: TextStyle(
+                                                    color: Colors.black87,
+                                                    fontFamily: _fontName,
+                                                    fontSize: _value-1),):SizedBox(),
+                                              banglauccharon?Text('${ayatmodels[index].banglameaning.trim()}',
+                                                style: TextStyle(
+                                                    color: Colors.black54,
+                                                    fontFamily: _fontName,
+                                                    fontSize: _value-1),):SizedBox()
+                                            ],
+
+                                          ),
+                                        ),
                                       ],
                                     ),
-                                    SizedBox(width: 10,),
-                                    Expanded(
-                                      child: Column(
-                                        children: <Widget>[
-                                          arbi?Text('${ayatmodels[index].arbi_indopak.trim()}',
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontFamily: _fontName,
-                                                fontSize: _value+6),
-                                          ):SizedBox(),
-                                          banglameaning?Text('${ayatmodels[index].banglaTranslator.trim()}',
-                                            style: TextStyle(
-                                                color: Colors.black54,
-                                                fontFamily: _fontName,
-                                                fontSize: _value-1),):SizedBox(),
-                                          banglauccharon?Text('${ayatmodels[index].banglameaning.trim()}',
-                                            style: TextStyle(
-                                                color: Colors.black54,
-                                                fontFamily: _fontName,
-                                                fontSize: _value-1),):SizedBox()
-                                        ],
-
-                                      ),
-                                    ),
+                                    Container(
+                                        height: 3,
+                                        decoration: BoxDecoration(
+                                            gradient: LinearGradient(colors: [
+                                              const Color(0xffffffff),
+                                              const Color(0xff178723),
+                                              const Color(0xffffffff),
+                                            ]))
+                                    )
                                   ],
                                 ),
                               ),
