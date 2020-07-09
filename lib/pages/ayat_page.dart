@@ -240,7 +240,16 @@ class _AyatPageState extends State<AyatPage> {
                 color: Colors.green
             ),),
           ),
-          SizedBox(height: 1,child: Container(color: Colors.green,),),
+          Container(
+              height: 3,
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(colors: [
+                    const Color(0xffffffff),
+                    const Color(0xff178723),
+                    const Color(0xffffffff),
+                  ]))
+
+          ),
           Container(
             padding: const EdgeInsets.all(16.0),
             child: Row(
