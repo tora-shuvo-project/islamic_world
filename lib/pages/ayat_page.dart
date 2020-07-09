@@ -220,6 +220,7 @@ class _AyatPageState extends State<AyatPage> {
                 height: 2,
                 thickness: 0.7,
               ),
+
               Container(
                   alignment: Alignment.center,
                   child: Row(
@@ -229,7 +230,7 @@ class _AyatPageState extends State<AyatPage> {
                         data: ThemeData(unselectedWidgetColor: Colors.white),
                         child: Checkbox(
                             activeColor: Colors.green,
-                            value:  arbi || banglauccharon || banglameaning ? arbi : true,
+                            value:  banglameaning || banglauccharon && arbi ? arbi : arbi=true,
                             onChanged:(bool changed){
                               setState(() {
                                 arbi = changed;
@@ -240,7 +241,8 @@ class _AyatPageState extends State<AyatPage> {
                       Text("আরবি",style: TextStyle(color: Colors.white,fontSize: 13)),
                       Theme(
                         data: ThemeData(unselectedWidgetColor: Colors.white),
-                        child: Checkbox(value: banglameaning,
+                        child: Checkbox(
+                            value: banglameaning,
                             activeColor: Colors.green,
                             onChanged:(bool changed){
                               setState(() {
@@ -252,7 +254,8 @@ class _AyatPageState extends State<AyatPage> {
                       Text("বাংলা অর্থ",style: TextStyle(color: Colors.white,fontSize: 13)),
                       Theme(
                         data: ThemeData(unselectedWidgetColor: Colors.white),
-                        child: Checkbox(value: banglauccharon,
+                        child: Checkbox(
+                            value: banglauccharon,
                             activeColor: Colors.green,
                             onChanged:(bool changed){
                               setState(() {
@@ -265,6 +268,7 @@ class _AyatPageState extends State<AyatPage> {
                     ],
                   )
               ),
+
             ],
           ),
 
@@ -393,6 +397,9 @@ class _AyatPageState extends State<AyatPage> {
 
   @override
   Widget build(BuildContext context) {
+
+
+
     return SafeArea(
       child: Scaffold(
         appBar:PreferredSize(child: _appBar(),preferredSize: Size(MediaQuery.of(context).size.width, 120),),
@@ -422,13 +429,10 @@ class _AyatPageState extends State<AyatPage> {
                               ),
                               child: InkWell(
                                 onTap: (){
-
                                   advancedPlayer.play(ayatmodels[index].ayatAudio.trim());
-
                                   setState(() {
                                     isPlaying = false;
                                   });
-
                                 },
                                 child: Row(
 
