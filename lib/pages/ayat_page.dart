@@ -452,12 +452,7 @@ class _AyatPageState extends State<AyatPage> {
                           itemBuilder: (context,index)=>Card(
                             //    color: ayatmodels.length%2==0?Colors.black.withOpacity(.5):Colors.green.withOpacity(.5),
                             child: Container(child: InkWell(
-//                                onTap: (){
-//                                  advancedPlayer.play(ayatmodels[index].ayatAudio.trim());
-//                                  setState(() {
-//                                    isPlaying = false;
-//                                  });
-//                                },
+//
                                 child: Column(
                                   children: <Widget>[
                                     Row(
@@ -480,19 +475,7 @@ class _AyatPageState extends State<AyatPage> {
                                             ayatmodels[index].sejda == "0"?Container(): Text("সিজদা", style: TextStyle(fontSize: 14, color: Colors.red),),
                                             IconButton(icon: Icon(Icons.volume_down ,color: Colors.black45,), onPressed: (){
 
-                                              setState(() {
-                                                if(singleAyatplaying) {
-                                                  ayatPlayer.play(ayatmodels[index].ayatAudio.trim());
-                                                  setState(() {
-                                                    singleAyatplaying = false;
-                                                  });
-                                                }else{
-                                                  ayatPlayer.pause();
-                                                  setState(() {
-                                                    singleAyatplaying = true;
-                                                  });
-                                                }
-                                              });
+                                              ayatPlayer.play(ayatmodels[index].ayatAudio.trim());
 
 
                                             })
