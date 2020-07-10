@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:searchtosu/DataBaseHelper/database_helper.dart';
 import 'package:searchtosu/FinalModels/para_models.dart';
 import 'package:searchtosu/pages/para_wise_quran_details_screen.dart';
@@ -27,146 +26,51 @@ class _ParaWiseListPageState extends State<ParaWiseListPage> {
     });
 
   }
-  Widget _appBar(){
-    return Container(
-      child: ClipRRect(
-        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30)),
-        child: Container(
-          height:70,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [
-                const Color(0xff178723),
-                const Color(0xff27AB4B)
-              ])
-          ),
-          padding: EdgeInsets.symmetric(horizontal: 17, vertical: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Container(
 
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    IconButton(icon: Icon(Icons.arrow_back, color: Colors.white,), onPressed: (){
-                      Navigator.of(context).pop();
-                    }),
-                    SizedBox(width: 10,),
-                    Text("পারা ক্রমে", style: TextStyle(color: Colors.white, fontSize: 20),),
-
-
-
-
-                  ],
-                ),
-              ),
-
-
-                  ],
-                ),
-
-              ),
-
-          ),
-        );
-  }
   @override
   Widget build(BuildContext context) {
-    return  SafeArea(
+    return WillPopScope(
+      onWillPop: (){
+
+      },
       child: Scaffold(
-          appBar:PreferredSize(child: _appBar(),preferredSize: Size(MediaQuery.of(context).size.width, 120),),
-          body: Center(
-            child: paraModels.length<0?
-            CircularProgressIndicator():
-            ListView.builder(
-                itemCount: paraModels.length,
-                itemBuilder: (context,index)=>Card(
-                  elevation: 0,
-                  child:InkWell(
-                    onTap: (){
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                     builder: (context)=>ParaWiseQuranDetailsScreen(paraNo: paraModels[index].paraNo,)
-                      ));
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      child:
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Row(
+        appBar: AppBar(
+          title: Text('পারা ক্রমে'),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.search,color: Colors.white,),
+              onPressed: (){
+                showSearch(context: context, delegate: ParaSearchDeleagate(paraModels)).then((value){
+                  setState(() {
 
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-
-                              Stack(
-                                children: <Widget>[
-                                  Image.asset("images/NumberIcon.png", height: 50, width: 50, fit: BoxFit.cover,),
-                                  Container(
-                                      width: 50,
-                                      height: 50,
-                                      alignment: Alignment.center,
-                                      child: Text('${paraModels[index].paraNo}'))
-                                ],
-                              ),
-                              SizedBox(width: 20,),
-                              Column(
-                                  children: <Widget>[
-                                    Text('${paraModels[index].nameArabi}', style: TextStyle(fontSize: 17, color: Colors.black87, fontWeight: FontWeight.bold),),
-                                    Text('${paraModels[index].nameBangla}',)
-                                  ],
-
-                                ),
-
-
-
-                            ],
-                          ),
-                          SizedBox(height: 5,),
-                          Container(
-                              height: 3,
-                              decoration: BoxDecoration(
-                                  gradient: LinearGradient(colors: [
-                                    const Color(0xffffffff),
-                                    const Color(0xff178723),
-                                    const Color(0xffffffff),
-                                  ]))
-
-                          )
-
-                        ],
-                      ),
-
-                    ),
-                  ),
-//                  child: ListTile(
-//                    onTap: (){
-//                      Navigator.of(context).push(MaterialPageRoute(
-//                        builder: (context)=>ParaWiseQuranDetailsScreen(paraModels[index].paraNo)
-//                      ));
-//                    },
-//                    leading: Stack(
-//                        children: <Widget>[
-//                          Image.asset("images//NumberIcon.png", height: 40, width: 40, fit: BoxFit.cover,),
-//                          Container(
-//                              width: 40,
-//                              height: 40,
-//                              alignment: Alignment.center,
-//                              child: Text('${paraModels[index].paraNo}'))
-//                        ],
-//                      ), //Text('${paraModels[index].paraNo}'),
-//
-//                    subtitle: Text('${paraModels[index].nameBangla}'),
-//                    title: Text('${paraModels[index].nameArabi}'),
-//                  ),
-                )),
-          ),
+                  });
+                });
+              },
+            )
+          ],
         ),
+        body: Center(
+          child: paraModels.length<0?
+          CircularProgressIndicator():
+          ListView.builder(
+              itemCount: paraModels.length,
+              itemBuilder: (context,index)=>Card(
+                child: ListTile(
+                  onTap: (){
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context)=>ParaWiseQuranDetailsScreen(paraModels[index].paraNo)
+                    ));
+                  },
+                  leading: CircleAvatar(
+                    child: Text('${paraModels[index].paraNo}'),
+                  ),
+                  subtitle: Text('${paraModels[index].nameBangla}'),
+                  title: Text('${paraModels[index].nameArabi}'),
+                ),
+              )),
+        ),
+      ),
     );
-
   }
 }
 
@@ -227,7 +131,7 @@ class ParaSearchDeleagate extends SearchDelegate{
           child: ListTile(
             onTap: (){
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context)=>ParaWiseQuranDetailsScreen(paraNo: paraModels[index].paraNo,)
+                  builder: (context)=>ParaWiseQuranDetailsScreen(suggestion[index].paraNo)
               ));
             },
             leading: CircleAvatar(

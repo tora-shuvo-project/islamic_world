@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:searchtosu/pages/SplashScreen.dart';
+import 'package:searchtosu/pages/home_screen.dart';
+import 'package:searchtosu/pages/quran_word_pages.dart';
 
 
 void main() {
@@ -22,6 +24,11 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: SplashScreen() ,
+      routes: {
+        SplashScreen.route:(context)=>SplashScreen(),
+        HomeScreen.route:(context)=>HomeScreen(),
+        QuranWordPages.route:(context)=>QuranWordPages(),
+      },
     );
   }
 }

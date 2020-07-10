@@ -36,6 +36,8 @@ dependencies:
   flutter_speed_dial: ^1.2.5
   audioplayers: ^0.15.1
   toast: ^0.1.5
+  path_provider: ^1.6.11
+  matrix_gesture_detector: ^0.1.0
 
 dev_dependencies:
   flutter_test:
