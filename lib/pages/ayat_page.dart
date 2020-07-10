@@ -1,14 +1,17 @@
 
 
 
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:searchtosu/DataBaseHelper/database_helper.dart';
 import 'package:searchtosu/FinalModels/audio_models.dart';
 import 'package:searchtosu/FinalModels/sura_name_table_model.dart';
@@ -42,6 +45,10 @@ class _AyatPageState extends State<AyatPage> {
   bool banglauccharon = true;
   bool isFullScreen=true;
   bool singleAyatplaying = true;
+  bool isOfflineData=true;
+
+  File mydirectoryFile;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   //VideoPlayerController _controller;
   Utils utils;
@@ -55,6 +62,61 @@ class _AyatPageState extends State<AyatPage> {
     });
   }
 
+  Future<String> createFile(String url) async {
+
+    try {
+      /// setting filename
+      final filename = 'sura ${widget.suraNameTableModel.suraNo} ${widget.qareName}.mp3';
+
+      /// getting application doc directory's path in dir variable
+      String dir = (await getExternalStorageDirectory()).path;
+
+      /// if `filename` File exists in local system then return that file.
+      /// This is the fastest among all.
+      if (await File('$dir/$filename').exists()) {
+        print('$dir/$filename');
+        return '$dir/$filename';
+      }
+
+
+      ///if file not present in local system then fetch it from server
+      //String url = 'https://pbs.twimg.com/profile_images/973421479508328449/sEeIJkXq.jpg';
+
+      /// requesting http to get url
+      var request = await HttpClient().getUrl(Uri.parse(url));
+
+
+      /// closing request and getting response
+      var response = await request.close();
+
+      /// getting response data in bytes
+      var bytes = await consolidateHttpClientResponseBytes(response);
+
+      /// generating a local system file with name as 'filename' and path as '$dir/$filename'
+      File file = new File('$dir/$filename');
+
+      /// writing bytes data of response in the file.
+      await file.writeAsBytes(bytes);
+
+      /// returning file.
+      return file.toString();
+    }
+
+    /// on catching Exception return null
+    catch (err) {
+      print(err);
+      _scaffoldKey.currentState.showSnackBar(
+          new SnackBar(
+              backgroundColor: Colors.green,
+              elevation: 2,
+              duration: Duration(seconds: 5),
+              content: Text('Please check your internet connection first time it download for you from server \'Thanks',style: TextStyle(
+                color: Colors.white,
+              ),)
+          )
+      );
+    }
+  }
 
 
   Widget _appBar(){
@@ -435,6 +497,7 @@ class _AyatPageState extends State<AyatPage> {
 
     return SafeArea(
       child: Scaffold(
+        key: _scaffoldKey,
         appBar:PreferredSize(child: _appBar(),preferredSize: Size(MediaQuery.of(context).size.width, 135),),
 
         body:Container(
@@ -536,22 +599,30 @@ class _AyatPageState extends State<AyatPage> {
                           Expanded(flex:3,child: Text('${widget.qareName}',style: TextStyle(color: Colors.white),)),
                           Expanded(flex:2,child: slider()),
                           Expanded(
-                            child: IconButton(icon: Icon(isPlaying ? Icons.play_arrow : Icons.pause,color: Colors.white,),onPressed: (){
-                              setState(() {
-                                if(isPlaying){
-                                  advancedPlayer.play(audioModels.suraLink.trim());
+                            child: IconButton(
+                              icon: Icon(isPlaying ?
+                              Icons.play_arrow :
+                              Icons.pause,color: Colors.white,),
+                              onPressed: (){
 
+                                createFile(audioModels.suraLink.trim()).then((value){
                                   setState(() {
-                                    isPlaying = false;
-                                  });
-                                }else{
-                                  advancedPlayer.pause();
+                                    if(isPlaying){
+                                      advancedPlayer.play(value);
 
-                                  setState(() {
-                                    isPlaying = true;
+                                      setState(() {
+                                        isPlaying = false;
+                                      });
+                                    }else{
+                                      advancedPlayer.pause();
+
+                                      setState(() {
+                                        isPlaying = true;
+                                      });
+                                    }
                                   });
-                                }
-                              });
+                                });
+
                             },),
                           ),
 

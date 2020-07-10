@@ -50,7 +50,11 @@ class _QuranWordPagesDetailsScreenState extends State<QuranWordPagesDetailsScree
 
           /// if `filename` File exists in local system then return that file.
           /// This is the fastest among all.
-          if (await File('$dir/$filename').exists()) return File('$dir/$filename');
+          if (await File('$dir/$filename').exists()) {
+            print('$dir/$filename');
+            return File('$dir/$filename');
+          }
+
 
           ///if file not present in local system then fetch it from server
           //String url = 'https://pbs.twimg.com/profile_images/973421479508328449/sEeIJkXq.jpg';
