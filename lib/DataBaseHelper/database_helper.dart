@@ -12,6 +12,7 @@ class DatabaseHelper{
   static final ayatTable='AyatTbl';
   static final audioTable='AudioTbl';
   static final paraTable='ParaNameTbl';
+  static final quranWordTable='QuranWorkMeaningTbl';
   static final columnSuraNo='SURANO';
   static final columnQarename='QARINAME';
   static final columnEnglishName='ENGLISHSURANAME';
@@ -68,6 +69,11 @@ class DatabaseHelper{
   static Future<List> getAllParaNameFromTable()async{
     Database db=await instance.database;
     var result=await db.query(paraTable);
+    return result.toList();
+  }
+  static Future<List> getAllQuranWordFromTable()async{
+    Database db=await instance.database;
+    var result=await db.query(quranWordTable);
     return result.toList();
   }
 

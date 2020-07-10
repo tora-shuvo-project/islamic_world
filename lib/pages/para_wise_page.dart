@@ -31,7 +31,9 @@ class _ParaWiseListPageState extends State<ParaWiseListPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: (){
-
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context)=>SuraListPage()
+        ));
       },
       child: Scaffold(
         appBar: AppBar(
@@ -64,6 +66,7 @@ class _ParaWiseListPageState extends State<ParaWiseListPage> {
                   leading: CircleAvatar(
                     child: Text('${paraModels[index].paraNo}'),
                   ),
+                  trailing: Text('${paraModels[index].nameEnglish}'),
                   subtitle: Text('${paraModels[index].nameBangla}'),
                   title: Text('${paraModels[index].nameArabi}'),
                 ),

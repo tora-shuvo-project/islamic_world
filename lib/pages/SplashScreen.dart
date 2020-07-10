@@ -2,10 +2,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:searchtosu/pages/home_screen.dart';
 import 'package:searchtosu/pages/sura_list_page.dart';
 
 class SplashScreen extends StatefulWidget {
 
+  static final route='/launch';
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -44,7 +46,7 @@ class Introduction extends StatelessWidget {
                 ),
                 child: FlatButton(
                     onPressed: (){
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> SuraListPage()));
+                      Navigator.pushReplacementNamed(context, HomeScreen.route);
                     }, child: Text("Welcome", style: TextStyle(color: Colors.white),)),
               ),
             ),
