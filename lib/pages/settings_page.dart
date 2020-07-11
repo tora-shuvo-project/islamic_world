@@ -10,15 +10,13 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
 
   String _myActivity;
-  Utils utils;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _myActivity = '';
-    utils=Utils();
-    utils.getQareNameFromPreference().then((value) {
+    Utils.getQareNameFromPreference().then((value) {
       setState(() {
         _myActivity=value;
         print(value);
@@ -44,12 +42,12 @@ class _SettingsPageState extends State<SettingsPage> {
               onSaved: (value) async{
                 setState(() {
                   _myActivity = value;
-                  utils.saveQarenameFromPreference(value);
+                  Utils.saveQarenameFromPreference(value);
                 });
               },
               onChanged: (value) {
                 setState(() {
-                  utils.saveQarenameFromPreference(value);
+                  Utils.saveQarenameFromPreference(value);
                   _myActivity = value;
                 });
               },
@@ -61,6 +59,10 @@ class _SettingsPageState extends State<SettingsPage> {
                 {
                   "display": "Saad al Ghamidi",
                   "value": "Saad al Ghamidi",
+                },
+                {
+                  "display": "Mishary bin Rashid al-Afasy",
+                  "value": "al-mishary",
                 },
                 {
                   "display": "Salah Budair",

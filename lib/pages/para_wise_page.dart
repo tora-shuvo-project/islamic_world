@@ -3,7 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:searchtosu/DataBaseHelper/database_helper.dart';
 import 'package:searchtosu/FinalModels/para_models.dart';
 import 'package:searchtosu/pages/para_wise_quran_details_screen.dart';
-import 'package:searchtosu/pages/sura_list_page.dart';
+import 'package:searchtosu/utils/utils.dart';
 import 'package:toast/toast.dart';
 
 class ParaWiseListPage extends StatefulWidget {
@@ -13,6 +13,7 @@ class ParaWiseListPage extends StatefulWidget {
 
 class _ParaWiseListPageState extends State<ParaWiseListPage> {
   List<ParaModels> paraModels=new List();
+  String qareName;
 
   @override
   void initState() {
@@ -23,6 +24,12 @@ class _ParaWiseListPageState extends State<ParaWiseListPage> {
         rows.forEach((element) {
           paraModels.add(ParaModels.fromMap(element));
         });
+      });
+    });
+
+    Utils.getQareNameFromPreference().then((qare){
+      setState(() {
+        qareName=qare;
       });
     });
 
@@ -50,12 +57,18 @@ class _ParaWiseListPageState extends State<ParaWiseListPage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    IconButton(icon: Icon(Icons.arrow_back, color: Colors.white,), onPressed: (){
-                      Navigator.of(context).pop();
-                    }),
-                    SizedBox(width: 10,),
-                    Text("পারা ক্রমে", style: TextStyle(color: Colors.white, fontSize: 20),),
-
+                    Expanded(
+                      child: IconButton(icon: Icon(Icons.arrow_back, color: Colors.white,), onPressed: (){
+                        Navigator.of(context).pop();
+                      }),
+                    ),
+                    Expanded(flex:5,child: Text("পারা ক্রমে", style: TextStyle(color: Colors.white, fontSize: 20),)),
+                    Expanded(
+                      child: IconButton(icon: Icon(Icons.search,color: Colors.white,),
+                        onPressed: (){
+                        showSearch(context: context, delegate: ParaSearchDeleagate(paraModels,qareName));
+                      },),
+                    ),
 
 
 
@@ -87,7 +100,7 @@ class _ParaWiseListPageState extends State<ParaWiseListPage> {
                 child:InkWell(
                   onTap: (){
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context)=>ParaWiseQuranDetailsScreen(paraModels[index],)
+                        builder: (context)=>ParaWiseQuranDetailsScreen(paraModels[index],qareName)
                     ));
                   },
                   child: Container(
@@ -173,7 +186,8 @@ class _ParaWiseListPageState extends State<ParaWiseListPage> {
 class ParaSearchDeleagate extends SearchDelegate{
 
   final List<ParaModels> paraModels;
-  ParaSearchDeleagate(this.paraModels);
+  final String qareName;
+  ParaSearchDeleagate(this.paraModels,this.qareName);
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -224,17 +238,64 @@ class ParaSearchDeleagate extends SearchDelegate{
     return ListView.builder(
         itemCount: suggestion.length,
         itemBuilder: (context,index)=>Card(
-          child: ListTile(
+          elevation: 0,
+          child:InkWell(
             onTap: (){
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context)=>ParaWiseQuranDetailsScreen(paraModels[index],)
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context)=>ParaWiseQuranDetailsScreen(suggestion[index],qareName)
               ));
             },
-            leading: CircleAvatar(
-              child: Text('${suggestion[index].paraNo}'),
+            child: Container(
+              padding: EdgeInsets.all(10),
+              child:
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+
+                      Stack(
+                        children: <Widget>[
+                          Image.asset("images/NumberIcon.png", height: 50, width: 50, fit: BoxFit.cover,),
+                          Container(
+                              width: 50,
+                              height: 50,
+                              alignment: Alignment.center,
+                              child: Text('${suggestion[index].paraNo}'))
+                        ],
+                      ),
+                      SizedBox(width: 20,),
+                      Column(
+                        children: <Widget>[
+                          Text('${suggestion[index].nameArabi}', style: TextStyle(fontSize: 17, color: Colors.black87, fontWeight: FontWeight.bold),),
+                          Text('${suggestion[index].nameBangla}',)
+                        ],
+
+                      ),
+
+
+
+                    ],
+                  ),
+                  SizedBox(height: 5,),
+                  Container(
+                      height: 3,
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(colors: [
+                            const Color(0xffffffff),
+                            const Color(0xff178723),
+                            const Color(0xffffffff),
+                          ]))
+
+                  )
+
+                ],
+              ),
+
             ),
-            subtitle: Text('${suggestion[index].nameBangla}'),
-            title: Text('${suggestion[index].nameArabi}'),
           ),
         ));
   }

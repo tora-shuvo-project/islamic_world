@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Utils{
 
   //// Save Quran Name
-  Future<void> saveQarenameFromPreference(String name)async{
+  static Future<void> saveQarenameFromPreference(String name)async{
     try{
       final prefs=await SharedPreferences.getInstance();
       prefs.setString('qareName', name);
@@ -11,13 +11,13 @@ class Utils{
       throw error;
     }
   }
-  Future<String> getQareNameFromPreference()async{
+  static Future<String> getQareNameFromPreference()async{
     final prefs=await SharedPreferences.getInstance();
     return prefs.getString('qareName')??'Ahmed al Ajmi';
   }
 
   //Save Font Name
-  Future<void> saveFontNameFromPreference(String name)async{
+  static Future<void> saveFontNameFromPreference(String name)async{
     try{
       final prefs=await SharedPreferences.getInstance();
       prefs.setString('fontName', name);
@@ -25,7 +25,7 @@ class Utils{
       throw error;
     }
   }
-  Future<String> getFontNameFromPreference()async{
+  static Future<String> getFontNameFromPreference()async{
     final prefs=await SharedPreferences.getInstance();
     return prefs.getString('fontName')??'Maddina';
   }

@@ -22,14 +22,12 @@ class _SuraListPageState extends State<SuraListPage> {
   DatabaseHelper suranamedbHelpers=DatabaseHelper.instance;
   List<SuraNameTableModel> suranamesmodel=new List();
   bool isSearch=false;
-  Utils utils;
   String qareName;
 
   @override
   void initState() {
     super.initState();
 
-    utils=Utils();
 
     suranamedbHelpers.getAllSuraFromSuraNameTable().then((rows){
       setState(() {
@@ -38,7 +36,7 @@ class _SuraListPageState extends State<SuraListPage> {
         });
       });
     });
-    utils.getQareNameFromPreference().then((value){
+    Utils.getQareNameFromPreference().then((value){
       setState(() {
         print(value);
         qareName=value;
@@ -90,7 +88,7 @@ class _SuraListPageState extends State<SuraListPage> {
                               builder: (context)=>SettingsPage()
                             )).then((value){
                               setState(() {
-                                utils.getQareNameFromPreference().then((value){
+                                Utils.getQareNameFromPreference().then((value){
                                   qareName=value;
                                 });
                               });

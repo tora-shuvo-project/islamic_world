@@ -3,10 +3,8 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:searchtosu/DataBaseHelper/database_helper.dart';
-import 'package:searchtosu/FinalModels/audio_models.dart';
 import 'package:searchtosu/FinalModels/ayat_table_model.dart';
 import 'package:searchtosu/FinalModels/para_models.dart';
-import 'package:searchtosu/FinalModels/sura_name_table_model.dart';
 import 'package:searchtosu/pages/ayat_page.dart';
 
 
@@ -16,7 +14,8 @@ import 'package:searchtosu/utils/utils.dart';
 
 class ParaWiseQuranDetailsScreen extends StatefulWidget {
   final ParaModels paraModels;
-  ParaWiseQuranDetailsScreen(this.paraModels);
+  final String qareNAme;
+  ParaWiseQuranDetailsScreen(this.paraModels,this.qareNAme);
 
   @override
   _ParaWiseQuranDetailsScreenState createState() => _ParaWiseQuranDetailsScreenState();
@@ -32,13 +31,13 @@ class _ParaWiseQuranDetailsScreenState extends State<ParaWiseQuranDetailsScreen>
   Duration postition = Duration();
   AudioPlayer advancedPlayer,ayatPlayer;
   AudioCache audioCache;
+  String audioUrl;
 
   bool isPlaying = true;
   bool isFullScreen=true;
   bool singleAyatplaying = true;
 
   //VideoPlayerController _controller;
-  Utils utils;
   double _value = 17;
   String _fontName;
 
@@ -63,9 +62,7 @@ class _ParaWiseQuranDetailsScreenState extends State<ParaWiseQuranDetailsScreen>
       });
     });
 
-    utils=Utils();
-
-    utils.getFontNameFromPreference().then((fontName){
+    Utils.getFontNameFromPreference().then((fontName){
       setState(() {
         print(fontName);
         _fontName=fontName;
@@ -82,12 +79,30 @@ class _ParaWiseQuranDetailsScreenState extends State<ParaWiseQuranDetailsScreen>
           postition = p;
         });
 
+        if(widget.qareNAme=='Abdurrahman Sudais') audioUrl=widget.paraModels.audio_sudais;
+        if(widget.qareNAme=='Saad al Ghamidi') audioUrl=widget.paraModels.audio_gumadi;
+        if(widget.qareNAme=='al-mishary') audioUrl=widget.paraModels.audio_mishary;
+        if(widget.qareNAme=='Salah Budair') audioUrl=widget.paraModels.audio_budair;
+        if(widget.qareNAme=='Ahmed al Ajmi') audioUrl=widget.paraModels.audio_alajmi;
+
+
       });
     });
 
     print(widget.paraModels.audio_sudais);
 
   }
+  @override
+  void dispose() {
+    super.dispose();
+    advancedPlayer.pause();
+    advancedPlayer.stop();
+    ayatPlayer.stop();
+    ayatPlayer.pause();
+    advancedPlayer.dispose();
+    ayatPlayer.dispose();
+  }
+
   Widget slider(){
     return Container(
       width: 100,
@@ -355,14 +370,14 @@ class _ParaWiseQuranDetailsScreenState extends State<ParaWiseQuranDetailsScreen>
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
-                                      Expanded(flex:3,child: Text('Abdul Rahman Al-Sudais',style: TextStyle(color: Colors.white),)),
+                                      Expanded(flex:3,child: Text('${widget.qareNAme}',style: TextStyle(color: Colors.white),)),
                                       Expanded(flex:2,child: slider()),
                                       Expanded(
                                         child: IconButton(icon: Icon(isPlaying ? Icons.play_arrow : Icons.pause,color: Colors.white,),
                                           onPressed: (){
                                           setState(() {
                                             if(isPlaying){
-                                              advancedPlayer.play(widget.paraModels.audio_sudais);
+                                              advancedPlayer.play(audioUrl);
                                               setState(() {
                                                 isPlaying = false;
                                               });

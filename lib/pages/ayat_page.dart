@@ -17,7 +17,6 @@ import 'package:searchtosu/FinalModels/audio_models.dart';
 import 'package:searchtosu/FinalModels/sura_name_table_model.dart';
 import 'package:searchtosu/utils/utils.dart';
 
-
 import '../FinalModels/ayat_table_model.dart';
 
 class AyatPage extends StatefulWidget {
@@ -51,7 +50,6 @@ class _AyatPageState extends State<AyatPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   //VideoPlayerController _controller;
-  Utils utils;
   double _value = 17;
   String _fontName;
 
@@ -409,6 +407,10 @@ class _AyatPageState extends State<AyatPage> {
   @override
   void dispose() {
     super.dispose();
+    advancedPlayer.pause();
+    advancedPlayer.stop();
+    ayatPlayer.stop();
+    ayatPlayer.pause();
     advancedPlayer.dispose();
     ayatPlayer.dispose();
   }
@@ -418,9 +420,7 @@ class _AyatPageState extends State<AyatPage> {
     // TODO: implement initState
     super.initState();
 
-    utils=Utils();
-
-    utils.getFontNameFromPreference().then((fontName){
+    Utils.getFontNameFromPreference().then((fontName){
       setState(() {
         print(fontName);
         _fontName=fontName;
@@ -433,7 +433,6 @@ class _AyatPageState extends State<AyatPage> {
       setState(() {
         audioModels=AudioModels();
         print(audioMode);
-        utils=Utils();
         ayatPlayer = AudioPlayer();
         advancedPlayer = AudioPlayer();
         audioCache = AudioCache(fixedPlayer: advancedPlayer);
@@ -502,325 +501,327 @@ class _AyatPageState extends State<AyatPage> {
         key: _scaffoldKey,
         appBar:PreferredSize(child: _appBar(),preferredSize: Size(MediaQuery.of(context).size.width, 135),),
 
-        body:Container(
-            child: ayatmodels.length<=0?
-            CircularProgressIndicator():
-            Stack(
-              children: <Widget>[
-                Column(
-                  children: <Widget>[
+        body:Center(
+          child: Container(
+              child: ayatmodels.length<=0?
+              CircularProgressIndicator():
+              Stack(
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
 
-                    Expanded(
-                      child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: ayatmodels.length,
-                          itemBuilder: (context,index)=>Card(
-                            //    color: ayatmodels.length%2==0?Colors.black.withOpacity(.5):Colors.green.withOpacity(.5),
-                            child: Container(child: InkWell(
+                      Expanded(
+                        child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: ayatmodels.length,
+                            itemBuilder: (context,index)=>Card(
+                              //    color: ayatmodels.length%2==0?Colors.black.withOpacity(.5):Colors.green.withOpacity(.5),
+                              child: Container(child: InkWell(
 //
-                                child: Column(
-                                  children: <Widget>[
-                                    Row(
+                                  child: Column(
+                                    children: <Widget>[
+                                      Row(
 
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Column(
-                                          children: <Widget>[
-                                            Stack(
-                                              children: <Widget>[
-                                                Image.asset("images/ayatnumberIcon.png", height: 40, width: 40, fit: BoxFit.cover,),
-                                                Container(
-                                                    width: 40,
-                                                    height: 40,
-                                                    alignment: Alignment.center,
-                                                    child: Text('${ayatmodels[index].ayatno}'))
-                                              ],
-                                            ),
-                                            ayatmodels[index].sejda == "0"?Container(): Text("সিজদা", style: TextStyle(fontSize: 14, color: Colors.red),),
-                                            IconButton(icon: Icon(Icons.volume_down ,color: Colors.black45,), onPressed: (){
-
-                                              ayatPlayer.play(ayatmodels[index].ayatAudio.trim());
-
-
-                                            })
-                                          ],
-                                        ),
-                                        SizedBox(width: 10,),
-                                        Expanded(
-                                          child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Column(
                                             children: <Widget>[
-                                              arbi?Text('${ayatmodels[index].arbi_indopak.trim()}',
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontFamily: _fontName,
-                                                    fontSize: _value+6),
-                                              ):SizedBox(),
-                                              banglameaning?Text('${ayatmodels[index].banglaTranslator.trim()}',
-                                                style: TextStyle(
-                                                    color: Colors.black87,
-                                                    fontFamily: _fontName,
-                                                    fontSize: _value-1),):SizedBox(),
-                                              banglauccharon?Text('${ayatmodels[index].banglameaning.trim()}',
-                                                style: TextStyle(
-                                                    color: Colors.black54,
-                                                    fontFamily: _fontName,
-                                                    fontSize: _value-1),):SizedBox()
-                                            ],
+                                              Stack(
+                                                children: <Widget>[
+                                                  Image.asset("images/ayatnumberIcon.png", height: 40, width: 40, fit: BoxFit.cover,),
+                                                  Container(
+                                                      width: 40,
+                                                      height: 40,
+                                                      alignment: Alignment.center,
+                                                      child: Text('${ayatmodels[index].ayatno}'))
+                                                ],
+                                              ),
+                                              ayatmodels[index].sejda == "0"?Container(): Text("সিজদা", style: TextStyle(fontSize: 14, color: Colors.red),),
+                                              IconButton(icon: Icon(Icons.volume_down ,color: Colors.black45,), onPressed: (){
 
+                                                ayatPlayer.play(ayatmodels[index].ayatAudio.trim());
+
+
+                                              })
+                                            ],
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    Container(
-                                        height: 3,
-                                        decoration: BoxDecoration(
-                                            gradient: LinearGradient(colors: [
-                                              const Color(0xffffffff),
-                                              const Color(0xff178723),
-                                              const Color(0xffffffff),
-                                            ]))
-                                    )
-                                  ],
+                                          SizedBox(width: 10,),
+                                          Expanded(
+                                            child: Column(
+                                              children: <Widget>[
+                                                arbi?Text('${ayatmodels[index].arbi_indopak.trim()}',
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontFamily: _fontName,
+                                                      fontSize: _value+6),
+                                                ):SizedBox(),
+                                                banglameaning?Text('${ayatmodels[index].banglaTranslator.trim()}',
+                                                  style: TextStyle(
+                                                      color: Colors.black87,
+                                                      fontFamily: _fontName,
+                                                      fontSize: _value-1),):SizedBox(),
+                                                banglauccharon?Text('${ayatmodels[index].banglameaning.trim()}',
+                                                  style: TextStyle(
+                                                      color: Colors.black54,
+                                                      fontFamily: _fontName,
+                                                      fontSize: _value-1),):SizedBox()
+                                              ],
+
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Container(
+                                          height: 3,
+                                          decoration: BoxDecoration(
+                                              gradient: LinearGradient(colors: [
+                                                const Color(0xffffffff),
+                                                const Color(0xff178723),
+                                                const Color(0xffffffff),
+                                              ]))
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
+
+                            )),
+                      ),
+                      isFullScreen?
+                      Container(
+                        height: 60,
+                        alignment: Alignment.centerRight,
+                        padding: EdgeInsets.all(8),
+                        color: Colors.green,
+                        width: double.infinity,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Expanded(flex:3,child: Text('${widget.qareName}',style: TextStyle(color: Colors.white),)),
+                            Expanded(flex:2,child: slider()),
+                            Expanded(
+                              child: IconButton(
+                                icon: Icon(isPlaying ?
+                                Icons.play_arrow :
+                                Icons.pause,color: Colors.white,),
+                                onPressed: (){
+
+                                  createFile(audioModels.suraLink.trim()).then((value){
+                                    setState(() {
+                                      if(isPlaying){
+                                        advancedPlayer.play(value);
+
+                                        setState(() {
+                                          isPlaying = false;
+                                        });
+                                      }else{
+                                        advancedPlayer.pause();
+
+                                        setState(() {
+                                          isPlaying = true;
+                                        });
+                                      }
+                                    });
+                                  });
+
+                              },),
                             ),
 
-                          )),
-                    ),
-                    isFullScreen?
-                    Container(
-                      height: 60,
-                      alignment: Alignment.centerRight,
-                      padding: EdgeInsets.all(8),
-                      color: Colors.green,
-                      width: double.infinity,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Expanded(flex:3,child: Text('${widget.qareName}',style: TextStyle(color: Colors.white),)),
-                          Expanded(flex:2,child: slider()),
-                          Expanded(
-                            child: IconButton(
-                              icon: Icon(isPlaying ?
-                              Icons.play_arrow :
-                              Icons.pause,color: Colors.white,),
-                              onPressed: (){
-
-                                createFile(audioModels.suraLink.trim()).then((value){
-                                  setState(() {
-                                    if(isPlaying){
-                                      advancedPlayer.play(value);
-
-                                      setState(() {
-                                        isPlaying = false;
-                                      });
-                                    }else{
-                                      advancedPlayer.pause();
-
-                                      setState(() {
-                                        isPlaying = true;
-                                      });
-                                    }
-                                  });
+                            Expanded(
+                              child: IconButton(icon: Icon(Icons.stop, color: Colors.white,), onPressed: (){
+                                advancedPlayer.stop();
+                                setState(() {
+                                  isPlaying = true;
                                 });
+                              }),
+                            ),
+                            Expanded(
+                              child: PopupMenuButton(
+                                  icon: Icon(Icons.more_vert, color: Colors.white,),
+                                  onSelected: (value){
+                                    if(value == 0){
+                                      //go to profile menu
+                                    }
+                                    else if(value==1){
+                                      advancedPlayer.setPlaybackRate( playbackRate:  0.25);
+                                    }
+                                    else if(value==2){
+                                      advancedPlayer.setPlaybackRate( playbackRate:  0.5);
+                                    }
+                                    else if(value==3){
+                                      advancedPlayer.setPlaybackRate( playbackRate:  .75);
+                                    }
+                                    else if(value==4){
+                                      advancedPlayer.setPlaybackRate( playbackRate:  1.0);
+                                    }
+                                    else if(value==5){
+                                      advancedPlayer.setPlaybackRate( playbackRate:  1.25);
+                                    }
+                                    else if(value==6){
+                                      advancedPlayer.setPlaybackRate( playbackRate:  1.5);
+                                    }
+                                    else if(value==7){
+                                      advancedPlayer.setPlaybackRate( playbackRate:  2.0);
+                                    }
+                                  }
+                                  ,
+                                  itemBuilder: (context)=>[
+                                    PopupMenuItem(
+                                      child: Text('Speed'),
+                                      value: 0,
+                                    ),
+                                    PopupMenuItem(
+                                      child: Text('0.25'),
+                                      value: 1,
+                                    ),
+                                    PopupMenuItem(
+                                      child: Text('0.5'),
+                                      value: 2,
+                                    ),
+                                    PopupMenuItem(
+                                      child: Text('.75'),
+                                      value: 3,
+                                    ),
+                                    PopupMenuItem(
+                                      child: Text('Normal'),
+                                      value: 4,
+                                    ),
+                                    PopupMenuItem(
+                                      child: Text('1.25'),
+                                      value: 5,
+                                    ),
+                                    PopupMenuItem(
+                                      child: Text('1.5'),
+                                      value: 6,
+                                    ),
+                                    PopupMenuItem(
+                                      child: Text('2.0'),
+                                      value: 7,
+                                    ),
 
-                            },),
-                          ),
+                                  ]),
+                            ),
 
-                          Expanded(
-                            child: IconButton(icon: Icon(Icons.stop, color: Colors.white,), onPressed: (){
-                              advancedPlayer.stop();
-                              setState(() {
-                                isPlaying = true;
-                              });
-                            }),
-                          ),
-                          Expanded(
-                            child: PopupMenuButton(
-                                icon: Icon(Icons.more_vert, color: Colors.white,),
-                                onSelected: (value){
-                                  if(value == 0){
-                                    //go to profile menu
-                                  }
-                                  else if(value==1){
-                                    advancedPlayer.setPlaybackRate( playbackRate:  0.25);
-                                  }
-                                  else if(value==2){
-                                    advancedPlayer.setPlaybackRate( playbackRate:  0.5);
-                                  }
-                                  else if(value==3){
-                                    advancedPlayer.setPlaybackRate( playbackRate:  .75);
-                                  }
-                                  else if(value==4){
-                                    advancedPlayer.setPlaybackRate( playbackRate:  1.0);
-                                  }
-                                  else if(value==5){
-                                    advancedPlayer.setPlaybackRate( playbackRate:  1.25);
-                                  }
-                                  else if(value==6){
-                                    advancedPlayer.setPlaybackRate( playbackRate:  1.5);
-                                  }
-                                  else if(value==7){
-                                    advancedPlayer.setPlaybackRate( playbackRate:  2.0);
-                                  }
+                          ],
+                        ),
+                      ):
+                      Container(),
+                    ],
+                  ),
+                  Positioned(
+                      child: Container(
+                        margin: EdgeInsets.only(bottom: 100),
+                        child: SpeedDial(
+                          animatedIcon: AnimatedIcons.menu_close,
+                          animatedIconTheme: IconThemeData(size: 22.0),
+                          // this is ignored if animatedIcon is non null
+                          // child: Icon(Icons.add),
+                          curve: Curves.bounceIn,
+                          overlayColor: Colors.green,
+                          overlayOpacity: 0.0,
+                          backgroundColor: Colors.green,
+                          onOpen: () => print('OPENING DIAL'),
+                          onClose: () => print('DIAL CLOSED'),
+                          tooltip: 'Speed Dial',
+                          heroTag: 'speed-dial-hero-tag',
+                          elevation: 8.0,
+                          shape: CircleBorder(),
+                          children: [
+                            SpeedDialChild(
+                                labelBackgroundColor: Colors.green,
+                                child: Icon(Icons.bubble_chart),
+                                backgroundColor: Colors.green,
+                                label: 'আরবি ফন্ট',
+                                labelStyle: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                ),
+                                onTap: () {
+                                  showDialog(context: context, builder: (context) => MyForm(onSubmit: onSubmit));
                                 }
-                                ,
-                                itemBuilder: (context)=>[
-                                  PopupMenuItem(
-                                    child: Text('Speed'),
-                                    value: 0,
-                                  ),
-                                  PopupMenuItem(
-                                    child: Text('0.25'),
-                                    value: 1,
-                                  ),
-                                  PopupMenuItem(
-                                    child: Text('0.5'),
-                                    value: 2,
-                                  ),
-                                  PopupMenuItem(
-                                    child: Text('.75'),
-                                    value: 3,
-                                  ),
-                                  PopupMenuItem(
-                                    child: Text('Normal'),
-                                    value: 4,
-                                  ),
-                                  PopupMenuItem(
-                                    child: Text('1.25'),
-                                    value: 5,
-                                  ),
-                                  PopupMenuItem(
-                                    child: Text('1.5'),
-                                    value: 6,
-                                  ),
-                                  PopupMenuItem(
-                                    child: Text('2.0'),
-                                    value: 7,
-                                  ),
-
-                                ]),
-                          ),
-
-                        ],
-                      ),
-                    ):
-                    Container(),
-                  ],
-                ),
-                Positioned(
-                    child: Container(
-                      margin: EdgeInsets.only(bottom: 100),
-                      child: SpeedDial(
-                        animatedIcon: AnimatedIcons.menu_close,
-                        animatedIconTheme: IconThemeData(size: 22.0),
-                        // this is ignored if animatedIcon is non null
-                        // child: Icon(Icons.add),
-                        curve: Curves.bounceIn,
-                        overlayColor: Colors.green,
-                        overlayOpacity: 0.0,
-                        backgroundColor: Colors.green,
-                        onOpen: () => print('OPENING DIAL'),
-                        onClose: () => print('DIAL CLOSED'),
-                        tooltip: 'Speed Dial',
-                        heroTag: 'speed-dial-hero-tag',
-                        elevation: 8.0,
-                        shape: CircleBorder(),
-                        children: [
-                          SpeedDialChild(
+                            ),
+                            SpeedDialChild(
                               labelBackgroundColor: Colors.green,
-                              child: Icon(Icons.bubble_chart),
+                              child: Icon(Icons.font_download),
                               backgroundColor: Colors.green,
-                              label: 'আরবি ফন্ট',
+                              label: 'ফন্ট সাইজ',
                               labelStyle: TextStyle(
                                 color: Colors.white,
                                 fontSize: 15,
                               ),
                               onTap: () {
-                                showDialog(context: context, builder: (context) => MyForm(onSubmit: onSubmit));
-                              }
-                          ),
-                          SpeedDialChild(
-                            labelBackgroundColor: Colors.green,
-                            child: Icon(Icons.font_download),
-                            backgroundColor: Colors.green,
-                            label: 'ফন্ট সাইজ',
-                            labelStyle: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                            ),
-                            onTap: () {
-                              showModalBottomSheet(context: context, builder: (BuildContext context){
-                                return Container(
-                                    height: 80.0,
-                                    color: Colors.green.withOpacity(.9),
-                                    child: Center(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: <Widget>[
+                                showModalBottomSheet(context: context, builder: (BuildContext context){
+                                  return Container(
+                                      height: 80.0,
+                                      color: Colors.green.withOpacity(.9),
+                                      child: Center(
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
 
-                                          Row(
-                                            children: <Widget>[
-                                              Expanded(
-                                                  flex:4,
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.all(8.0),
-                                                    child: Text('Change Font Size',style: TextStyle(
-                                                        fontSize: 18,
-                                                        color: Colors.white
-                                                    ),),
-                                                  )),
-                                              Expanded(
-                                                child: IconButton(
-                                                  icon: Icon(Icons.remove_circle,color: Colors.white,size: 30,),
-                                                  onPressed: (){
-                                                    setState(() {
-                                                      _value--;
-                                                    });
-                                                  },
+                                            Row(
+                                              children: <Widget>[
+                                                Expanded(
+                                                    flex:4,
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.all(8.0),
+                                                      child: Text('Change Font Size',style: TextStyle(
+                                                          fontSize: 18,
+                                                          color: Colors.white
+                                                      ),),
+                                                    )),
+                                                Expanded(
+                                                  child: IconButton(
+                                                    icon: Icon(Icons.remove_circle,color: Colors.white,size: 30,),
+                                                    onPressed: (){
+                                                      setState(() {
+                                                        _value--;
+                                                      });
+                                                    },
+                                                  ),
                                                 ),
-                                              ),
-                                              Expanded(
-                                                child: IconButton(
-                                                  icon: Icon(Icons.add_circle,color: Colors.white,size: 30,),
-                                                  onPressed: (){
-                                                    setState(() {
-                                                      _value++;
-                                                    });
-                                                  },
+                                                Expanded(
+                                                  child: IconButton(
+                                                    icon: Icon(Icons.add_circle,color: Colors.white,size: 30,),
+                                                    onPressed: (){
+                                                      setState(() {
+                                                        _value++;
+                                                      });
+                                                    },
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                );
-                              });
-                            },
-                          ),
-                          SpeedDialChild(
-                            labelBackgroundColor: Colors.green,
-                            child: Icon(Icons.fullscreen),
-                            backgroundColor: Colors.green,
-                            label: isFullScreen?'সম্পূর্ন স্ক্রিন':'সম্পূর্ন স্ক্রিন বন্ধ করুন',
-                            labelStyle: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                  );
+                                });
+                              },
                             ),
-                            onTap: (){
-                              setState(() {
-                                isFullScreen=!isFullScreen;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                    )
-                ),
-              ],
-            )
+                            SpeedDialChild(
+                              labelBackgroundColor: Colors.green,
+                              child: Icon(Icons.fullscreen),
+                              backgroundColor: Colors.green,
+                              label: isFullScreen?'সম্পূর্ন স্ক্রিন':'সম্পূর্ন স্ক্রিন বন্ধ করুন',
+                              labelStyle: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                              ),
+                              onTap: (){
+                                setState(() {
+                                  isFullScreen=!isFullScreen;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      )
+                  ),
+                ],
+              )
+          ),
         ),
       ),
     );
@@ -849,7 +850,7 @@ class _MyFormState extends State<MyForm> {
     super.initState();
 
     utils=Utils();
-    utils.getFontNameFromPreference().then((fontname) {
+    Utils.getFontNameFromPreference().then((fontname) {
       setState(() {
         value=fontname;
       });
@@ -874,7 +875,7 @@ class _MyFormState extends State<MyForm> {
                     this.value = value;
                     Navigator.pop(context);
                     widget.onSubmit(value);
-                    utils.saveFontNameFromPreference(value);
+                    Utils.saveFontNameFromPreference(value);
                   }),
                   value: "Maddina",
                 ),
@@ -896,7 +897,7 @@ class _MyFormState extends State<MyForm> {
                     this.value = value;
                     Navigator.pop(context);
                     widget.onSubmit(value);
-                    utils.saveFontNameFromPreference(value);
+                    Utils.saveFontNameFromPreference(value);
                   } ),
                   value: "Monserat",
                 ),
@@ -918,7 +919,7 @@ class _MyFormState extends State<MyForm> {
                     this.value = value;
                     Navigator.pop(context);
                     widget.onSubmit(value);
-                    utils.saveFontNameFromPreference(value);
+                    Utils.saveFontNameFromPreference(value);
                   } ),
                   value: "Mukadimah",
                 ),
@@ -940,7 +941,7 @@ class _MyFormState extends State<MyForm> {
                     this.value = value;
                     Navigator.pop(context);
                     widget.onSubmit(value);
-                    utils.saveFontNameFromPreference(value);
+                    Utils.saveFontNameFromPreference(value);
                   } ),
                   value: "QalamMajid",
                 ),
@@ -962,7 +963,7 @@ class _MyFormState extends State<MyForm> {
                     this.value = value;
                     Navigator.pop(context);
                     widget.onSubmit(value);
-                    utils.saveFontNameFromPreference(value);
+                    Utils.saveFontNameFromPreference(value);
                   } ),
                   value: "utman",
                 ),

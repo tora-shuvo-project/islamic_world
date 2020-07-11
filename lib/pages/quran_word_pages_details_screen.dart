@@ -46,7 +46,7 @@ class _QuranWordPagesDetailsScreenState extends State<QuranWordPagesDetailsScree
           final filename = 'quran_word${widget.quranWordModels.serial_no}.png';
 
           /// getting application doc directory's path in dir variable
-          String dir = (await getApplicationDocumentsDirectory()).path;
+          String dir = (await getExternalStorageDirectory()).path;
 
           /// if `filename` File exists in local system then return that file.
           /// This is the fastest among all.
@@ -115,12 +115,14 @@ class _QuranWordPagesDetailsScreenState extends State<QuranWordPagesDetailsScree
       appBar: AppBar(
         title: Text('Task ${widget.quranWordModels.taskNumber}'),
       ),
-      body:mydirectoryFile!=null?
-      ZoomableWidget(child: Container(
-          width: double.infinity,
-          child: Image.file(mydirectoryFile,width: double.infinity,height: double.infinity,)
-      ),)
-          :CircularProgressIndicator()
+      body:Center(
+        child: mydirectoryFile!=null?
+        ZoomableWidget(child: Container(
+            width: double.infinity,
+            child: Image.file(mydirectoryFile,width: double.infinity,height: double.infinity,)
+        ),)
+            :CircularProgressIndicator(),
+      )
     );
   }
 }
