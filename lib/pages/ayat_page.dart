@@ -409,6 +409,8 @@ class _AyatPageState extends State<AyatPage> {
   @override
   void dispose() {
     super.dispose();
+    advancedPlayer.dispose();
+    ayatPlayer.dispose();
   }
 
   @override

@@ -87,7 +87,7 @@ class _ParaWiseListPageState extends State<ParaWiseListPage> {
                 child:InkWell(
                   onTap: (){
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context)=>ParaWiseQuranDetailsScreen(paraNo: paraModels[index].paraNo,)
+                        builder: (context)=>ParaWiseQuranDetailsScreen(paraModels[index],)
                     ));
                   },
                   child: Container(
@@ -227,7 +227,7 @@ class ParaSearchDeleagate extends SearchDelegate{
           child: ListTile(
             onTap: (){
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context)=>ParaWiseQuranDetailsScreen(paraNo: paraModels[index].paraNo,)
+                  builder: (context)=>ParaWiseQuranDetailsScreen(paraModels[index],)
               ));
             },
             leading: CircleAvatar(

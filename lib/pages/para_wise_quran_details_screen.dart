@@ -15,11 +15,8 @@ import 'package:searchtosu/pages/para_wise_page.dart';
 import 'package:searchtosu/utils/utils.dart';
 
 class ParaWiseQuranDetailsScreen extends StatefulWidget {
-  final int paraNo;
-  final SuraNameTableModel suraNameTableModel;
   final ParaModels paraModels;
-  final String qareName;
-  ParaWiseQuranDetailsScreen({this.paraNo, this.suraNameTableModel, this.qareName, this.paraModels});
+  ParaWiseQuranDetailsScreen(this.paraModels);
 
   @override
   _ParaWiseQuranDetailsScreenState createState() => _ParaWiseQuranDetailsScreenState();
@@ -28,7 +25,6 @@ class ParaWiseQuranDetailsScreen extends StatefulWidget {
 class _ParaWiseQuranDetailsScreenState extends State<ParaWiseQuranDetailsScreen> {
 
   List<AyatTableModel> ayatmodels=new List();
-  List<ParaModels> paraModels = new List();
   bool arbi = true;
   bool banglameaning= true;
   bool banglauccharon = true;
@@ -36,9 +32,6 @@ class _ParaWiseQuranDetailsScreenState extends State<ParaWiseQuranDetailsScreen>
   Duration postition = Duration();
   AudioPlayer advancedPlayer,ayatPlayer;
   AudioCache audioCache;
-  String localFilePath;
-  AudioModels audioModels;
-  DatabaseHelper suranamedbHelpers=DatabaseHelper.instance;
 
   bool isPlaying = true;
   bool isFullScreen=true;
@@ -57,16 +50,15 @@ class _ParaWiseQuranDetailsScreenState extends State<ParaWiseQuranDetailsScreen>
   }
 
 
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    DatabaseHelper.getAllAyatFromParaTable(widget.paraNo).then((rows){
+
+    DatabaseHelper.getAllAyatFromParaTable(widget.paraModels.paraNo).then((rows){
       setState(() {
         rows.forEach((element) {
           ayatmodels.add(AyatTableModel.formMap(element));
-         paraModels.add(ParaModels.fromMap(element));
         });
       });
     });
@@ -77,16 +69,7 @@ class _ParaWiseQuranDetailsScreenState extends State<ParaWiseQuranDetailsScreen>
       setState(() {
         print(fontName);
         _fontName=fontName;
-      });
-    });
-   print(widget.paraNo);
-   print(widget.qareName);
-    suranamedbHelpers.getAudioBySuraAndQareName(widget.paraNo, widget.qareName)
-        .then((audioMode){
-      setState(() {
-        audioModels=AudioModels();
-        print(audioMode);
-        utils=Utils();
+
         ayatPlayer = AudioPlayer();
         advancedPlayer = AudioPlayer();
         audioCache = AudioCache(fixedPlayer: advancedPlayer);
@@ -98,16 +81,12 @@ class _ParaWiseQuranDetailsScreenState extends State<ParaWiseQuranDetailsScreen>
 
           postition = p;
         });
-        setState(() {
-          audioModels=audioMode;
-
-        });
 
       });
-    }).catchError((error){
-      print(error.toString());
-
     });
+
+    print(widget.paraModels.audio_sudais);
+
   }
   Widget slider(){
     return Container(
@@ -164,7 +143,7 @@ class _ParaWiseQuranDetailsScreenState extends State<ParaWiseQuranDetailsScreen>
     ));
                         }),
                         SizedBox(width: 10,),
-                        Text("পারা নংঃ ${widget.paraNo} ", style: TextStyle(color: Colors.white, fontSize: 20),),
+                        Text("পারা নংঃ ${widget.paraModels.paraNo} ", style: TextStyle(color: Colors.white, fontSize: 20),),
 
 
 
@@ -256,7 +235,7 @@ class _ParaWiseQuranDetailsScreenState extends State<ParaWiseQuranDetailsScreen>
                     },
                     child: Icon(Icons.arrow_back, color: Colors.white,)),
                 SizedBox(width: 10,),
-                Text("পারা নংঃ ${widget.paraNo} ", style: TextStyle(color: Colors.white, fontSize: 20),),
+                Text("পারা নংঃ ${widget.paraModels.paraNo} ", style: TextStyle(color: Colors.white, fontSize: 20),),
 
               ],
             ),
@@ -376,14 +355,14 @@ class _ParaWiseQuranDetailsScreenState extends State<ParaWiseQuranDetailsScreen>
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
-                                      Expanded(flex:3,child: Text('${widget.qareName}',style: TextStyle(color: Colors.white),)),
+                                      Expanded(flex:3,child: Text('Abdul Rahman Al-Sudais',style: TextStyle(color: Colors.white),)),
                                       Expanded(flex:2,child: slider()),
                                       Expanded(
-                                        child: IconButton(icon: Icon(isPlaying ? Icons.play_arrow : Icons.pause,color: Colors.white,),onPressed: (){
+                                        child: IconButton(icon: Icon(isPlaying ? Icons.play_arrow : Icons.pause,color: Colors.white,),
+                                          onPressed: (){
                                           setState(() {
                                             if(isPlaying){
-                                              advancedPlayer.play(widget.paraModels.audio_sudais.trim());
-
+                                              advancedPlayer.play(widget.paraModels.audio_sudais);
                                               setState(() {
                                                 isPlaying = false;
                                               });
