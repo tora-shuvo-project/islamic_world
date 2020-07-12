@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:searchtosu/DataBaseHelper/database_helper.dart';
+import 'file:///E:/Android_Development/Programing_Workplace/flutter_workplace_output/islamic_world/lib/helpers/database_helper.dart';
 import 'package:searchtosu/FinalModels/sura_name_table_model.dart';
 import 'package:searchtosu/Widgets/ListOfSura.dart';
 import 'package:searchtosu/pages/para_wise_page.dart';

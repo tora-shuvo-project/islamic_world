@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:searchtosu/DataBaseHelper/database_helper.dart';
+import 'file:///E:/Android_Development/Programing_Workplace/flutter_workplace_output/islamic_world/lib/helpers/database_helper.dart';
 import 'package:searchtosu/FinalModels/audio_models.dart';
 import 'package:searchtosu/FinalModels/sura_name_table_model.dart';
 import 'package:searchtosu/utils/utils.dart';

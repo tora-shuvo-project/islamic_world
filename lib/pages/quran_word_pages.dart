@@ -2,7 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:searchtosu/DataBaseHelper/database_helper.dart';
+import 'file:///E:/Android_Development/Programing_Workplace/flutter_workplace_output/islamic_world/lib/helpers/database_helper.dart';
 import 'package:searchtosu/FinalModels/quran_word_models.dart';
 import 'package:searchtosu/pages/quran_word_pages_details_screen.dart';
 
