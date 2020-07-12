@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'file:///E:/Android_Development/Programing_Workplace/flutter_workplace_output/islamic_world/lib/helpers/database_helper.dart';
 import 'package:searchtosu/FinalModels/para_models.dart';
+import 'package:searchtosu/helpers/database_helper.dart';
 import 'package:searchtosu/pages/para_wise_quran_details_screen.dart';
 import 'package:searchtosu/utils/utils.dart';
 import 'package:toast/toast.dart';

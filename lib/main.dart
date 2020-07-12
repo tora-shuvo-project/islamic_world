@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:searchtosu/pages/SplashScreen.dart';
 import 'package:searchtosu/pages/home_screen.dart';
 import 'package:searchtosu/pages/quran_word_pages.dart';
+import 'package:searchtosu/pages/shomoy_shuchi_page.dart';
 
 
 void main() {
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         SplashScreen.route:(context)=>SplashScreen(),
         HomeScreen.route:(context)=>HomeScreen(),
         QuranWordPages.route:(context)=>QuranWordPages(),
+        ShomoyShuchi.route: (context)=> ShomoyShuchi(),
       },
     );
   }
