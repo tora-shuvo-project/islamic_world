@@ -36,6 +36,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.15.1"
+  bangla_utilities:
+    dependency: "direct main"
+    description:
+      name: bangla_utilities
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.1"
   boolean_selector:
     dependency: transitive
     description:
@@ -149,6 +156,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.4"
+  hijri:
+    dependency: "direct main"
+    description:
+      name: hijri
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.2"
   image:
     dependency: transitive
     description:

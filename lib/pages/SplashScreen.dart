@@ -31,7 +31,6 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-
     date1 = (DateTime.now().hour);
     DatabaseHelper.getPrayerTimeModels('${DateFormat('MMM dd').format(DateTime.now())}').then((prayermodels){
       setState(() {
@@ -45,13 +44,10 @@ class _SplashScreenState extends State<SplashScreen> {
         esaHour=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.isha}').hour;
         sunriseHour=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.sunrise}').hour;
 
-
       });
     });
 
-
     initializing();
-    _showNotificationsAfterSecond();
   }
 
   void initializing() async {
@@ -64,35 +60,13 @@ class _SplashScreenState extends State<SplashScreen> {
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: onSelectNotification);
 
+    _showNotificationsAfterSecond();
 
-  }
-
-  void _showNotifications() async {
-    await notification();
   }
 
   void _showNotificationsAfterSecond() async {
     await notificationAfterSec();
   }
-
-  Future<void> notification() async {
-
-    AndroidNotificationDetails androidNotificationDetails =
-    AndroidNotificationDetails(
-        'Channel ID', 'Channel title', 'channel body',
-        priority: Priority.High,
-        importance: Importance.Max,
-        ticker: 'test',playSound: true);
-
-    IOSNotificationDetails iosNotificationDetails = IOSNotificationDetails();
-
-    NotificationDetails notificationDetails =
-    NotificationDetails(androidNotificationDetails, iosNotificationDetails);
-    await flutterLocalNotificationsPlugin.show(
-        0, 'Hello there', 'please subscribe my channel', notificationDetails);
-
-  }
-
   Future<void> notificationAfterSec() async {
     var timeDelayed = DateTime.now().add(Duration(seconds: 1));
     AndroidNotificationDetails androidNotificationDetails =
@@ -161,7 +135,6 @@ class _SplashScreenState extends State<SplashScreen> {
       ],
     );
   }
-
 
 
   @override

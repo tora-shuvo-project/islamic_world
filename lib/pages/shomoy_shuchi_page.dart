@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hijri/hijri_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:searchtosu/FinalModels/prayer_time_models.dart';
 import 'package:searchtosu/helpers/database_helper.dart';
@@ -20,6 +21,7 @@ class ShomoyShuchi extends StatefulWidget {
 class _ShomoyShuchiState extends State<ShomoyShuchi> {
 
   PrayerTimeModels prayerTimeModels;
+  String dayName,arabyDate,englishDate;
 
   int fojorHour,johaurHour,asorHour,magribHour,esaHour,sunriseHour;
   int fojorMinute,johaurMinute,asorMinute,magribMinute,esaMinute,sunriseMinute;
@@ -61,9 +63,11 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
                    IconButton(icon: Icon(Icons.arrow_back, color: Colors.white,), onPressed: (){
                         Navigator.of(context).pop();
                       }),
-                    Text("সময়সূচী",style:  TextStyle(
-                      color: Colors.white, fontSize: 20
-                    ), ),
+                    FittedBox(
+                      child: Text("নামাজের সময়সূচী",style:  TextStyle(
+                        color: Colors.white, fontSize: 20
+                      ), ),
+                    ),
                     Row(
                       children: <Widget>[
                         Icon(Icons.location_on, color: Colors.white,),
@@ -85,6 +89,12 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
+
+    var _today = new HijriCalendar.now();
+    arabyDate=_today.toFormat("dd MMMM,yyyy");
+    englishDate=DateFormat('dd MMMM,yyyy').format(DateTime.now());
+    dayName=DateFormat('EEEE').format(DateTime.now());
 
     int date1 = (DateTime.now().hour);
     DateTime dateTime=DateTime.now();
@@ -266,7 +276,12 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
                           color: Colors.white,
                         ),
                         SizedBox(width: 20,),
-                        Text(currentPrayerTime, style: TextStyle(color: Colors.white,fontSize: 30, fontWeight: FontWeight.bold),)
+                        Column(
+                          children: <Widget>[
+                            Text("বর্তমান ওয়াক্ত",style: TextStyle(fontSize: 17,color: Colors.white),),
+                            Text(currentPrayerTime, style: TextStyle(color: Colors.white,fontSize: 30, fontWeight: FontWeight.bold),)
+                          ],
+                        ),
                       ],
                     ),
                     
@@ -314,9 +329,9 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
-                                Text("Robibar", style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),),
+                                Text(dayName, style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),),
 
-                                Text("26,May,2020/ 20 Ramdan 1440"),
+                                Text("$englishDate/ $arabyDate"),
                               ],
                             )
                           ],
