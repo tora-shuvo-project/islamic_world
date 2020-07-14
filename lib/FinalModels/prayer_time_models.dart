@@ -1,3 +1,4 @@
+
 class PrayerTimeModels{
   String date,fajr,sunrise,dhuhr,asr,magrib,isha;
 

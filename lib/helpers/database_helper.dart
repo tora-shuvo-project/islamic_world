@@ -1,4 +1,5 @@
 import 'package:searchtosu/FinalModels/audio_models.dart';
+import 'package:searchtosu/FinalModels/prayer_time_models.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'dart:io';
@@ -25,6 +26,7 @@ class DatabaseHelper{
   static final columnArabi='ARABISURANAME';
   static final columnobotirno='OBOTIRNO';
   static final columnparaNo='PARA';
+  static final columndate='DATEPRAYER';
 
   DatabaseHelper._privateConstrator();
   static final DatabaseHelper instance=DatabaseHelper._privateConstrator();
@@ -110,6 +112,15 @@ class DatabaseHelper{
     final List<Map<String,dynamic>> qareNames=await db.query(audioTable,where: '$columnSuraNo = ? AND $columnQarename = ?',whereArgs: [surano,qarename]);
     if(qareNames.length>0){
       return AudioModels.fromMap(qareNames.first);
+    }
+    return null;
+  }
+
+  static Future<PrayerTimeModels> getPrayerTimeModels(String date)async{
+    Database db=await instance.database;
+    final List<Map<String,dynamic>> prayerTimes=await db.query(prayerTimeTable,where: '$columndate = ? ',whereArgs: [date]);
+    if(prayerTimes.length>0){
+      return PrayerTimeModels.frommap(prayerTimes.first);
     }
     return null;
   }

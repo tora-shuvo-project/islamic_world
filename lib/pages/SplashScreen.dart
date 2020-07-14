@@ -2,8 +2,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:intl/intl.dart';
+import 'package:searchtosu/FinalModels/prayer_time_models.dart';
+import 'package:searchtosu/helpers/database_helper.dart';
 import 'package:searchtosu/pages/home_screen.dart';
-import 'package:searchtosu/pages/sura_list_page.dart';
 
 class SplashScreen extends StatefulWidget {
 
@@ -15,15 +18,151 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
 
+  int fojorHour,johaurHour,asorHour,magribHour,esaHour,sunriseHour;
+  int date1;
+  PrayerTimeModels prayerTimeModels;
+
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  AndroidInitializationSettings androidInitializationSettings;
+  IOSInitializationSettings iosInitializationSettings;
+  InitializationSettings initializationSettings;
+
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Introduction(),
+  void initState() {
+    super.initState();
+
+
+    date1 = (DateTime.now().hour);
+    DatabaseHelper.getPrayerTimeModels('${DateFormat('MMM dd').format(DateTime.now())}').then((prayermodels){
+      setState(() {
+
+        prayerTimeModels=prayermodels;
+
+        fojorHour=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.fajr}').hour;
+        johaurHour=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.dhuhr}').hour;
+        asorHour=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.asr}').hour;
+        magribHour=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.magrib}').hour;
+        esaHour=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.isha}').hour;
+        sunriseHour=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.sunrise}').hour;
+
+
+      });
+    });
+
+
+    initializing();
+    _showNotificationsAfterSecond();
+  }
+
+  void initializing() async {
+
+    androidInitializationSettings = AndroidInitializationSettings('sms');
+    iosInitializationSettings = IOSInitializationSettings(
+        onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+    initializationSettings = InitializationSettings(
+        androidInitializationSettings, iosInitializationSettings);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: onSelectNotification);
+
+
+  }
+
+  void _showNotifications() async {
+    await notification();
+  }
+
+  void _showNotificationsAfterSecond() async {
+    await notificationAfterSec();
+  }
+
+  Future<void> notification() async {
+
+    AndroidNotificationDetails androidNotificationDetails =
+    AndroidNotificationDetails(
+        'Channel ID', 'Channel title', 'channel body',
+        priority: Priority.High,
+        importance: Importance.Max,
+        ticker: 'test',playSound: true);
+
+    IOSNotificationDetails iosNotificationDetails = IOSNotificationDetails();
+
+    NotificationDetails notificationDetails =
+    NotificationDetails(androidNotificationDetails, iosNotificationDetails);
+    await flutterLocalNotificationsPlugin.show(
+        0, 'Hello there', 'please subscribe my channel', notificationDetails);
+
+  }
+
+  Future<void> notificationAfterSec() async {
+    var timeDelayed = DateTime.now().add(Duration(seconds: 1));
+    AndroidNotificationDetails androidNotificationDetails =
+    AndroidNotificationDetails(
+        'second channel ID', 'second Channel title', 'second channel body',
+        priority: Priority.High,
+        importance: Importance.Max,
+        autoCancel: false,
+        ongoing: true,
+        category: 'Name',
+        ticker: 'test');
+
+    IOSNotificationDetails iosNotificationDetails = IOSNotificationDetails();
+    NotificationDetails notificationDetails = NotificationDetails(androidNotificationDetails, iosNotificationDetails);
+
+
+    if(date1>=fojorHour&&date1<sunriseHour){
+
+      await flutterLocalNotificationsPlugin.schedule(1, 'বর্তমান ওয়াক্ত ফজর', 'শুরু হয়েছে ${prayerTimeModels.fajr}\nশেষ হবে ${prayerTimeModels.sunrise}', timeDelayed, notificationDetails, androidAllowWhileIdle: false);
+
+    }else if(date1>=sunriseHour&&date1<johaurHour){
+
+      await flutterLocalNotificationsPlugin.schedule(1, 'বর্তমান ওয়াক্ত ইশরাক', 'শুরু হয়েছে ${prayerTimeModels.sunrise}\nশেষ হবে ${prayerTimeModels.dhuhr}', timeDelayed, notificationDetails, androidAllowWhileIdle: false);
+
+    }else if(date1>=johaurHour&&date1<asorHour){
+
+      await flutterLocalNotificationsPlugin.schedule(1, 'বর্তমান ওয়াক্ত যহর', 'শুরু হয়েছে ${prayerTimeModels.dhuhr}\nশেষ হবে ${prayerTimeModels.asr}', timeDelayed, notificationDetails, androidAllowWhileIdle: false);
+
+    }else if(date1>=asorHour&&date1<magribHour){
+
+      await flutterLocalNotificationsPlugin.schedule(1, 'বর্তমান ওয়াক্ত আসর', 'শুরু হয়েছে ${prayerTimeModels.asr}\nশেষ হবে ${prayerTimeModels.magrib}', timeDelayed, notificationDetails, androidAllowWhileIdle: false);
+
+    }else if(date1>=magribHour&&date1<esaHour){
+
+      await flutterLocalNotificationsPlugin.schedule(1, 'বর্তমান ওয়াক্ত মাগরিব', 'শুরু হয়েছে ${prayerTimeModels.magrib}\nশেষ হবে ${prayerTimeModels.isha}', timeDelayed, notificationDetails, androidAllowWhileIdle: false);
+
+    }else{
+
+      await flutterLocalNotificationsPlugin.schedule(1, 'বর্তমান ওয়াক্ত এশা', 'শুরু হয়েছে ${prayerTimeModels.isha}\nশেষ হবে ${prayerTimeModels.fajr}', timeDelayed, notificationDetails, androidAllowWhileIdle: false);
+
+    }
+
+
+
+  }
+
+  Future onSelectNotification(String payLoad) {
+    if (payLoad != null) {
+      print(payLoad);
+    }
+
+    // we can set navigator to navigate another screen
+  }
+
+  Future onDidReceiveLocalNotification(int id, String title, String body, String payload) async {
+    return CupertinoAlertDialog(
+      title: Text(title),
+      content: Text(body),
+      actions: <Widget>[
+        CupertinoDialogAction(
+            isDefaultAction: true,
+            onPressed: () {
+              print("");
+            },
+            child: Text("Okay")),
+      ],
     );
   }
-}
 
-class Introduction extends StatelessWidget {
+
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +185,7 @@ class Introduction extends StatelessWidget {
                 ),
                 child: FlatButton(
                     onPressed: (){
+                      _showNotificationsAfterSecond();
                       Navigator.pushReplacementNamed(context, HomeScreen.route);
                     }, child: Text("Welcome", style: TextStyle(color: Colors.white),)),
               ),

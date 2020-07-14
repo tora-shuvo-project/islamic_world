@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Utils{
@@ -29,5 +30,9 @@ class Utils{
     final prefs=await SharedPreferences.getInstance();
     return prefs.getString('fontName')??'Maddina';
   }
+  static String getFormattedDate(String formate)=>
+      DateFormat(formate).format(DateTime.now());
 
 }
+
+

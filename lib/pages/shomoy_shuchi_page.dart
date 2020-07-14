@@ -1,8 +1,13 @@
 
 
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
+import 'package:searchtosu/FinalModels/prayer_time_models.dart';
+import 'package:searchtosu/helpers/database_helper.dart';
 
 class ShomoyShuchi extends StatefulWidget {
   static final route='/shomoyShuchi';
@@ -13,6 +18,23 @@ class ShomoyShuchi extends StatefulWidget {
 
 
 class _ShomoyShuchiState extends State<ShomoyShuchi> {
+
+  PrayerTimeModels prayerTimeModels;
+
+  int fojorHour,johaurHour,asorHour,magribHour,esaHour,sunriseHour;
+  int fojorMinute,johaurMinute,asorMinute,magribMinute,esaMinute,sunriseMinute;
+  String currentPrayerTime='';
+  String nextPrayerName='';
+  String nextPrayerTime='';
+  String _timeString;
+
+  String sunrisetoday='';
+  String sunsettoday='';
+  String fajartoday='';
+  String dohortoday='';
+  String asortoday='';
+  String magribtoday='';
+  String esatoday='';
 
 
   Widget _appBar(){
@@ -46,7 +68,7 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
                       children: <Widget>[
                         Icon(Icons.location_on, color: Colors.white,),
                         Text("|", style: TextStyle(color: Colors.white, fontSize: 17),),
-                        Text("Location", style: TextStyle(color: Colors.white, fontSize: 17),),
+                        Text("DHAKA", style: TextStyle(color: Colors.white, fontSize: 17),),
                       ],
                     )
                   ],
@@ -58,6 +80,148 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
       ),
     );
   }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    int date1 = (DateTime.now().hour);
+    DateTime dateTime=DateTime.now();
+    DatabaseHelper.getPrayerTimeModels('${DateFormat('MMM dd').format(DateTime.now())}').then((prayermodels){
+      setState(() {
+        prayerTimeModels=prayermodels;
+
+        sunrisetoday=prayermodels.sunrise;
+        sunsettoday=prayermodels.magrib;
+        fajartoday=prayermodels.fajr;
+        dohortoday=prayermodels.dhuhr;
+        asortoday=prayermodels.asr;
+        magribtoday=prayermodels.magrib;
+        esatoday=prayermodels.isha;
+
+        fojorHour=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.fajr}').hour;
+        johaurHour=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.dhuhr}').hour;
+        asorHour=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.asr}').hour;
+        magribHour=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.magrib}').hour;
+        esaHour=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.isha}').hour;
+        sunriseHour=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.sunrise}').hour;
+
+        fojorMinute=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.fajr}').minute;
+        johaurMinute=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.dhuhr}').minute;
+        asorMinute=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.asr}').minute;
+        magribMinute=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.magrib}').minute;
+        esaMinute=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.isha}').minute;
+        sunriseMinute=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.sunrise}').minute;
+
+
+        _timeString = "${DateTime.now().hour} ঘন্টা ${DateTime.now().minute} মিনিট ${DateTime.now().second} পর";
+
+        print('$date1');
+        print('$fojorHour');
+        print('$johaurHour');
+        print('$asorHour');
+        print('$magribHour');
+        print('$esaHour');
+
+        if(date1>=fojorHour&&date1<sunriseHour){
+
+            print('Fojor');
+            currentPrayerTime='ফজর';
+            nextPrayerName='ইশরাক';
+            nextPrayerTime='${prayermodels.sunrise}';
+            Timer.periodic(Duration(seconds:1), (Timer t)=>_getCurrentTime(dateTime.year,dateTime.month,dateTime.day,sunriseHour,sunriseMinute,esaHour,fojorHour));
+
+        }else if(date1>=sunriseHour&&date1<johaurHour){
+
+            print('Israk Time');
+            currentPrayerTime='ইশরাক';
+            nextPrayerName='যহর';
+            nextPrayerTime='${prayermodels.dhuhr}';
+            Timer.periodic(Duration(seconds:1), (Timer t)=>_getCurrentTime(dateTime.year,dateTime.month,dateTime.day,johaurHour,johaurMinute,esaHour,fojorHour));
+
+        }else if(date1>=johaurHour&&date1<asorHour){
+
+            print('johar');
+            currentPrayerTime='যহর';
+            nextPrayerName='আসর';
+            nextPrayerTime='${prayermodels.asr}';
+            Timer.periodic(Duration(seconds:1), (Timer t)=>_getCurrentTime(dateTime.year,dateTime.month,dateTime.day,asorHour,asorMinute,esaHour,fojorHour));
+
+        }else if(date1>=asorHour&&date1<magribHour){
+
+            print('asor');
+            currentPrayerTime='আসর';
+            nextPrayerName='মাগরিব';
+            nextPrayerTime='${prayermodels.magrib}';
+            Timer.periodic(Duration(seconds:1), (Timer t)=>_getCurrentTime(dateTime.year,dateTime.month,dateTime.day,magribHour,magribMinute,esaHour,fojorHour));
+
+
+        }else if(date1>=magribHour&&date1<esaHour){
+
+            print('Magrib');
+            currentPrayerTime='মাগরিব';
+            nextPrayerName='এশা';
+            nextPrayerTime='${prayermodels.isha}';
+            Timer.periodic(Duration(seconds:1), (Timer t)=>_getCurrentTime(dateTime.year,dateTime.month,dateTime.day,esaHour,esaMinute,esaHour,fojorHour));
+
+
+        }else{
+
+            print('Esa');
+            currentPrayerTime='এশা';
+            nextPrayerName='ফজর';
+            nextPrayerTime='${prayermodels.fajr}';
+
+            int fjrHr=fojorHour;
+              Timer.periodic(Duration(seconds:1), (Timer t)=>_getCurrentTime(dateTime.year,dateTime.month,dateTime.day,fjrHr,fojorMinute,esaHour,fojorHour));
+
+              print('${fojorHour+24}');
+            }
+
+      });
+    });
+  }
+
+  //format(Duration d) => d.toString().split('.').first.padLeft(8, "0");
+
+  void _getCurrentTime(int year, int month, int day, int Hour, int Minute,int esaHour,int fojorHour)  {
+
+      print(esaHour.toString());
+      print(fojorHour.toString());
+
+    setState(() {
+      final birthday = DateTime(year, month, day,Hour,Minute);
+
+      print('${birthday.minute} -${DateTime.now().minute} =${birthday.minute-DateTime.now().minute}');
+
+      if(Hour>esaHour){
+        if(Minute>birthday.minute){
+          _timeString = "${(birthday.hour+24)-DateTime.now().hour} ঘন্টা "
+              "${((birthday.minute+60)-DateTime.now().minute)-1} মিনিট "
+              "${60-DateTime.now().second} পর";
+        }else{
+          _timeString = "${(birthday.hour+24)-DateTime.now().hour} ঘন্টা "
+              "${(((birthday.minute)-DateTime.now().minute)-1)} মিনিট "
+              "${60-DateTime.now().second} পর";
+        }
+      }else{
+        if(Minute>birthday.minute){
+          _timeString = "${birthday.hour-DateTime.now().hour} ঘন্টা "
+              "${((birthday.minute+60)-DateTime.now().minute)-1} মিনিট "
+              "${60-DateTime.now().second} পর";
+        }else{
+          _timeString = "${birthday.hour-DateTime.now().hour} ঘন্টা "
+              "${(((birthday.minute)-DateTime.now().minute)-1)} মিনিট "
+              "${60-DateTime.now().second} পর";
+        }
+
+      }
+
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -73,7 +237,6 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
               child: Container(
                 child: Column(
                   children: <Widget>[
-
                     Row(
                       children: <Widget>[
                             Column(
@@ -82,19 +245,17 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
                                 Text("পরবর্তি ওয়াক্ত",style: TextStyle(fontSize: 17,color: Colors.white),),
                                 Row(
                                   children: <Widget>[
-                                    Text("Magrib", style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),),
+                                    Text(nextPrayerName, style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),),
                                     SizedBox(width: 10,),
-                                    Text("6.59 PM",style: TextStyle(fontSize: 20,color: Colors.white),),
+                                    Text(nextPrayerTime,style: TextStyle(fontSize: 20,color: Colors.white),),
 
 
                                   ],
                                 ),
                                 SizedBox(height: 10,),
-                                Text("১ ঘন্টা ৪৫ মিনিট পর",style: TextStyle(fontSize: 17,color: Colors.white),),
+                                Text("$_timeString",style: TextStyle(fontSize: 17,color: Colors.white),),
                             //    VerticalDivider(width: 2,thickness: 2, color: Colors.white,),
                                 SizedBox(height: 10,),
-
-
 
                               ],
                             ),
@@ -105,7 +266,7 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
                           color: Colors.white,
                         ),
                         SizedBox(width: 20,),
-                        Text("Asar", style: TextStyle(color: Colors.white,fontSize: 30, fontWeight: FontWeight.bold),)
+                        Text(currentPrayerTime, style: TextStyle(color: Colors.white,fontSize: 30, fontWeight: FontWeight.bold),)
                       ],
                     ),
                     
@@ -116,7 +277,7 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
                           children: <Widget>[
                             Image.asset("images/sunrise.png", width: 50, height:50 ,),
                             Text("Sunrise", style: TextStyle(color: Colors.white)),
-                            Text("5.00 AM",style: TextStyle(color: Colors.white))
+                            Text(sunrisetoday,style: TextStyle(color: Colors.white))
 
                           ],
                         ),
@@ -124,7 +285,7 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
                           children: <Widget>[
                             Image.asset("images/sunset.png", width: 50, height:50 ,),
                             Text("Sunset",style: TextStyle(color: Colors.white)),
-                            Text("6.00 PM",style: TextStyle(color: Colors.white))
+                            Text(sunsettoday,style: TextStyle(color: Colors.white))
 
                           ],
                         )
@@ -168,7 +329,7 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
                           Text("Fazar"),
                           Row(
                             children: <Widget>[
-                              Text("03.54 AM"),
+                              Text(fajartoday),
                               IconButton(icon: Icon(Icons.notifications), onPressed: (){}),
 
                             ],
@@ -183,10 +344,10 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text("Fazar"),
+                          Text("Dhuhr"),
                           Row(
                             children: <Widget>[
-                              Text("03.54 AM"),
+                              Text(dohortoday),
                               IconButton(icon: Icon(Icons.notifications), onPressed: (){}),
 
                             ],
@@ -201,10 +362,10 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text("Fazar"),
+                          Text("Asr"),
                           Row(
                             children: <Widget>[
-                              Text("03.54 AM"),
+                              Text(asortoday),
                               IconButton(icon: Icon(Icons.notifications), onPressed: (){}),
 
                             ],
@@ -219,10 +380,10 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text("Fazar"),
+                          Text("Magrib"),
                           Row(
                             children: <Widget>[
-                              Text("03.54 AM"),
+                              Text(magribtoday),
                               IconButton(icon: Icon(Icons.notifications), onPressed: (){}),
 
                             ],
@@ -237,10 +398,10 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text("Fazar"),
+                          Text("Isha"),
                           Row(
                             children: <Widget>[
-                              Text("03.54 AM"),
+                              Text(esatoday),
                               IconButton(icon: Icon(Icons.notifications), onPressed: (){}),
 
                             ],

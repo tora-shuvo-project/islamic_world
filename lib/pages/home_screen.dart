@@ -10,7 +10,6 @@ import 'package:searchtosu/pages/sura_list_page.dart';
 class HomeScreen extends StatefulWidget {
 
   static final route='/home';
-
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -196,6 +195,7 @@ class _HomeScreenState extends State<HomeScreen> {
                            ),
                            InkWell(
                              onTap:(){
+                               Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ShomoyShuchi()));
 
                              },
                              child: Card(
