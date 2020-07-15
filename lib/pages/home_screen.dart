@@ -9,6 +9,9 @@ import 'package:hijri/hijri_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:searchtosu/FinalModels/prayer_time_models.dart';
 import 'package:searchtosu/helpers/database_helper.dart';
+import 'package:searchtosu/pages/doya_name_page.dart';
+import 'package:searchtosu/pages/location_page.dart';
+import 'package:searchtosu/pages/ojifa_screen.dart';
 import 'package:searchtosu/pages/quran_word_pages.dart';
 import 'package:searchtosu/pages/shomoy_shuchi_page.dart';
 import 'package:searchtosu/pages/sura_list_page.dart';
@@ -56,24 +59,31 @@ class _HomeScreenState extends State<HomeScreen> {
               Expanded(
                 child: Container(
 
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Icon(Icons.menu,color:Color(0xff06AB00)),
-                      Text("আল-কোরআন ও বিভিন্ন দোয়া ", style: TextStyle(color:Color(0xff06AB00), fontSize: 17),),
-                      Row(
-                        children: <Widget>[
-                          Icon(Icons.location_on,color:Color(0xff06AB00),),
-                          Text("|",style: TextStyle(color:Color(0xff06AB00), fontSize: 17),),
-                          Text("ঢাকা",style: TextStyle(color:Color(0xff06AB00), fontSize: 17), )
-                        ],
-                      ),
+                  child: InkWell(
+                    onTap: (){
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context)=>LocationPage()
+                      ));
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Icon(Icons.menu,color:Color(0xff06AB00)),
+                        Text("আল-কোরআন ও বিভিন্ন দোয়া ", style: TextStyle(color:Color(0xff06AB00), fontSize: 17),),
+                        Row(
+                          children: <Widget>[
+                            Icon(Icons.location_on,color:Color(0xff06AB00),),
+                            Text("|",style: TextStyle(color:Color(0xff06AB00), fontSize: 17),),
+                            Text("ঢাকা",style: TextStyle(color:Color(0xff06AB00), fontSize: 17), )
+                          ],
+                        ),
 
 
 
 
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -341,7 +351,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Column(
                                 children: <Widget>[
                                   FittedBox(child: Text("সুর্যোদয়ঃ $sunrisetoday",style: TextStyle(color:Colors.white, fontSize: 14),)),
-                                  FittedBox(child: Text("           সুর্যাস্তঃ $sunrisetoday",style: TextStyle(color:Colors.white, fontSize: 14),))
+                                  FittedBox(child: Text("           সুর্যাস্তঃ $sunsettoday",style: TextStyle(color:Colors.white, fontSize: 14),))
                                 ],
                               ),
                               //color: Color(0xff026104),
@@ -422,7 +432,9 @@ class _HomeScreenState extends State<HomeScreen> {
                            children: <Widget>[
                              InkWell(
                                onTap:(){
-                                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>SuraListPage()));
+                                 Navigator.of(context).push(MaterialPageRoute(
+                                     builder: (context)=>OjifaScreen()
+                                 ));
                                },
                                child: Card(
                                  child:Container(
@@ -431,7 +443,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                      crossAxisAlignment: CrossAxisAlignment.center,
                                      children: <Widget>[
                                        Image.asset("images/kuranShorif.png", height: 80,width: 80,),
-                                       Text("Al Quran", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
+                                       Text("Ojifa", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
                                      ],
                                    ),
                                  ),
@@ -439,7 +451,9 @@ class _HomeScreenState extends State<HomeScreen> {
                              ),
                              InkWell(
                                onTap:(){
-
+                                 Navigator.of(context).push(MaterialPageRoute(
+                                     builder: (context)=>DoyaNameScren()
+                                 ));
                                },
                                child: Card(
                                  child:Container(
@@ -449,7 +463,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                      children: <Widget>[
 
                                        Image.asset("images/namjerShomoy.png", height: 80,width: 80,),
-                                       Text("Namajer Waqt",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
+                                       Text("Doya",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
                                      ],
                                    ),
                                  ),

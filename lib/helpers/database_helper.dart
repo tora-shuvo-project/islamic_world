@@ -19,6 +19,8 @@ class DatabaseHelper{
   static final prayerTimeTable='PrayerTimeTbl';
   static final quranWordTable='QuranWorkMeaningTbl';
   static final ojifaTable='OjifaTbl';
+  static final dunaNameTable='DuaNameTbl';
+  static final duyaDetailsTable='DuaDetailsTbl';
 
   //Column Name
   static final columnSuraNo='SURANO';
@@ -31,6 +33,7 @@ class DatabaseHelper{
   static final columndate='DATEPRAYER';
   static final columntopicNo='TOPICNO';
   static final columnsubtopicNo='SUBTOPICNO';
+  static final columndoyaID='ID';
 
   DatabaseHelper._privateConstrator();
   static final DatabaseHelper instance=DatabaseHelper._privateConstrator();
@@ -98,6 +101,18 @@ class DatabaseHelper{
   static Future<List> getAllSubOjifaFromOjifaTable(int topicno)async{
     Database db=await instance.database;
     var result=await db.query(ojifaTable,where: '$columntopicNo = ? ',whereArgs: [topicno]);
+    return result.toList();
+  }
+
+  static Future<List> getDuyaNameFromTable()async{
+    Database db=await instance.database;
+    var result=await db.query(dunaNameTable);
+    return result.toList();
+  }
+
+  static Future<List> getDuyaDetailsFromTable(String id)async{
+    Database db=await instance.database;
+    var result=await db.query(duyaDetailsTable,where: '$columndoyaID = ? ',whereArgs: [id]);
     return result.toList();
   }
 
