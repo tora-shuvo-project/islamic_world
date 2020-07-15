@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:searchtosu/helpers/provider_helpers.dart';
 import 'package:searchtosu/pages/SplashScreen.dart';
 import 'package:searchtosu/pages/home_screen.dart';
 import 'package:searchtosu/pages/quran_word_pages.dart';
@@ -17,20 +19,28 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return MaterialApp(
-      title: 'Islamic World',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create:(context)=>LocationProvider() ,
+          )
+      ],
+
+      child: MaterialApp(
+        title: 'Islamic World',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.green,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: SplashScreen() ,
+        routes: {
+          SplashScreen.route:(context)=>SplashScreen(),
+          HomeScreen.route:(context)=>HomeScreen(),
+          QuranWordPages.route:(context)=>QuranWordPages(),
+          ShomoyShuchi.route: (context)=> ShomoyShuchi(),
+        },
       ),
-      home: SplashScreen() ,
-      routes: {
-        SplashScreen.route:(context)=>SplashScreen(),
-        HomeScreen.route:(context)=>HomeScreen(),
-        QuranWordPages.route:(context)=>QuranWordPages(),
-        ShomoyShuchi.route: (context)=> ShomoyShuchi(),
-      },
     );
   }
 }

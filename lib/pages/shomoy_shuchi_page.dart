@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:intl/intl.dart';
+
 import 'package:searchtosu/FinalModels/prayer_time_models.dart';
 import 'package:searchtosu/helpers/database_helper.dart';
 
@@ -202,27 +203,27 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
 
     setState(() {
       final birthday = DateTime(year, month, day,Hour,Minute);
-
-      print('${birthday.minute} -${DateTime.now().minute} =${birthday.minute-DateTime.now().minute}');
+      var result = birthday.minute-DateTime.now().minute;
+      print('${birthday.minute} -${DateTime.now().minute} =${result.abs()}');
 
       if(Hour>esaHour){
         if(Minute>birthday.minute){
           _timeString = "${(birthday.hour+24)-DateTime.now().hour} ঘন্টা "
-              "${((birthday.minute+60)-DateTime.now().minute)-1} মিনিট "
+              "${(((birthday.minute+60)-DateTime.now().minute)-1).abs()} মিনিট "
               "${60-DateTime.now().second} পর";
         }else{
           _timeString = "${(birthday.hour+24)-DateTime.now().hour} ঘন্টা "
-              "${(((birthday.minute)-DateTime.now().minute)-1)} মিনিট "
+              "${(((birthday.minute)-DateTime.now().minute)-1).abs()} মিনিট "
               "${60-DateTime.now().second} পর";
         }
       }else{
         if(Minute>birthday.minute){
           _timeString = "${birthday.hour-DateTime.now().hour} ঘন্টা "
-              "${((birthday.minute+60)-DateTime.now().minute)-1} মিনিট "
+              "${(((birthday.minute+60)-DateTime.now().minute)-1).abs()} মিনিট "
               "${60-DateTime.now().second} পর";
         }else{
           _timeString = "${birthday.hour-DateTime.now().hour} ঘন্টা "
-              "${(((birthday.minute)-DateTime.now().minute)-1)} মিনিট "
+              "${(((birthday.minute)-DateTime.now().minute)-1).abs()} মিনিট "
               "${60-DateTime.now().second} পর";
         }
 
@@ -234,6 +235,8 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
 
   @override
   Widget build(BuildContext context) {
+
+
     return SafeArea(
       child: Scaffold(
         appBar:PreferredSize(child: _appBar(),preferredSize: Size(MediaQuery.of(context).size.width, 120),) ,
