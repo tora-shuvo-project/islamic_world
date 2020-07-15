@@ -1,4 +1,5 @@
 import 'package:searchtosu/FinalModels/audio_models.dart';
+import 'package:searchtosu/FinalModels/ojifa_models.dart';
 import 'package:searchtosu/FinalModels/prayer_time_models.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -17,6 +18,7 @@ class DatabaseHelper{
   static final paraTable='ParaNameTbl';
   static final prayerTimeTable='PrayerTimeTbl';
   static final quranWordTable='QuranWorkMeaningTbl';
+  static final ojifaTable='OjifaTbl';
 
   //Column Name
   static final columnSuraNo='SURANO';
@@ -27,6 +29,8 @@ class DatabaseHelper{
   static final columnobotirno='OBOTIRNO';
   static final columnparaNo='PARA';
   static final columndate='DATEPRAYER';
+  static final columntopicNo='TOPICNO';
+  static final columnsubtopicNo='SUBTOPICNO';
 
   DatabaseHelper._privateConstrator();
   static final DatabaseHelper instance=DatabaseHelper._privateConstrator();
@@ -90,6 +94,24 @@ class DatabaseHelper{
     var result=await db.query(ayatTable,where: '$columnparaNo= ?',whereArgs: [paraNo]);
     return result.toList();
   }
+
+  static Future<List> getAllSubOjifaFromOjifaTable(int topicno)async{
+    Database db=await instance.database;
+    var result=await db.query(ojifaTable,where: '$columntopicNo = ? ',whereArgs: [topicno]);
+    return result.toList();
+  }
+
+
+  static Future<OjifaModels> getAllOjifaFromOjifaTable(int topicno,int subtopicno)async{
+    Database db=await instance.database;
+    final List<Map<String,dynamic>> result=await db.query(ojifaTable,where: '$columntopicNo = ? AND $columnsubtopicNo = ? ',whereArgs: [topicno,subtopicno]);
+    if(result.length>0){
+      return OjifaModels.fromMap(result.first);
+    }
+    return null;
+  }
+
+
 
 
 
