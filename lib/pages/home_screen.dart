@@ -11,6 +11,7 @@ import 'package:searchtosu/FinalModels/prayer_time_models.dart';
 import 'package:searchtosu/helpers/database_helper.dart';
 import 'package:searchtosu/pages/doya_name_page.dart';
 import 'package:searchtosu/pages/location_page.dart';
+import 'package:searchtosu/pages/nearby_mosque_screen.dart';
 import 'package:searchtosu/pages/ojifa_screen.dart';
 import 'package:searchtosu/pages/quran_word_pages.dart';
 import 'package:searchtosu/pages/shomoy_shuchi_page.dart';
@@ -471,7 +472,9 @@ class _HomeScreenState extends State<HomeScreen> {
                              ),
                              InkWell(
                                onTap:(){
-                                 Navigator.of(context).pushNamed(QuranWordPages.route);
+                                 Navigator.of(context).push(MaterialPageRoute(
+                                   builder: (context)=>NearByMosqueScreen()
+                                 ));
                                },
                                child: Card(
                                  child:Container(
@@ -480,7 +483,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                      crossAxisAlignment: CrossAxisAlignment.center,
                                      children: <Widget>[
                                        Image.asset("images/shahihAfija.png", height: 80,width: 80,),
-                                       Text("Quran Words",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
+                                       Text("NearBy Mosque",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
                                      ],
                                    ),
                                  ),

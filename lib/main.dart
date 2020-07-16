@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:searchtosu/helpers/place_provider.dart';
 import 'package:searchtosu/helpers/provider_helpers.dart';
 import 'package:searchtosu/pages/SplashScreen.dart';
 import 'package:searchtosu/pages/home_screen.dart';
@@ -23,7 +24,10 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider(
             create:(context)=>LocationProvider() ,
-          )
+          ),
+          ChangeNotifierProvider(
+            create:(context)=>PlaceProvider() ,
+          ),
       ],
 
       child: MaterialApp(

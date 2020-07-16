@@ -5,6 +5,9 @@
     <option name="stickyNotes">
       <list>
         <SerializedStickyNote>
+          <option name="description" value="Consumer&lt;PlaceProvider&gt;(         builder: (context,data,child)=&gt;isLoading?         Center(           child: CircularProgressIndicator(backgroundColor: Colors.green,),         ):ListView.builder(             itemCount: data.currentPlacesearch.results.length,             itemBuilder: (context,index){               return Card(                 child: ListTile(                   title: Text('${data.currentPlacesearch.results[index].name}'),                 ),               );             }),       )," />
+        </SerializedStickyNote>
+        <SerializedStickyNote>
           <option name="archived" value="true" />
           <option name="description" value="sqwqwqwq" />
         </SerializedStickyNote>

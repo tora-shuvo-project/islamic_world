@@ -15,7 +15,7 @@
    
    7.Calender
    
-   8.Nearest Mosque
+   8.Nearest Mosque 80% ok
    
    9.Kibla
    
