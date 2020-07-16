@@ -1,21 +1,30 @@
-
+import 'dart:async';
 
 import 'package:dropdownfield/dropdownfield.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:searchtosu/helpers/provider_helpers.dart';
-import 'package:latlong/latlong.dart';
+
 
 class LocationPage extends StatefulWidget {
+
+  final LatLng latLng;
+  LocationPage(this.latLng);
+
   @override
   _LocationPageState createState() => _LocationPageState();
 }
 
 class _LocationPageState extends State<LocationPage> {
 final _jelacontroller = TextEditingController();
-MapController mapController = new MapController();
 int selectedRadio;
+Set<Marker> markers={};
+Completer<GoogleMapController> _completer=Completer();
+
+void _onmapCreated(GoogleMapController controller) {
+  _completer.complete(controller);
+}
 
 
 void _handleRadioValueChange(int value) {
@@ -34,21 +43,21 @@ void _handleRadioValueChange(int value) {
     });
 }
 String _selectedJelaName="";
+
 @override
 void initState() {
   super.initState();
   selectedRadio =0;
-//  _dropDownMenuItems = buildDroDownMenuItems(_jelaname);
-//  _selectedJelaName = _dropDownMenuItems[0].value;
+  markers.add(Marker(
+      markerId: MarkerId(widget.latLng.toString()),
+      position: widget.latLng,
+    infoWindow: InfoWindow(
+      title: '${widget.latLng}'
+    ),
+    icon: BitmapDescriptor.defaultMarker,
+  ));
 }
 
-
-
-//onChangeDropDownItem(JelaName selectedJelaName){
-//  setState(() {
-//    _selectedJelaName = selectedJelaName;
-//  });
-//}
   Widget _appBar(){
     return Container(
       child: ClipRRect(
@@ -87,16 +96,9 @@ void initState() {
   }
 
 
-
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<LocationProvider>(context);
 
-    buildMap(){
-          provider.getDeviceCurrentLocation().then((response) => {
-                mapController.move(LatLng(response.latitude, response.longitude), 15.0)
-          });
-    }
     return SafeArea(
       child: Scaffold(
         appBar:PreferredSize(child: _appBar(),preferredSize: Size(MediaQuery.of(context).size.width, 120),) ,
@@ -180,18 +182,23 @@ void initState() {
 
                 Container(
                   height: 500,
-                  child: FlutterMap(
-                    mapController: mapController,
-                    options: new MapOptions(center: buildMap(),
-                    zoom: 13.0,
-                  ),
-                    layers: [
-                    new TileLayerOptions(
-                    urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                    subdomains: ['a', 'b', 'c'])
+                  child: Stack(
+                    children: <Widget>[
+                      GoogleMap(
+                        onMapCreated: _onmapCreated,
+                        initialCameraPosition: CameraPosition(
+                          target: widget.latLng,zoom: 15,
+                        ),
+                        mapType: MapType.satellite,
+                        myLocationButtonEnabled: true,
+                        myLocationEnabled: true,
+                        indoorViewEnabled: true,
+                        trafficEnabled: true,
+                        markers: markers,
+                      ),
                     ],
-                  ),
-                )
+                  )
+                ),
               ],
             ),
           ),
@@ -199,6 +206,8 @@ void initState() {
       ),
     );
   }
+
+
 }
 
 List<String> _jelaNames = [

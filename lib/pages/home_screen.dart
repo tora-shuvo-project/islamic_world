@@ -5,10 +5,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:searchtosu/FinalModels/prayer_time_models.dart';
 import 'package:searchtosu/helpers/database_helper.dart';
+import 'package:searchtosu/helpers/provider_helpers.dart';
 import 'package:searchtosu/pages/doya_name_page.dart';
 import 'package:searchtosu/pages/location_page.dart';
 import 'package:searchtosu/pages/nearby_mosque_screen.dart';
@@ -45,6 +48,8 @@ class _HomeScreenState extends State<HomeScreen> {
   IOSInitializationSettings iosInitializationSettings;
   InitializationSettings initializationSettings;
 
+  LatLng _center;
+
 
 
 
@@ -63,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: InkWell(
                     onTap: (){
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context)=>LocationPage()
+                        builder: (context)=>LocationPage(_center)
                       ));
                     },
                     child: Row(
@@ -162,6 +167,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
       });
     });
+
+
+    Provider.of<LocationProvider>(context,listen: false).getDeviceCurrentLocation().then((position){
+      setState(() {
+        _center=LatLng(position.latitude,position.longitude);
+      });
+    });
+
+
 }
 
   Future onDidReceiveLocalNotification(int id, String title, String body, String payload) async {
