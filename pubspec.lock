@@ -85,6 +85,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.14.12"
+  compasstools:
+    dependency: "direct main"
+    description:
+      name: compasstools
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.0"
   console_log_handler:
     dependency: transitive
     description:
