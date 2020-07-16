@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:searchtosu/helpers/place_provider.dart';
 import 'package:searchtosu/helpers/provider_helpers.dart';
@@ -10,6 +11,7 @@ import 'package:searchtosu/pages/shomoy_shuchi_page.dart';
 
 
 void main() {
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(MyApp());
 }
 

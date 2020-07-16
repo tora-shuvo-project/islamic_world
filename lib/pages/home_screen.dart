@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:searchtosu/FinalModels/prayer_time_models.dart';
 import 'package:searchtosu/helpers/database_helper.dart';
 import 'package:searchtosu/pages/doya_name_page.dart';
+import 'package:searchtosu/pages/kibla_screen.dart';
 import 'package:searchtosu/pages/location_page.dart';
 import 'package:searchtosu/pages/nearby_mosque_screen.dart';
 import 'package:searchtosu/pages/ojifa_screen.dart';
@@ -381,7 +382,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                      crossAxisAlignment: CrossAxisAlignment.center,
                                      children: <Widget>[
                                        Image.asset("images/kuranShorif.png", height: 80,width: 80,),
-                                       Text("Al Quran", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
+                                       Text("আল কুরআন", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
                                      ],
                                    ),
                                  ),
@@ -400,7 +401,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                      children: <Widget>[
 
                                        Image.asset("images/namjerShomoy.png", height: 80,width: 80,),
-                                       Text("Namajer Waqt",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
+                                       Text("নামাজের সময়সূচি",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
                                      ],
                                    ),
                                  ),
@@ -417,7 +418,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                      crossAxisAlignment: CrossAxisAlignment.center,
                                      children: <Widget>[
                                        Image.asset("images/shahihAfija.png", height: 80,width: 80,),
-                                       Text("Quran Words",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
+                                       Text("কুরআনের শব্দ",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
                                      ],
                                    ),
                                  ),
@@ -444,7 +445,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                      crossAxisAlignment: CrossAxisAlignment.center,
                                      children: <Widget>[
                                        Image.asset("images/kuranShorif.png", height: 80,width: 80,),
-                                       Text("Ojifa", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
+                                       Text("ওজিফা", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
                                      ],
                                    ),
                                  ),
@@ -464,7 +465,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                      children: <Widget>[
 
                                        Image.asset("images/namjerShomoy.png", height: 80,width: 80,),
-                                       Text("Doya",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
+                                       Text("দোয়া",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
                                      ],
                                    ),
                                  ),
@@ -499,7 +500,7 @@ class _HomeScreenState extends State<HomeScreen> {
                            children: <Widget>[
                              InkWell(
                                onTap:(){
-                                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>SuraListPage()));
+                                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>KiblaScreen()));
                                },
                                child: Card(
                                  child:Container(
@@ -508,7 +509,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                      crossAxisAlignment: CrossAxisAlignment.center,
                                      children: <Widget>[
                                        Image.asset("images/kuranShorif.png", height: 80,width: 80,),
-                                       Text("Al Quran", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
+                                       Text("কিবলা", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
                                      ],
                                    ),
                                  ),

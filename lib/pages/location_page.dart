@@ -3,8 +3,7 @@ import 'dart:async';
 import 'package:dropdownfield/dropdownfield.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:provider/provider.dart';
-import 'package:searchtosu/helpers/provider_helpers.dart';
+
 
 
 class LocationPage extends StatefulWidget {
@@ -121,19 +120,6 @@ void initState() {
                             },
 
                           ),
-
-//                    child: DropdownButton(
-//                      value: _selectedJelaName,
-//                        items: _dropDownMenuItems,
-//                        onChanged: onChangeDropDownItem)
-//                  child: TextField(
-//                    controller: _controller,
-//                    decoration: InputDecoration(
-//                      border: InputBorder.none,
-//                      hintText: "দেশ নির্বাচন করুন",
-//                      //"জেলা নির্বাচন করুন"
-//                    ),
-//                  ),
 
                       ),
                 SizedBox(height: 10,),
