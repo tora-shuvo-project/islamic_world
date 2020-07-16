@@ -70,7 +70,7 @@ class OjifaScreen extends StatelessWidget {
                                               ));
                                             },
                                           ),
-                          Image.asset("images/NumberIcon.png", height: 50, width: 50,),
+                          Image.asset("images/ojifapageIcon.png", height: 50, width: 50,),
                         ],
                       ),
                       Container(
@@ -85,7 +85,347 @@ class OjifaScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-
+            SizedBox(height: 5,),
+            Container(
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Image.asset("images/ojifapageIcon.png", height: 50, width: 50,),
+                      FlatButton(
+                        child: Text('দরূদ',style: TextStyle(color: Colors.black,fontSize: 20),),
+                                    onPressed: (){
+                                      Navigator.of(context).push(MaterialPageRoute(
+                                          builder: (context)=>SubOjifaScreen(2,'দরূদ')
+                                      ));
+                        },
+                      ),
+                      Image.asset("images/ojifapageIcon.png", height: 50, width: 50,),
+                    ],
+                  ),
+                  Container(
+                      height: 3,
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(colors: [
+                            const Color(0xffffffff),
+                            const Color(0xff178723),
+                            const Color(0xffffffff),
+                          ]))
+                  )
+                ],
+              ),
+            ),
+            SizedBox(height: 5,),
+            Container(
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Image.asset("images/ojifapageIcon.png", height: 50, width: 50,),
+                      FlatButton(
+                        child:  Text('খতম',style: TextStyle(color: Colors.black,fontSize: 20),),
+                                    onPressed: (){
+                                      Navigator.of(context).push(MaterialPageRoute(
+                                          builder: (context)=>SubOjifaScreen(3,'খতম')
+                                      ));
+                        },
+                      ),
+                      Image.asset("images/ojifapageIcon.png", height: 50, width: 50,),
+                    ],
+                  ),
+                  Container(
+                      height: 3,
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(colors: [
+                            const Color(0xffffffff),
+                            const Color(0xff178723),
+                            const Color(0xffffffff),
+                          ]))
+                  )
+                ],
+              ),
+            ),
+            SizedBox(height: 5,),
+            Container(
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Image.asset("images/ojifapageIcon.png", height: 50, width: 50,),
+                      FlatButton(
+                        child:  Text('ইসমে আজম',style: TextStyle(color: Colors.black,fontSize: 20),),
+                                    onPressed: (){
+                                      Navigator.of(context).push(MaterialPageRoute(
+                                          builder: (context)=>OjifaDetailsScreen(4,1,'ইসমে আজম')
+                                      ));
+                        },
+                      ),
+                      Image.asset("images/ojifapageIcon.png", height: 50, width: 50,),
+                    ],
+                  ),
+                  Container(
+                      height: 3,
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(colors: [
+                            const Color(0xffffffff),
+                            const Color(0xff178723),
+                            const Color(0xffffffff),
+                          ]))
+                  )
+                ],
+              ),
+            ),
+            SizedBox(height: 5,),
+            Container(
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Image.asset("images/ojifapageIcon.png", height: 50, width: 50,),
+                      FlatButton(
+                        child:  Text('আসমায়ে হুসনা',style: TextStyle(color: Colors.black,fontSize: 20),),
+                                    onPressed: (){
+                                      Navigator.of(context).push(MaterialPageRoute(
+                                          builder: (context)=>OjifaDetailsScreen(5,1,'আসমায়ে হুসনা')
+                                      ));
+                        },
+                      ),
+                      Image.asset("images/ojifapageIcon.png", height: 50, width: 50,),
+                    ],
+                  ),
+                  Container(
+                      height: 3,
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(colors: [
+                            const Color(0xffffffff),
+                            const Color(0xff178723),
+                            const Color(0xffffffff),
+                          ]))
+                  )
+                ],
+              ),
+            ),
+            SizedBox(height: 5,),
+            Container(
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Image.asset("images/ojifapageIcon.png", height: 50, width: 50,),
+                      FlatButton(
+                        child:  Text('আসমায়ে হুসনা',style: TextStyle(color: Colors.black,fontSize: 20),),
+                        onPressed: (){
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context)=>OjifaDetailsScreen(5,1,'আসমায়ে হুসনা')
+                          ));
+                        },
+                      ),
+                      Image.asset("images/ojifapageIcon.png", height: 50, width: 50,),
+                    ],
+                  ),
+                  Container(
+                      height: 3,
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(colors: [
+                            const Color(0xffffffff),
+                            const Color(0xff178723),
+                            const Color(0xffffffff),
+                          ]))
+                  )
+                ],
+              ),
+            ),
+            SizedBox(height: 5,),
+            Container(
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Image.asset("images/ojifapageIcon.png", height: 50, width: 50,),
+                      FlatButton(
+                        child:  Text('সাইয়েদুল ইস্তিখফার',style: TextStyle(color: Colors.black,fontSize: 20),),
+                    onPressed: (){
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context)=>OjifaDetailsScreen(6,1,'সাইয়েদুল ইস্তিখফার')
+                      ));
+                        },
+                      ),
+                      Image.asset("images/ojifapageIcon.png", height: 50, width: 50,),
+                    ],
+                  ),
+                  Container(
+                      height: 3,
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(colors: [
+                            const Color(0xffffffff),
+                            const Color(0xff178723),
+                            const Color(0xffffffff),
+                          ]))
+                  )
+                ],
+              ),
+            ),
+            SizedBox(height: 5,),
+            Container(
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Image.asset("images/ojifapageIcon.png", height: 50, width: 50,),
+                      FlatButton(
+                        child:  Text('আয়াতে শিফা',style: TextStyle(color: Colors.black,fontSize: 20),),
+                                    onPressed: (){
+                                      Navigator.of(context).push(MaterialPageRoute(
+                                          builder: (context)=>OjifaDetailsScreen(7,1,'আয়াতে শিফা')
+                                      ));
+                        },
+                      ),
+                      Image.asset("images/ojifapageIcon.png", height: 50, width: 50,),
+                    ],
+                  ),
+                  Container(
+                      height: 3,
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(colors: [
+                            const Color(0xffffffff),
+                            const Color(0xff178723),
+                            const Color(0xffffffff),
+                          ]))
+                  )
+                ],
+              ),
+            ),
+            SizedBox(height: 5,),
+            Container(
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Image.asset("images/ojifapageIcon.png", height: 50, width: 50,),
+                      FlatButton(
+                        child:  Text('৭ ছালাম',style: TextStyle(color: Colors.black,fontSize: 20),),
+                                    onPressed: (){
+                                      Navigator.of(context).push(MaterialPageRoute(
+                                          builder: (context)=>OjifaDetailsScreen(8,1,'৭ ছালাম')
+                                      ));
+                        },
+                      ),
+                      Image.asset("images/ojifapageIcon.png", height: 50, width: 50,),
+                    ],
+                  ),
+                  Container(
+                      height: 3,
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(colors: [
+                            const Color(0xffffffff),
+                            const Color(0xff178723),
+                            const Color(0xffffffff),
+                          ]))
+                  )
+                ],
+              ),
+            ),
+            SizedBox(height: 5,),
+            Container(
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Image.asset("images/ojifapageIcon.png", height: 50, width: 50,),
+                      FlatButton(
+                        child:  Text('আল হাশর',style: TextStyle(color: Colors.black,fontSize: 20),),
+                                    onPressed: (){
+                                      Navigator.of(context).push(MaterialPageRoute(
+                                          builder: (context)=>OjifaDetailsScreen(9,1,'আল হাশর')
+                                      ));
+                        },
+                      ),
+                      Image.asset("images/ojifapageIcon.png", height: 50, width: 50,),
+                    ],
+                  ),
+                  Container(
+                      height: 3,
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(colors: [
+                            const Color(0xffffffff),
+                            const Color(0xff178723),
+                            const Color(0xffffffff),
+                          ]))
+                  )
+                ],
+              ),
+            ),
+            SizedBox(height: 5,),
+            Container(
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Image.asset("images/ojifapageIcon.png", height: 50, width: 50,),
+                      FlatButton(
+                        child:  Text('আয়তুল কুরসি',style: TextStyle(color: Colors.black,fontSize: 20),),
+                                    onPressed: (){
+                                      Navigator.of(context).push(MaterialPageRoute(
+                                          builder: (context)=>OjifaDetailsScreen(10,1,'আয়তুল কুরসি')
+                                      ));
+                        },
+                      ),
+                      Image.asset("images/ojifapageIcon.png", height: 50, width: 50,),
+                    ],
+                  ),
+                  Container(
+                      height: 3,
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(colors: [
+                            const Color(0xffffffff),
+                            const Color(0xff178723),
+                            const Color(0xffffffff),
+                          ]))
+                  )
+                ],
+              ),
+            ),
+            SizedBox(height: 5,),
+            Container(
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Image.asset("images/ojifapageIcon.png", height: 50, width: 50,),
+                      FlatButton(
+                        child:  Text('দোয়া',style: TextStyle(color: Colors.black,fontSize: 20),),
+                                    onPressed: (){
+                                      Navigator.of(context).push(MaterialPageRoute(
+                                          builder: (context)=>SubOjifaScreen(11,'দোয়া')
+                                      ));
+                        },
+                      ),
+                      Image.asset("images/ojifapageIcon.png", height: 50, width: 50,),
+                    ],
+                  ),
+                  Container(
+                      height: 3,
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(colors: [
+                            const Color(0xffffffff),
+                            const Color(0xff178723),
+                            const Color(0xffffffff),
+                          ]))
+                  )
+                ],
+              ),
+            ),
           ],
         ),
       )  ,
