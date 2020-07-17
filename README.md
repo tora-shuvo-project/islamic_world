@@ -20,6 +20,12 @@
    9.Kibla 95% ok
    
    10.Blog List etc................
+   
+   11. Some Hadis 80% ok
+   
+   12. Live Coments
+   
+   13. Prayer Niyom
 
 ## Getting Started
 

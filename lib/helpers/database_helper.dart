@@ -21,6 +21,7 @@ class DatabaseHelper{
   static final ojifaTable='OjifaTbl';
   static final dunaNameTable='DuaNameTbl';
   static final duyaDetailsTable='DuaDetailsTbl';
+  static final hadisTable='HadisTbl';
 
   //Column Name
   static final columnSuraNo='SURANO';
@@ -77,6 +78,12 @@ class DatabaseHelper{
   Future<List> getAllSuraFromSuraNameTable()async{
     Database db=await instance.database;
     var result=await db.query(suraTable);
+    return result.toList();
+  }
+
+  static Future<List> getAllHadisFromHadisTable()async{
+    Database db=await instance.database;
+    var result=await db.query(hadisTable);
     return result.toList();
   }
 

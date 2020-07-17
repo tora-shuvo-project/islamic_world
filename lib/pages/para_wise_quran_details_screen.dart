@@ -331,12 +331,12 @@ class _ParaWiseQuranDetailsScreenState extends State<ParaWiseQuranDetailsScreen>
                                                         banglameaning?Text('${ayatmodels[index].banglaTranslator.trim()}',
                                                           style: TextStyle(
                                                               color: Colors.black87,
-                                                              fontFamily: _fontName,
+                                                              fontFamily: 'kalpurus',
                                                               fontSize: _value-1),):SizedBox(),
                                                         banglauccharon?Text('${ayatmodels[index].banglameaning.trim()}',
                                                           style: TextStyle(
                                                               color: Colors.black54,
-                                                              fontFamily: _fontName,
+                                                              fontFamily: 'kalpurus',
                                                               fontSize: _value-1),):SizedBox()
                                                       ],
 

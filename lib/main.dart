@@ -38,6 +38,7 @@ class MyApp extends StatelessWidget {
         title: 'Islamic World',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
+          fontFamily: 'kalpurus',
           primarySwatch: Colors.green,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),

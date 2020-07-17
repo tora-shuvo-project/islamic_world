@@ -187,7 +187,7 @@ class _AyatPageState extends State<AyatPage> {
                 alignment: Alignment.center,
                 child:Text( '${widget.suraNameTableModel.banglaTranslator}', style: TextStyle(color: Colors.white, fontSize: 20),) ,
               ),
-              SizedBox(height: 13,),
+              SizedBox(height: 9,),
               Divider(
                 color: Colors.white,
                 height: 2,
@@ -250,7 +250,7 @@ class _AyatPageState extends State<AyatPage> {
       ),
     ):
     Container(
-      height:60,
+      height:64,
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
           gradient: LinearGradient(colors: [
@@ -513,74 +513,71 @@ class _AyatPageState extends State<AyatPage> {
                             itemCount: ayatmodels.length,
                             itemBuilder: (context,index)=>Card(
                               //    color: ayatmodels.length%2==0?Colors.black.withOpacity(.5):Colors.green.withOpacity(.5),
-                              child: Container(child: InkWell(
-//
-                                  child: Column(
+                              child: Container(child: Column(
+                                children: <Widget>[
+                                  Row(
+
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
-                                      Row(
-
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                      Column(
                                         children: <Widget>[
-                                          Column(
+                                          Stack(
                                             children: <Widget>[
-                                              Stack(
-                                                children: <Widget>[
-                                                  Image.asset("images/ayatnumberIcon.png", height: 40, width: 40, fit: BoxFit.cover,),
-                                                  Container(
-                                                      width: 40,
-                                                      height: 40,
-                                                      alignment: Alignment.center,
-                                                      child: Text('${ayatmodels[index].ayatno}'))
-                                                ],
-                                              ),
-                                              ayatmodels[index].sejda == "0"?Container(): Text("সিজদা", style: TextStyle(fontSize: 14, color: Colors.red),),
-                                              IconButton(icon: Icon(Icons.volume_down ,color: Colors.black45,), onPressed: (){
-
-                                                ayatPlayer.play(ayatmodels[index].ayatAudio.trim());
-
-
-                                              })
+                                              Image.asset("images/ayatnumberIcon.png", height: 40, width: 40, fit: BoxFit.cover,),
+                                              Container(
+                                                  width: 40,
+                                                  height: 40,
+                                                  alignment: Alignment.center,
+                                                  child: Text('${ayatmodels[index].ayatno}'))
                                             ],
                                           ),
-                                          SizedBox(width: 10,),
-                                          Expanded(
-                                            child: Column(
-                                              children: <Widget>[
-                                                arbi?Text('${ayatmodels[index].arbi_indopak.trim()}',
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontFamily: _fontName,
-                                                      fontSize: _value+6),
-                                                ):SizedBox(),
-                                                banglameaning?Text('${ayatmodels[index].banglaTranslator.trim()}',
-                                                  style: TextStyle(
-                                                      color: Colors.black87,
-                                                      fontFamily: _fontName,
-                                                      fontSize: _value-1),):SizedBox(),
-                                                banglauccharon?Text('${ayatmodels[index].banglameaning.trim()}',
-                                                  style: TextStyle(
-                                                      color: Colors.black54,
-                                                      fontFamily: _fontName,
-                                                      fontSize: _value-1),):SizedBox()
-                                              ],
+                                          ayatmodels[index].sejda == "0"?Container(): Text("সিজদা", style: TextStyle(fontSize: 14, color: Colors.red),),
+                                          IconButton(icon: Icon(Icons.volume_down ,color: Colors.black45,), onPressed: (){
 
-                                            ),
-                                          ),
+                                            ayatPlayer.play(ayatmodels[index].ayatAudio.trim());
+
+
+                                          })
                                         ],
                                       ),
-                                      Container(
-                                          height: 3,
-                                          decoration: BoxDecoration(
-                                              gradient: LinearGradient(colors: [
-                                                const Color(0xffffffff),
-                                                const Color(0xff178723),
-                                                const Color(0xffffffff),
-                                              ]))
-                                      )
+                                      SizedBox(width: 10,),
+                                      Expanded(
+                                        child: Column(
+                                          children: <Widget>[
+                                            arbi?Text('${ayatmodels[index].arbi_indopak.trim()}',
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontFamily: _fontName,
+                                                  fontSize: _value+6),
+                                            ):SizedBox(),
+                                            banglameaning?Text('${ayatmodels[index].banglaTranslator.trim()}',
+                                              style: TextStyle(
+                                                  color: Colors.black87,
+                                                  fontFamily: 'kalpurus',
+                                                  fontSize: _value-1),):SizedBox(),
+                                            banglauccharon?Text('${ayatmodels[index].banglameaning.trim()}',
+                                              style: TextStyle(
+                                                  color: Colors.black54,
+                                                  fontFamily: 'kalpurus',
+                                                  fontSize: _value-1),):SizedBox()
+                                          ],
+
+                                        ),
+                                      ),
                                     ],
                                   ),
-                                ),
+                                  Container(
+                                      height: 3,
+                                      decoration: BoxDecoration(
+                                          gradient: LinearGradient(colors: [
+                                            const Color(0xffffffff),
+                                            const Color(0xff178723),
+                                            const Color(0xffffffff),
+                                          ]))
+                                  )
+                                ],
+                              ),
                               ),
 
                             )),
