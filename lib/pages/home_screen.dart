@@ -18,6 +18,7 @@ import 'package:searchtosu/pages/hadis_screen.dart';
 import 'package:searchtosu/pages/kibla_screen.dart';
 import 'package:searchtosu/pages/location_page.dart';
 import 'package:searchtosu/pages/nearby_mosque_screen.dart';
+import 'package:searchtosu/pages/niyom_models.dart';
 import 'package:searchtosu/pages/ojifa_screen.dart';
 import 'package:searchtosu/pages/quran_word_pages.dart';
 import 'package:searchtosu/pages/shomoy_shuchi_page.dart';
@@ -597,7 +598,7 @@ class _HomeScreenState extends State<HomeScreen> {
                              ),
                              InkWell(
                                onTap:(){
-                                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>TasbihScreen()));
+                                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>NiyomScreen()));
 
                                },
                                child: Card(
@@ -608,7 +609,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                      children: <Widget>[
 
                                        Image.asset("images/namjerShomoy.png", height: 80,width: 80,),
-                                       Text("নামাজের নিয়ম কানুন",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
+                                       Text("নিয়ম কানুন",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
                                      ],
                                    ),
                                  ),

@@ -22,6 +22,7 @@ class DatabaseHelper{
   static final dunaNameTable='DuaNameTbl';
   static final duyaDetailsTable='DuaDetailsTbl';
   static final hadisTable='HadisTbl';
+  static final niyomTable='NiyomTbl';
 
   //Column Name
   static final columnSuraNo='SURANO';
@@ -35,6 +36,7 @@ class DatabaseHelper{
   static final columntopicNo='TOPICNO';
   static final columnsubtopicNo='SUBTOPICNO';
   static final columndoyaID='ID';
+  static final columnCategory='CATEGORY';
 
   DatabaseHelper._privateConstrator();
   static final DatabaseHelper instance=DatabaseHelper._privateConstrator();
@@ -120,6 +122,11 @@ class DatabaseHelper{
   static Future<List> getDuyaDetailsFromTable(String id)async{
     Database db=await instance.database;
     var result=await db.query(duyaDetailsTable,where: '$columndoyaID = ? ',whereArgs: [id]);
+    return result.toList();
+  }
+  static Future<List> getNiyomCategoryFromNiyomTable(int category)async{
+    Database db=await instance.database;
+    var result=await db.query(niyomTable,where: '$columnCategory = ? ',whereArgs: [category]);
     return result.toList();
   }
 
