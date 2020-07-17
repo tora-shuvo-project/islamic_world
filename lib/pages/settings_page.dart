@@ -35,7 +35,8 @@ class _SettingsPageState extends State<SettingsPage> {
           Container(
             alignment: Alignment.center,
             width: double.infinity,
-            child: DropDownFormField(
+            child:
+            DropDownFormField(
               titleText: 'Select Qare',
               hintText: 'Please choose one',
               value: _myActivity,

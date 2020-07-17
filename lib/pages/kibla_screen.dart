@@ -14,7 +14,6 @@ class _KiblaScreenState extends State<KiblaScreen> {
   void initState() {
     super.initState();
     checkDeviceSensors();
-
   }
 
   Future<void> checkDeviceSensors() async {
@@ -68,30 +67,28 @@ class _KiblaScreenState extends State<KiblaScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          title: const Text('কিবলা '),
-        ),
-        body: StreamBuilder(
-          stream: Compasstools.azimuthStream,
-          builder: (BuildContext context, AsyncSnapshot<int> snapshot){
-            if(snapshot.hasData) {
-              return Container(
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height,
-                child:Center(
-                  child:new RotationTransition(
-                    turns: new AlwaysStoppedAnimation(-snapshot.data/360),
-                    child: Image.asset('images/compass.png',width: double.infinity,height: double.infinity,),
-                  ),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text('কিবলা '),
+      ),
+      body: StreamBuilder(
+        stream: Compasstools.azimuthStream,
+        builder: (BuildContext context, AsyncSnapshot<int> snapshot){
+          if(snapshot.hasData) {
+            return Container(
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height,
+              child:Center(
+                child:new RotationTransition(
+                  turns: new AlwaysStoppedAnimation(-snapshot.data/360),
+                  child: Image.asset('images/compass1.png',width: double.infinity,height: double.infinity,),
                 ),
-              );
-            } else
-              return Text("Error in stream");
-          },
-        ),
+              ),
+            );
+          } else
+            return Text("Error in stream");
+        },
       ),
     );
   }

@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:searchtosu/FinalModels/prayer_time_models.dart';
 import 'package:searchtosu/helpers/database_helper.dart';
 import 'package:searchtosu/helpers/provider_helpers.dart';
+import 'package:searchtosu/pages/calender_pages.dart';
 import 'package:searchtosu/pages/doya_name_page.dart';
 import 'package:searchtosu/pages/kibla_screen.dart';
 import 'package:searchtosu/pages/location_page.dart';
@@ -20,6 +21,7 @@ import 'package:searchtosu/pages/ojifa_screen.dart';
 import 'package:searchtosu/pages/quran_word_pages.dart';
 import 'package:searchtosu/pages/shomoy_shuchi_page.dart';
 import 'package:searchtosu/pages/sura_list_page.dart';
+import 'package:searchtosu/pages/tasbih_page.dart';
 
 class HomeScreen extends StatefulWidget {
 
@@ -531,6 +533,7 @@ class _HomeScreenState extends State<HomeScreen> {
                              ),
                              InkWell(
                                onTap:(){
+                                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>TasbihScreen()));
 
                                },
                                child: Card(
@@ -541,7 +544,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                      children: <Widget>[
 
                                        Image.asset("images/namjerShomoy.png", height: 80,width: 80,),
-                                       Text("Namajer Waqt",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
+                                       Text("তাসবিহ",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
                                      ],
                                    ),
                                  ),
@@ -549,7 +552,9 @@ class _HomeScreenState extends State<HomeScreen> {
                              ),
                              InkWell(
                                onTap:(){
-                                 Navigator.of(context).pushNamed(QuranWordPages.route);
+                                 Navigator.of(context).push(MaterialPageRoute(
+                                   builder: (context)=>CalenderScreen()
+                                 ));
                                },
                                child: Card(
                                  child:Container(
@@ -558,7 +563,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                      crossAxisAlignment: CrossAxisAlignment.center,
                                      children: <Widget>[
                                        Image.asset("images/shahihAfija.png", height: 80,width: 80,),
-                                       Text("Quran Words",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
+                                       Text("Calender",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
                                      ],
                                    ),
                                  ),

@@ -9,15 +9,15 @@
    
    4.Quran Meaning 100% ok
    
-   5.Tasbih
+   5.Tasbih 60 % ok
    
    6.Doya 70% ok
    
-   7.Calender
+   7.Calender 90% ok
    
    8.Nearest Mosque 80% ok
    
-   9.Kibla
+   9.Kibla 95% ok
    
    10.Blog List etc................
 
