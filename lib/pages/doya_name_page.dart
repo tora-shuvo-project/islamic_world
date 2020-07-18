@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:searchtosu/FinalModels/doya_name_models.dart';
 import 'package:searchtosu/helpers/database_helper.dart';
 import 'package:searchtosu/pages/doya_details_page.dart';
+import 'package:searchtosu/pages/doya_subcategory_screen.dart';
 
 class DoyaNameScren extends StatefulWidget {
   @override
@@ -150,13 +151,20 @@ class _DoyaNameScrenState extends State<DoyaNameScren> {
                                     ),
                                     height: MediaQuery.of(context).size.width/3,
                                     width: MediaQuery.of(context).size.width/3,
-                                    child:  Center(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: <Widget>[
-                                          Icon(Icons.book,color: Colors.white, size: 20,),
-                                          Text("কুরআন", style: TextStyle(color: Colors.white), )
-                                        ],
+                                    child:  InkWell(
+                                      onTap: (){
+                                        Navigator.of(context).push(MaterialPageRoute(
+                                          builder: (context)=>DoyaSubcategoryScreen(1,'নিত্যদিন')
+                                        ));
+                                      },
+                                      child: Center(
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            Icon(Icons.book,color: Colors.white, size: 20,),
+                                            Text("নিত্যদিন", style: TextStyle(color: Colors.white), )
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -172,13 +180,21 @@ class _DoyaNameScrenState extends State<DoyaNameScren> {
                                     ),
                                     height: MediaQuery.of(context).size.width/3,
                                     width: MediaQuery.of(context).size.width/3,
-                                    child:  Center(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: <Widget>[
-                                          Icon(Icons.book,color: Colors.white, size: 20,),
-                                          Text("কুরআন", style: TextStyle(color: Colors.white), )
-                                        ],
+                                    child:  InkWell(
+                                      onTap: (){
+                                        Navigator.of(context).push(MaterialPageRoute(
+                                            builder: (context)=>DoyaSubcategoryScreen(2,'যিকর-ঘুম')
+                                        ));
+                                      },
+
+                                      child: Center(
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            Icon(Icons.book,color: Colors.white, size: 20,),
+                                            Text("যিকর-ঘুম", style: TextStyle(color: Colors.white), )
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -194,13 +210,20 @@ class _DoyaNameScrenState extends State<DoyaNameScren> {
                                     ),
                                     height: MediaQuery.of(context).size.width/3,
                                     width: MediaQuery.of(context).size.width/3,
-                                    child:  Center(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: <Widget>[
-                                          Icon(Icons.book,color: Colors.white, size: 20,),
-                                          Text("কুরআন", style: TextStyle(color: Colors.white), )
-                                        ],
+                                    child:  InkWell(
+                                      onTap: (){
+                                        Navigator.of(context).push(MaterialPageRoute(
+                                            builder: (context)=>DoyaSubcategoryScreen(3,'সামাজিক')
+                                        ));
+                                      },
+                                      child: Center(
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            Icon(Icons.book,color: Colors.white, size: 20,),
+                                            Text("সামাজিক", style: TextStyle(color: Colors.white), )
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -220,13 +243,20 @@ class _DoyaNameScrenState extends State<DoyaNameScren> {
                                 ),
                                 height: MediaQuery.of(context).size.width/3,
                                 width: MediaQuery.of(context).size.width/3,
-                                child:  Center(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      Icon(Icons.book,color: Colors.white, size: 20,),
-                                      Text("কুরআন", style: TextStyle(color: Colors.white), )
-                                    ],
+                                child:  InkWell(
+                                  onTap: (){
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (context)=>DoyaSubcategoryScreen(4,'হজ - সিয়াম')
+                                    ));
+                                  },
+                                  child: Center(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Icon(Icons.book,color: Colors.white, size: 20,),
+                                        Text("হজ - সিয়াম", style: TextStyle(color: Colors.white), )
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
@@ -242,13 +272,20 @@ class _DoyaNameScrenState extends State<DoyaNameScren> {
                                 ),
                                 height: MediaQuery.of(context).size.width/3,
                                 width: MediaQuery.of(context).size.width/3,
-                                child:  Center(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      Icon(Icons.book,color: Colors.white, size: 20,),
-                                      Text("কুরআন", style: TextStyle(color: Colors.white), )
-                                    ],
+                                child:  InkWell(
+                                  onTap: (){
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (context)=>DoyaSubcategoryScreen(5,'কুরআন')
+                                    ));
+                                  },
+                                  child: Center(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Icon(Icons.book,color: Colors.white, size: 20,),
+                                        Text("কুরআন", style: TextStyle(color: Colors.white), )
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
@@ -264,13 +301,20 @@ class _DoyaNameScrenState extends State<DoyaNameScren> {
                                 ),
                                 height: MediaQuery.of(context).size.width/3,
                                 width: MediaQuery.of(context).size.width/3,
-                                child:  Center(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      Icon(Icons.book,color: Colors.white, size: 20,),
-                                      Text("কুরআন", style: TextStyle(color: Colors.white), )
-                                    ],
+                                child:  InkWell(
+                                  onTap: (){
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (context)=>DoyaSubcategoryScreen(6,'সালাত')
+                                    ));
+                                  },
+                                  child: Center(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Icon(Icons.book,color: Colors.white, size: 20,),
+                                        Text("সালাত", style: TextStyle(color: Colors.white), )
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
@@ -290,13 +334,20 @@ class _DoyaNameScrenState extends State<DoyaNameScren> {
                                 ),
                                 height: MediaQuery.of(context).size.width/3,
                                 width: MediaQuery.of(context).size.width/3,
-                                child:  Center(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      Icon(Icons.book,color: Colors.white, size: 20,),
-                                      Text("কুরআন", style: TextStyle(color: Colors.white), )
-                                    ],
+                                child:  InkWell(
+                                  onTap: (){
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (context)=>DoyaSubcategoryScreen(7,'অনুভূতি')
+                                    ));
+                                  },
+                                  child: Center(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Icon(Icons.book,color: Colors.white, size: 20,),
+                                        Text("অনুভূতি", style: TextStyle(color: Colors.white), )
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
@@ -312,13 +363,20 @@ class _DoyaNameScrenState extends State<DoyaNameScren> {
                                 ),
                                 height: MediaQuery.of(context).size.width/3,
                                 width: MediaQuery.of(context).size.width/3,
-                                child:  Center(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      Icon(Icons.book,color: Colors.white, size: 20,),
-                                      Text("কুরআন", style: TextStyle(color: Colors.white), )
-                                    ],
+                                child:  InkWell(
+                                  onTap: (){
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (context)=>DoyaSubcategoryScreen(8,'ইমান-সুরক্ষা')
+                                    ));
+                                  },
+                                  child: Center(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Icon(Icons.book,color: Colors.white, size: 20,),
+                                        Text("ইমান-সুরক্ষা", style: TextStyle(color: Colors.white), )
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
@@ -334,13 +392,20 @@ class _DoyaNameScrenState extends State<DoyaNameScren> {
                                 ),
                                 height: MediaQuery.of(context).size.width/3,
                                 width: MediaQuery.of(context).size.width/3,
-                                child:  Center(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      Icon(Icons.book,color: Colors.white, size: 20,),
-                                      Text("কুরআন", style: TextStyle(color: Colors.white), )
-                                    ],
+                                child:  InkWell(
+                                  onTap: (){
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (context)=>DoyaSubcategoryScreen(9,'অসুস্থতা')
+                                    ));
+                                  },
+                                  child: Center(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Icon(Icons.book,color: Colors.white, size: 20,),
+                                        Text("অসুস্থতা", style: TextStyle(color: Colors.white), )
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),

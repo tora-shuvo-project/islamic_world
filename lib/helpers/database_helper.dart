@@ -119,6 +119,12 @@ class DatabaseHelper{
     return result.toList();
   }
 
+  static Future<List> getDuyaCategoryNameFromTable(int category)async{
+    Database db=await instance.database;
+    var result=await db.query(dunaNameTable,where: '$columnCategory = ? ',whereArgs: [category]);
+    return result.toList();
+  }
+
   static Future<List> getDuyaDetailsFromTable(String id)async{
     Database db=await instance.database;
     var result=await db.query(duyaDetailsTable,where: '$columndoyaID = ? ',whereArgs: [id]);
