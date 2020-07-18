@@ -1,5 +1,8 @@
+
+
 import 'package:dropdown_formfield/dropdown_formfield.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:searchtosu/helpers/place_provider.dart';
 import 'package:searchtosu/helpers/provider_helpers.dart';
@@ -49,98 +52,177 @@ class _NearByMosqueScreenState extends State<NearByMosqueScreen> {
       });
     });
   }
+  Widget _appBar(){
+    return Container(
+      decoration: BoxDecoration(
+          gradient: LinearGradient(colors: [
+            const Color(0xffE3E3E1),
+            const Color(0xffBACFFE)
+          ])
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30)),
+        child: Container(
+          height:70,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+              gradient: LinearGradient(colors: [
+                const Color(0xff178723),
+                const Color(0xff27AB4B)
+              ])
+          ),
+          padding: EdgeInsets.symmetric(horizontal: 17, vertical: 10),
+          child: Container(
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Nearby Mosque'),
-        actions: <Widget>[
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                IconButton(icon: Icon(Icons.arrow_back, color: Colors.white,), onPressed: (){
+                  Navigator.of(context).pop();
+                }),
+                FittedBox(
+                  child: Text("Nearby Mosque",style:  TextStyle(
+                      color: Colors.white, fontSize: 20
+                  ), ),
+                ),
           IconButton(
             icon: Icon(Icons.refresh,color: Colors.white,),
             onPressed: (){
               getNextPageDistance(_myActivity);
             },
           )
-        ],
-      ),
-      body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            DropDownFormField(
-              titleText: 'Distance',
-              hintText: '$_myActivity',
-              value: _myActivity,
-              onSaved: (value){
-                setState(() {
-                  _myActivity = value;
-                  getDistance(value);
-                });
-              },
-              onChanged: (value) {
-                setState(() {
-                  _myActivity = value;
-                  getDistance(value);
-                });
-              },
-              dataSource: [
-                {
-                  "display": "100 m",
-                  "value": 100,
-                },
-                {
-                  "display": "500 m",
-                  "value": 500,
-                },
-                {
-                  "display": "1000 m",
-                  "value": 1000,
-                },
-                {
-                  "display": "1.5 km",
-                  "value": 1500,
-                },
-                {
-                  "display": "2 km",
-                  "value": 2000,
-                },
-                {
-                  "display": "2.5 km",
-                  "value": 2500,
-                },
-                {
-                  "display": "5 km",
-                  "value": 5000,
-                },
-                {
-                  "display": "10 km",
-                  "value": 10000,
-                },
               ],
-              textField: 'display',
-              valueField: 'value',
             ),
-            Expanded(
-              child: Consumer<PlaceProvider>(
-                builder: (context,data,child)=>isLoading?
-                Center(
-                  child: CircularProgressIndicator(backgroundColor: Colors.green,),
-                ):ListView.builder(
-                    itemCount: data.currentPlacesearch.results.length,
-                    itemBuilder: (context,index){
-                      return Card(
-                        child: ListTile(
-                          leading: CircleAvatar(
-                            child: Text('${index+1}'),
-                          ),
-                          title: Text('${data.currentPlacesearch.results[index].name}'),
-                        ),
-                      );
-                    }),
+          ),
+
+        ),
+
+      ),
+    );
+  }
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        appBar:PreferredSize(child: _appBar(),preferredSize: Size(MediaQuery.of(context).size.width, 135),),
+
+        body:  Stack(
+
+        children: <Widget>[
+          Container(
+           child: Image.asset("images/mapbg.jpg" , width: MediaQuery.of(context).size.width, height: 150, fit: BoxFit.cover,),
+          ),
+          Container(
+
+            margin: EdgeInsets.only(top: 50,left: 10,right: 10),
+            child: ClipRRect(
+
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30)),
+              child: Container(
+                color: Colors.white,
+                padding: EdgeInsets.only(top: 20),
+                child: Column(
+                  children: <Widget>[
+                    DropDownFormField(
+                      titleText: 'Distance',
+                      hintText: '$_myActivity',
+                      value: _myActivity,
+                      onSaved: (value){
+                        setState(() {
+                          _myActivity = value;
+                          getDistance(value);
+                        });
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          _myActivity = value;
+                          getDistance(value);
+                        });
+                      },
+                      dataSource: [
+                        {
+                          "display": "100 m",
+                          "value": 100,
+                        },
+                        {
+                          "display": "500 m",
+                          "value": 500,
+                        },
+                        {
+                          "display": "1000 m",
+                          "value": 1000,
+                        },
+                        {
+                          "display": "1.5 km",
+                          "value": 1500,
+                        },
+                        {
+                          "display": "2 km",
+                          "value": 2000,
+                        },
+                        {
+                          "display": "2.5 km",
+                          "value": 2500,
+                        },
+                        {
+                          "display": "5 km",
+                          "value": 5000,
+                        },
+                        {
+                          "display": "10 km",
+                          "value": 10000,
+                        },
+                      ],
+                      textField: 'display',
+                      valueField: 'value',
+                    ),
+                    Expanded(
+                      child: Consumer<PlaceProvider>(
+                        builder: (context,data,child)=>isLoading?
+                        Center(
+                          child: CircularProgressIndicator(backgroundColor: Colors.green,),
+                        ):ListView.builder(
+                            itemCount: data.currentPlacesearch.results.length,
+                            itemBuilder: (context,index){
+                              return  Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Card(
+                                      elevation: 0,
+                                      child: ListTile(
+                                        leading: CircleAvatar(
+                                          child: Text('${index+1}'),
+                                        ),
+                                        title: Text('${data.currentPlacesearch.results[index].name}'),
+
+                                      ),
+                                    ),
+                                    Container( padding: EdgeInsets.symmetric(horizontal: 20),
+                                        child: Text('Location: ${data.currentPlacesearch.results[index].vicinity}')),
+                                    Container(
+                                        height: 3,
+                                        decoration: BoxDecoration(
+                                            gradient: LinearGradient(colors: [
+                                              const Color(0xffffffff),
+                                              const Color(0xff178723),
+                                              const Color(0xffffffff),
+                                            ]))
+                                    )
+                                  ],
+                                );
+
+                            }),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ],
+          )
+        ],
         ),
+      
       ),
     );
   }

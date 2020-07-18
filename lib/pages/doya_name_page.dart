@@ -154,7 +154,7 @@ class _DoyaNameScrenState extends State<DoyaNameScren> {
                   children: <Widget>[
                    Container(
                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                     height: 256,
+                     height: 200,
                      width: MediaQuery.of(context).size.width,
                       alignment: Alignment.center,
 child:   RotateAnimatedTextKit(
