@@ -1,4 +1,5 @@
 
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -129,8 +130,23 @@ class _DoyaNameScrenState extends State<DoyaNameScren> {
                      height: 256,
                      width: MediaQuery.of(context).size.width,
                       alignment: Alignment.center,
-                     child: Text("তিনি চিরঞ্জীব , তিনি ব্যাতিত কোন ম'বূদ নেই। "
-                         "সুতরাং তোমরা তাঁকেই ডাক, তার অনুগত্য একনিষ্ঠ হয়ে। প্রশংসা জগতসমূহের রাব্ব আল্লাহর প্রাপ্য"),
+child:   RotateAnimatedTextKit(
+    onTap: () {
+      print("Tap Event");
+    },
+  duration: Duration(milliseconds: 6000),
+    text: ["তোমরা সত্যকে মিথ্যার সাথে মিশিয়ে দিও না।[সূরা বাকারা ২:৪২]",
+        "মানুষকে প্রতারণা দেওয়ার জন্য ওজনে কম দিও না। [সূরা আন’আম ৬:১৫২]",
+      "অহংকার করো না। [সূরা আ’রাফ ৭:১৩]",
+      "পিতামাতাকে অশ্রদ্ধা করে কোনো কথা বলো না। [সূরা ইসরা১৭:২৩]",
+  "অমুসলিমদের সাথে সদয় ও ন্যায় আচরণ করো। [সূরা মুমতাহিনাহ্ ৬০:৮]",
+    "অভাবগ্রস্তকে খাদ্যদানের প্রতি উৎসাহ প্রদান করো। [সূরা মা’ঊন ১০৭:৩]"],
+    textStyle: TextStyle(fontSize: 16.0),
+    textAlign: TextAlign.start,
+   // or Alignment.topLeft
+),
+//                     child: Text("তিনি চিরঞ্জীব , তিনি ব্যাতিত কোন ম'বূদ নেই। "
+//                         "সুতরাং তোমরা তাঁকেই ডাক, তার অনুগত্য একনিষ্ঠ হয়ে। প্রশংসা জগতসমূহের রাব্ব আল্লাহর প্রাপ্য"),
                    ),
                     Container(
                       color: Colors.orange,
