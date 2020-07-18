@@ -25,8 +25,8 @@ class _CommentAddPagesState extends State<CommentAddPages> {
     commentModels=CommentModels();
     _myActivity='';
     DateTime now = DateTime.now();
-    date = DateFormat('yyyy-MM-dd kk:mm a').format(now);
-    id = DateFormat('yyyy-MM-dd kk:mm:ss a').format(now);
+    date = DateFormat('yyyy-MM-dd hh:mm a').format(now);
+    id = DateFormat('yyyy-MM-dd hh:mm:ss a').format(now);
   }
 
 

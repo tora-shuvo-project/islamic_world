@@ -43,7 +43,7 @@ class _CommentQuestionScreenState extends State<CommentQuestionScreen> {
                       child: InkWell(
                         onTap: (){
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context)=>CommentQuestionAnswerScreen(snapshot.data[index])
+                            builder: (context)=>CommentQuestionAnswerScreen(snapshot.data[index],)
                           ));
                         },
                         child: Container(

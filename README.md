@@ -23,7 +23,7 @@
    
    11. Some Hadis 80% ok
    
-   12. Live Coments 50% ok
+   12. Live Coments 95% ok
    
    13. Prayer Niyom 90% ok
 
