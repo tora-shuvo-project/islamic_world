@@ -14,7 +14,7 @@ class DoyaNameScren extends StatefulWidget {
 class _DoyaNameScrenState extends State<DoyaNameScren> {
 
   List<DoyaNameModels> doyaNameModels=new List();
-
+  bool isSearch=false;
   @override
   void initState() {
     // TODO: implement initState
@@ -30,7 +30,7 @@ class _DoyaNameScrenState extends State<DoyaNameScren> {
 
   @override
   Widget build(BuildContext context) {
-
+    TextEditingController searchController = new TextEditingController();
     return SafeArea(
       child: DefaultTabController(
         length: 2,
@@ -40,7 +40,7 @@ class _DoyaNameScrenState extends State<DoyaNameScren> {
             child: ClipRRect(
               borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30)),
               child: Container(
-                height:100,
+                height:145,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                     gradient: LinearGradient(colors: [
@@ -69,6 +69,43 @@ class _DoyaNameScrenState extends State<DoyaNameScren> {
 
                         ],
                       ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Color(0xfff5f8fd),
+                            borderRadius: BorderRadius.circular(30)
+                        )
+                        ,
+                        margin: EdgeInsets.symmetric(horizontal: 17),
+                        padding: EdgeInsets.symmetric(horizontal: 17),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(child: TextField(
+                              controller: searchController,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: "search",
+                              ),
+                              onChanged: (value)async{
+                                setState(() {
+
+                                });
+                              },
+                            )),
+
+                            Container(
+                                child: InkWell(
+                                    onTap: (){
+                                      setState(() {
+
+                                      });
+                                    },
+                                    child: Icon(isSearch?Icons.cancel:Icons.search))),
+
+                          ],
+                        ),
+
+                      ),
+                      SizedBox(height: 4,),
                       TabBar(tabs:  [new Text("বিষয় ভিত্তিক"), new Text("সকল দোয়াসমূহ")])
                     ],
                   ),
