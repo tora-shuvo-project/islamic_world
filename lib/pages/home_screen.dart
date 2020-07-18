@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:searchtosu/FinalModels/prayer_time_models.dart';
 import 'package:searchtosu/helpers/database_helper.dart';
 import 'package:searchtosu/helpers/provider_helpers.dart';
+import 'package:searchtosu/pages/blog_pages.dart';
 import 'package:searchtosu/pages/calender_pages.dart';
 import 'package:searchtosu/pages/comment_question_screen.dart';
 import 'package:searchtosu/pages/doya_name_page.dart';
@@ -592,6 +593,69 @@ class _HomeScreenState extends State<HomeScreen> {
                                      children: <Widget>[
                                        Image.asset("images/kuranShorif.png", height: 80,width: 80,),
                                        Text("হাদিস", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
+                                     ],
+                                   ),
+                                 ),
+                               ),
+                             ),
+                             InkWell(
+                               onTap:(){
+                                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>NiyomScreen()));
+
+                               },
+                               child: Card(
+                                 child:Container(
+                                   padding: EdgeInsets.all(6),
+                                   child: Column(
+                                     crossAxisAlignment: CrossAxisAlignment.center,
+                                     children: <Widget>[
+
+                                       Image.asset("images/namjerShomoy.png", height: 80,width: 80,),
+                                       Text("নিয়ম কানুন",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
+                                     ],
+                                   ),
+                                 ),
+                               ),
+                             ),
+                             InkWell(
+                               onTap:(){
+                                 Navigator.of(context).push(MaterialPageRoute(
+                                     builder: (context)=>CommentQuestionScreen()
+                                 ));
+                               },
+                               child: Card(
+                                 child:Container(
+                                   padding: EdgeInsets.all(6),
+                                   child: Column(
+                                     crossAxisAlignment: CrossAxisAlignment.center,
+                                     children: <Widget>[
+                                       Image.asset("images/shahihAfija.png", height: 80,width: 80,),
+                                       Text("লাইভ কমেন্ট",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
+                                     ],
+                                   ),
+                                 ),
+                               ),
+                             ),
+                           ],
+                         ),
+                       ),
+                       Container(
+                         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                         child: Row(
+                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                           children: <Widget>[
+                             InkWell(
+                               onTap:(){
+                                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>BlogPages()));
+                               },
+                               child: Card(
+                                 child:Container(
+                                   padding: EdgeInsets.all(6),
+                                   child: Column(
+                                     crossAxisAlignment: CrossAxisAlignment.center,
+                                     children: <Widget>[
+                                       Image.asset("images/kuranShorif.png", height: 80,width: 80,),
+                                       Text("ইসলামিক ওয়েব", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
                                      ],
                                    ),
                                  ),

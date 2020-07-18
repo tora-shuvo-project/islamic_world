@@ -52,6 +52,7 @@ dependencies:
   hijri_picker: ^2.0.0
   cloud_firestore: ^0.13.7
   share: ^0.6.4+3
+  url_launcher: ^5.5.0
 
 dev_dependencies:
   flutter_test:
