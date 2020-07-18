@@ -12,7 +12,7 @@ class PlaceProvider with ChangeNotifier{
 
   Future<void> getcurrentPlaces(Position position,int distance)async{
     final url='https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${position.latitude},${position.longitude}&radius=$distance&types=mosque&key=AIzaSyDzOwSmMbs9aTvU5wx6mrDgeldGmGe-1BE';
-
+    print("Current Location ${position.latitude} and ${position.longitude} and $distance");
     try{
       final response=await HTTP.get(url);
       final map=json.decode(response.body);
