@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "134729846934",
+    "firebase_url": "https://bd-islamic-world.firebaseio.com",
+    "project_id": "bd-islamic-world",
+    "storage_bucket": "bd-islamic-world.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:134729846934:android:de113f7cdb4fdbd2c7b2b7",
+        "android_client_info": {
+          "package_name": "com.islam.bdislamicworld"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "134729846934-edhp5uls4in1piqr2egu0q6qm7egfviq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.islam.bdislamicworld",
+            "certificate_hash": "3528715f39a64b90fef6af46bdb1dab7c6ef03df"
+          }
+        },
+        {
+          "client_id": "134729846934-r2mnnllv0uhcpvv32q8st3i6frfautea.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQ7suO4WQMIhKt3Opt0xyBQyLmuD8SNsM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "134729846934-r2mnnllv0uhcpvv32q8st3i6frfautea.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

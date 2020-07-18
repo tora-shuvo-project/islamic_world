@@ -13,6 +13,7 @@ import 'package:searchtosu/FinalModels/prayer_time_models.dart';
 import 'package:searchtosu/helpers/database_helper.dart';
 import 'package:searchtosu/helpers/provider_helpers.dart';
 import 'package:searchtosu/pages/calender_pages.dart';
+import 'package:searchtosu/pages/comment_question_screen.dart';
 import 'package:searchtosu/pages/doya_name_page.dart';
 import 'package:searchtosu/pages/hadis_screen.dart';
 import 'package:searchtosu/pages/kibla_screen.dart';
@@ -618,7 +619,7 @@ class _HomeScreenState extends State<HomeScreen> {
                              InkWell(
                                onTap:(){
                                  Navigator.of(context).push(MaterialPageRoute(
-                                     builder: (context)=>CalenderScreen()
+                                     builder: (context)=>CommentQuestionScreen()
                                  ));
                                },
                                child: Card(

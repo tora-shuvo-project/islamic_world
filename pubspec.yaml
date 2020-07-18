@@ -49,6 +49,7 @@ dependencies:
   google_maps_flutter: ^0.5.28+1
   compasstools: ^0.1.0
   hijri_picker: ^2.0.0
+  cloud_firestore: ^0.13.7
 
 dev_dependencies:
   flutter_test:
