@@ -1,7 +1,7 @@
 # Islamic Application With Bangla Content
 
 ## Fetchers
-   1.Prayer Time. 70% ok
+   1.Prayer Time. 80% ok
    
    2.Quran Sorif 95% ok
    

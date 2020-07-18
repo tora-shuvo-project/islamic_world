@@ -24,8 +24,8 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
   PrayerTimeModels prayerTimeModels;
   String dayName,arabyDate,englishDate;
 
-  int fojorHour,johaurHour,asorHour,magribHour,esaHour,sunriseHour;
-  int fojorMinute,johaurMinute,asorMinute,magribMinute,esaMinute,sunriseMinute;
+  int fojorHour,johaurHour,asorHour,magribHour,esaHour,sunriseHour,israkHour,aoyabinHour;
+  int fojorMinute,johaurMinute,asorMinute,magribMinute,esaMinute,sunriseMinute,israkMinute,aoyabinMinute;
   String currentPrayerTime='';
   String nextPrayerName='';
   String nextPrayerTime='';
@@ -33,6 +33,8 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
 
   String sunrisetoday='';
   String sunsettoday='';
+  String israk='';
+  String aoyabin='';
   String fajartoday='';
   String dohortoday='';
   String asortoday='';
@@ -103,27 +105,33 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
       setState(() {
         prayerTimeModels=prayermodels;
 
-        sunrisetoday=prayermodels.sunrise;
+        sunrisetoday=prayermodels.fajr_end;
         sunsettoday=prayermodels.magrib;
-        fajartoday=prayermodels.fajr;
+        fajartoday=prayermodels.fajr_start;
+        aoyabin=prayermodels.aoyabin;
         dohortoday=prayermodels.dhuhr;
         asortoday=prayermodels.asr;
         magribtoday=prayermodels.magrib;
+        aoyabin=prayermodels.aoyabin;
         esatoday=prayermodels.isha;
 
-        fojorHour=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.fajr}').hour;
+        fojorHour=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.fajr_start}').hour;
+        israkHour=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.israk}').hour;
         johaurHour=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.dhuhr}').hour;
         asorHour=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.asr}').hour;
         magribHour=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.magrib}').hour;
+        aoyabinHour=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.aoyabin}').hour;
         esaHour=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.isha}').hour;
-        sunriseHour=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.sunrise}').hour;
+        sunriseHour=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.fajr_end}').hour;
 
-        fojorMinute=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.fajr}').minute;
+        fojorMinute=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.fajr_start}').minute;
+        israkMinute=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.israk}').minute;
         johaurMinute=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.dhuhr}').minute;
         asorMinute=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.asr}').minute;
         magribMinute=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.magrib}').minute;
+        aoyabinMinute=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.aoyabin}').minute;
         esaMinute=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.isha}').minute;
-        sunriseMinute=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.sunrise}').minute;
+        sunriseMinute=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.fajr_end}').minute;
 
 
         _timeString = "${DateTime.now().hour} ঘন্টা ${DateTime.now().minute} মিনিট ${DateTime.now().second} পর";
@@ -139,11 +147,19 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
 
             print('Fojor');
             currentPrayerTime='ফজর';
-            nextPrayerName='ইশরাক';
-            nextPrayerTime='${prayermodels.sunrise}';
+            nextPrayerName='নামাজের জন্য হারাম সময়';
+            nextPrayerTime='${prayermodels.fajr_end}';
             Timer.periodic(Duration(seconds:1), (Timer t)=>_getCurrentTime(dateTime.year,dateTime.month,dateTime.day,sunriseHour,sunriseMinute,esaHour,fojorHour));
 
-        }else if(date1>=sunriseHour&&date1<johaurHour){
+        }else if(date1>=sunriseHour&&date1<israkHour){
+
+            print('Israk Time');
+            currentPrayerTime='নামাজের জন্য হারাম সময়';
+            nextPrayerName='ইশরাক';
+            nextPrayerTime='${prayermodels.dhuhr}';
+            Timer.periodic(Duration(seconds:1), (Timer t)=>_getCurrentTime(dateTime.year,dateTime.month,dateTime.day,israkHour,israkMinute,esaHour,fojorHour));
+
+        }else if(date1>=israkHour&&date1<johaurHour){
 
             print('Israk Time');
             currentPrayerTime='ইশরাক';
@@ -168,10 +184,19 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
             Timer.periodic(Duration(seconds:1), (Timer t)=>_getCurrentTime(dateTime.year,dateTime.month,dateTime.day,magribHour,magribMinute,esaHour,fojorHour));
 
 
-        }else if(date1>=magribHour&&date1<esaHour){
+        }else if(date1>=magribHour&&date1<aoyabinHour){
 
             print('Magrib');
             currentPrayerTime='মাগরিব';
+            nextPrayerName='আওয়াবিন';
+            nextPrayerTime='${prayermodels.isha}';
+            Timer.periodic(Duration(seconds:1), (Timer t)=>_getCurrentTime(dateTime.year,dateTime.month,dateTime.day,aoyabinHour,aoyabinMinute,esaHour,fojorHour));
+
+
+        }else if(date1>=aoyabinHour&&date1<esaHour){
+
+            print('Magrib');
+            currentPrayerTime='আওয়াবিন';
             nextPrayerName='এশা';
             nextPrayerTime='${prayermodels.isha}';
             Timer.periodic(Duration(seconds:1), (Timer t)=>_getCurrentTime(dateTime.year,dateTime.month,dateTime.day,esaHour,esaMinute,esaHour,fojorHour));
@@ -182,7 +207,7 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
             print('Esa');
             currentPrayerTime='এশা';
             nextPrayerName='ফজর';
-            nextPrayerTime='${prayermodels.fajr}';
+            nextPrayerTime='${prayermodels.fajr_start}';
 
             int fjrHr=fojorHour;
               Timer.periodic(Duration(seconds:1), (Timer t)=>_getCurrentTime(dateTime.year,dateTime.month,dateTime.day,fjrHr,fojorMinute,esaHour,fojorHour));
@@ -402,6 +427,24 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
                           Row(
                             children: <Widget>[
                               Text(magribtoday),
+                              IconButton(icon: Icon(Icons.notifications), onPressed: (){}),
+
+                            ],
+                          )
+                        ],
+                      ),
+                      Container(
+                        height: 1,
+                        width: MediaQuery.of(context).size.width,
+                        color: Colors.black87,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text("Aoyabin"),
+                          Row(
+                            children: <Widget>[
+                              Text(aoyabin),
                               IconButton(icon: Icon(Icons.notifications), onPressed: (){}),
 
                             ],
