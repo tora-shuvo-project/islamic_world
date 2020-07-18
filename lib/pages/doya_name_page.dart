@@ -16,6 +16,7 @@ class DoyaNameScren extends StatefulWidget {
 class _DoyaNameScrenState extends State<DoyaNameScren> {
 
   List<DoyaNameModels> doyaNameModels=new List();
+  TextEditingController searchController = new TextEditingController();
   bool isSearch=false;
   @override
   void initState() {
@@ -32,10 +33,10 @@ class _DoyaNameScrenState extends State<DoyaNameScren> {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController searchController = new TextEditingController();
     return SafeArea(
       child: DefaultTabController(
         length: 2,
+        initialIndex: 1,
         child: Scaffold(
           appBar:PreferredSize(child: Container(
 
@@ -89,7 +90,16 @@ class _DoyaNameScrenState extends State<DoyaNameScren> {
                               ),
                               onChanged: (value)async{
                                 setState(() {
-
+                                  isSearch=true;
+                                  doyaNameModels.clear();
+                                  DatabaseHelper.searchDoyaFromDoyaNameTable(value).then((rows){
+                                    setState(() {
+                                      rows.forEach((row) {
+                                        print(row.toString());
+                                        doyaNameModels.add(DoyaNameModels.fromMap(row));
+                                      });
+                                    });
+                                  });
                                 });
                               },
                             )),
@@ -98,7 +108,20 @@ class _DoyaNameScrenState extends State<DoyaNameScren> {
                                 child: InkWell(
                                     onTap: (){
                                       setState(() {
-
+                                        if(isSearch){
+                                          searchController.text='';
+                                          isSearch=false;
+                                          FocusScope.of(context).requestFocus(FocusNode());
+                                          doyaNameModels.clear();
+                                          DatabaseHelper.getDuyaNameFromTable().then((rows){
+                                            setState(() {
+                                              rows.forEach((row) {
+                                                print(row.toString());
+                                                doyaNameModels.add(DoyaNameModels.fromMap(row));
+                                              });
+                                            });
+                                          });
+                                        }
                                       });
                                     },
                                     child: Icon(isSearch?Icons.cancel:Icons.search))),
@@ -108,7 +131,11 @@ class _DoyaNameScrenState extends State<DoyaNameScren> {
 
                       ),
                       SizedBox(height: 4,),
-                      TabBar(tabs:  [new Text("বিষয় ভিত্তিক"), new Text("সকল দোয়াসমূহ")])
+                      TabBar(
+                          tabs:  [new Text("বিষয় ভিত্তিক"),
+                            new Text("সকল দোয়াসমূহ")],
+
+                      )
                     ],
                   ),
                 ),
@@ -665,7 +692,7 @@ child:   RotateAnimatedTextKit(
                     title: Text('${doyaNameModels[index].name}'),
                     trailing: Icon(Icons.keyboard_arrow_right),
                     leading: CircleAvatar(
-                      child: Text('${index+1}'),
+                      child: Text('${doyaNameModels[index].globalId}'),
                     ),
                   ),
                 )),

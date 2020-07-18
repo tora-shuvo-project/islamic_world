@@ -37,6 +37,8 @@ class DatabaseHelper{
   static final columnsubtopicNo='SUBTOPICNO';
   static final columndoyaID='ID';
   static final columnCategory='CATEGORY';
+  static final columnduyaName='NAME';
+  static final columnGlobalId='GLOBAL_ID';
 
   DatabaseHelper._privateConstrator();
   static final DatabaseHelper instance=DatabaseHelper._privateConstrator();
@@ -147,12 +149,15 @@ class DatabaseHelper{
   }
 
 
-
-
-
   Future<List> searchSuraFromSuraNameTable(String name)async{
     Database db=await instance.database;
     var result=await db.rawQuery(" SELECT * FROM $suraTable WHERE  $columnEnglishName LIKE '%$name%' OR $columnBanglaName LIKE '%${name}%' OR $columnArabi LIKE '%${name}%' OR $columnSuraNo LIKE '%${name}%' OR $columnobotirno LIKE '%${name}%' ");
+    return result.toList();
+  }
+
+  static Future<List> searchDoyaFromDoyaNameTable(String name)async{
+    Database db=await instance.database;
+    var result=await db.rawQuery(" SELECT * FROM $dunaNameTable WHERE  $columnGlobalId LIKE '%$name%' OR $columnduyaName LIKE '%${name}%'");
     return result.toList();
   }
   
