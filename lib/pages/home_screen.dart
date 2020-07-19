@@ -26,6 +26,7 @@ import 'package:searchtosu/pages/niyom_models.dart';
 import 'package:searchtosu/pages/ojifa_screen.dart';
 import 'package:searchtosu/pages/para_wise_page.dart';
 import 'package:searchtosu/pages/quran_word_pages.dart';
+import 'package:searchtosu/pages/settings_page.dart';
 import 'package:searchtosu/pages/shomoy_shuchi_page.dart';
 import 'package:searchtosu/pages/sura_list_page.dart';
 import 'package:searchtosu/pages/tasbih_page.dart';
@@ -849,7 +850,9 @@ class _HomeScreenState extends State<HomeScreen> {
           color: Colors.green.withOpacity(.5),
           child: ListTile(
               onTap: (){
-
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context)=>SettingsPage()
+                ));
               },
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
@@ -865,7 +868,9 @@ class _HomeScreenState extends State<HomeScreen> {
           color: Colors.green.withOpacity(.5),
           child: ListTile(
               onTap: (){
-
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context)=>ShomoyShuchi()
+                ));
               },
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
@@ -881,7 +886,9 @@ class _HomeScreenState extends State<HomeScreen> {
           color: Colors.green.withOpacity(.5),
           child: ListTile(
               onTap: (){
-
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context)=>QuranWordPages()
+                ));
               },
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
@@ -896,7 +903,9 @@ class _HomeScreenState extends State<HomeScreen> {
           color: Colors.green.withOpacity(.5),
           child: ListTile(
               onTap: (){
-
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context)=>OjifaScreen()
+                ));
               },
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
@@ -911,7 +920,9 @@ class _HomeScreenState extends State<HomeScreen> {
           color: Colors.green.withOpacity(.5),
           child: ListTile(
               onTap: (){
-
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context)=>DoyaNameScren()
+                ));
               },
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
@@ -926,7 +937,9 @@ class _HomeScreenState extends State<HomeScreen> {
           color: Colors.green.withOpacity(.5),
           child: ListTile(
               onTap: (){
-
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context)=>NearByMosqueScreen()
+                ));
               },
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
@@ -941,7 +954,9 @@ class _HomeScreenState extends State<HomeScreen> {
           color: Colors.green.withOpacity(.5),
           child: ListTile(
               onTap: (){
-
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context)=>KiblaScreen()
+                ));
               },
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
@@ -956,7 +971,9 @@ class _HomeScreenState extends State<HomeScreen> {
           color: Colors.green.withOpacity(.5),
           child: ListTile(
               onTap: (){
-
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context)=>TasbihScreen()
+                ));
               },
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
@@ -971,7 +988,9 @@ class _HomeScreenState extends State<HomeScreen> {
           color: Colors.green.withOpacity(.5),
           child: ListTile(
               onTap: (){
-
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context)=>CalenderScreen()
+                ));
               },
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
@@ -986,7 +1005,9 @@ class _HomeScreenState extends State<HomeScreen> {
           color: Colors.green.withOpacity(.5),
           child: ListTile(
               onTap: (){
-
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context)=>HadisScreen()
+                ));
               },
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
@@ -1001,7 +1022,9 @@ class _HomeScreenState extends State<HomeScreen> {
           color: Colors.green.withOpacity(.5),
           child: ListTile(
               onTap: (){
-
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context)=>NiyomScreen()
+                ));
               },
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
@@ -1016,7 +1039,9 @@ class _HomeScreenState extends State<HomeScreen> {
           color: Colors.green.withOpacity(.5),
           child: ListTile(
               onTap: (){
-
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context)=>CommentQuestionScreen()
+                ));
               },
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
@@ -1031,7 +1056,9 @@ class _HomeScreenState extends State<HomeScreen> {
           color: Colors.green.withOpacity(.5),
           child: ListTile(
               onTap: (){
-
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context)=>BlogPages()
+                ));
               },
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
@@ -1050,7 +1077,7 @@ class _HomeScreenState extends State<HomeScreen> {
               },
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
-                child: Image.asset(('images/quran.png'),width: 25,),
+                child: Image.asset(('images/donate.png'),width: 25,),
               ), title: Text("দান করুন")),
         ),
         Container(
@@ -1065,7 +1092,7 @@ class _HomeScreenState extends State<HomeScreen> {
               },
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
-                child: Image.asset(('images/quran.png'),width: 25,),
+                child: Image.asset(('images/developer.png'),width: 25,),
               ), title: Text("আমাদের সম্পর্কে জানুন")),
         ),
         Container(
