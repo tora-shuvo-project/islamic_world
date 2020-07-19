@@ -9,9 +9,13 @@ final COLLECTION_REPLY='reply';
 class FirestoreDatabaseHelper{
 
   static final Firestore db=Firestore.instance;
+
   static Future addComment(CommentModels commentModels)async{
     final doc=db.collection(COLLECTION_COMMENT).document(commentModels.id);
     return await doc.setData(commentModels.tomap());
+  }
+  static Future UpdateFeedBack(CommentModels commentModels)async{
+    return db.collection(COLLECTION_COMMENT).document(commentModels.id).updateData(commentModels.tomap());
   }
 
   static Future addFeedBack(ComentFeedBackModels comentFeedBackModels)async{

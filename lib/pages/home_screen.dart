@@ -72,47 +72,47 @@ class _HomeScreenState extends State<HomeScreen> {
           width: MediaQuery.of(context).size.width,
           padding: EdgeInsets.symmetric(horizontal: 17),
           child:
-              Expanded(
-                child: Container(
+          Expanded(
+            child: Container(
 
-                  child: InkWell(
-                    onTap: (){
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context)=>LocationPage(_center)
-                      )).then((_){
-                        setState(() {
-                          Utils.getZilaNameFromPreference().then((value){
-                            zilaName=value;
-                          });
-                        });
+              child: InkWell(
+                onTap: (){
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context)=>LocationPage(_center)
+                  )).then((_){
+                    setState(() {
+                      Utils.getZilaNameFromPreference().then((value){
+                        zilaName=value;
                       });
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Expanded(child: Icon(Icons.menu,color:Color(0xff06AB00))),
-                        Expanded(flex:4,child: FittedBox(child: Text("আল-কোরআন ও বিভিন্ন দোয়া ", style: TextStyle(color:Color(0xff06AB00), fontSize: 17),))),
-                        Expanded(flex:2,
-                          child: FittedBox(
-                            child: Row(
-                              children: <Widget>[
-                                Icon(Icons.location_on,color:Color(0xff06AB00),),
-                                Text("|",style: TextStyle(color:Color(0xff06AB00), fontSize: 17),),
-                                Text(zilaName,style: TextStyle(color:Color(0xff06AB00), fontSize: 17), )
-                              ],
-                            ),
-                          ),
+                    });
+                  });
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Expanded(child: Icon(Icons.menu,color:Color(0xff06AB00))),
+                    Expanded(flex:4,child: FittedBox(child: Text("আল-কোরআন ও বিভিন্ন দোয়া ", style: TextStyle(color:Color(0xff06AB00), fontSize: 17),))),
+                    Expanded(flex:2,
+                      child: FittedBox(
+                        child: Row(
+                          children: <Widget>[
+                            Icon(Icons.location_on,color:Color(0xff06AB00),),
+                            Text("|",style: TextStyle(color:Color(0xff06AB00), fontSize: 17),),
+                            Text(zilaName,style: TextStyle(color:Color(0xff06AB00), fontSize: 17), )
+                          ],
                         ),
-
-
-
-
-                      ],
+                      ),
                     ),
-                  ),
+
+
+
+
+                  ],
                 ),
               ),
+            ),
+          ),
 
 
         ),
@@ -120,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-@override
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -202,7 +202,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
 
 
-}
+  }
 
   Future onDidReceiveLocalNotification(int id, String title, String body, String payload) async {
     return CupertinoAlertDialog(
@@ -303,7 +303,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: <Widget>[
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              color:Color(0xff06AB00),
+                    color:Color(0xff06AB00),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
@@ -402,326 +402,326 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                 Column(
-                     children: <Widget>[
-                       Container(
-                         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                         child: Row(
-                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                           children: <Widget>[
-                             InkWell(
-                               onTap:(){
-                                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>SuraListPage()));
-                               },
-                               child: Card(
-                                 child:Container(
-                                   padding: EdgeInsets.all(6),
-                                   child: Column(
-                                     crossAxisAlignment: CrossAxisAlignment.center,
-                                     children: <Widget>[
-                                       Image.asset("images/kuranShorif.png", height: 80,width: 80,),
-                                       Text("আল কুরআন", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
-                                     ],
-                                   ),
-                                 ),
-                               ),
-                             ),
-                             InkWell(
-                               onTap:(){
-                                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ShomoyShuchi()));
+                  Column(
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            InkWell(
+                              onTap:(){
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>SuraListPage()));
+                              },
+                              child: Card(
+                                child:Container(
+                                  padding: EdgeInsets.all(6),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Image.asset("images/kuranShorif.png", height: 80,width: 80,),
+                                      Text("আল কুরআন", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            InkWell(
+                              onTap:(){
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ShomoyShuchi()));
 
-                               },
-                               child: Card(
-                                 child:Container(
-                                   padding: EdgeInsets.all(6),
-                                   child: Column(
-                                     crossAxisAlignment: CrossAxisAlignment.center,
-                                     children: <Widget>[
+                              },
+                              child: Card(
+                                child:Container(
+                                  padding: EdgeInsets.all(6),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: <Widget>[
 
-                                       Image.asset("images/namjerShomoy.png", height: 80,width: 80,),
-                                       Text("নামাজের সময়সূচি",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
-                                     ],
-                                   ),
-                                 ),
-                               ),
-                             ),
-                             InkWell(
-                               onTap:(){
-                                 Navigator.of(context).pushNamed(QuranWordPages.route);
-                               },
-                               child: Card(
-                                 child:Container(
-                                   padding: EdgeInsets.all(6),
-                                   child: Column(
-                                     crossAxisAlignment: CrossAxisAlignment.center,
-                                     children: <Widget>[
-                                       Image.asset("images/shahihAfija.png", height: 80,width: 80,),
-                                       Text("কুরআনের শব্দ",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
-                                     ],
-                                   ),
-                                 ),
-                               ),
-                             ),
-                           ],
-                         ),
-                       ),
-                       Container(
-                         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                         child: Row(
-                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                           children: <Widget>[
-                             InkWell(
-                               onTap:(){
-                                 Navigator.of(context).push(MaterialPageRoute(
-                                     builder: (context)=>OjifaScreen()
-                                 ));
-                               },
-                               child: Card(
-                                 child:Container(
-                                   padding: EdgeInsets.all(6),
-                                   child: Column(
-                                     crossAxisAlignment: CrossAxisAlignment.center,
-                                     children: <Widget>[
-                                       Image.asset("images/kuranShorif.png", height: 80,width: 80,),
-                                       Text("ওজিফা", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
-                                     ],
-                                   ),
-                                 ),
-                               ),
-                             ),
-                             InkWell(
-                               onTap:(){
-                                 Navigator.of(context).push(MaterialPageRoute(
-                                     builder: (context)=>DoyaNameScren()
-                                 ));
-                               },
-                               child: Card(
-                                 child:Container(
-                                   padding: EdgeInsets.all(6),
-                                   child: Column(
-                                     crossAxisAlignment: CrossAxisAlignment.center,
-                                     children: <Widget>[
+                                      Image.asset("images/namjerShomoy.png", height: 80,width: 80,),
+                                      Text("নামাজের সময়সূচি",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            InkWell(
+                              onTap:(){
+                                Navigator.of(context).pushNamed(QuranWordPages.route);
+                              },
+                              child: Card(
+                                child:Container(
+                                  padding: EdgeInsets.all(6),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Image.asset("images/shahihAfija.png", height: 80,width: 80,),
+                                      Text("কুরআনের শব্দ",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            InkWell(
+                              onTap:(){
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context)=>OjifaScreen()
+                                ));
+                              },
+                              child: Card(
+                                child:Container(
+                                  padding: EdgeInsets.all(6),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Image.asset("images/kuranShorif.png", height: 80,width: 80,),
+                                      Text("ওজিফা", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            InkWell(
+                              onTap:(){
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context)=>DoyaNameScren()
+                                ));
+                              },
+                              child: Card(
+                                child:Container(
+                                  padding: EdgeInsets.all(6),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: <Widget>[
 
-                                       Image.asset("images/namjerShomoy.png", height: 80,width: 80,),
-                                       Text("দোয়া",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
-                                     ],
-                                   ),
-                                 ),
-                               ),
-                             ),
-                             InkWell(
-                               onTap:(){
-                                 Navigator.of(context).push(MaterialPageRoute(
-                                   builder: (context)=>NearByMosqueScreen()
-                                 ));
-                               },
-                               child: Card(
-                                 child:Container(
-                                   padding: EdgeInsets.all(6),
-                                   child: Column(
-                                     crossAxisAlignment: CrossAxisAlignment.center,
-                                     children: <Widget>[
-                                       Image.asset("images/shahihAfija.png", height: 80,width: 80,),
-                                       Text("NearBy Mosque",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
-                                     ],
-                                   ),
-                                 ),
-                               ),
-                             ),
-                           ],
-                         ),
-                       ),
-                       Container(
-                         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                         child: Row(
-                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                           children: <Widget>[
-                             InkWell(
-                               onTap:(){
-                                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>KiblaScreen()));
-                               },
-                               child: Card(
-                                 child:Container(
-                                   padding: EdgeInsets.all(6),
-                                   child: Column(
-                                     crossAxisAlignment: CrossAxisAlignment.center,
-                                     children: <Widget>[
-                                       Image.asset("images/kuranShorif.png", height: 80,width: 80,),
-                                       Text("কিবলা", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
-                                     ],
-                                   ),
-                                 ),
-                               ),
-                             ),
-                             InkWell(
-                               onTap:(){
-                                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>TasbihScreen()));
+                                      Image.asset("images/namjerShomoy.png", height: 80,width: 80,),
+                                      Text("দোয়া",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            InkWell(
+                              onTap:(){
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context)=>NearByMosqueScreen()
+                                ));
+                              },
+                              child: Card(
+                                child:Container(
+                                  padding: EdgeInsets.all(6),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Image.asset("images/shahihAfija.png", height: 80,width: 80,),
+                                      Text("NearBy Mosque",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            InkWell(
+                              onTap:(){
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>KiblaScreen()));
+                              },
+                              child: Card(
+                                child:Container(
+                                  padding: EdgeInsets.all(6),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Image.asset("images/kuranShorif.png", height: 80,width: 80,),
+                                      Text("কিবলা", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            InkWell(
+                              onTap:(){
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>TasbihScreen()));
 
-                               },
-                               child: Card(
-                                 child:Container(
-                                   padding: EdgeInsets.all(6),
-                                   child: Column(
-                                     crossAxisAlignment: CrossAxisAlignment.center,
-                                     children: <Widget>[
+                              },
+                              child: Card(
+                                child:Container(
+                                  padding: EdgeInsets.all(6),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: <Widget>[
 
-                                       Image.asset("images/namjerShomoy.png", height: 80,width: 80,),
-                                       Text("তাসবিহ",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
-                                     ],
-                                   ),
-                                 ),
-                               ),
-                             ),
-                             InkWell(
-                               onTap:(){
-                                 Navigator.of(context).push(MaterialPageRoute(
-                                   builder: (context)=>CalenderScreen()
-                                 ));
-                               },
-                               child: Card(
-                                 child:Container(
-                                   padding: EdgeInsets.all(6),
-                                   child: Column(
-                                     crossAxisAlignment: CrossAxisAlignment.center,
-                                     children: <Widget>[
-                                       Image.asset("images/shahihAfija.png", height: 80,width: 80,),
-                                       Text("Calender",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
-                                     ],
-                                   ),
-                                 ),
-                               ),
-                             ),
-                           ],
-                         ),
-                       ),
-                       Container(
-                         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                         child: Row(
-                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                           children: <Widget>[
-                             InkWell(
-                               onTap:(){
-                                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>HadisScreen()));
-                               },
-                               child: Card(
-                                 child:Container(
-                                   padding: EdgeInsets.all(6),
-                                   child: Column(
-                                     crossAxisAlignment: CrossAxisAlignment.center,
-                                     children: <Widget>[
-                                       Image.asset("images/kuranShorif.png", height: 80,width: 80,),
-                                       Text("হাদিস", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
-                                     ],
-                                   ),
-                                 ),
-                               ),
-                             ),
-                             InkWell(
-                               onTap:(){
-                                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>NiyomScreen()));
+                                      Image.asset("images/namjerShomoy.png", height: 80,width: 80,),
+                                      Text("তাসবিহ",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            InkWell(
+                              onTap:(){
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context)=>CalenderScreen()
+                                ));
+                              },
+                              child: Card(
+                                child:Container(
+                                  padding: EdgeInsets.all(6),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Image.asset("images/shahihAfija.png", height: 80,width: 80,),
+                                      Text("Calender",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            InkWell(
+                              onTap:(){
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>HadisScreen()));
+                              },
+                              child: Card(
+                                child:Container(
+                                  padding: EdgeInsets.all(6),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Image.asset("images/kuranShorif.png", height: 80,width: 80,),
+                                      Text("হাদিস", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            InkWell(
+                              onTap:(){
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>NiyomScreen()));
 
-                               },
-                               child: Card(
-                                 child:Container(
-                                   padding: EdgeInsets.all(6),
-                                   child: Column(
-                                     crossAxisAlignment: CrossAxisAlignment.center,
-                                     children: <Widget>[
+                              },
+                              child: Card(
+                                child:Container(
+                                  padding: EdgeInsets.all(6),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: <Widget>[
 
-                                       Image.asset("images/namjerShomoy.png", height: 80,width: 80,),
-                                       Text("নিয়ম কানুন",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
-                                     ],
-                                   ),
-                                 ),
-                               ),
-                             ),
-                             InkWell(
-                               onTap:(){
-                                 Navigator.of(context).push(MaterialPageRoute(
-                                     builder: (context)=>CommentQuestionScreen()
-                                 ));
-                               },
-                               child: Card(
-                                 child:Container(
-                                   padding: EdgeInsets.all(6),
-                                   child: Column(
-                                     crossAxisAlignment: CrossAxisAlignment.center,
-                                     children: <Widget>[
-                                       Image.asset("images/shahihAfija.png", height: 80,width: 80,),
-                                       Text("লাইভ কমেন্ট",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
-                                     ],
-                                   ),
-                                 ),
-                               ),
-                             ),
-                           ],
-                         ),
-                       ),
-                       Container(
-                         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                         child: Row(
-                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                           children: <Widget>[
-                             InkWell(
-                               onTap:(){
-                                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>BlogPages()));
-                               },
-                               child: Card(
-                                 child:Container(
-                                   padding: EdgeInsets.all(6),
-                                   child: Column(
-                                     crossAxisAlignment: CrossAxisAlignment.center,
-                                     children: <Widget>[
-                                       Image.asset("images/kuranShorif.png", height: 80,width: 80,),
-                                       Text("ইসলামিক ওয়েব", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
-                                     ],
-                                   ),
-                                 ),
-                               ),
-                             ),
-                             InkWell(
-                               onTap:(){
-                                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>NiyomScreen()));
+                                      Image.asset("images/namjerShomoy.png", height: 80,width: 80,),
+                                      Text("নিয়ম কানুন",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            InkWell(
+                              onTap:(){
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context)=>CommentQuestionScreen()
+                                ));
+                              },
+                              child: Card(
+                                child:Container(
+                                  padding: EdgeInsets.all(6),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Image.asset("images/shahihAfija.png", height: 80,width: 80,),
+                                      Text("লাইভ কমেন্ট",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            InkWell(
+                              onTap:(){
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>BlogPages()));
+                              },
+                              child: Card(
+                                child:Container(
+                                  padding: EdgeInsets.all(6),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Image.asset("images/kuranShorif.png", height: 80,width: 80,),
+                                      Text("ইসলামিক ওয়েব", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            InkWell(
+                              onTap:(){
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>NiyomScreen()));
 
-                               },
-                               child: Card(
-                                 child:Container(
-                                   padding: EdgeInsets.all(6),
-                                   child: Column(
-                                     crossAxisAlignment: CrossAxisAlignment.center,
-                                     children: <Widget>[
+                              },
+                              child: Card(
+                                child:Container(
+                                  padding: EdgeInsets.all(6),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: <Widget>[
 
-                                       Image.asset("images/namjerShomoy.png", height: 80,width: 80,),
-                                       Text("নিয়ম কানুন",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
-                                     ],
-                                   ),
-                                 ),
-                               ),
-                             ),
-                             InkWell(
-                               onTap:(){
-                                 Navigator.of(context).push(MaterialPageRoute(
-                                     builder: (context)=>CommentQuestionScreen()
-                                 ));
-                               },
-                               child: Card(
-                                 child:Container(
-                                   padding: EdgeInsets.all(6),
-                                   child: Column(
-                                     crossAxisAlignment: CrossAxisAlignment.center,
-                                     children: <Widget>[
-                                       Image.asset("images/shahihAfija.png", height: 80,width: 80,),
-                                       Text("লাইভ কমেন্ট",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
-                                     ],
-                                   ),
-                                 ),
-                               ),
-                             ),
-                           ],
-                         ),
-                       ),
-                     ],
-                   ),
+                                      Image.asset("images/namjerShomoy.png", height: 80,width: 80,),
+                                      Text("নিয়ম কানুন",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            InkWell(
+                              onTap:(){
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context)=>CommentQuestionScreen()
+                                ));
+                              },
+                              child: Card(
+                                child:Container(
+                                  padding: EdgeInsets.all(6),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Image.asset("images/shahihAfija.png", height: 80,width: 80,),
+                                      Text("লাইভ কমেন্ট",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),

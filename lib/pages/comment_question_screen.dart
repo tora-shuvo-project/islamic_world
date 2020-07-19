@@ -42,9 +42,28 @@ class _CommentQuestionScreenState extends State<CommentQuestionScreen> {
                     return Card(
                       child: InkWell(
                         onTap: (){
+
+                          CommentModels commentModels=CommentModels();
+                          commentModels.seen=snapshot.data[index].seen+1;
+                          commentModels.id=snapshot.data[index].id;
+                          commentModels.name=snapshot.data[index].name;
+                          commentModels.date=snapshot.data[index].date;
+                          commentModels.category=snapshot.data[index].category;
+                          commentModels.question=snapshot.data[index].question;
+
+                          FirestoreDatabaseHelper.UpdateFeedBack(commentModels).then((value){
+                            setState(() {
+                              print('update Sussessfull');
+                            });
+                          });
+
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context)=>CommentQuestionAnswerScreen(snapshot.data[index],)
-                          ));
+                            builder: (context)=>CommentQuestionAnswerScreen( snapshot.data[index],)
+                          )).then((value){
+                            setState(() {
+
+                            });
+                          });
                         },
                         child: Container(
                           padding: EdgeInsets.all(8),
@@ -65,7 +84,6 @@ class _CommentQuestionScreenState extends State<CommentQuestionScreen> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  Text('উত্তরঃ 0 টি'),
                                   Text('দেখা হয়েছেঃ ${snapshot.data[index].seen} বার')
                                 ],
                               ),

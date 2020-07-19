@@ -9,6 +9,8 @@ import 'package:share/share.dart';
 
 class CommentQuestionAnswerScreen extends StatefulWidget {
 
+  static final route='/comentQuestionAnswer';
+
   final CommentModels commentModels;
   CommentQuestionAnswerScreen(this.commentModels);
 
@@ -19,12 +21,36 @@ class CommentQuestionAnswerScreen extends StatefulWidget {
 
 class _CommentQuestionAnswerScreenState extends State<CommentQuestionAnswerScreen> {
 
+  int totalAns;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    FirestoreDatabaseHelper.getAllReplySpecifyQuestion(widget.commentModels.id).then((value){
+      setState(() {
+        totalAns=value.length;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('${widget.commentModels.category}'),
         actions: <Widget>[
+          IconButton(
+            icon:Icon(Icons.refresh,color:Colors.white),
+            onPressed: (){
+              FirestoreDatabaseHelper.getAllReplySpecifyQuestion(widget.commentModels.id).then((value){
+                setState(() {
+                  totalAns=value.length;
+                });
+              });
+            },
+
+          ),
           IconButton(
             icon: Icon(Icons.share,color: Colors.white,),
             tooltip: 'Share',
@@ -75,6 +101,20 @@ class _CommentQuestionAnswerScreenState extends State<CommentQuestionAnswerScree
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text('বিভাগঃ ${widget.commentModels.category}',style: TextStyle(
+                      fontSize: 16,
+                    ),),
+                  ],
+                )),
+          ),
+
+          Card(
+            child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(totalAns==null?'':'উত্তরঃ ${totalAns} টি',style: TextStyle(
                       fontSize: 16,
                     ),),
                     Text('সময়ঃ ${widget.commentModels.date}',style: TextStyle(
