@@ -686,7 +686,7 @@ child:   RotateAnimatedTextKit(
                   child: ListTile(
                     onTap: (){
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context)=>DoyaDetailsPage(doyaNameModels[index].id,doyaNameModels[index].name)
+                          builder: (context)=>DoyaDetailsPage(id:doyaNameModels[index].id , name: doyaNameModels[index].name,)
                       ));
                     },
                     title: Text('${doyaNameModels[index].name}'),
