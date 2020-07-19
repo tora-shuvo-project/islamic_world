@@ -58,7 +58,7 @@ class _CommentQuestionScreenState extends State<CommentQuestionScreen> {
                           });
 
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context)=>CommentQuestionAnswerScreen(snapshot.data[index],)
+                            builder: (context)=>CommentQuestionAnswerScreen( snapshot.data[index],)
                           )).then((value){
                             setState(() {
 

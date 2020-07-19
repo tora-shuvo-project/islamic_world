@@ -9,6 +9,8 @@ import 'package:share/share.dart';
 
 class CommentQuestionAnswerScreen extends StatefulWidget {
 
+  static final route='/comentQuestionAnswer';
+
   final CommentModels commentModels;
   CommentQuestionAnswerScreen(this.commentModels);
 
@@ -38,6 +40,17 @@ class _CommentQuestionAnswerScreenState extends State<CommentQuestionAnswerScree
       appBar: AppBar(
         title: Text('${widget.commentModels.category}'),
         actions: <Widget>[
+          IconButton(
+            icon:Icon(Icons.refresh,color:Colors.white),
+            onPressed: (){
+              FirestoreDatabaseHelper.getAllReplySpecifyQuestion(widget.commentModels.id).then((value){
+                setState(() {
+                  totalAns=value.length;
+                });
+              });
+            },
+
+          ),
           IconButton(
             icon: Icon(Icons.share,color: Colors.white,),
             tooltip: 'Share',
@@ -101,7 +114,7 @@ class _CommentQuestionAnswerScreenState extends State<CommentQuestionAnswerScree
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text('উত্তরঃ ${totalAns} টি',style: TextStyle(
+                    Text(totalAns==null?'':'উত্তরঃ ${totalAns} টি',style: TextStyle(
                       fontSize: 16,
                     ),),
                     Text('সময়ঃ ${widget.commentModels.date}',style: TextStyle(
