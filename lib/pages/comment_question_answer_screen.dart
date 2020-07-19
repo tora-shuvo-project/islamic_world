@@ -19,6 +19,19 @@ class CommentQuestionAnswerScreen extends StatefulWidget {
 
 class _CommentQuestionAnswerScreenState extends State<CommentQuestionAnswerScreen> {
 
+  int totalAns;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    FirestoreDatabaseHelper.getAllReplySpecifyQuestion(widget.commentModels.id).then((value){
+      setState(() {
+        totalAns=value.length;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,6 +88,20 @@ class _CommentQuestionAnswerScreenState extends State<CommentQuestionAnswerScree
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text('বিভাগঃ ${widget.commentModels.category}',style: TextStyle(
+                      fontSize: 16,
+                    ),),
+                  ],
+                )),
+          ),
+
+          Card(
+            child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text('উত্তরঃ ${totalAns} টি',style: TextStyle(
                       fontSize: 16,
                     ),),
                     Text('সময়ঃ ${widget.commentModels.date}',style: TextStyle(

@@ -7,7 +7,7 @@
    
    3.Ojifa 70% ok
    
-   4.Quran Meaning 100% ok
+   4.Quran Meaning 90% ok
    
    5.Tasbih 60 % ok
    
@@ -26,5 +26,7 @@
    12. Live Coments 95% ok
    
    13. Prayer Niyom 90% ok
+   
+   14. Notification 40% ok
 
 
