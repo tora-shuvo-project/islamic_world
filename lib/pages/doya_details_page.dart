@@ -1,4 +1,6 @@
 
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:searchtosu/FinalModels/doya_details_models.dart';
@@ -132,18 +134,41 @@ class _DoyaDetailsPageState extends State<DoyaDetailsPage> {
                               ]))
                       ),
                       doyaDetailsModels[index].niyom == null?Container(): Container(alignment: Alignment.center,
-                      child:SelectableText('${doyaDetailsModels[index].niyom}', style: TextStyle(fontSize: 20),) ,),
+                      child:
+                        SelectableText('${doyaDetailsModels[index].niyom}', style: TextStyle(fontSize: 20),),
+
+                      ),
                       SizedBox(height: 10,),
                       doyaDetailsModels[index].arabic == null?Container(): Container(alignment: Alignment.center,
                         child:
-                          SelectableText('${doyaDetailsModels[index].arabic}',style: TextStyle(fontSize: 17)),
+                         Row(
+                           children: <Widget>[
+                             Flexible(child: Text('${doyaDetailsModels[index].arabic}', maxLines: 100,style: TextStyle(fontSize: 17))),
+                             IconButton(icon: Icon(Icons.content_copy,), onPressed: (){
+                               setState(() {
+                                 Clipboard.setData(ClipboardData(text: "${doyaDetailsModels[index].arabic}"));
+                               });
+
+                             },)
+                           ],
+                         )
 
                       ),
                         //SelectableText('${doyaDetailsModels[index].arabic}',style: TextStyle(fontSize: 17)) ,),
                       SizedBox(height: 15,),
                       doyaDetailsModels[index].banglaTranslator == null?Container():Container(alignment: Alignment.center,
                         child:
-                          SelectableText('${doyaDetailsModels[index].banglaTranslator}',style: TextStyle(fontSize: 17)),
+                          Row(
+                            children: <Widget>[
+                              Flexible(child: Text('${doyaDetailsModels[index].banglaTranslator}',maxLines:100,overflow: TextOverflow.ellipsis,style: TextStyle(fontSize: 17))),
+                              IconButton(icon: Icon(Icons.content_copy), onPressed: (){
+                                setState(() {
+                                  Clipboard.setData(ClipboardData(text: "${doyaDetailsModels[index].banglaTranslator}"));
+                                });
+
+                              },)
+                            ],
+                          )
 
 
                         ),
@@ -151,7 +176,17 @@ class _DoyaDetailsPageState extends State<DoyaDetailsPage> {
                       SizedBox(height: 15,),
                       doyaDetailsModels[index].reference == null?Container():Container(alignment: Alignment.center,
                         child:
-                            SelectableText('${doyaDetailsModels[index].reference}'),
+                          Row(
+                            children: <Widget>[
+                              Flexible(child: Text('${doyaDetailsModels[index].reference}',maxLines:100,overflow: TextOverflow.ellipsis,)),
+                              IconButton(icon: Icon(Icons.content_copy), onPressed: (){
+                                setState(() {
+                                  Clipboard.setData(ClipboardData(text: "${doyaDetailsModels[index].banglaTranslator}"));
+                                });
+
+                              },)
+                            ],
+                          )
 
 
                        )
