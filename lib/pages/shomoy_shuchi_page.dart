@@ -5,11 +5,16 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import 'package:searchtosu/FinalModels/prayer_time_models.dart';
 import 'package:searchtosu/helpers/database_helper.dart';
+import 'package:searchtosu/helpers/provider_helpers.dart';
+import 'package:searchtosu/pages/location_page.dart';
+import 'package:searchtosu/utils/utils.dart';
 
 class ShomoyShuchi extends StatefulWidget {
   static final route='/shomoyShuchi';
@@ -23,6 +28,11 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
 
   PrayerTimeModels prayerTimeModels;
   String dayName,arabyDate,englishDate;
+  String zila;
+  LatLng _center;
+  int dohor,asor,magrib,esa,aoyabin1;
+  String johorname='';
+  String esaname;
 
   int fojorHour,johaurHour,asorHour,magribHour,esaHour,sunriseHour,israkHour,aoyabinHour;
   int fojorMinute,johaurMinute,asorMinute,magribMinute,esaMinute,sunriseMinute,israkMinute,aoyabinMinute;
@@ -40,7 +50,6 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
   String asortoday='';
   String magribtoday='';
   String esatoday='';
-
 
   Widget _appBar(){
     return Container(
@@ -71,12 +80,28 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
                         color: Colors.white, fontSize: 20
                       ), ),
                     ),
-                    Row(
-                      children: <Widget>[
-                        Icon(Icons.location_on, color: Colors.white,),
-                        Text("|", style: TextStyle(color: Colors.white, fontSize: 17),),
-                        Text("DHAKA", style: TextStyle(color: Colors.white, fontSize: 17),),
-                      ],
+                    InkWell(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context)=>LocationPage(_center)
+                        )).then((_){
+                          setState(() {
+                            Utils.getZilaNameFromPreference().then((value){
+                              setState(() {
+                                zila=value;
+                                _inital();
+                              });
+                            });
+                          });
+                        });
+                      },
+                      child: Row(
+                        children: <Widget>[
+                          Icon(Icons.location_on, color: Colors.white,),
+                          Text("|", style: TextStyle(color: Colors.white, fontSize: 17),),
+                          Text("$zila", style: TextStyle(color: Colors.white, fontSize: 17),),
+                        ],
+                      ),
                     )
                   ],
                 ),
@@ -93,11 +118,23 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
     // TODO: implement initState
     super.initState();
 
+    _inital();
+  }
+
+  _inital(){
 
     var _today = new HijriCalendar.now();
     arabyDate=_today.toFormat("dd MMMM,yyyy");
     englishDate=DateFormat('dd MMMM,yyyy').format(DateTime.now());
     dayName=DateFormat('EEEE').format(DateTime.now());
+
+
+    Provider.of<LocationProvider>(context,listen: false).getDeviceCurrentLocation().then((position){
+      setState(() {
+        _center=LatLng(position.latitude,position.longitude);
+      });
+    });
+
 
     int date1 = (DateTime.now().hour);
     DateTime dateTime=DateTime.now();
@@ -124,11 +161,269 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
         esaHour=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.isha}').hour;
         sunriseHour=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.fajr_end}').hour;
 
-        fojorMinute=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.fajr_start}').minute;
+        Utils.getZilaNameFromPreference().then((demoZila){
+          setState(() {
+
+            zila=demoZila;
+            print(demoZila);
+
+            if((demoZila.trim()=='Gazipur')||(demoZila.trim().trim()=='Shariatpur')||(demoZila.trim()=='Madaripur')||(demoZila.trim()=='Pirojpur')||(demoZila.trim()=='Barisal')||(demoZila.trim()=='Jhalakati')||(demoZila.trim()=='Barguna')){
+
+
+              fojorMinute=(DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.fajr_start}').minute)+1;
+              magribMinute=(DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.magrib}').minute)+1;
+
+              if(fojorMinute>60){
+                fojorMinute=fojorMinute-60;
+                fojorHour=fojorHour+1;
+              }
+              
+              if(magribMinute>60){
+                magribMinute=magribMinute-60;
+                magribHour=magribHour+1;
+              }
+
+            }else if((demoZila.trim()=='Mymensingh')||(demoZila.trim()=='Tangail')||(demoZila.trim()=='Bagerhat')||(demoZila.trim()=='Jamalpur')||(demoZila.trim()=='Sherpur')||(demoZila.trim()=='Manikganj')){
+
+
+              fojorMinute=(DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.fajr_start}').minute)+2;
+              magribMinute=(DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.magrib}').minute)+2;
+
+              if(fojorMinute>60){
+                fojorMinute=fojorMinute-60;
+                fojorHour=fojorHour+1;
+              }
+
+              if(magribMinute>60){
+                magribMinute=magribMinute-60;
+                magribHour=magribHour+1;
+              }
+
+            }else if((demoZila.trim()=='Faridpur')||(demoZila.trim()=='Gopalganj')||(demoZila.trim()=='Sirajganj')||(demoZila.trim()=='Narail')||(demoZila.trim()=='Khulna')){
+
+              fojorMinute=(DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.fajr_start}').minute)+3;
+              magribMinute=(DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.magrib}').minute)+3;
+
+              if(fojorMinute>60){
+                fojorMinute=fojorMinute-60;
+                fojorHour=fojorHour+1;
+              }
+
+              if(magribMinute>60){
+                magribMinute=magribMinute-60;
+                magribHour=magribHour+1;
+              }
+
+            }else if((demoZila.trim()=='Magura')||(demoZila.trim()=='Rajbari')||(demoZila.trim()=='Pabna')){
+
+              fojorMinute=(DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.fajr_start}').minute)+4;
+              magribMinute=(DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.magrib}').minute)+4;
+
+              if(fojorMinute>60){
+                fojorMinute=fojorMinute-60;
+                fojorHour=fojorHour+1;
+              }
+
+              if(magribMinute>60){
+                magribMinute=magribMinute-60;
+                magribHour=magribHour+1;
+              }
+
+            }else if((demoZila.trim()=='Satkhira')||(demoZila.trim()=='Kushtia')||(demoZila.trim()=='Jessore')||(demoZila.trim()=='Rangpur')||(demoZila.trim()=='Jhenaidah')){
+
+              fojorMinute=(DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.fajr_start}').minute)+6;
+              magribMinute=(DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.magrib}').minute)+6;
+              if(fojorMinute>60){
+                fojorMinute=fojorMinute-60;
+                fojorHour=fojorHour+1;
+              }
+
+              if(magribMinute>60){
+                magribMinute=magribMinute-60;
+                magribHour=magribHour+1;
+              }
+
+            }else if((demoZila.trim()=='Nilphamari')||(demoZila.trim()=='Chuadanga')||(demoZila.trim()=='Khagrachari')||(demoZila.trim()=='Gaibandha')){
+
+              fojorMinute=(DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.fajr_start}').minute)+6;
+              magribMinute=(DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.magrib}').minute)+6;
+
+              if(fojorMinute>60){
+                fojorMinute=fojorMinute-60;
+                fojorHour=fojorHour+1;
+              }
+
+              if(magribMinute>60){
+                magribMinute=magribMinute-60;
+                magribHour=magribHour+1;
+              }
+
+            }else if((demoZila.trim()=='Rajshahi')||(demoZila.trim()=='Bogra')||(demoZila.trim()=='Meherpur')||(demoZila.trim()=='Lalmonirhat')){
+
+              fojorMinute=(DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.fajr_start}').minute)+7;
+              magribMinute=(DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.magrib}').minute)+7;
+
+              if(fojorMinute>60){
+                fojorMinute=fojorMinute-60;
+                fojorHour=fojorHour+1;
+              }
+
+              if(magribMinute>60){
+                magribMinute=magribMinute-60;
+                magribHour=magribHour+1;
+              }
+
+            }else if((demoZila.trim()=='Nawabganj')||(demoZila.trim()=='Naogaon')||(demoZila.trim()=='Natore')){
+
+              fojorMinute=(DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.fajr_start}').minute)+8;
+              magribMinute=(DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.magrib}').minute)+8;
+
+              if(fojorMinute>60){
+                fojorMinute=fojorMinute-60;
+                fojorHour=fojorHour+1;
+              }
+
+              if(magribMinute>60){
+                magribMinute=magribMinute-60;
+                magribHour=magribHour+1;
+              }
+
+            }else if((demoZila.trim().trim()=='Dinajpur')||(demoZila.trim().trim()=='Thakurgaon')||(demoZila.trim().trim()=='Panchagarh')){
+
+
+              print('dinajpur method called');
+              fojorMinute=(DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.fajr_start}').minute)+6;
+              magribMinute=(DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.magrib}').minute)+11;
+
+              if(fojorMinute>60){
+                fojorMinute=fojorMinute-60;
+                fojorHour=fojorHour+1;
+              }
+
+              if(magribMinute>60){
+                magribMinute=magribMinute-60;
+                magribHour=magribHour+1;
+              }
+
+            }else if((demoZila.trim()=='Narsingdi')||(demoZila.trim()=='Narayanganj')||(demoZila.trim()=='Munshiganj')||(demoZila.trim()=='Chandpur')){
+
+              fojorMinute=(DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.fajr_start}').minute)-1;
+              magribMinute=(DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.magrib}').minute)-1;
+
+              if(fojorMinute>60){
+                fojorMinute=fojorMinute-60;
+                fojorHour=fojorHour+1;
+              }
+
+              if(magribMinute>60){
+                magribMinute=magribMinute-60;
+                magribHour=magribHour+1;
+              }
+
+            }else if((demoZila.trim()=='Kishoreganj')||(demoZila.trim()=='Patuakhali')||(demoZila.trim()=='Bhola')||(demoZila.trim()=='Lakshmipur')){
+
+              fojorMinute=(DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.fajr_start}').minute)-2;
+              magribMinute=(DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.magrib}').minute)-2;
+
+              if(fojorMinute>60){
+                fojorMinute=fojorMinute-60;
+                fojorHour=fojorHour+1;
+              }
+
+              if(magribMinute>60){
+                magribMinute=magribMinute-60;
+                magribHour=magribHour+1;
+              }
+
+            }else if((demoZila.trim()=='Netrakona')||(demoZila.trim()=='Comilla')||(demoZila.trim()=='Brahmanbaria')){
+
+              fojorMinute=(DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.fajr_start}').minute)-3;
+              magribMinute=(DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.magrib}').minute)-3;
+
+              if(fojorMinute>60){
+                fojorMinute=fojorMinute-60;
+                fojorHour=fojorHour+1;
+              }
+
+              if(magribMinute>60){
+                magribMinute=magribMinute-60;
+                magribHour=magribHour+1;
+              }
+
+            }else if((demoZila.trim()=='Noakhali')||(demoZila.trim()=='Feni')||(demoZila.trim()=='Sunamganj')||(demoZila.trim()=='Habiganj')){
+
+              fojorMinute=(DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.fajr_start}').minute)-4;
+              magribMinute=(DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.magrib}').minute)-4;
+
+              if(fojorMinute>60){
+                fojorMinute=fojorMinute-60;
+                fojorHour=fojorHour+1;
+              }
+
+              if(magribMinute>60){
+                magribMinute=magribMinute-60;
+                magribHour=magribHour+1;
+              }
+
+            }else if((demoZila.trim()=='Chittagong')){
+
+              fojorMinute=(DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.fajr_start}').minute)-5;
+              magribMinute=(DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.magrib}').minute)-5;
+              if(fojorMinute>60){
+                fojorMinute=fojorMinute-60;
+                fojorHour=fojorHour+1;
+              }
+
+              if(magribMinute>60){
+                magribMinute=magribMinute-60;
+                magribHour=magribHour+1;
+              }
+
+            }else if((demoZila.trim()=='Cox\'s Bazar')||(demoZila.trim()=='Sylhet')||(demoZila.trim()=='Moulvibazar')){
+
+              fojorMinute=(DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.fajr_start}').minute)-6;
+              magribMinute=(DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.magrib}').minute)-6;
+
+              if(fojorMinute>60){
+                fojorMinute=fojorMinute-60;
+                fojorHour=fojorHour+1;
+              }
+
+              if(magribMinute>60){
+                magribMinute=magribMinute-60;
+                magribHour=magribHour+1;
+              }
+
+            }else if((demoZila.trim()=='Khagrachari')||(demoZila.trim()=='Bandarban')||(demoZila.trim()=='Parbattya Chattagram')){
+
+              fojorMinute=(DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.fajr_start}').minute)-7;
+              magribMinute=(DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.magrib}').minute)-7;
+
+              if(fojorMinute>60){
+                fojorMinute=fojorMinute-60;
+                fojorHour=fojorHour+1;
+              }
+
+              if(magribMinute>60){
+                magribMinute=magribMinute-60;
+                magribHour=magribHour+1;
+              }
+
+            }else{
+
+              print('default method call');
+              fojorMinute=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.fajr_start}').minute;
+              magribMinute=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.magrib}').minute;
+
+            }
+          });
+        });
+
+
+
         israkMinute=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.israk}').minute;
         johaurMinute=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.dhuhr}').minute;
         asorMinute=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.asr}').minute;
-        magribMinute=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.magrib}').minute;
         aoyabinMinute=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.aoyabin}').minute;
         esaMinute=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.isha}').minute;
         sunriseMinute=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.fajr_end}').minute;
@@ -136,87 +431,116 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
 
         _timeString = "${DateTime.now().hour} ঘন্টা ${DateTime.now().minute} মিনিট ${DateTime.now().second} পর";
 
-        print('$date1');
-        print('$fojorHour');
-        print('$johaurHour');
-        print('$asorHour');
-        print('$magribHour');
-        print('$esaHour');
+
+        if(johaurHour>12){
+          dohor=johaurHour-12;
+          johorname='$dohor:$johaurMinute PM';
+        }else if(johaurHour==12){
+          dohor=johaurHour;
+          johorname='$dohor:$johaurMinute PM';
+        }
+        else{
+          dohor=johaurHour;
+          johorname='$dohor:$johaurMinute AM';
+        }
+
+        if(asorHour>12){
+          asor=asorHour-12;
+        }
+        if(magribHour>12){
+          magrib=magribHour-12;
+        }
+        if(esaHour>12){
+          esa=esaHour-12;
+          esaname='$esa:$esaMinute PM';
+        }else{
+          esa=esaHour;
+          esaname='$esa:$esaMinute AM';
+        }
+        if(aoyabinHour>12){
+          aoyabin1=aoyabinHour-12;
+        }
+
+
+
 
         if(date1>=fojorHour&&date1<sunriseHour){
 
-            print('Fojor');
-            currentPrayerTime='ফজর';
-            nextPrayerName='নামাজের জন্য হারাম সময়';
-            nextPrayerTime='${prayermodels.fajr_end}';
-            Timer.periodic(Duration(seconds:1), (Timer t)=>_getCurrentTime(dateTime.year,dateTime.month,dateTime.day,sunriseHour,sunriseMinute,esaHour,fojorHour));
+          print('Fojor');
+          currentPrayerTime='ফজর';
+          nextPrayerName='নামাজের জন্য হারাম সময়';
+          nextPrayerTime='${fojorHour}:${fojorMinute} AM';
+          Timer.periodic(Duration(seconds:1), (Timer t)=>_getCurrentTime(dateTime.year,dateTime.month,dateTime.day,sunriseHour,sunriseMinute,esaHour,fojorHour));
 
         }else if(date1>=sunriseHour&&date1<israkHour){
 
-            print('Israk Time');
-            currentPrayerTime='নামাজের জন্য হারাম সময়';
-            nextPrayerName='ইশরাক';
-            nextPrayerTime='${prayermodels.dhuhr}';
-            Timer.periodic(Duration(seconds:1), (Timer t)=>_getCurrentTime(dateTime.year,dateTime.month,dateTime.day,israkHour,israkMinute,esaHour,fojorHour));
+          print('Israk Time');
+          currentPrayerTime='নামাজের জন্য হারাম সময়';
+          nextPrayerName='ইশরাক';
+          nextPrayerTime='${israkHour}:${israkMinute} AM';
+          Timer.periodic(Duration(seconds:1), (Timer t)=>_getCurrentTime(dateTime.year,dateTime.month,dateTime.day,israkHour,israkMinute,esaHour,fojorHour));
 
         }else if(date1>=israkHour&&date1<johaurHour){
 
-            print('Israk Time');
-            currentPrayerTime='ইশরাক';
-            nextPrayerName='যহর';
-            nextPrayerTime='${prayermodels.dhuhr}';
-            Timer.periodic(Duration(seconds:1), (Timer t)=>_getCurrentTime(dateTime.year,dateTime.month,dateTime.day,johaurHour,johaurMinute,esaHour,fojorHour));
+          print('Israk Time');
+          currentPrayerTime='ইশরাক';
+          nextPrayerName='যহর';
+          nextPrayerTime='$johorname';
+          Timer.periodic(Duration(seconds:1), (Timer t)=>_getCurrentTime(dateTime.year,dateTime.month,dateTime.day,johaurHour,johaurMinute,esaHour,fojorHour));
 
         }else if(date1>=johaurHour&&date1<asorHour){
 
-            print('johar');
-            currentPrayerTime='যহর';
-            nextPrayerName='আসর';
-            nextPrayerTime='${prayermodels.asr}';
-            Timer.periodic(Duration(seconds:1), (Timer t)=>_getCurrentTime(dateTime.year,dateTime.month,dateTime.day,asorHour,asorMinute,esaHour,fojorHour));
+          print('johar');
+          currentPrayerTime='যহর';
+          nextPrayerName='আসর';
+          nextPrayerTime='${asor}:$asorMinute PM';
+          Timer.periodic(Duration(seconds:1), (Timer t)=>_getCurrentTime(dateTime.year,dateTime.month,dateTime.day,asorHour,asorMinute,esaHour,fojorHour));
 
         }else if(date1>=asorHour&&date1<magribHour){
 
-            print('asor');
-            currentPrayerTime='আসর';
-            nextPrayerName='মাগরিব';
-            nextPrayerTime='${prayermodels.magrib}';
-            Timer.periodic(Duration(seconds:1), (Timer t)=>_getCurrentTime(dateTime.year,dateTime.month,dateTime.day,magribHour,magribMinute,esaHour,fojorHour));
+          print('asor');
+          currentPrayerTime='আসর';
+          nextPrayerName='মাগরিব';
+          nextPrayerTime='${magrib}:$magribMinute PM';
+          Timer.periodic(Duration(seconds:1), (Timer t)=>_getCurrentTime(dateTime.year,dateTime.month,dateTime.day,magribHour,magribMinute,esaHour,fojorHour));
 
 
         }else if(date1>=magribHour&&date1<aoyabinHour){
 
-            print('Magrib');
-            currentPrayerTime='মাগরিব';
-            nextPrayerName='আওয়াবিন';
-            nextPrayerTime='${prayermodels.isha}';
-            Timer.periodic(Duration(seconds:1), (Timer t)=>_getCurrentTime(dateTime.year,dateTime.month,dateTime.day,aoyabinHour,aoyabinMinute,esaHour,fojorHour));
+          print('Magrib');
+          currentPrayerTime='মাগরিব';
+          nextPrayerName='আওয়াবিন';
+          nextPrayerTime='${aoyabin1}:$aoyabinMinute PM';
+          Timer.periodic(Duration(seconds:1), (Timer t)=>_getCurrentTime(dateTime.year,dateTime.month,dateTime.day,aoyabinHour,aoyabinMinute,esaHour,fojorHour));
 
 
         }else if(date1>=aoyabinHour&&date1<esaHour){
 
-            print('Magrib');
-            currentPrayerTime='আওয়াবিন';
-            nextPrayerName='এশা';
-            nextPrayerTime='${prayermodels.isha}';
-            Timer.periodic(Duration(seconds:1), (Timer t)=>_getCurrentTime(dateTime.year,dateTime.month,dateTime.day,esaHour,esaMinute,esaHour,fojorHour));
+          print('Magrib');
+          currentPrayerTime='আওয়াবিন';
+          nextPrayerName='এশা';
+          nextPrayerTime='$esaname';
+          Timer.periodic(Duration(seconds:1), (Timer t)=>_getCurrentTime(dateTime.year,dateTime.month,dateTime.day,esaHour,esaMinute,esaHour,fojorHour));
 
 
         }else{
 
-            print('Esa');
-            currentPrayerTime='এশা';
-            nextPrayerName='ফজর';
-            nextPrayerTime='${prayermodels.fajr_start}';
+          print('Esa');
+          currentPrayerTime='এশা';
+          nextPrayerName='ফজর';
+          nextPrayerTime='${fojorHour}:$fojorMinute';
 
-            int fjrHr=fojorHour;
-              Timer.periodic(Duration(seconds:1), (Timer t)=>_getCurrentTime(dateTime.year,dateTime.month,dateTime.day,fjrHr,fojorMinute,esaHour,fojorHour));
+          int fjrHr=fojorHour;
+          Timer.periodic(Duration(seconds:1), (Timer t)=>_getCurrentTime(dateTime.year,dateTime.month,dateTime.day,fjrHr,fojorMinute,esaHour,fojorHour));
 
-              print('${fojorHour+24}');
-            }
+        }
 
       });
     });
+
+
+
+
   }
 
   //format(Duration d) => d.toString().split('.').first.padLeft(8, "0");
@@ -339,7 +663,7 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(top: 210,left: 10,right: 10),
+              margin: EdgeInsets.only(top: 230,left: 10,right: 10),
               child: ClipRRect(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
                 child: Container(
@@ -372,7 +696,7 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
                           Text("Fazar"),
                           Row(
                             children: <Widget>[
-                              Text(fajartoday),
+                              Text('${fojorHour}:$fojorMinute AM'),
                               IconButton(icon: Icon(Icons.notifications), onPressed: (){}),
 
                             ],
@@ -390,7 +714,7 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
                           Text("Dhuhr"),
                           Row(
                             children: <Widget>[
-                              Text(dohortoday),
+                              Text(johorname),
                               IconButton(icon: Icon(Icons.notifications), onPressed: (){}),
 
                             ],
@@ -408,7 +732,7 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
                           Text("Asr"),
                           Row(
                             children: <Widget>[
-                              Text(asortoday),
+                              Text('$asor:$asorMinute PM'),
                               IconButton(icon: Icon(Icons.notifications), onPressed: (){}),
 
                             ],
@@ -426,7 +750,7 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
                           Text("Magrib"),
                           Row(
                             children: <Widget>[
-                              Text(magribtoday),
+                              Text('$magrib:$magribMinute PM'),
                               IconButton(icon: Icon(Icons.notifications), onPressed: (){}),
 
                             ],
@@ -444,7 +768,7 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
                           Text("Aoyabin"),
                           Row(
                             children: <Widget>[
-                              Text(aoyabin),
+                              Text('$aoyabin1:$aoyabinMinute PM'),
                               IconButton(icon: Icon(Icons.notifications), onPressed: (){}),
 
                             ],
@@ -462,7 +786,7 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
                           Text("Isha"),
                           Row(
                             children: <Widget>[
-                              Text(esatoday),
+                              Text('$esaname'),
                               IconButton(icon: Icon(Icons.notifications), onPressed: (){}),
 
                             ],
@@ -486,4 +810,5 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
 
     );
   }
+
 }

@@ -223,7 +223,6 @@ class _HomeScreenState extends State<HomeScreen> {
       print(payLoad);
     }
 
-    // we can set navigator to navigate another screen
   }
   void initializing() async {
 

@@ -10,7 +10,8 @@ import 'package:matrix_gesture_detector/matrix_gesture_detector.dart';
 class QuranWordPagesDetailsScreen extends StatefulWidget {
 
   final QuranWordModels quranWordModels;
-  QuranWordPagesDetailsScreen(this.quranWordModels);
+  final int slno;
+  QuranWordPagesDetailsScreen(this.quranWordModels,this.slno);
 
   @override
   _QuranWordPagesDetailsScreenState createState() => _QuranWordPagesDetailsScreenState();
@@ -43,7 +44,7 @@ class _QuranWordPagesDetailsScreenState extends State<QuranWordPagesDetailsScree
 
         try {
           /// setting filename
-          final filename = 'quran_word${widget.quranWordModels.serial_no}.png';
+          final filename = 'quran_word${widget.slno}.png';
 
           /// getting application doc directory's path in dir variable
           String dir = (await getExternalStorageDirectory()).path;

@@ -1,23 +1,23 @@
 # Islamic Application With Bangla Content
 
 ## Fetchers
-   1.Prayer Time. 80% ok
+   1.Prayer Time. 95% ok
    
    2.Quran Sorif 95% ok
    
-   3.Ojifa 50% ok
+   3.Ojifa 70% ok
    
    4.Quran Meaning 100% ok
    
    5.Tasbih 60 % ok
    
-   6.Doya 70% ok
+   6.Doya 80% ok
    
    7.Calender 90% ok
    
-   8.Nearest Mosque 80% ok
+   8.Nearest Mosque 100% ok
    
-   9.Kibla 95% ok
+   9.Kibla 100% ok
    
    10.Blog List 100% ok
    
