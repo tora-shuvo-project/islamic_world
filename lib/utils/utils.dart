@@ -30,8 +30,20 @@ class Utils{
     final prefs=await SharedPreferences.getInstance();
     return prefs.getString('fontName')??'Maddina';
   }
-  static String getFormattedDate(String formate)=>
-      DateFormat(formate).format(DateTime.now());
+
+  static Future<void> saveZilaFromPreference(String zilaname)async{
+    try{
+      final prefs=await SharedPreferences.getInstance();
+      prefs.setString('zilaname', zilaname);
+    }catch(error){
+      throw error;
+    }
+  }
+
+  static Future<String> getZilaNameFromPreference()async{
+    final prefs=await SharedPreferences.getInstance();
+    return prefs.getString('zilaname')??'Dhaka';
+  }
 
 }
 

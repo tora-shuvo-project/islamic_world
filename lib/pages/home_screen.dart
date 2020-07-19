@@ -26,10 +26,12 @@ import 'package:searchtosu/pages/quran_word_pages.dart';
 import 'package:searchtosu/pages/shomoy_shuchi_page.dart';
 import 'package:searchtosu/pages/sura_list_page.dart';
 import 'package:searchtosu/pages/tasbih_page.dart';
+import 'package:searchtosu/utils/utils.dart';
 
 class HomeScreen extends StatefulWidget {
 
   static final route='/home';
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -39,6 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
   String banglaDate,arabyDate,englishDate;
+  String zilaName;
 
   PrayerTimeModels prayerTimeModels;
   int date1;
@@ -76,20 +79,30 @@ class _HomeScreenState extends State<HomeScreen> {
                     onTap: (){
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (context)=>LocationPage(_center)
-                      ));
+                      )).then((_){
+                        setState(() {
+                          Utils.getZilaNameFromPreference().then((value){
+                            zilaName=value;
+                          });
+                        });
+                      });
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        Icon(Icons.menu,color:Color(0xff06AB00)),
-                        Text("আল-কোরআন ও বিভিন্ন দোয়া ", style: TextStyle(color:Color(0xff06AB00), fontSize: 17),),
-                        Row(
-                          children: <Widget>[
-                            Icon(Icons.location_on,color:Color(0xff06AB00),),
-                            Text("|",style: TextStyle(color:Color(0xff06AB00), fontSize: 17),),
-                            Text("ঢাকা",style: TextStyle(color:Color(0xff06AB00), fontSize: 17), )
-                          ],
+                        Expanded(child: Icon(Icons.menu,color:Color(0xff06AB00))),
+                        Expanded(flex:4,child: FittedBox(child: Text("আল-কোরআন ও বিভিন্ন দোয়া ", style: TextStyle(color:Color(0xff06AB00), fontSize: 17),))),
+                        Expanded(flex:2,
+                          child: FittedBox(
+                            child: Row(
+                              children: <Widget>[
+                                Icon(Icons.location_on,color:Color(0xff06AB00),),
+                                Text("|",style: TextStyle(color:Color(0xff06AB00), fontSize: 17),),
+                                Text(zilaName,style: TextStyle(color:Color(0xff06AB00), fontSize: 17), )
+                              ],
+                            ),
+                          ),
                         ),
 
 
@@ -179,6 +192,12 @@ class _HomeScreenState extends State<HomeScreen> {
     Provider.of<LocationProvider>(context,listen: false).getDeviceCurrentLocation().then((position){
       setState(() {
         _center=LatLng(position.latitude,position.longitude);
+      });
+    });
+
+    Utils.getZilaNameFromPreference().then((value) {
+      setState(() {
+        zilaName=value;
       });
     });
 

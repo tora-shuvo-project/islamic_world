@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:searchtosu/FinalModels/prayer_time_models.dart';
 import 'package:searchtosu/helpers/database_helper.dart';
 import 'package:searchtosu/pages/home_screen.dart';
+import 'package:searchtosu/utils/utils.dart';
 
 class SplashScreen extends StatefulWidget {
 
@@ -21,6 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
   int fojorHour,johaurHour,asorHour,magribHour,esaHour,sunriseHour;
   int date1;
   PrayerTimeModels prayerTimeModels;
+  String zilaName;
 
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   AndroidInitializationSettings androidInitializationSettings;
@@ -48,6 +50,10 @@ class _SplashScreenState extends State<SplashScreen> {
     });
 
     initializing();
+
+    Utils.getZilaNameFromPreference().then((value){
+      zilaName=value;
+    });
   }
 
   void initializing() async {
