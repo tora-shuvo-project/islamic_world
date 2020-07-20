@@ -82,14 +82,6 @@ class _DoyaDetailsPageState extends State<DoyaDetailsPage> {
 
                 Row(
                   children: <Widget>[
-                IconButton(icon: Icon(Icons.content_copy, color: Colors.white,), onPressed: (){
-                  setState(() {
-                    Clipboard.setData(ClipboardData(text: "${widget.doyaDetailsModels.niyom}\n"
-                        "${widget.doyaDetailsModels.arabic}\n${widget.doyaDetailsModels.banglaTranslator}"
-                        "\n${widget.doyaDetailsModels.reference}"));
-                  });
-
-              },),
               IconButton(icon: Icon(Icons.share, color: Colors.white,), onPressed:(){
                 setState(() {
                   Share.share(' ${widget.doyaDetailsModels.niyom}\n ${widget.doyaDetailsModels.arabic}'
@@ -120,6 +112,7 @@ class _DoyaDetailsPageState extends State<DoyaDetailsPage> {
                 Container(
                 padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                 child: Container(
+                  color: Colors.green.withOpacity(.1),
                   padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
                   child: Column(
                     children: <Widget>[

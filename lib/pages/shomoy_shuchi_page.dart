@@ -668,42 +668,44 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
               child: Container(
                 child: Column(
                   children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Text("পরবর্তি ওয়াক্ত",style: TextStyle(fontSize: 17,color: Colors.white),),
-                            Row(
-                              children: <Widget>[
-                                Text(nextPrayerName, style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),),
-                                SizedBox(width: 10,),
-                                Text(nextPrayerTime,style: TextStyle(fontSize: 20,color: Colors.white),),
+                    FittedBox(
+                      child: Row(
+                        children: <Widget>[
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Text("পরবর্তি ওয়াক্ত",style: TextStyle(fontSize: 17,color: Colors.white),),
+                              Row(
+                                children: <Widget>[
+                                  Text(nextPrayerName, style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),),
+                                  SizedBox(width: 10,),
+                                  Text(nextPrayerTime,style: TextStyle(fontSize: 20,color: Colors.white),),
 
 
-                              ],
-                            ),
-                            SizedBox(height: 10,),
-                            Text("$_timeString",style: TextStyle(fontSize: 17,color: Colors.white),),
-                            //    VerticalDivider(width: 2,thickness: 2, color: Colors.white,),
-                            SizedBox(height: 10,),
+                                ],
+                              ),
+                              SizedBox(height: 10,),
+                              Text("$_timeString",style: TextStyle(fontSize: 17,color: Colors.white),),
+                              //    VerticalDivider(width: 2,thickness: 2, color: Colors.white,),
+                              SizedBox(height: 10,),
 
-                          ],
-                        ),
-                        SizedBox(width: 20,),
-                        Container(
-                          width: 2,
-                          height: 100,
-                          color: Colors.white,
-                        ),
-                        SizedBox(width: 20,),
-                        Column(
-                          children: <Widget>[
-                            Text("বর্তমান ওয়াক্ত",style: TextStyle(fontSize: 17,color: Colors.white),),
-                            Text(currentPrayerTime, style: TextStyle(color: Colors.white,fontSize: 30, fontWeight: FontWeight.bold),)
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                          SizedBox(width: 20,),
+                          Container(
+                            width: 2,
+                            height: 100,
+                            color: Colors.white,
+                          ),
+                          SizedBox(width: 20,),
+                          Column(
+                            children: <Widget>[
+                              Text("বর্তমান ওয়াক্ত",style: TextStyle(fontSize: 17,color: Colors.white),),
+                              Text(currentPrayerTime, style: TextStyle(color: Colors.white,fontSize: 30, fontWeight: FontWeight.bold),)
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
 
                     Row(
