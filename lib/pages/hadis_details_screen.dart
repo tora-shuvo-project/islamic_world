@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:searchtosu/FinalModels/hadis_models.dart';
+import 'package:searchtosu/pages/doya_subcategory_screen.dart';
 import 'package:share/share.dart';
 
 class HadisDetailsScreen extends StatelessWidget {
@@ -33,7 +34,7 @@ class HadisDetailsScreen extends StatelessWidget {
                     Navigator.of(context).pop();
                   }),
                   FittedBox(
-                    child: Text('Hadis: ${hadisModels.hadisNo}',style:  TextStyle(
+                    child: Text('হাদিসঃ ${convertEngToBangla(hadisModels.hadisNo)}',style:  TextStyle(
                         color: Colors.white, fontSize: 20
                     ), ),
                   ),

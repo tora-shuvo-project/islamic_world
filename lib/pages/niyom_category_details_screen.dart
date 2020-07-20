@@ -22,7 +22,7 @@ class _NiyomCategoryDetailsScreenState extends State<NiyomCategoryDetailsScreen>
 
               padding: EdgeInsets.all(16),
               child: Text('${widget.niyomModels.description}',style: TextStyle(
-                fontSize: 20,
+                fontSize: 18,
               ),))
         ],
       ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:searchtosu/FinalModels/comment_models.dart';
 import 'package:searchtosu/helpers/firestore_database_helper.dart';
+import 'package:searchtosu/pages/comment_question_screen.dart';
 import 'package:toast/toast.dart';
 
 class CommentAddPages extends StatefulWidget {
@@ -25,8 +26,8 @@ class _CommentAddPagesState extends State<CommentAddPages> {
     commentModels=CommentModels();
     _myActivity='';
     DateTime now = DateTime.now();
-    date = DateFormat('yyyy-MM-dd hh:mm a').format(now);
-    id = DateFormat('yyyy-MM-dd hh:mm:ss a').format(now);
+    id = DateTime.now().millisecondsSinceEpoch.toString();
+    date = DateFormat('yyyy-MM-dd hh:mm:ss a').format(now);
   }
 
 
@@ -41,7 +42,9 @@ class _CommentAddPagesState extends State<CommentAddPages> {
       FirestoreDatabaseHelper.addComment(commentModels).then((_){
         setState(() {
           Toast.show('Question is Added Check Question Screen', context);
-          Navigator.of(context).pop();
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context)=>CommentQuestionScreen()
+          ));
         });
       });
     }
