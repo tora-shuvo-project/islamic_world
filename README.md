@@ -7,7 +7,7 @@
    
    3.Ojifa 70% ok
    
-   4.Quran Meaning 90% ok
+   4.Quran Meaning 100% ok
    
    5.Tasbih 60 % ok
    

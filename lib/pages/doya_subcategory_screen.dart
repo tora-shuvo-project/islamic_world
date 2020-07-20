@@ -3,6 +3,21 @@ import 'package:searchtosu/FinalModels/doya_name_models.dart';
 import 'package:searchtosu/helpers/database_helper.dart';
 import 'package:searchtosu/pages/doya_details_page.dart';
 
+ String convertEngToBangla(int getNumer){
+  return getNumer.toString()
+      .replaceAll('0', '০')
+      .replaceAll('1', '১')
+      .replaceAll('2', '২')
+      .replaceAll('3', '৩')
+      .replaceAll('4', '৪')
+      .replaceAll('5', '৫')
+      .replaceAll('6', '৬')
+      .replaceAll('7', '৭')
+      .replaceAll('8', '৮')
+      .replaceAll('9', '৯');
+}
+
+
 class DoyaSubcategoryScreen extends StatefulWidget {
   final int category;
   final String categoryName;
@@ -15,6 +30,8 @@ class DoyaSubcategoryScreen extends StatefulWidget {
 class _DoyaSubcategoryScreenState extends State<DoyaSubcategoryScreen> {
 
   List<DoyaNameModels>  doyaNameModels=new List();
+
+
 
   @override
   void initState() {
@@ -47,7 +64,7 @@ class _DoyaSubcategoryScreenState extends State<DoyaSubcategoryScreen> {
               title: Text('${doyaNameModels[index].name}'),
               trailing: Icon(Icons.keyboard_arrow_right),
               leading: CircleAvatar(
-                child: Text('${index+1}'),
+                child: Text('${convertEngToBangla(index+1)}'),
               ),
             ),
           )),

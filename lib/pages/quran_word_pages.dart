@@ -147,7 +147,9 @@ SingleChildScrollView _ShuruKotha(){
                              // color: quranwordmodels[index].serial_no%2==0?Colors.green.withOpacity(.8):Colors.green.withOpacity(.9),
                               child: ListTile(
                                 onTap: (){
-                                  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>QuranWordPagesDetailsScreen(quranwordmodels[index],quranwordmodels[index].serial_no)));
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context)=>QuranWordPagesDetailsScreen(quranwordmodels[index],
+                                          quranwordmodels[index].serial_no)));
                                 },
                                 title: Text('Day-${quranwordmodels[index].serial_no}',style: TextStyle(
                                     color: Colors.black,

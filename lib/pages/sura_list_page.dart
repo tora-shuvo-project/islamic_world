@@ -67,47 +67,18 @@ class _SuraListPageState extends State<SuraListPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Container(
-
+                margin: EdgeInsets.only(top: 5),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Icon(Icons.arrow_back, color: Colors.white,),
-                    Text("আল-কোরআন", style: TextStyle(color: Colors.white, fontSize: 20),),
-
-                    PopupMenuButton(
-                        icon: Icon(Icons.more_vert, color: Colors.white,),
-                        onSelected: (value){
-                          if(value == 0){
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context)=>ParaWiseListPage()
-                            ));
-                          }
-                          else if(value==1){
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context)=>SettingsPage()
-                            )).then((value){
-                              setState(() {
-                                Utils.getQareNameFromPreference().then((value){
-                                  qareName=value;
-                                });
-                              });
-                            });
-                          }
-                        }
-                        ,
-                        itemBuilder: (context)=>[
-                          PopupMenuItem(
-                            child: Text('পারাক্রমে'),
-                            value: 0,
-                          ),
-                          PopupMenuItem(
-                            child: Text('Settings'),
-                            value: 1,
-                          ),
-
-                        ]),
-
+                    IconButton(
+                      icon: Icon(Icons.arrow_back, color: Colors.white,),
+                      onPressed: (){
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    Divider(color: Colors.white,),
+                    Text("সূরা ক্রমে", style: TextStyle(color: Colors.white, fontSize: 20),),
 
                   ],
                 ),

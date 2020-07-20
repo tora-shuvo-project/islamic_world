@@ -84,7 +84,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Expanded(child: Icon(Icons.menu,color:Color(0xff06AB00))),
+                  Expanded(child: IconButton(
+                    icon:Icon(Icons.menu,color:Color(0xff06AB00)),
+                    onPressed: drawerController.toggle,
+                  )),
                   Expanded(flex:4,child: FittedBox(child: Text("আল-কোরআন ও বিভিন্ন দোয়া ", style: TextStyle(color:Color(0xff06AB00), fontSize: 17),))),
                   Expanded(flex:2,
                     child: InkWell(
@@ -779,7 +782,7 @@ class _HomeScreenState extends State<HomeScreen> {
     backgroundColor: Colors.transparent,
     child: Image.asset('images/home.png',width: 25,),
     ),
-              title: Text("Home")),
+              title: Text("হোম")),
         ),
         Container(
           height: 1,

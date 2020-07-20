@@ -13,6 +13,7 @@ import 'package:searchtosu/FinalModels/audio_models.dart';
 import 'package:searchtosu/FinalModels/sura_name_table_model.dart';
 import 'package:searchtosu/helpers/database_helper.dart';
 import 'package:searchtosu/utils/utils.dart';
+import 'package:searchtosu/pages/doya_subcategory_screen.dart';
 
 import '../FinalModels/ayat_table_model.dart';
 
@@ -513,7 +514,9 @@ class _AyatPageState extends State<AyatPage> {
                             itemCount: ayatmodels.length,
                             itemBuilder: (context,index)=>Card(
                               //    color: ayatmodels.length%2==0?Colors.black.withOpacity(.5):Colors.green.withOpacity(.5),
-                              child: Container(child: Column(
+                              child: Container(
+                                padding: EdgeInsets.only(right: 13),
+                                child: Column(
                                 children: <Widget>[
                                   Row(
 
@@ -529,7 +532,7 @@ class _AyatPageState extends State<AyatPage> {
                                                   width: 40,
                                                   height: 40,
                                                   alignment: Alignment.center,
-                                                  child: Text('${ayatmodels[index].ayatno}'))
+                                                  child: Text('${convertEngToBangla(ayatmodels[index].ayatno)}'))
                                             ],
                                           ),
                                           ayatmodels[index].sejda == "0"?Container(): Text("সিজদা", style: TextStyle(fontSize: 14, color: Colors.red),),

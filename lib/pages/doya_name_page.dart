@@ -692,7 +692,7 @@ child:   RotateAnimatedTextKit(
                     title: Text('${doyaNameModels[index].name}'),
                     trailing: Icon(Icons.keyboard_arrow_right),
                     leading: CircleAvatar(
-                      child: Text('${doyaNameModels[index].globalId}'),
+                      child: Text('${convertEngToBangla(doyaNameModels[index].globalId)}'),
                     ),
                   ),
                 )),

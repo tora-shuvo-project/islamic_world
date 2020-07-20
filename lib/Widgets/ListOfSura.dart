@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:searchtosu/FinalModels/sura_name_table_model.dart';
 import 'package:searchtosu/pages/ayat_page.dart';
+import 'package:searchtosu/pages/doya_subcategory_screen.dart';
 
 class List_of_sura extends StatelessWidget {
 
@@ -39,7 +40,7 @@ class List_of_sura extends StatelessWidget {
                               width: 50,
                               height: 50,
                               alignment: Alignment.center,
-                              child: Text(suraNameTableModel.suraNo.toString(),))
+                              child: Text('${convertEngToBangla(suraNameTableModel.suraNo)}'),)
                         ],
                       ),
 

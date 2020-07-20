@@ -1,5 +1,6 @@
 
 
+import 'package:searchtosu/pages/doya_subcategory_screen.dart';
 import 'package:dropdown_formfield/dropdown_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -142,35 +143,35 @@ class _NearByMosqueScreenState extends State<NearByMosqueScreen> {
                       },
                       dataSource: [
                         {
-                          "display": "100 m",
+                          "display": "১০০ মি.",
                           "value": 100,
                         },
                         {
-                          "display": "500 m",
+                          "display": "৫০০ মি.",
                           "value": 500,
                         },
                         {
-                          "display": "1000 m",
+                          "display": "১০০০ মি.",
                           "value": 1000,
                         },
                         {
-                          "display": "1.5 km",
+                          "display": "১.৫ কিঃমিঃ",
                           "value": 1500,
                         },
                         {
-                          "display": "2 km",
+                          "display": "২ কিঃমিঃ",
                           "value": 2000,
                         },
                         {
-                          "display": "2.5 km",
+                          "display": "২.৫ কিঃমিঃ",
                           "value": 2500,
                         },
                         {
-                          "display": "5 km",
+                          "display": "৫ কিঃমিঃ",
                           "value": 5000,
                         },
                         {
-                          "display": "10 km",
+                          "display": "১০ কিঃমিঃ",
                           "value": 10000,
                         },
                       ],
@@ -192,7 +193,7 @@ class _NearByMosqueScreenState extends State<NearByMosqueScreen> {
                                       elevation: 0,
                                       child: ListTile(
                                         leading: CircleAvatar(
-                                          child: Text('${index+1}'),
+                                          child: Text('${convertEngToBangla(index+1)}'),
                                         ),
                                         title: Text('${data.currentPlacesearch.results[index].name}'),
 

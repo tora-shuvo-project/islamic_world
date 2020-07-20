@@ -5,6 +5,7 @@ import 'package:searchtosu/helpers/database_helper.dart';
 import 'package:searchtosu/pages/para_wise_quran_details_screen.dart';
 import 'package:searchtosu/utils/utils.dart';
 import 'package:toast/toast.dart';
+import 'package:searchtosu/pages/doya_subcategory_screen.dart';
 
 class ParaWiseListPage extends StatefulWidget {
   @override
@@ -122,7 +123,7 @@ class _ParaWiseListPageState extends State<ParaWiseListPage> {
                                     width: 50,
                                     height: 50,
                                     alignment: Alignment.center,
-                                    child: Text('${paraModels[index].paraNo}'))
+                                    child: Text('${convertEngToBangla(paraModels[index].paraNo)}'))
                               ],
                             ),
                             SizedBox(width: 20,),

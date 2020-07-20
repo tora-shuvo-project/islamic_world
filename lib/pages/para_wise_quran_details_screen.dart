@@ -6,7 +6,7 @@ import 'package:searchtosu/FinalModels/ayat_table_model.dart';
 import 'package:searchtosu/FinalModels/para_models.dart';
 import 'package:searchtosu/helpers/database_helper.dart';
 import 'package:searchtosu/pages/ayat_page.dart';
-
+import 'package:searchtosu/pages/doya_subcategory_screen.dart';
 
 
 import 'package:searchtosu/pages/para_wise_page.dart';
@@ -288,12 +288,12 @@ class _ParaWiseQuranDetailsScreenState extends State<ParaWiseQuranDetailsScreen>
                                       itemCount: ayatmodels.length,
                                       itemBuilder: (context,index)=>Card(
                                         //    color: ayatmodels.length%2==0?Colors.black.withOpacity(.5):Colors.green.withOpacity(.5),
-                                        child: Container(child: InkWell(
-//
+                                        child: Container(
+                                          color: ayatmodels[index].ayatno==1?Colors.green.withOpacity(.2):Colors.white,
+                                          padding: EdgeInsets.only(right: 13),
                                           child: Column(
                                             children: <Widget>[
                                               Row(
-
                                                 mainAxisSize: MainAxisSize.min,
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: <Widget>[
@@ -306,7 +306,7 @@ class _ParaWiseQuranDetailsScreenState extends State<ParaWiseQuranDetailsScreen>
                                                               width: 40,
                                                               height: 40,
                                                               alignment: Alignment.center,
-                                                              child: Text('${ayatmodels[index].ayatno}'))
+                                                              child: Text('${convertEngToBangla(ayatmodels[index].ayatno)}'))
                                                         ],
                                                       ),
                                                       ayatmodels[index].sejda == "0"?Container(): Text("সিজদা", style: TextStyle(fontSize: 14, color: Colors.red),),
@@ -320,7 +320,39 @@ class _ParaWiseQuranDetailsScreenState extends State<ParaWiseQuranDetailsScreen>
                                                   ),
                                                   SizedBox(width: 10,),
                                                   Expanded(
-                                                    child: Column(
+                                                    child: ayatmodels[index].ayatno==1?
+                                                    Column(
+                                                      children: <Widget>[
+                                                        arbi?RichText(
+                                                          text: TextSpan(
+                                                            style: DefaultTextStyle.of(context).style,
+                                                            children: <TextSpan>[
+                                                              TextSpan(text: '﷽',style: TextStyle(
+                                                                  color: Colors.red,
+                                                                  fontFamily: _fontName,
+                                                                  fontSize: _value+6)),
+                                                              TextSpan(text: '\n${ayatmodels[index].arbi_indopak.trim()}',
+                                                                  style: TextStyle(
+                                                                      color: Colors.black,
+                                                                      fontFamily: _fontName,
+                                                                      fontSize: _value+6)),
+                                                            ],
+                                                          ),
+                                                        ):SizedBox(),
+                                                        banglameaning?Text('${ayatmodels[index].banglaTranslator.trim()}',
+                                                          style: TextStyle(
+                                                              color: Colors.black87,
+                                                              fontFamily: 'kalpurus',
+                                                              fontSize: _value-1),):SizedBox(),
+                                                        banglauccharon?Text('${ayatmodels[index].banglameaning.trim()}',
+                                                          style: TextStyle(
+                                                              color: Colors.black54,
+                                                              fontFamily: 'kalpurus',
+                                                              fontSize: _value-1),):SizedBox()
+                                                      ],
+
+                                                    ):
+                                                    Column(
                                                       children: <Widget>[
                                                         arbi?Text('${ayatmodels[index].arbi_indopak.trim()}',
                                                           style: TextStyle(
@@ -355,7 +387,6 @@ class _ParaWiseQuranDetailsScreenState extends State<ParaWiseQuranDetailsScreen>
                                               )
                                             ],
                                           ),
-                                        ),
                                         ),
 
                                       )),

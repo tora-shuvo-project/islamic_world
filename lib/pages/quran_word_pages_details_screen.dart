@@ -26,6 +26,9 @@ class _QuranWordPagesDetailsScreenState extends State<QuranWordPagesDetailsScree
   @override
   initState() {
     super.initState();
+
+    print(widget.slno.toString());
+
     createFile(widget.quranWordModels.image_url).then((sourchfile) {
       setState(() {
         mydirectoryFile=sourchfile;
@@ -58,7 +61,7 @@ class _QuranWordPagesDetailsScreenState extends State<QuranWordPagesDetailsScree
 
 
           ///if file not present in local system then fetch it from server
-          String url = 'https://scontent.fdac2-1.fna.fbcdn.net/v/t1.0-9/p720x720/66375370_10217665736251812_7974606507381620736_o.jpg?_nc_cat=105&_nc_sid=32a93c&_nc_eui2=AeG3B6ISDfoKoE3SzURhiCKnUhKGw8lJaXVSEobDyUlpdbTuNYEkSxcDxcj29XiGQawdEvn_ZRLq3uPpOhIJx88j&_nc_ohc=FwHSO_3QsoAAX8qswaL&_nc_ht=scontent.fdac2-1.fna&_nc_tp=6&oh=ca7b69e18e2f3a99712d54be0a0e24c2&oe=5F2CED4B';
+          String url = '${widget.quranWordModels.image_url}';
 
           /// requesting http to get url
           var request = await HttpClient().getUrl(Uri.parse(url));
@@ -88,8 +91,6 @@ class _QuranWordPagesDetailsScreenState extends State<QuranWordPagesDetailsScree
           ));
           return null;
         }
-
-
       }
     } on SocketException catch (_) {
       print('not connected');
