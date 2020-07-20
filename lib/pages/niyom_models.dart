@@ -3,7 +3,7 @@ import 'package:searchtosu/pages/niyom_category_screen.dart';
 
 class NiyomScreen extends StatelessWidget {
 
-  TextStyle textStyle=TextStyle(fontSize: 20);
+  TextStyle textStyle=TextStyle(fontSize: 18);
 
   @override
   Widget build(BuildContext context) {

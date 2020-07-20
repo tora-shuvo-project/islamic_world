@@ -98,6 +98,7 @@ class _TasbihScreenState extends State<TasbihScreen> {
                       },
                       onChanged: (value) {
                         setState(() {
+                          count=0;
                           _myActivity = value;
                         });
                       },
@@ -122,23 +123,56 @@ class _TasbihScreenState extends State<TasbihScreen> {
                           "display": "লা ইলাহা ইল্লালা",
                           "value": "Ahmed al Ajmi",
                         },
+                        {
+                          "display": "সুবাহানাল্লাহি ওয়া বিহামদিহী",
+                          "value": "subahanlahi oyabihamdihi",
+                        },
+                        {
+                          "display": "সুবাহানাল্লাহিল আজিম",
+                          "value": "subanlahil ajim",
+                        },
+                        {
+                          "display": "সুবাহানাকা-লহুম্মা",
+                          "value": "subahanaka llahumma",
+                        },
+                        {
+                          "display": "লা-হাওলা-ওয়ালা-কুয়া-তা-ইল্লাবিল্লাহ",
+                          "value": "লা-হাওলা-ওয়ালা-কুয়া-তা-ইল্লাবিল্লাহ",
+                        },
+                        {
+                          "display": "আসতাগফিরুল্লাহ",
+                          "value": "আসতাগফিরুল্লাহ",
+                        },
+                        {
+                          "display": "আসতাগফিরুল্লাহ অয়াতুবু ইলাইক",
+                          "value": "আসতাগফিরুল্লাহ অয়াতুবু ইলাইক",
+                        },
+                        {
+                          "display": "সল্লালহু আলাইহিওসল্লাম",
+                          "value": "সল্লালহু আলাইহিওসল্লাম",
+                        },
+                        {
+                          "display": "আল্লহুম্মা বিসমিকা আমুতু অআহ ইয়া",
+                          "value": "আল্লহুম্মা বিসমিকা আমুতু অআহ ইয়া",
+                        },
+                        {
+                          "display": "ইয়ারহামুক আল্লাহ",
+                          "value": "ইয়ারহামুক আল্লাহ",
+                        },
+                        {
+                          "display": "হাসবুন আল্লাহু ওয়া নিয়ামাল অকিল",
+                          "value": "হাসবুন আল্লাহু ওয়া নিয়ামাল অকিল",
+                        },
+                        {
+                          "display": "আল্লাহুম্মা আজিরনি মিনান নার",
+                          "value": "আল্লাহুম্মা আজিরনি মিনান নার",
+                        },
                       ],
                       textField: 'display',
                       valueField: 'value',
                     ),
                   ),
 
-
-//          Expanded(
-//            child: Container(
-//              color: Colors.green.withOpacity(.1),
-//              alignment: Alignment.center,
-//            child: Text('$count',style: TextStyle(
-//              fontSize: 25,
-//              fontWeight: FontWeight.bold,
-//            ),),
-//            ),
-//          ),
               SizedBox(height: 20,),
                 InkWell(
                     onTap: (){
@@ -164,22 +198,6 @@ class _TasbihScreenState extends State<TasbihScreen> {
                  });
 
                },child: Text("Reset", style: TextStyle(color: Colors.white),),)
-//          Expanded(
-//            flex: 5,
-//
-//            child: InkWell(
-//              onTap: (){
-//                setState(() {
-//                  count++;
-//                });
-//              },
-//              child: Container(
-//                color: Colors.green.withOpacity(.15),
-//                alignment: Alignment.center,
-//                child: Image.asset('images/tasbih.png',),
-//              ),
-//            ),
-//          )
               ],
             ): Row(
               children: <Widget>[
@@ -218,6 +236,7 @@ class _TasbihScreenState extends State<TasbihScreen> {
                         },
                         onChanged: (value) {
                           setState(() {
+                            count=0;
                             _myActivity = value;
                           });
                         },
@@ -241,6 +260,50 @@ class _TasbihScreenState extends State<TasbihScreen> {
                           {
                             "display": "লা ইলাহা ইল্লালা",
                             "value": "Ahmed al Ajmi",
+                          },
+                          {
+                            "display": "সুবাহানাল্লাহি ওয়া বিহামদিহী",
+                            "value": "subahanlahi oyabihamdihi",
+                          },
+                          {
+                            "display": "সুবাহানাল্লাহিল আজিম",
+                            "value": "subanlahil ajim",
+                          },
+                          {
+                            "display": "সুবাহানাকা-লহুম্মা",
+                            "value": "subahanaka llahumma",
+                          },
+                          {
+                            "display": "লা-হাওলা-ওয়ালা-কুয়া-তা-ইল্লাবিল্লাহ",
+                            "value": "লা-হাওলা-ওয়ালা-কুয়া-তা-ইল্লাবিল্লাহ",
+                          },
+                          {
+                            "display": "আসতাগফিরুল্লাহ",
+                            "value": "আসতাগফিরুল্লাহ",
+                          },
+                          {
+                            "display": "আসতাগফিরুল্লাহ অয়াতুবু ইলাইক",
+                            "value": "আসতাগফিরুল্লাহ অয়াতুবু ইলাইক",
+                          },
+                          {
+                            "display": "সল্লালহু আলাইহিওসল্লাম",
+                            "value": "সল্লালহু আলাইহিওসল্লাম",
+                          },
+                          {
+                            "display": "আল্লহুম্মা বিসমিকা আমুতু অআহ ইয়া",
+                            "value": "আল্লহুম্মা বিসমিকা আমুতু অআহ ইয়া",
+                          },
+                          {
+                            "display": "ইয়ারহামুক আল্লাহ",
+                            "value": "ইয়ারহামুক আল্লাহ",
+                          },
+                          {
+                            "display": "হাসবুন আল্লাহু ওয়া নিয়ামাল অকিল",
+                            "value": "হাসবুন আল্লাহু ওয়া নিয়ামাল অকিল",
+                          },
+                          {
+                            "display": "আল্লাহুম্মা আজিরনি মিনান নার",
+                            "value": "আল্লাহুম্মা আজিরনি মিনান নার",
                           },
                         ],
                         textField: 'display',

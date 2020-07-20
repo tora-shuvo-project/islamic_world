@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:searchtosu/FinalModels/hadis_models.dart';
 import 'package:searchtosu/helpers/database_helper.dart';
+import 'package:searchtosu/pages/doya_subcategory_screen.dart';
 import 'package:searchtosu/pages/hadis_details_screen.dart';
 
 class HadisScreen extends StatefulWidget {
@@ -85,7 +86,7 @@ class _HadisScreenState extends State<HadisScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text('Hadis: ${allHadisModels[index].hadisNo}',style: TextStyle(fontSize: 20),),
+                      Text('হাদিসঃ ${convertEngToBangla(allHadisModels[index].hadisNo)}',style: TextStyle(fontSize: 20),),
                       Container(
                         padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
                           height: 3,
