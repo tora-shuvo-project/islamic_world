@@ -52,13 +52,14 @@ class _HomeScreenState extends State<HomeScreen> {
   final drawerController = DeivaoDrawerController();
 
   String banglaDate,arabyDate,englishDate;
+  String banglaDate1,arabyDate1,englishDate1;
   String zilaName;
 
   PrayerTimeModels prayerTimeModels;
   int date1;
   bool isOpenQuran=true;
 
-  int fojorHour,johaurHour,asorHour,magribHour,esaHour,sunriseHour;
+  int fojorHour_start,johaurHour,asorHour,magribHour,esaHour,sunriseHour,aoyabinHour;
   String currentPrayerTime='';
   String nextPrayerName='';
   String nextPrayerTime='';
@@ -72,8 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   LatLng _center;
 
-
-
+  bool isOpen=true;
 
   Widget _appBar(){
     return Container(
@@ -95,56 +95,20 @@ class _HomeScreenState extends State<HomeScreen> {
 //                    onPressed: drawerController.toggle,
 //                  )),
                   Expanded(
-                    child: RotateAnimatedTextKit(
-                      onTap: () {
-                        print("Tap Event");
-                      },
-                      duration: Duration(milliseconds: 5000),
-                      text: [
-                        englishDate,
-                        arabyDate,
-                        banglaDate,
-                        englishDate,
-                        arabyDate,
-                        banglaDate,
-                        englishDate,
-                        arabyDate,
-                        banglaDate,
-                        englishDate,
-                        arabyDate,
-                        banglaDate,
-                        englishDate,
-                        arabyDate,
-                        banglaDate,
-                        englishDate,
-                        arabyDate,
-                        banglaDate,
-                        englishDate,
-                        arabyDate,
-                        banglaDate,
-                        englishDate,
-                        arabyDate,
-                        banglaDate,
-                        englishDate,
-                        arabyDate,
-                        banglaDate,
-                        englishDate,
-                        arabyDate,
-                        banglaDate,
+                    child:
+                    IconButton(
+                      icon:Icon(Icons.menu,color: Colors.green,),
+                      onPressed: drawerController.toggle,
 
-                      ],
-
-                      isRepeatingAnimation: true,
-                      textStyle: TextStyle(fontSize: 17.0,color: Colors.green),
-                      textAlign: TextAlign.start,
-                      // or Alignment.topLeft
-                    ),
+                    )
                   ),
                   //Text(englishDate,style: TextStyle(color:Color(0xff06AB00), fontSize: 17)),
 
-                  Expanded(child: Text('Search Islam',style: TextStyle(fontSize: 18.0,color: Colors.green,fontWeight: FontWeight.bold),)),
-
                   Expanded(
+                      flex: 3,
+                      child: Text('Search Islam',style: TextStyle(fontSize: 18.0,color: Colors.green,fontWeight: FontWeight.bold),)),
+
+                  Expanded(flex: 2,
                     child: InkWell(
                         onTap: (){
                           Navigator.of(context).push(MaterialPageRoute(
@@ -168,16 +132,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                   ),
-
-
-
-
-
                 ],
               ),
             ),
           ),
-
 
         ),
       ),
@@ -193,8 +151,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
     var _today = new HijriCalendar.now();
     banglaDate=BanglaUtility.getBanglaDate(day: DateTime.now().day, month: DateTime.now().month, year: DateTime.now().year);
+    banglaDate1='Bangla Date: '+BanglaUtility.getBanglaDate(day: DateTime.now().day, month: DateTime.now().month, year: DateTime.now().year);
     arabyDate=_today.toFormat("dd MMMM,yyyy");
+    arabyDate1='Araby Date: '+_today.toFormat("dd MMMM,yyyy");
     englishDate=DateFormat('dd MMMM,yyyy').format(DateTime.now());
+    englishDate1='English Date: '+DateFormat('dd MMMM,yyyy').format(DateTime.now());
 
 
     date1 = (DateTime.now().hour);
@@ -204,7 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
         sunrisetoday=prayermodels.fajr_end;
         sunsettoday=prayermodels.magrib;
 
-        fojorHour=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.fajr_start}').hour;
+        fojorHour_start=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.fajr_start}').hour;
         johaurHour=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.dhuhr}').hour;
         asorHour=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.asr}').hour;
         magribHour=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.magrib}').hour;
@@ -213,7 +174,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
 
-        if(date1>=fojorHour&&date1<sunriseHour){
+        if(date1>=fojorHour_start&&date1<sunriseHour){
           currentPrayerTime='ফজর';
           nextPrayerName='ইশরাক';
           nextPrayerTime='${prayermodels.fajr_end}';
@@ -305,7 +266,8 @@ class _HomeScreenState extends State<HomeScreen> {
     await notificationAfterAppClose();
   }
   Future<void> notificationAfterAppClose() async {
-    var timeDelayed = DateTime.now().add(Duration(seconds: 10));
+
+    var timeDelayed = DateTime.now().add(Duration(seconds: 1));
     AndroidNotificationDetails androidNotificationDetails =
     AndroidNotificationDetails(
         'second channel ID', 'second Channel title', 'second channel body',
@@ -320,13 +282,13 @@ class _HomeScreenState extends State<HomeScreen> {
     NotificationDetails notificationDetails = NotificationDetails(androidNotificationDetails, iosNotificationDetails);
 
 
-    if(date1>=fojorHour&&date1<sunriseHour){
+    if(date1>=fojorHour_start&&date1<sunriseHour){
 
       await flutterLocalNotificationsPlugin.schedule(1, 'বর্তমান ওয়াক্ত ফজর', 'শুরু হয়েছে ${prayerTimeModels.fajr_start}\nশেষ হবে ${prayerTimeModels.fajr_end}', timeDelayed, notificationDetails, androidAllowWhileIdle: false);
 
     }else if(date1>=sunriseHour&&date1<johaurHour){
 
-      await flutterLocalNotificationsPlugin.schedule(1, 'বর্তমান ওয়াক্ত ইশরাক', 'শুরু হয়েছে ${prayerTimeModels.fajr_end}\nশেষ হবে ${prayerTimeModels.dhuhr}', timeDelayed, notificationDetails, androidAllowWhileIdle: false);
+      await flutterLocalNotificationsPlugin.schedule(1, 'বর্তমান ওয়াক্ত ইশরাক', 'শুরু হয়েছে ${prayerTimeModels.israk}\nশেষ হবে ${prayerTimeModels.dhuhr}', timeDelayed, notificationDetails, androidAllowWhileIdle: false);
 
     }else if(date1>=johaurHour&&date1<asorHour){
 
@@ -336,17 +298,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
       await flutterLocalNotificationsPlugin.schedule(1, 'বর্তমান ওয়াক্ত আসর', 'শুরু হয়েছে ${prayerTimeModels.asr}\nশেষ হবে ${prayerTimeModels.magrib}', timeDelayed, notificationDetails, androidAllowWhileIdle: false);
 
-    }else if(date1>=magribHour&&date1<esaHour){
+    }else if(date1>=magribHour&&date1<aoyabinHour){
 
-      await flutterLocalNotificationsPlugin.schedule(1, 'বর্তমান ওয়াক্ত মাগরিব', 'শুরু হয়েছে ${prayerTimeModels.magrib}\nশেষ হবে ${prayerTimeModels.isha}', timeDelayed, notificationDetails, androidAllowWhileIdle: false);
+      await flutterLocalNotificationsPlugin.schedule(1, 'বর্তমান ওয়াক্ত মাগরিব', 'শুরু হয়েছে ${prayerTimeModels.magrib}\nশেষ হবে ${prayerTimeModels.aoyabin}', timeDelayed, notificationDetails, androidAllowWhileIdle: false);
+
+    }else if(date1>=aoyabinHour&&date1<esaHour){
+
+      await flutterLocalNotificationsPlugin.schedule(1, 'বর্তমান ওয়াক্ত আওয়াবিন', 'শুরু হয়েছে ${prayerTimeModels.aoyabin}\nশেষ হবে ${prayerTimeModels.isha}', timeDelayed, notificationDetails, androidAllowWhileIdle: false);
 
     }else{
 
       await flutterLocalNotificationsPlugin.schedule(1, 'বর্তমান ওয়াক্ত এশা', 'শুরু হয়েছে ${prayerTimeModels.isha}\nশেষ হবে ${prayerTimeModels.fajr_start}', timeDelayed, notificationDetails, androidAllowWhileIdle: false);
 
     }
-
-
 
   }
 
@@ -410,10 +374,64 @@ class _HomeScreenState extends State<HomeScreen> {
                                   )
 
                             ),
+
+                            RotateAnimatedTextKit(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context)=>CalenderScreen()
+                                ));
+                              },
+                              duration: Duration(milliseconds: 5000),
+                              text: [
+                                englishDate1,
+                                arabyDate1,
+                                banglaDate1,
+                                englishDate1,
+                                arabyDate1,
+                                banglaDate1,
+                                englishDate1,
+                                arabyDate1,
+                                banglaDate1,
+                                englishDate1,
+                                arabyDate1,
+                                banglaDate1,
+                                englishDate1,
+                                arabyDate1,
+                                banglaDate1,
+                                englishDate1,
+                                arabyDate1,
+                                banglaDate1,
+                                englishDate1,
+                                arabyDate1,
+                                banglaDate1,
+                                englishDate1,
+                                arabyDate1,
+                                banglaDate1,
+                                englishDate1,
+                                arabyDate1,
+                                banglaDate1,
+                                englishDate1,
+                                banglaDate1,
+                                englishDate1,
+                                arabyDate1,
+                                banglaDate1,
+                                englishDate1,
+                                arabyDate1,
+                                banglaDate1,
+                                englishDate1,
+
+                              ],
+
+                              isRepeatingAnimation: true,
+                              textStyle: TextStyle(fontSize: 17.0,color: Colors.green),
+                              textAlign: TextAlign.start,
+                              // or Alignment.topLeft
+                            ),
+
                            Container(
                                 child:Column(
                                   children: <Widget>[
-                                    SizedBox(height: 20,),
+                                    SizedBox(height: 5,),
                                    Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
@@ -647,38 +665,69 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
-                                        InkWell(
-                                          onTap: (){
-                                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>BlogPages()));
-                                          },
-                                          child: Column(
-                                            children: <Widget>[
-                                              Card(
+                                        Expanded(
+                                          child: InkWell(
+                                            onTap: (){
+                                              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>BlogPages()));
+                                            },
+                                            child: Column(
+                                              children: <Widget>[
+                                                Card(
 
-                                                child: Container(
-                                                    padding: EdgeInsets.all(15),
-                                                    child: Image.asset("images/web.png",height: 40, width: 40,)),
-                                              ),
-                                              Text("ব্লগ")
-                                            ],
+                                                  child: Container(
+                                                      padding: EdgeInsets.all(15),
+                                                      child: Image.asset("images/web.png",height: 40, width: 40,)),
+                                                ),
+                                                Text("ব্লগ")
+                                              ],
+                                            ),
                                           ),
                                         ),
 
-                                        Column(
-                                          children: <Widget>[
+                                        Expanded(
+                                          child: InkWell(
+                                            onTap: (){
+                                              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>SettingsPage()));
+                                            },
+                                            child: Column(
+                                              children: <Widget>[
+                                                Card(
 
-                                          ],
+                                                  child: Container(
+                                                      padding: EdgeInsets.all(15),
+                                                      child: Image.asset("images/settings.png",height: 40, width: 40,)),
+                                                ),
+                                                Text("সেটিংস")
+                                              ],
+                                            ),
+                                          ),
                                         ),
 
-                                        Column(
-                                          children: <Widget>[
-                                          ],
+                                        Expanded(
+                                          child: InkWell(
+                                            onTap: (){
+                                              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>BlogPages()));
+                                            },
+                                            child: Column(
+                                              children: <Widget>[
+                                                Card(
+
+                                                  child: Container(
+                                                      padding: EdgeInsets.all(15),
+                                                      child: Image.asset("images/close.png",height: 40, width: 40,)),
+                                                ),
+                                                Text("বন্ধ করুন")
+                                              ],
+                                            ),
+                                          ),
                                         ),
 
-                                        Column(
-                                          children: <Widget>[
+                                        Expanded(
+                                          child: Column(
+                                            children: <Widget>[
 
-                                          ],
+                                            ],
+                                          ),
                                         )
                                       ],
                                     ),
@@ -691,435 +740,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
               ),
-//                child: Container(
-//                  color: Color(0xffEFFAFC),
-//                  child: Column(
-//                    children: <Widget>[
-//                      Container(
-//                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-//                        color:Color(0xff06AB00),
-//                        child: Row(
-//                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                          children: <Widget>[
-//                            Text("তারিখ",style: TextStyle(color:Colors.white, fontSize: 17),),
-//                            Text("নামাজ",style: TextStyle(color:Colors.white, fontSize: 17),),
-//                          ],
-//                        ),
-//                      ),
-//                      Row(
-//                        children: <Widget>[
-//                          Expanded(flex: 1,
-//                            child: Column(
-//                              children: <Widget>[
-//                                Container(
-//                                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-//                                  color: Color(0xff015605),
-//                                  width: (MediaQuery.of(context).size.width/2)-1,
-//                                  child: Column(
-//                                    children: <Widget>[
-//                                      Text("ইংরেজী",style: TextStyle(color:Colors.white, fontSize: 15),),
-//                                      FittedBox(child: Text(englishDate,style: TextStyle(color:Colors.white, fontSize: 15),))
-//                                    ],
-//                                  ),
-//                                  //color: Color(0xff026104),
-//                                ),
-//                                Container(
-//                                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-//                                  color: Color(0xff026104),
-//                                  width: (MediaQuery.of(context).size.width/2)-1,
-//                                  child: Column(
-//                                    children: <Widget>[
-//                                      Text("হিজরি",style: TextStyle(color:Colors.white, fontSize: 15),),
-//                                      FittedBox(child: Text(arabyDate,style: TextStyle(color:Colors.white, fontSize: 15),))
-//                                    ],
-//                                  ),
-//                                  //color: Color(0xff026104),
-//                                ),
-//                                Container(
-//                                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-//                                  color: Color(0xff026C03),
-//                                  width: (MediaQuery.of(context).size.width/2)-1,
-//                                  child: Column(
-//                                    children: <Widget>[
-//                                      Text("বঙ্গাব্দ",style: TextStyle(color:Colors.white, fontSize: 16),),
-//                                      FittedBox(child: Text(banglaDate,style: TextStyle(color:Colors.white, fontSize: 16),))
-//                                    ],
-//                                  ),
-//                                  //color: Color(0xff026104),
-//                                ),
-//                              ],
-//                            ),
-//                          ),
-//                          Expanded(flex: 1,
-//                            child: Column(
-//                              children: <Widget>[
-//                                Container(
-//                                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-//                                  color: Color(0xff015605),
-//                                  width: (MediaQuery.of(context).size.width/2)-1,
-//                                  child: Column(
-//                                    children: <Widget>[
-//                                      FittedBox(child: Text("${currentPrayerTime} চলিতেছে....",style: TextStyle(color:Colors.white, fontSize: 15),)),
-//                                      FittedBox(child: Text("ওয়াক্ত শেষ ${nextPrayerTime}",style: TextStyle(color:Colors.white, fontSize: 15),))
-//                                    ],
-//                                  ),
-//                                  //color: Color(0xff026104),
-//                                ),
-//                                Container(
-//                                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-//                                  color: Color(0xff026104),
-//                                  width: (MediaQuery.of(context).size.width/2)-1,
-//                                  child: Column(
-//                                    children: <Widget>[
-//                                      FittedBox(child: Text("পরবর্তি নামাজ",style: TextStyle(color:Colors.white, fontSize: 15),)),
-//                                      FittedBox(child: Text("${nextPrayerName} ",style: TextStyle(color:Colors.white, fontSize: 15),))
-//                                    ],
-//                                  ),
-//                                  //color: Color(0xff026104),
-//                                ),
-//                                Container(
-//                                  alignment: Alignment.centerLeft,
-//                                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-//                                  color: Color(0xff026C03),
-//                                  width: (MediaQuery.of(context).size.width/2)-1,
-//                                  child: Column(
-//                                    children: <Widget>[
-//                                      FittedBox(child: Text("সুর্যোদয়ঃ $sunrisetoday",style: TextStyle(color:Colors.white, fontSize: 14),)),
-//                                      FittedBox(child: Text("           সুর্যাস্তঃ $sunsettoday",style: TextStyle(color:Colors.white, fontSize: 14),))
-//                                    ],
-//                                  ),
-//                                  //color: Color(0xff026104),
-//                                ),
-//
-//                              ],
-//                            ),
-//                          ),
-//                        ],
-//                      ),
-//                      Column(
-//                        children: <Widget>[
-//                          Container(
-//                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-//                            child: Row(
-//                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                              children: <Widget>[
-//                                InkWell(
-//                                  onTap:(){
-//                                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>SuraListPage()));
-//                                  },
-//                                  child: Card(
-//                                    child:Container(
-//                                      padding: EdgeInsets.all(6),
-//                                      child: Column(
-//                                        crossAxisAlignment: CrossAxisAlignment.center,
-//                                        children: <Widget>[
-//                                          Image.asset("images/kuranShorif.png", height: 80,width: 80,),
-//                                          Text("আল কুরআন", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
-//                                        ],
-//                                      ),
-//                                    ),
-//                                  ),
-//                                ),
-//                                InkWell(
-//                                  onTap:(){
-//                                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ShomoyShuchi()));
-//
-//                                  },
-//                                  child: Card(
-//                                    child:Container(
-//                                      padding: EdgeInsets.all(6),
-//                                      child: Column(
-//                                        crossAxisAlignment: CrossAxisAlignment.center,
-//                                        children: <Widget>[
-//
-//                                          Image.asset("images/namjerShomoy.png", height: 80,width: 80,),
-//                                          Text("নামাজের সময়সূচি",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
-//                                        ],
-//                                      ),
-//                                    ),
-//                                  ),
-//                                ),
-//                                InkWell(
-//                                  onTap:(){
-//                                    Navigator.of(context).pushNamed(QuranWordPages.route);
-//                                  },
-//                                  child: Card(
-//                                    child:Container(
-//                                      padding: EdgeInsets.all(6),
-//                                      child: Column(
-//                                        crossAxisAlignment: CrossAxisAlignment.center,
-//                                        children: <Widget>[
-//                                          Image.asset("images/shahihAfija.png", height: 80,width: 80,),
-//                                          Text("কুরআনের শব্দ",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
-//                                        ],
-//                                      ),
-//                                    ),
-//                                  ),
-//                                ),
-//                              ],
-//                            ),
-//                          ),
-//                          Container(
-//                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-//                            child: Row(
-//                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                              children: <Widget>[
-//                                InkWell(
-//                                  onTap:(){
-//                                    Navigator.of(context).push(MaterialPageRoute(
-//                                        builder: (context)=>OjifaScreen()
-//                                    ));
-//                                  },
-//                                  child: Card(
-//                                    child:Container(
-//                                      padding: EdgeInsets.all(6),
-//                                      child: Column(
-//                                        crossAxisAlignment: CrossAxisAlignment.center,
-//                                        children: <Widget>[
-//                                          Image.asset("images/kuranShorif.png", height: 80,width: 80,),
-//                                          Text("ওজিফা", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
-//                                        ],
-//                                      ),
-//                                    ),
-//                                  ),
-//                                ),
-//                                InkWell(
-//                                  onTap:(){
-//                                    Navigator.of(context).push(MaterialPageRoute(
-//                                        builder: (context)=>DoyaNameScren()
-//                                    ));
-//                                  },
-//                                  child: Card(
-//                                    child:Container(
-//                                      padding: EdgeInsets.all(6),
-//                                      child: Column(
-//                                        crossAxisAlignment: CrossAxisAlignment.center,
-//                                        children: <Widget>[
-//
-//                                          Image.asset("images/namjerShomoy.png", height: 80,width: 80,),
-//                                          Text("দোয়া",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
-//                                        ],
-//                                      ),
-//                                    ),
-//                                  ),
-//                                ),
-//                                InkWell(
-//                                  onTap:(){
-//                                    Navigator.of(context).push(MaterialPageRoute(
-//                                        builder: (context)=>NearByMosqueScreen()
-//                                    ));
-//                                  },
-//                                  child: Card(
-//                                    child:Container(
-//                                      padding: EdgeInsets.all(6),
-//                                      child: Column(
-//                                        crossAxisAlignment: CrossAxisAlignment.center,
-//                                        children: <Widget>[
-//                                          Image.asset("images/shahihAfija.png", height: 80,width: 80,),
-//                                          Text("NearBy Mosque",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
-//                                        ],
-//                                      ),
-//                                    ),
-//                                  ),
-//                                ),
-//                              ],
-//                            ),
-//                          ),
-//                          Container(
-//                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-//                            child: Row(
-//                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                              children: <Widget>[
-//                                InkWell(
-//                                  onTap:(){
-//                                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>KiblaScreen()));
-//                                  },
-//                                  child: Card(
-//                                    child:Container(
-//                                      padding: EdgeInsets.all(6),
-//                                      child: Column(
-//                                        crossAxisAlignment: CrossAxisAlignment.center,
-//                                        children: <Widget>[
-//                                          Image.asset("images/kuranShorif.png", height: 80,width: 80,),
-//                                          Text("কিবলা", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
-//                                        ],
-//                                      ),
-//                                    ),
-//                                  ),
-//                                ),
-//                                InkWell(
-//                                  onTap:(){
-//                                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>TasbihScreen()));
-//
-//                                  },
-//                                  child: Card(
-//                                    child:Container(
-//                                      padding: EdgeInsets.all(6),
-//                                      child: Column(
-//                                        crossAxisAlignment: CrossAxisAlignment.center,
-//                                        children: <Widget>[
-//
-//                                          Image.asset("images/namjerShomoy.png", height: 80,width: 80,),
-//                                          Text("তাসবিহ",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
-//                                        ],
-//                                      ),
-//                                    ),
-//                                  ),
-//                                ),
-//                                InkWell(
-//                                  onTap:(){
-//                                    Navigator.of(context).push(MaterialPageRoute(
-//                                        builder: (context)=>CalenderScreen()
-//                                    ));
-//                                  },
-//                                  child: Card(
-//                                    child:Container(
-//                                      padding: EdgeInsets.all(6),
-//                                      child: Column(
-//                                        crossAxisAlignment: CrossAxisAlignment.center,
-//                                        children: <Widget>[
-//                                          Image.asset("images/shahihAfija.png", height: 80,width: 80,),
-//                                          Text("Calender",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
-//                                        ],
-//                                      ),
-//                                    ),
-//                                  ),
-//                                ),
-//                              ],
-//                            ),
-//                          ),
-//                          Container(
-//                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-//                            child: Row(
-//                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                              children: <Widget>[
-//                                InkWell(
-//                                  onTap:(){
-//                                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>HadisScreen()));
-//                                  },
-//                                  child: Card(
-//                                    child:Container(
-//                                      padding: EdgeInsets.all(6),
-//                                      child: Column(
-//                                        crossAxisAlignment: CrossAxisAlignment.center,
-//                                        children: <Widget>[
-//                                          Image.asset("images/kuranShorif.png", height: 80,width: 80,),
-//                                          Text("হাদিস", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
-//                                        ],
-//                                      ),
-//                                    ),
-//                                  ),
-//                                ),
-//                                InkWell(
-//                                  onTap:(){
-//                                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>NiyomScreen()));
-//
-//                                  },
-//                                  child: Card(
-//                                    child:Container(
-//                                      padding: EdgeInsets.all(6),
-//                                      child: Column(
-//                                        crossAxisAlignment: CrossAxisAlignment.center,
-//                                        children: <Widget>[
-//
-//                                          Image.asset("images/namjerShomoy.png", height: 80,width: 80,),
-//                                          Text("নিয়ম কানুন",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
-//                                        ],
-//                                      ),
-//                                    ),
-//                                  ),
-//                                ),
-//                                InkWell(
-//                                  onTap:(){
-//                                    Navigator.of(context).push(MaterialPageRoute(
-//                                        builder: (context)=>CommentQuestionScreen()
-//                                    ));
-//                                  },
-//                                  child: Card(
-//                                    child:Container(
-//                                      padding: EdgeInsets.all(6),
-//                                      child: Column(
-//                                        crossAxisAlignment: CrossAxisAlignment.center,
-//                                        children: <Widget>[
-//                                          Image.asset("images/shahihAfija.png", height: 80,width: 80,),
-//                                          Text("লাইভ কমেন্ট",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
-//                                        ],
-//                                      ),
-//                                    ),
-//                                  ),
-//                                ),
-//                              ],
-//                            ),
-//                          ),
-//                          Container(
-//                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-//                            child: Row(
-//                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                              children: <Widget>[
-//                                InkWell(
-//                                  onTap:(){
-//                                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>BlogPages()));
-//                                  },
-//                                  child: Card(
-//                                    child:Container(
-//                                      padding: EdgeInsets.all(6),
-//                                      child: Column(
-//                                        crossAxisAlignment: CrossAxisAlignment.center,
-//                                        children: <Widget>[
-//                                          Image.asset("images/kuranShorif.png", height: 80,width: 80,),
-//                                          Text("ইসলামিক ওয়েব", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
-//                                        ],
-//                                      ),
-//                                    ),
-//                                  ),
-//                                ),
-//                                InkWell(
-//                                  onTap:(){
-//                                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>NiyomScreen()));
-//
-//                                  },
-//                                  child: Card(
-//                                    child:Container(
-//                                      padding: EdgeInsets.all(6),
-//                                      child: Column(
-//                                        crossAxisAlignment: CrossAxisAlignment.center,
-//                                        children: <Widget>[
-//
-//                                          Image.asset("images/namjerShomoy.png", height: 80,width: 80,),
-//                                          Text("নিয়ম কানুন",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
-//                                        ],
-//                                      ),
-//                                    ),
-//                                  ),
-//                                ),
-//                                InkWell(
-//                                  onTap:(){
-//                                    Navigator.of(context).push(MaterialPageRoute(
-//                                        builder: (context)=>CommentQuestionScreen()
-//                                    ));
-//                                  },
-//                                  child: Card(
-//                                    child:Container(
-//                                      padding: EdgeInsets.all(6),
-//                                      child: Column(
-//                                        crossAxisAlignment: CrossAxisAlignment.center,
-//                                        children: <Widget>[
-//                                          Image.asset("images/shahihAfija.png", height: 80,width: 80,),
-//                                          Text("লাইভ কমেন্ট",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),)
-//                                        ],
-//                                      ),
-//                                    ),
-//                                  ),
-//                                ),
-//                              ],
-//                            ),
-//                          ),
-//                        ],
-//                      ),
-//                    ],
-//                  ),
-//                ),
-
             ),
           ),
         ),
@@ -1253,75 +873,6 @@ class _HomeScreenState extends State<HomeScreen> {
           child: ListTile(
               onTap: (){
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context)=>ShomoyShuchi()
-                ));
-              },
-              leading: CircleAvatar(
-                backgroundColor: Colors.transparent,
-                child: Image.asset(('images/time.png'),width: 25,),
-              ),
-              title: Text("নামাজের সময়সূচি")),
-        ),
-        Container(
-          height: 1,
-          color: Colors.green.withOpacity(.4),
-        ),
-        Container(
-          color: Colors.green.withOpacity(.5),
-          child: ListTile(
-              onTap: (){
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context)=>QuranWordPages()
-                ));
-              },
-              leading: CircleAvatar(
-                backgroundColor: Colors.transparent,
-                child: Image.asset(('images/word.png'),width: 25,),
-              ), title: Text("কুরআনের শব্দ")),
-        ),
-        Container(
-          height: 1,
-          color: Colors.green.withOpacity(.4),
-        ),
-        Container(
-          color: Colors.green.withOpacity(.5),
-          child: ListTile(
-              onTap: (){
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context)=>OjifaScreen()
-                ));
-              },
-              leading: CircleAvatar(
-                backgroundColor: Colors.transparent,
-                child: Image.asset(('images/ojifa.png'),width: 25,),
-              ), title: Text("অজিফা")),
-        ),
-        Container(
-          height: 1,
-          color: Colors.green.withOpacity(.4),
-        ),
-        Container(
-          color: Colors.green.withOpacity(.5),
-          child: ListTile(
-              onTap: (){
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context)=>DoyaNameScren()
-                ));
-              },
-              leading: CircleAvatar(
-                backgroundColor: Colors.transparent,
-                child: Image.asset(('images/doya.png'),width: 25,),
-              ), title: Text("দোয়া")),
-        ),
-        Container(
-          height: 1,
-          color: Colors.green.withOpacity(.4),
-        ),
-        Container(
-          color: Colors.green.withOpacity(.5),
-          child: ListTile(
-              onTap: (){
-                Navigator.of(context).push(MaterialPageRoute(
                     builder: (context)=>NearByMosqueScreen()
                 ));
               },
@@ -1329,125 +880,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 backgroundColor: Colors.transparent,
                 child: Image.asset(('images/mosque (3).png'),width: 25,),
               ), title: Text("চারপাশের মসজিদ")),
-        ),
-        Container(
-          height: 1,
-          color: Colors.green.withOpacity(.4),
-        ),
-        Container(
-          color: Colors.green.withOpacity(.5),
-          child: ListTile(
-              onTap: (){
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context)=>KiblaScreen()
-                ));
-              },
-              leading: CircleAvatar(
-                backgroundColor: Colors.transparent,
-                child: Image.asset(('images/kibla.png'),width: 25,),
-              ), title: Text("কিবলা")),
-        ),
-        Container(
-          height: 1,
-          color: Colors.green.withOpacity(.4),
-        ),
-        Container(
-          color: Colors.green.withOpacity(.5),
-          child: ListTile(
-              onTap: (){
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context)=>TasbihScreen()
-                ));
-              },
-              leading: CircleAvatar(
-                backgroundColor: Colors.transparent,
-                child: Image.asset(('images/tasbih.png'),width: 25,),
-              ), title: Text("তাসবিহ")),
-        ),
-        Container(
-          height: 1,
-          color: Colors.green.withOpacity(.4),
-        ),
-        Container(
-          color: Colors.green.withOpacity(.5),
-          child: ListTile(
-              onTap: (){
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context)=>CalenderScreen()
-                ));
-              },
-              leading: CircleAvatar(
-                backgroundColor: Colors.transparent,
-                child: Image.asset(('images/calendar.png'),width: 25,),
-              ), title: Text("ইসলামিক ক্যালেন্ডার")),
-        ),
-        Container(
-          height: 1,
-          color: Colors.green.withOpacity(.4),
-        ),
-        Container(
-          color: Colors.green.withOpacity(.5),
-          child: ListTile(
-              onTap: (){
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context)=>HadisScreen()
-                ));
-              },
-              leading: CircleAvatar(
-                backgroundColor: Colors.transparent,
-                child: Image.asset(('images/hadis.png'),width: 25,),
-              ), title: Text("কিছু হাদিস")),
-        ),
-        Container(
-          height: 1,
-          color: Colors.green.withOpacity(.4),
-        ),
-        Container(
-          color: Colors.green.withOpacity(.5),
-          child: ListTile(
-              onTap: (){
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context)=>NiyomScreen()
-                ));
-              },
-              leading: CircleAvatar(
-                backgroundColor: Colors.transparent,
-                child: Image.asset(('images/niyom.png'),width: 25,),
-              ), title: Text("নিয়ম কানুন")),
-        ),
-        Container(
-          height: 1,
-          color: Colors.green.withOpacity(.4),
-        ),
-        Container(
-          color: Colors.green.withOpacity(.5),
-          child: ListTile(
-              onTap: (){
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context)=>CommentQuestionScreen()
-                ));
-              },
-              leading: CircleAvatar(
-                backgroundColor: Colors.transparent,
-                child: Image.asset(('images/live_comment.png'),width: 25,),
-              ), title: Text("লাইভ কমেন্ট")),
-        ),
-        Container(
-          height: 1,
-          color: Colors.green.withOpacity(.4),
-        ),
-        Container(
-          color: Colors.green.withOpacity(.5),
-          child: ListTile(
-              onTap: (){
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context)=>BlogPages()
-                ));
-              },
-              leading: CircleAvatar(
-                backgroundColor: Colors.transparent,
-                child: Image.asset(('images/web.png'),width: 25,),
-              ), title: Text("ইসলামিক ওয়েব সাইট")),
         ),
         Container(
           height: 1,
@@ -1484,7 +916,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ), title: Text("আমাদের সম্পর্কে জানুন")),
         ),
         Container(
-          height: 200,
+          height: 250,
           color: Colors.green.withOpacity(.4),
         ),
       ],

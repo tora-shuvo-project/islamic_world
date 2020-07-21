@@ -8,7 +8,6 @@ import 'package:searchtosu/FinalModels/sura_name_table_model.dart';
 import 'package:searchtosu/Widgets/ListOfSura.dart';
 import 'package:searchtosu/helpers/database_helper.dart';
 import 'package:searchtosu/pages/para_wise_page.dart';
-import 'package:searchtosu/pages/settings_page.dart';
 import 'package:searchtosu/utils/utils.dart';
 
 class SuraListPage extends StatefulWidget {
@@ -71,14 +70,32 @@ class _SuraListPageState extends State<SuraListPage> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    IconButton(
-                      icon: Icon(Icons.arrow_back, color: Colors.white,),
-                      onPressed: (){
-                        Navigator.of(context).pop();
-                      },
+                    Expanded(flex: 1,
+                      child: IconButton(
+                        icon: Icon(Icons.arrow_back, color: Colors.white,),
+                        onPressed: (){
+                          Navigator.of(context).pop();
+                        },
+                      ),
                     ),
-                    Divider(color: Colors.white,),
-                    Text("সূরা ক্রমে", style: TextStyle(color: Colors.white, fontSize: 20),),
+                    Expanded(
+                        flex: 3,
+                        child: Text("সূরা ক্রমে", style: TextStyle(color: Colors.white, fontSize: 20),)),
+                    Expanded(flex: 2,
+                      child: Container(
+                        child: FlatButton(
+                          child: Text('পারা ক্রমে',style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                          ),),
+                          onPressed: (){
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context)=>ParaWiseListPage()
+                            ));
+                          },
+                        ),
+                      ),
+                    ),
 
                   ],
                 ),
