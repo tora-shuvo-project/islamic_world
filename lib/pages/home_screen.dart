@@ -100,26 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     text: [
                       englishDate,
                       arabyDate,
-                      banglaDate,
-                      englishDate,
-                      arabyDate,
-                      banglaDate,
-                      englishDate,
-                      arabyDate,
-                      banglaDate,
-                      englishDate,
-                      arabyDate,
-                      banglaDate,
-                      englishDate,
-                      arabyDate,
-                      banglaDate,
-                      englishDate,
-                      arabyDate,
-                      banglaDate,
-                      englishDate,
-                      arabyDate,
-                      banglaDate,
-                    ],
+                      banglaDate,],
 
                     isRepeatingAnimation: true,
                     textStyle: TextStyle(fontSize: 17.0,color: Colors.green),
@@ -397,194 +378,28 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child:Column(
                                   children: <Widget>[
                                     SizedBox(height: 20,),
-                                   FittedBox(
-                                     child: Row(
-                                       mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            InkWell(
-                                              onTap: (){
-                                                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>SuraListPage()));
-                                              },
-                                              child: Column(
-                                                children: <Widget>[
-                                                  Card(
-
-                                                    child: Container(
-                                                      padding: EdgeInsets.all(15),
-                                                        child: Image.asset("images/quran.png",height: 40, width: 40,)),
-                                                  ),
-                                                  Text("কোরআন শরীফ")
-                                                ],
-                                              ),
-                                            ),
-
-                                            InkWell(
-                                              onTap: (){
-                                                Navigator.of(context).push(MaterialPageRoute(
-                                                    builder: (context)=>DoyaNameScren()
-                                                ));
-                                              },
-                                              child: Column(
-                                                children: <Widget>[
-                                                  Card(
-
-                                                    child: Container(
-                                                        padding: EdgeInsets.all(15),
-                                                        child: Image.asset("images/doya.png",height: 40, width: 40,)),
-                                                  ),
-                                                  Text("দোয়া")
-                                                ],
-                                              ),
-                                            ),
-
-                                            InkWell(
-                                              onTap: (){
-                                                Navigator.of(context).pushNamed(QuranWordPages.route);
-                                              },
-                                              child: Column(
-                                                children: <Widget>[
-                                                  Card(
-
-                                                    child: Container(
-                                                        padding: EdgeInsets.all(15),
-                                                        child: Image.asset("images/kuranIcon.png",height: 40, width: 40,)),
-                                                  ),
-                                                  Text("কোরআন শিক্ষা")
-                                                ],
-                                              ),
-                                            ),
-
-                                            InkWell(
-                                              onTap: (){
-                                                Navigator.of(context).push(MaterialPageRoute(
-                                          builder: (context)=>OjifaScreen()
-                                      ));
-                                              },
-                                              child: Column(
-                                                children: <Widget>[
-                                                  Card(
-
-                                                    child: Container(
-                                                        padding: EdgeInsets.all(15),
-                                                        child: Image.asset("images/ojifa.png",height: 40, width: 40,)),
-                                                  ),
-                                                  Text("ওজিফা")
-                                                ],
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                   ),
-
-                                    SizedBox(height: 15,),
-                                     FittedBox(
-                                       child: Row(
-                                         mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-
-                                            InkWell(
-                                              onTap: (){
-                                                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>HadisScreen()));
-                                              },
-                                              child: Column(
-                                                children: <Widget>[
-                                                  Card(
-
-                                                    child: Container(
-                                                        padding: EdgeInsets.all(15),
-                                                        child: Image.asset("images/hadis.png",height: 40, width: 40,)),
-                                                  ),
-                                                  Text("হাদিস")
-                                                ],
-                                              ),
-                                            ),
-                                            InkWell(
-                                              onTap: (){
-                                                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>KiblaScreen()));
-                                              },
-                                              child: Column(
-                                                children: <Widget>[
-                                                  Card(
-
-                                                    child: Container(
-                                                        padding: EdgeInsets.all(15),
-                                                        child: Image.asset("images/kibla.png",height: 40, width: 40,)),
-                                                  ),
-                                                  Text("কিবলা")
-                                                ],
-                                              ),
-                                            ),
-
-                                            InkWell(
-                                              onTap: (){
-                                                Navigator.of(context).push(MaterialPageRoute(
-                                            builder: (context)=>NearByMosqueScreen()
-                                        ));
-                                              },
-                                              child: Column(
-                                                children: <Widget>[
-                                                  Card(
-
-                                                    child: Container(
-                                                        padding: EdgeInsets.all(15),
-                                                        child: Image.asset("images/mosque.png",height: 40, width: 40,)),
-                                                  ),
-                                                  Text("নিকটবর্তী মসজিদ")
-                                                ],
-                                              ),
-                                            ),
-
-                                            InkWell(
-                                                onTap: (){
-                                                  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>TasbihScreen()));
-                                                },
-                                                child: Column(
-                                                  children: <Widget>[
-                                                    Card(
-
-                                                      child: Container(
-                                                          padding: EdgeInsets.all(15),
-                                                          child: Image.asset("images/tasbih.png",height: 40, width: 40,)),
-                                                    ),
-                                                    FittedBox(child: Text("তাসবিহ"))
-                                                  ],
-                                                ),
-                                              ),
-
-                                          ],
-                                        ),
-                                     ),
-
-                                    SizedBox(height: 15,),
-                                    FittedBox(
-                                      child: Row(
+                                   Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
                                           InkWell(
                                             onTap: (){
-                                              Navigator.of(context).push(MaterialPageRoute(
-                                          builder: (context)=>CalenderScreen()
-                                      ));
+                                              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>SuraListPage()));
                                             },
                                             child: Column(
                                               children: <Widget>[
                                                 Card(
 
                                                   child: Container(
-                                                      padding: EdgeInsets.all(15),
-                                                      child: Image.asset("images/calendar.png",height: 40, width: 40,)),
+                                                    padding: EdgeInsets.all(15),
+                                                      child: Image.asset("images/quran.png",height: 40, width: 40,)),
                                                 ),
-                                                Text("ক্যালেন্ডার")
+                                                Text("কোরআন শরীফ")
                                               ],
                                             ),
                                           ),
 
-
                                           InkWell(
                                             onTap: (){
-
                                               Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ShomoyShuchi()));
                                             },
                                             child: Column(
@@ -595,13 +410,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       padding: EdgeInsets.all(15),
                                                       child: Image.asset("images/time.png",height: 40, width: 40,)),
                                                 ),
-                                                Text("নামাজের সময়")
+                                                Text("নামাজের সময়সূচী")
                                               ],
                                             ),
                                           ),
+
                                           InkWell(
                                             onTap: (){
-                                              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>NiyomScreen()));
+                                              Navigator.of(context).pushNamed(QuranWordPages.route);
                                             },
                                             child: Column(
                                               children: <Widget>[
@@ -609,66 +425,352 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                                   child: Container(
                                                       padding: EdgeInsets.all(15),
-                                                      child: Image.asset("images/niyom.png",height: 40, width: 40,)),
+                                                      child: Image.asset("images/quran.png",height: 40, width: 40,)),
                                                 ),
-                                                Text("নিয়ম কানুন")
+                                                Text("কোরআন শরীফ")
                                               ],
                                             ),
                                           ),
 
                                           InkWell(
-                                            onTap: (){
-                                              Navigator.of(context).push(MaterialPageRoute(
-                                          builder: (context)=>CommentQuestionScreen()
-                                      ));
-                                            }
-                                            ,
+
                                             child: Column(
                                               children: <Widget>[
                                                 Card(
 
                                                   child: Container(
                                                       padding: EdgeInsets.all(15),
-                                                      child: Image.asset("images/live_comment.png",height: 40, width: 40,)),
+                                                      child: Image.asset("images/quran.png",height: 40, width: 40,)),
                                                 ),
-                                                Text("লাইভ কমেন্ট")
+                                                Text("কোরআন শরীফ")
                                               ],
                                             ),
                                           )
                                         ],
                                       ),
-                                    ),
-                                    SizedBox(height: 15,),
-                                    FittedBox(
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          InkWell(
-                                            onTap: (){
-                                              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>BlogPages()));
-                                            },
-                                            child: Column(
-                                              children: <Widget>[
-                                                Card(
 
-                                                  child: Container(
-                                                      padding: EdgeInsets.all(15),
-                                                      child: Image.asset("images/web.png",height: 40, width: 35,)),
-                                                ),
-                                                Text("ইসলামিক ওয়েভ")
-                                              ],
+                                    SizedBox(height: 15,),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
                                             ),
-                                          ),
+                                            Text("কোরআন শরীফ")
+                                          ],
+                                        ),
 
-                                        ],
-                                      ),
+                                        Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
+                                          ],
+                                        ),
+
+                                        Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
+                                          ],
+                                        ),
+
+                                        Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
+                                          ],
+                                        )
+                                      ],
                                     ),
                                     SizedBox(height: 15,),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Column(
+                                          children: <Widget>[
+                                            Card(
 
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
+                                          ],
+                                        ),
+
+                                        Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
+                                          ],
+                                        ),
+
+                                        Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
+                                          ],
+                                        ),
+
+                                        Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(height: 15,),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
+                                          ],
+                                        ),
+
+                                        Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
+                                          ],
+                                        ),
+
+                                        Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
+                                          ],
+                                        ),
+
+                                        Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(height: 15,),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
+                                          ],
+                                        ),
+
+                                        Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
+                                          ],
+                                        ),
+
+                                        Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
+                                          ],
+                                        ),
+
+                                        Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(height: 15,),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
+                                          ],
+                                        ),
+
+                                        Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
+                                          ],
+                                        ),
+
+                                        Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
+                                          ],
+                                        ),
+
+                                        Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(height: 15,),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
+                                          ],
+                                        ),
+
+                                        Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
+                                          ],
+                                        ),
+
+                                        Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
+                                          ],
+                                        ),
+
+                                        Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
+                                          ],
+                                        )
+                                      ],
+                                    ),
                                   ],
                                 )
                               ),
-
+                            
                           ],
                         ),
                       ),

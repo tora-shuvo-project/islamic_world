@@ -34,7 +34,6 @@ class MyApp extends StatelessWidget {
 
       child: MaterialApp(
 
-
         title: 'Islamic World',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
