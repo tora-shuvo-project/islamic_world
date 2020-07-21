@@ -18,6 +18,7 @@ import 'package:provider/provider.dart';
 import 'package:searchtosu/FinalModels/prayer_time_models.dart';
 import 'package:searchtosu/helpers/database_helper.dart';
 import 'package:searchtosu/helpers/provider_helpers.dart';
+import 'package:searchtosu/pages/about_pages.dart';
 import 'package:searchtosu/pages/blog_pages.dart';
 import 'package:searchtosu/pages/calender_pages.dart';
 import 'package:searchtosu/pages/comment_question_screen.dart';
@@ -1556,7 +1557,9 @@ class _HomeScreenState extends State<HomeScreen> {
           color: Colors.green.withOpacity(.5),
           child: ListTile(
               onTap: (){
-
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context)=>AboutPages()
+              ));
               },
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,

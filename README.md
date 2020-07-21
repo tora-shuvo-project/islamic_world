@@ -31,6 +31,6 @@
    
    15. Donate Screen 100 ok
    
-   16. About Screen 
+   16. About Screen 95% ok
 
 
