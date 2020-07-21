@@ -43,7 +43,7 @@ class _DoyaNameScrenState extends State<DoyaNameScren> {
             child: ClipRRect(
               borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30)),
               child: Container(
-                height:145,
+                height:150,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                     gradient: LinearGradient(colors: [
@@ -130,7 +130,7 @@ class _DoyaNameScrenState extends State<DoyaNameScren> {
                         ),
 
                       ),
-                      SizedBox(height: 4,),
+                      SizedBox(height: 9,),
                       TabBar(
                           tabs:  [new Text("বিষয় ভিত্তিক"),
                             new Text("সকল দোয়াসমূহ")],
@@ -224,21 +224,20 @@ child:   RotateAnimatedTextKit(
 //                         "সুতরাং তোমরা তাঁকেই ডাক, তার অনুগত্য একনিষ্ঠ হয়ে। প্রশংসা জগতসমূহের রাব্ব আল্লাহর প্রাপ্য"),
                 ),
                     Container(
-                      color: Colors.orange,
+                  //    color: Color(0xff178723),
                       alignment: Alignment.bottomCenter,
                       child: Column(
                         children: <Widget>[
                               Row(
                                 children: <Widget>[
                                   Container(
+
                                     decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(Radius.circular(10)),
                                         border: Border.all(
-                                            color: Colors.white
+                                          color: Color(0xff178723),
                                         ),
-                                        gradient: LinearGradient(colors: [
-                                          const Color(0xff178723),
-                                          const Color(0xff27AB4B)
-                                        ])
+                                        color: Colors.white
                                     ),
                                     height: MediaQuery.of(context).size.width/3,
                                     width: MediaQuery.of(context).size.width/3,
@@ -252,8 +251,8 @@ child:   RotateAnimatedTextKit(
                                         child: Column(
                                           mainAxisSize: MainAxisSize.min,
                                           children: <Widget>[
-                                            Icon(Icons.book,color: Colors.white, size: 20,),
-                                            Text("নিত্যদিন", style: TextStyle(color: Colors.white), )
+                                            Image.asset("images/regularday.png", height: 40, width: 40,),
+                                            Text("নিত্যদিন", style: TextStyle(color: Colors.black), )
                                           ],
                                         ),
                                       ),
@@ -261,13 +260,11 @@ child:   RotateAnimatedTextKit(
                                   ),
                                   Container(
                                     decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: Colors.white
-                                      ),
-                                        gradient: LinearGradient(colors: [
-                                          const Color(0xff178723),
-                                          const Color(0xff27AB4B)
-                                        ])
+                                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                                        border: Border.all(
+                                          color: Color(0xff178723),
+                                        ),
+                                        color: Colors.white
                                     ),
                                     height: MediaQuery.of(context).size.width/3,
                                     width: MediaQuery.of(context).size.width/3,
@@ -282,8 +279,8 @@ child:   RotateAnimatedTextKit(
                                         child: Column(
                                           mainAxisSize: MainAxisSize.min,
                                           children: <Widget>[
-                                            Icon(Icons.book,color: Colors.white, size: 20,),
-                                            Text("যিকর-ঘুম", style: TextStyle(color: Colors.white), )
+                                            Image.asset("images/zikr.png", height: 40, width: 40,),
+                                            Text("যিকর-ঘুম", style: TextStyle(color: Colors.black), )
                                           ],
                                         ),
                                       ),
@@ -291,13 +288,11 @@ child:   RotateAnimatedTextKit(
                                   ),
                                   Container(
                                     decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: Colors.white
-                                      ),
-                                        gradient: LinearGradient(colors: [
-                                          const Color(0xff178723),
-                                          const Color(0xff27AB4B)
-                                        ])
+                                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                                        border: Border.all(
+                                          color: Color(0xff178723),
+                                        ),
+                                        color: Colors.white
                                     ),
                                     height: MediaQuery.of(context).size.width/3,
                                     width: MediaQuery.of(context).size.width/3,
@@ -311,8 +306,8 @@ child:   RotateAnimatedTextKit(
                                         child: Column(
                                           mainAxisSize: MainAxisSize.min,
                                           children: <Widget>[
-                                            Icon(Icons.book,color: Colors.white, size: 20,),
-                                            Text("সামাজিক", style: TextStyle(color: Colors.white), )
+                                            Image.asset("images/shamajik.png", height: 40, width: 40,),//shamajik.png
+                                            Text("সামাজিক", style: TextStyle(color: Colors.black), )
                                           ],
                                         ),
                                       ),
@@ -324,13 +319,15 @@ child:   RotateAnimatedTextKit(
                             children: <Widget>[
                               Container(
                                 decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(Radius.circular(10)),
                                   border: Border.all(
-                                      color: Colors.white
+                                      color: Color(0xff178723),
                                   ),
-                                    gradient: LinearGradient(colors: [
-                                      const Color(0xff178723),
-                                      const Color(0xff27AB4B)
-                                    ])
+                                    color: Colors.white
+//                                    gradient: LinearGradient(colors: [
+//                                      const Color(0xff178723),
+//                                      const Color(0xff27AB4B)
+//                                    ])
                                 ),
                                 height: MediaQuery.of(context).size.width/3,
                                 width: MediaQuery.of(context).size.width/3,
@@ -344,8 +341,8 @@ child:   RotateAnimatedTextKit(
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: <Widget>[
-                                        Icon(Icons.book,color: Colors.white, size: 20,),
-                                        Text("হজ - সিয়াম", style: TextStyle(color: Colors.white), )
+                                        Image.asset("images/kaaba.png", height: 40, width: 40,),//kaaba.png
+                                        Text("হজ - সিয়াম", style: TextStyle(color: Colors.black), )
                                       ],
                                     ),
                                   ),
@@ -353,13 +350,11 @@ child:   RotateAnimatedTextKit(
                               ),
                               Container(
                                 decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Colors.white
-                                  ),
-                                    gradient: LinearGradient(colors: [
-                                      const Color(0xff178723),
-                                      const Color(0xff27AB4B)
-                                    ])
+                                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                                    border: Border.all(
+                                      color: Color(0xff178723),
+                                    ),
+                                    color: Colors.white
                                 ),
                                 height: MediaQuery.of(context).size.width/3,
                                 width: MediaQuery.of(context).size.width/3,
@@ -373,8 +368,8 @@ child:   RotateAnimatedTextKit(
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: <Widget>[
-                                        Icon(Icons.book,color: Colors.white, size: 20,),
-                                        Text("কুরআন", style: TextStyle(color: Colors.white), )
+                                        Image.asset("images/kuranIcon.png", height: 40, width: 40,),
+                                        Text("কুরআন", style: TextStyle(color: Colors.black), )
                                       ],
                                     ),
                                   ),
@@ -382,13 +377,11 @@ child:   RotateAnimatedTextKit(
                               ),
                               Container(
                                 decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Colors.white
-                                  ),
-                                    gradient: LinearGradient(colors: [
-                                      const Color(0xff178723),
-                                      const Color(0xff27AB4B)
-                                    ])
+                                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                                    border: Border.all(
+                                      color: Color(0xff178723),
+                                    ),
+                                    color: Colors.white
                                 ),
                                 height: MediaQuery.of(context).size.width/3,
                                 width: MediaQuery.of(context).size.width/3,
@@ -402,8 +395,8 @@ child:   RotateAnimatedTextKit(
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: <Widget>[
-                                        Icon(Icons.book,color: Colors.white, size: 20,),
-                                        Text("সালাত", style: TextStyle(color: Colors.white), )
+                                        Image.asset("images/prayer_icon.png", height: 40, width: 40,),
+                                        Text("সালাত", style: TextStyle(color: Colors.black), )
                                       ],
                                     ),
                                   ),
@@ -414,14 +407,13 @@ child:   RotateAnimatedTextKit(
                           Row(
                             children: <Widget>[
                               Container(
+
                                 decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Colors.white
-                                  ),
-                                    gradient: LinearGradient(colors: [
-                                      const Color(0xff178723),
-                                      const Color(0xff27AB4B)
-                                    ])
+                                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                                    border: Border.all(
+                                      color: Color(0xff178723),
+                                    ),
+                                    color: Colors.white
                                 ),
                                 height: MediaQuery.of(context).size.width/3,
                                 width: MediaQuery.of(context).size.width/3,
@@ -435,8 +427,8 @@ child:   RotateAnimatedTextKit(
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: <Widget>[
-                                        Icon(Icons.book,color: Colors.white, size: 20,),
-                                        Text("অনুভূতি", style: TextStyle(color: Colors.white), )
+                                        Image.asset("images/heart.png", height: 40, width: 40,),//heart.png
+                                        Text("অনুভূতি", style: TextStyle(color: Colors.black), )
                                       ],
                                     ),
                                   ),
@@ -444,13 +436,11 @@ child:   RotateAnimatedTextKit(
                               ),
                               Container(
                                 decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Colors.white
-                                  ),
-                                    gradient: LinearGradient(colors: [
-                                      const Color(0xff178723),
-                                      const Color(0xff27AB4B)
-                                    ])
+                                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                                    border: Border.all(
+                                      color: Color(0xff178723),
+                                    ),
+                                    color: Colors.white
                                 ),
                                 height: MediaQuery.of(context).size.width/3,
                                 width: MediaQuery.of(context).size.width/3,
@@ -464,8 +454,8 @@ child:   RotateAnimatedTextKit(
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: <Widget>[
-                                        Icon(Icons.book,color: Colors.white, size: 20,),
-                                        Text("ইমান-সুরক্ষা", style: TextStyle(color: Colors.white), )
+                                        Image.asset("images/protected.png", height: 40, width: 40,),//protected.png
+                                        Text("ইমান-সুরক্ষা", style: TextStyle(color: Colors.black), )
                                       ],
                                     ),
                                   ),
@@ -473,13 +463,11 @@ child:   RotateAnimatedTextKit(
                               ),
                               Container(
                                 decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Colors.white
-                                  ),
-                                    gradient: LinearGradient(colors: [
-                                      const Color(0xff178723),
-                                      const Color(0xff27AB4B)
-                                    ])
+                                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                                    border: Border.all(
+                                      color: Color(0xff178723),
+                                    ),
+                                    color: Colors.white
                                 ),
                                 height: MediaQuery.of(context).size.width/3,
                                 width: MediaQuery.of(context).size.width/3,
@@ -493,8 +481,8 @@ child:   RotateAnimatedTextKit(
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: <Widget>[
-                                        Icon(Icons.book,color: Colors.white, size: 20,),
-                                        Text("অসুস্থতা", style: TextStyle(color: Colors.white), )
+                                        Image.asset("images/fever.png", height: 40, width: 40,),//fever.png
+                                        Text("অসুস্থতা", style: TextStyle(color: Colors.black), )
                                       ],
                                     ),
                                   ),
