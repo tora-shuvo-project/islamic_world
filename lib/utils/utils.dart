@@ -45,6 +45,34 @@ class Utils{
     return prefs.getString('zilaname')??'Dhaka';
   }
 
+  static Future<void> saveArabiFormatFromPreference(String formatname)async{
+    try{
+      final prefs=await SharedPreferences.getInstance();
+      prefs.setString('arabiformatname', formatname);
+    }catch(error){
+      throw error;
+    }
+  }
+
+  static Future<String> getArabiFormatNameFromPreference()async{
+    final prefs=await SharedPreferences.getInstance();
+    return prefs.getString('arabiformatname')??'Arabi Indopak';
+  }
+
+  static Future<void> saveArabyFontPreference(String formatname)async{
+    try{
+      final prefs=await SharedPreferences.getInstance();
+      prefs.setString('arabifont', formatname);
+    }catch(error){
+      throw error;
+    }
+  }
+
+  static Future<String> getArabiFontFromPreference()async{
+    final prefs=await SharedPreferences.getInstance();
+    return prefs.getString('arabifont')??'Maddina';
+  }
+
 }
 
 

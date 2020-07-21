@@ -10,15 +10,35 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
 
   String _myActivity;
+  String _arabyTextStyle;
+  String _arabyStyle;
+  String _fontName;
+  String _fontFamily;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _myActivity = '';
+    _arabyTextStyle = '';
+    _fontName = '';
+    _fontFamily='QalamMajid';
+    _arabyStyle = 'بسم الله الرحمن الرحيم';
     Utils.getQareNameFromPreference().then((value) {
       setState(() {
         _myActivity=value;
+        print(value);
+      });
+    });
+    Utils.getArabiFormatNameFromPreference().then((value){
+      setState(() {
+        _arabyTextStyle=value;
+        print(value);
+      });
+    });
+    Utils.getArabiFontFromPreference().then((value){
+      setState(() {
+        _fontName=value;
         print(value);
       });
     });
@@ -26,18 +46,28 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
 
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Settings'),
       ),
       body: ListView(
         children: <Widget>[
+
           Container(
+            padding: EdgeInsets.all(8),
+            alignment: Alignment.center,
+            child: Text('$_arabyStyle',style: TextStyle(
+              fontSize: 22,
+                fontFamily: _fontFamily
+            ),),
+          ),
+          Container(
+            color: Colors.green.withOpacity(.2),
             alignment: Alignment.center,
             width: double.infinity,
-            child:
-            DropDownFormField(
-              titleText: 'Select Qare',
+            child: DropDownFormField(
+              titleText: 'কারী সিলেক্ট করুণ',
               hintText: 'Please choose one',
               value: _myActivity,
               onSaved: (value) async{
@@ -54,23 +84,23 @@ class _SettingsPageState extends State<SettingsPage> {
               },
               dataSource: [
                 {
-                  "display": "Abdur rahman Sudais",
+                  "display": "আব্দুর রহমান সুদাইস",
                   "value": "Abdurrahman Sudais",
                 },
                 {
-                  "display": "Saad al Ghamidi",
+                  "display": "সাদ আল গামিদি",
                   "value": "Saad al Ghamidi",
                 },
                 {
-                  "display": "Mishary bin Rashid al-Afasy",
+                  "display": "মিসারী বিন রাসেদ আল আফসি",
                   "value": "al-mishary",
                 },
                 {
-                  "display": "Salah Budair",
+                  "display": "সালাহ বুদির",
                   "value": "Salah Budair",
                 },
                 {
-                  "display": "Ahmed al Ajmi",
+                  "display": "আহমেদ আল আজিমি",
                   "value": "Ahmed al Ajmi",
                 },
               ],
@@ -78,6 +108,141 @@ class _SettingsPageState extends State<SettingsPage> {
               valueField: 'value',
             ),
           ),
+
+          SizedBox(height: 5,),
+          Container(
+            color: Colors.green.withOpacity(.2),
+            alignment: Alignment.center,
+            width: double.infinity,
+            child: DropDownFormField(
+              titleText: 'কুরআন এর আরবি ফরম্যাট',
+              hintText: 'Please choose one',
+              value: _arabyTextStyle,
+              onSaved: (value) async{
+                setState(() {
+                  _arabyTextStyle = value;
+                  Utils.saveArabiFormatFromPreference(value);
+                  if(value==''){
+                    setState(() {
+                      _arabyStyle='بسم الله الرحمن الرحيم';
+                    });
+                  }else if(value==''){
+                    setState(() {
+                      _arabyStyle='بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ';
+                    });
+                  }else{
+                    setState(() {
+                      _arabyStyle='بِسۡمِ اللّٰہِ الرَّحۡمٰنِ الرَّحِیۡمِ ﴿۱﴾';
+                    });
+                  }
+                });
+              },
+              onChanged: (value) {
+                setState(() {
+                  _arabyTextStyle = value;
+                  Utils.saveArabiFormatFromPreference(value);
+                  if(value=='Arabi Simple'){
+                    setState(() {
+                      _arabyStyle='بسم الله الرحمن الرحيم';
+                    });
+                  }else if(value=='Arabi Utmanic'){
+                    setState(() {
+                      _arabyStyle='بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ';
+                    });
+                  }else{
+                    setState(() {
+                      _arabyStyle='بِسۡمِ اللّٰہِ الرَّحۡمٰنِ الرَّحِیۡمِ ﴿۱﴾';
+                    });
+                  }
+                });
+              },
+              dataSource: [
+                {
+                  "display": "আরাবি সিম্পল",
+                  "value": "Arabi Simple",
+                },
+                {
+                  "display": "আরাবি উঠ-মানিক",
+                  "value": "Arabi Utmanic",
+                },
+                {
+                  "display": "আরাবি ইন্ডোপাক",
+                  "value": "Arabi Indopak",
+                },
+              ],
+              textField: 'display',
+              valueField: 'value',
+            ),
+          ),
+          SizedBox(height: 5,),
+          Container(
+            color: Colors.green.withOpacity(.2),
+            alignment: Alignment.center,
+            width: double.infinity,
+            child: DropDownFormField(
+              titleText: 'অজিফা,দূয়া ইত্যাদির জন্য আরাবি ফন্ট সিলেক্ট করুণ',
+              hintText: 'Please choose one',
+              value: _fontName,
+              onSaved: (value) async{
+                setState(() {
+                  Utils.saveArabyFontPreference(value);
+                  _fontName = value;
+                });
+              },
+              onChanged: (value) {
+                setState(() {
+                  _fontName = value;
+                  Utils.saveArabyFontPreference(value);
+                  if(value=='Monserat'){
+                    setState(() {
+                      _fontFamily='Monserat';
+                    });
+                  }else if(value=='Mukadimah'){
+                    setState(() {
+                      _fontFamily='Mukadimah';
+                    });
+                  }else if(value=='QalamMajid'){
+                    setState(() {
+                      _fontFamily='QalamMajid';
+                    });
+                  }else if(value=='utman'){
+                    setState(() {
+                      _fontFamily='utman';
+                    });
+                  }else{
+                    setState(() {
+                      _fontFamily='Maddina';
+                    });
+                  }
+                });
+              },
+              dataSource: [
+                {
+                  "display": "মনসেরাত ফন্ট",
+                  "value": "Monserat",
+                },
+                {
+                  "display": "মুকাদিমাহ ফন্ট",
+                  "value": "Mukadimah",
+                },
+                {
+                  "display": "কালাম মাজিদ(হাফীজি কুরআন) ফন্ট",
+                  "value": "QalamMajid",
+                },
+                {
+                  "display": "উটমান ফন্ট",
+                  "value": "utman",
+                },
+                {
+                  "display": "মাদিনা ফন্ট",
+                  "value": "Maddina",
+                },
+              ],
+              textField: 'display',
+              valueField: 'value',
+            ),
+          ),
+
         ],
       ),
     );
