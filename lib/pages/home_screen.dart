@@ -21,7 +21,6 @@ import 'package:searchtosu/helpers/provider_helpers.dart';
 import 'package:searchtosu/pages/blog_pages.dart';
 import 'package:searchtosu/pages/calender_pages.dart';
 import 'package:searchtosu/pages/comment_question_screen.dart';
-import 'package:searchtosu/pages/donate_screen.dart';
 import 'package:searchtosu/pages/doya_name_page.dart';
 import 'package:searchtosu/pages/hadis_screen.dart';
 import 'package:searchtosu/pages/kibla_screen.dart';
@@ -93,51 +92,46 @@ class _HomeScreenState extends State<HomeScreen> {
 //                    icon:Icon(Icons.menu,color:Color(0xff06AB00)),
 //                    onPressed: drawerController.toggle,
 //                  )),
-                  Expanded(
-                    child: RotateAnimatedTextKit(
-                      onTap: () {
-                        print("Tap Event");
-                      },
-                      duration: Duration(milliseconds: 5000),
-                      text: [
-                        englishDate,
-                        arabyDate,
-                        banglaDate,],
+                  RotateAnimatedTextKit(
+                    onTap: () {
+                      print("Tap Event");
+                    },
+                    duration: Duration(milliseconds: 5000),
+                    text: [
+                      englishDate,
+                      arabyDate,
+                      banglaDate,],
 
-                      isRepeatingAnimation: true,
-                      textStyle: TextStyle(fontSize: 17.0,color: Colors.green),
-                      textAlign: TextAlign.start,
-                      // or Alignment.topLeft
-                    ),
+                    isRepeatingAnimation: true,
+                    textStyle: TextStyle(fontSize: 17.0,color: Colors.green),
+                    textAlign: TextAlign.start,
+                    // or Alignment.topLeft
                   ),
                   //Text(englishDate,style: TextStyle(color:Color(0xff06AB00), fontSize: 17)),
 
-                  Expanded(child: Text('Search Islam',style: TextStyle(fontSize: 18.0,color: Colors.green,fontWeight: FontWeight.bold),)),
 
-                  Expanded(
-                    child: InkWell(
-                        onTap: (){
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context)=>LocationPage(_center)
-                          )).then((_){
-                            setState(() {
-                              Utils.getZilaNameFromPreference().then((value){
-                                zilaName=value;
-                              });
+                  InkWell(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context)=>LocationPage(_center)
+                        )).then((_){
+                          setState(() {
+                            Utils.getZilaNameFromPreference().then((value){
+                              zilaName=value;
                             });
                           });
-                        },
-                        child: FittedBox(
-                          child: Row(
-                            children: <Widget>[
-                              Icon(Icons.location_on,color:Color(0xff06AB00),),
-                              Text("|",style: TextStyle(color:Color(0xff06AB00), fontSize: 17),),
-                              Text(zilaName,style: TextStyle(color:Color(0xff06AB00), fontSize: 17), )
-                            ],
-                          ),
+                        });
+                      },
+                      child: FittedBox(
+                        child: Row(
+                          children: <Widget>[
+                            Icon(Icons.location_on,color:Color(0xff06AB00),),
+                            Text("|",style: TextStyle(color:Color(0xff06AB00), fontSize: 17),),
+                            Text(zilaName,style: TextStyle(color:Color(0xff06AB00), fontSize: 17), )
+                          ],
                         ),
                       ),
-                  ),
+                    ),
 
 
 
@@ -431,9 +425,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                                   child: Container(
                                                       padding: EdgeInsets.all(15),
-                                                      child: Image.asset("images/word.png",height: 40, width: 40,)),
+                                                      child: Image.asset("images/quran.png",height: 40, width: 40,)),
                                                 ),
-                                                Text("কোরআন শব্দ")
+                                                Text("কোরআন শরীফ")
                                               ],
                                             ),
                                           ),
@@ -446,9 +440,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                                   child: Container(
                                                       padding: EdgeInsets.all(15),
-                                                      child: Image.asset("images/live_comment.png",height: 40, width: 40,)),
+                                                      child: Image.asset("images/quran.png",height: 40, width: 40,)),
                                                 ),
-                                                Text("জিজ্ঞাসা")
+                                                Text("কোরআন শরীফ")
                                               ],
                                             ),
                                           )
@@ -465,9 +459,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                               child: Container(
                                                   padding: EdgeInsets.all(15),
-                                                  child: Image.asset("images/ojifa.png",height: 40, width: 40,)),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
                                             ),
-                                            Text("অজিফা")
+                                            Text("কোরআন শরীফ")
                                           ],
                                         ),
 
@@ -477,9 +471,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                               child: Container(
                                                   padding: EdgeInsets.all(15),
-                                                  child: Image.asset("images/doya.png",height: 40, width: 40,)),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
                                             ),
-                                            Text("দোয়া")
+                                            Text("কোরআন শরীফ")
                                           ],
                                         ),
 
@@ -489,9 +483,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                               child: Container(
                                                   padding: EdgeInsets.all(15),
-                                                  child: Image.asset("images/hadis.png",height: 40, width: 40,)),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
                                             ),
-                                            Text("হাদিস")
+                                            Text("কোরআন শরীফ")
                                           ],
                                         ),
 
@@ -501,9 +495,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                               child: Container(
                                                   padding: EdgeInsets.all(15),
-                                                  child: Image.asset("images/niyom.png",height: 40, width: 40,)),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
                                             ),
-                                            Text("নিয়ম")
+                                            Text("কোরআন শরীফ")
                                           ],
                                         )
                                       ],
@@ -518,9 +512,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                               child: Container(
                                                   padding: EdgeInsets.all(15),
-                                                  child: Image.asset("images/kibla.png",height: 40, width: 40,)),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
                                             ),
-                                            Text("কিবলা")
+                                            Text("কোরআন শরীফ")
                                           ],
                                         ),
 
@@ -530,9 +524,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                               child: Container(
                                                   padding: EdgeInsets.all(15),
-                                                  child: Image.asset("images/mosque.png",height: 40, width: 40,)),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
                                             ),
-                                            Text("কাছাকাছি মসজিদ")
+                                            Text("কোরআন শরীফ")
                                           ],
                                         ),
 
@@ -542,9 +536,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                               child: Container(
                                                   padding: EdgeInsets.all(15),
-                                                  child: Image.asset("images/tasbih.png",height: 40, width: 40,)),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
                                             ),
-                                            Text("তাসবিহ")
+                                            Text("কোরআন শরীফ")
                                           ],
                                         ),
 
@@ -554,9 +548,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                               child: Container(
                                                   padding: EdgeInsets.all(15),
-                                                  child: Image.asset("images/calendar.png",height: 40, width: 40,)),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
                                             ),
-                                            Text("ক্যালেন্ডার")
+                                            Text("কোরআন শরীফ")
                                           ],
                                         )
                                       ],
@@ -571,31 +565,208 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                               child: Container(
                                                   padding: EdgeInsets.all(15),
-                                                  child: Image.asset("images/web.png",height: 40, width: 40,)),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
                                             ),
-                                            Text("ব্লগ")
+                                            Text("কোরআন শরীফ")
                                           ],
                                         ),
 
                                         Column(
                                           children: <Widget>[
+                                            Card(
 
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
                                           ],
                                         ),
 
                                         Column(
                                           children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
                                           ],
                                         ),
 
                                         Column(
                                           children: <Widget>[
+                                            Card(
 
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
                                           ],
                                         )
                                       ],
                                     ),
                                     SizedBox(height: 15,),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
+                                          ],
+                                        ),
+
+                                        Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
+                                          ],
+                                        ),
+
+                                        Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
+                                          ],
+                                        ),
+
+                                        Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(height: 15,),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
+                                          ],
+                                        ),
+
+                                        Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
+                                          ],
+                                        ),
+
+                                        Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
+                                          ],
+                                        ),
+
+                                        Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(height: 15,),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
+                                          ],
+                                        ),
+
+                                        Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
+                                          ],
+                                        ),
+
+                                        Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
+                                          ],
+                                        ),
+
+                                        Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("কোরআন শরীফ")
+                                          ],
+                                        )
+                                      ],
+                                    ),
                                   ],
                                 )
                               ),
@@ -1370,9 +1541,7 @@ class _HomeScreenState extends State<HomeScreen> {
           color: Colors.green.withOpacity(.5),
           child: ListTile(
               onTap: (){
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context)=>DonateScreen()
-                ));
+
               },
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
