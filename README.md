@@ -28,5 +28,9 @@
    13. Niyom 100% ok
    
    14. Notification 40% ok
+   
+   15. Donate Screen 100 ok
+   
+   16. About Screen 
 
 
