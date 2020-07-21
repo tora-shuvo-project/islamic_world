@@ -16,6 +16,7 @@ import 'package:hijri/hijri_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:searchtosu/FinalModels/prayer_time_models.dart';
+import 'package:searchtosu/Widgets/custome_dialog.dart';
 import 'package:searchtosu/helpers/database_helper.dart';
 import 'package:searchtosu/helpers/provider_helpers.dart';
 import 'package:searchtosu/pages/about_pages.dart';
@@ -74,6 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
   LatLng _center;
 
   bool isOpen=true;
+
 
   Widget _appBar(){
     return Container(
@@ -314,6 +316,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   }
 
+
   @override
   Widget build(BuildContext context) {
     return DeivaoDrawer(
@@ -324,7 +327,10 @@ class _HomeScreenState extends State<HomeScreen> {
         child: WillPopScope(
           onWillPop: (){
             _showNotificationsAfterAppClose();
-            exit(0);
+            showDialog(
+              context: context,
+              builder: (_) => CustomeAlertDialog(),
+            );
           },
           child: SafeArea(
             child: Scaffold(
@@ -397,6 +403,34 @@ class _HomeScreenState extends State<HomeScreen> {
                                 banglaDate1,
                                 englishDate1,
                                 arabyDate1,
+                                banglaDate1,
+                                englishDate1,
+                                arabyDate1,
+                                banglaDate1,
+                                englishDate1,
+                                arabyDate1,
+                                banglaDate1,
+                                englishDate1,
+                                arabyDate1,
+                                banglaDate1,
+                                englishDate1,
+                                arabyDate1,
+                                banglaDate1,
+                                englishDate1,
+                                banglaDate1,
+                                englishDate1,
+                                arabyDate1,
+                                banglaDate1,
+                                englishDate1,
+                                arabyDate1,
+                                banglaDate1,
+                                englishDate1,
+                                arabyDate1,
+                                banglaDate1,
+                                englishDate1,
+                                arabyDate1,
+                                banglaDate1,
+                                englishDate1,
                                 banglaDate1,
                                 englishDate1,
                                 arabyDate1,
@@ -706,7 +740,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                         Expanded(
                                           child: InkWell(
                                             onTap: (){
-                                              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>BlogPages()));
+                                              showDialog(
+                                                context: context,
+                                                builder: (_) => CustomeAlertDialog(),
+                                              );
                                             },
                                             child: Column(
                                               children: <Widget>[

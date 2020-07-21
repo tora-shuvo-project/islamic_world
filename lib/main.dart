@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:searchtosu/helpers/place_provider.dart';
 import 'package:searchtosu/helpers/provider_helpers.dart';
 import 'package:searchtosu/pages/SplashScreen.dart';
+import 'package:searchtosu/pages/donate_screen.dart';
 import 'package:searchtosu/pages/home_screen.dart';
 import 'package:searchtosu/pages/quran_word_pages.dart';
 import 'package:searchtosu/pages/shomoy_shuchi_page.dart';
@@ -47,6 +48,7 @@ class MyApp extends StatelessWidget {
           HomeScreen.route:(context)=>HomeScreen(),
           QuranWordPages.route:(context)=>QuranWordPages(),
           ShomoyShuchi.route: (context)=> ShomoyShuchi(),
+          DonateScreen.route: (context)=> DonateScreen(),
         },
       ),
     );
