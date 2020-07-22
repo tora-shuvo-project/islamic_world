@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:searchtosu/FinalModels/doya_details_models.dart';
 import 'package:searchtosu/FinalModels/doya_name_models.dart';
 import 'package:searchtosu/helpers/database_helper.dart';
+import 'package:searchtosu/pages/settings_page.dart';
+import 'package:searchtosu/utils/utils.dart';
 import 'package:share/share.dart';
 class DoyaDetailsPage extends StatefulWidget {
 
@@ -20,11 +22,25 @@ class DoyaDetailsPage extends StatefulWidget {
 class _DoyaDetailsPageState extends State<DoyaDetailsPage> {
 
   List<DoyaDetailsModels> doyaDetailsModels=new List();
+  String fonatFamilyName;
+  double fontSizefromPreference;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    Utils.getArabiFontFromPreference().then((value){
+      setState(() {
+        fonatFamilyName=value;
+      });
+    });
+
+    Utils.getArabiFontSizeFromPreference().then((value){
+      setState(() {
+        fontSizefromPreference=double.parse(value);
+      });
+    });
 
     print(widget.id);
     DatabaseHelper.getDuyaDetailsFromTable(widget.id).then((doyaDetails){
@@ -38,15 +54,6 @@ class _DoyaDetailsPageState extends State<DoyaDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-
-//              IconButton(icon: Icon(Icons.content_copy, color: Colors.white,), onPressed: (){
-//                Clipboard.setData(ClipboardData(text: '${doyaDetailsModels[index].niyom}\n'
-//                    '${doyaDetailsModels[index].arabic}\n${doyaDetailsModels[index].banglaTranslator}\n${doyaDetailsModels[index].reference}'));
-//              },),
-//              IconButton(icon: Icon(Icons.share, color: Colors.white,), onPressed:(){
-//                Share.share('বিভাগঃ ${doyaDetailsModels[index].niyom}\n ${doyaDetailsModels[index].arabic}'
-//                    '\n${doyaDetailsModels[index].banglaTranslator}\n${doyaDetailsModels[index].reference} ');
-//              })
 
     Widget _appBar(){
       return Container(
@@ -66,30 +73,42 @@ class _DoyaDetailsPageState extends State<DoyaDetailsPage> {
             child: Container(
 
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  IconButton(icon: Icon(Icons.arrow_back, color: Colors.white,), onPressed: (){
-                    Navigator.of(context).pop();
-                  }),
-                  FittedBox(
-                    child: Expanded(
-                      child: Text(" ইসলামের দোয়া ",style:  TextStyle(
-                          color: Colors.white, fontSize: 20
-                      ), ),
-                    ),
+                  Expanded(flex: 1,
+                    child: IconButton(icon: Icon(Icons.arrow_back, color: Colors.white,), onPressed: (){
+                      Navigator.of(context).pop();
+                    }),
+                  ),
+                  Expanded(flex: 4,
+                    child: Text(" ইসলামের দোয়া ",style:  TextStyle(
+                        color: Colors.white, fontSize: 20
+                    ), ),
                   ),
 
-                Row(
-                  children: <Widget>[
-              IconButton(icon: Icon(Icons.share, color: Colors.white,), onPressed:(){
-                setState(() {
-                  Share.share(' ${widget.doyaDetailsModels.niyom}\n ${widget.doyaDetailsModels.arabic}'
-                      '\n${widget.doyaDetailsModels.banglaTranslator}\n${widget.doyaDetailsModels.reference} ');
-                });
+                Expanded(flex: 1,
+                  child: Row(
+                    children: <Widget>[
+              IconButton(icon: Icon(Icons.settings, color: Colors.white,), onPressed:(){
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context)=>SettingsPage()
+                  )).then((_){
+                    setState(() {
+                      Utils.getArabiFontFromPreference().then((value){
+                        setState(() {
+                          fonatFamilyName=value;
+                        });
+                      });
+                      Utils.getArabiFontSizeFromPreference().then((value){
+                        setState(() {
+                          fontSizefromPreference=double.parse(value);
+                        });
+                      });
 
+                    });
+                  });
               })
-                  ],
+                    ],
+                  ),
                 )
 
 
@@ -136,13 +155,18 @@ class _DoyaDetailsPageState extends State<DoyaDetailsPage> {
                         child:
                          Row(
                            children: <Widget>[
-                             Flexible(child: Text('${doyaDetailsModels[index].arabic}', maxLines: 100,style: TextStyle(fontSize: 17))),
-                             IconButton(icon: Icon(Icons.content_copy,), onPressed: (){
-                               setState(() {
-                                 Clipboard.setData(ClipboardData(text: "${doyaDetailsModels[index].arabic}"));
-                               });
+                             Expanded(flex:5,
+                               child: Text('${doyaDetailsModels[index].arabic}',
+                                   maxLines: 100,style: TextStyle(fontSize: fontSizefromPreference,fontFamily: fonatFamilyName)),
+                             ),
+                             Expanded(
+                               child: IconButton(icon: Icon(Icons.content_copy,), onPressed: (){
+                                 setState(() {
+                                   Clipboard.setData(ClipboardData(text: "${doyaDetailsModels[index].arabic}"));
+                                 });
 
-                             },)
+                               },),
+                             )
                            ],
                          )
 
@@ -153,13 +177,17 @@ class _DoyaDetailsPageState extends State<DoyaDetailsPage> {
                         child:
                           Row(
                             children: <Widget>[
-                              Flexible(child: Text('${doyaDetailsModels[index].banglaTranslator}',maxLines:100,overflow: TextOverflow.ellipsis,style: TextStyle(fontSize: 17))),
-                              IconButton(icon: Icon(Icons.content_copy), onPressed: (){
-                                setState(() {
-                                  Clipboard.setData(ClipboardData(text: "${doyaDetailsModels[index].banglaTranslator}"));
-                                });
+                              Expanded(
+                                  flex:5,
+                                  child: Text('${doyaDetailsModels[index].banglaTranslator}',maxLines:100,overflow: TextOverflow.ellipsis,style: TextStyle(fontSize: fontSizefromPreference))),
+                              Expanded(
+                                child: IconButton(icon: Icon(Icons.content_copy), onPressed: (){
+                                  setState(() {
+                                    Clipboard.setData(ClipboardData(text: "${doyaDetailsModels[index].banglaTranslator}"));
+                                  });
 
-                              },)
+                                },),
+                              )
                             ],
                           )
 
@@ -171,13 +199,9 @@ class _DoyaDetailsPageState extends State<DoyaDetailsPage> {
                         child:
                           Row(
                             children: <Widget>[
-                              Flexible(child: Text('${doyaDetailsModels[index].reference}',maxLines:100,overflow: TextOverflow.ellipsis,)),
-                              IconButton(icon: Icon(Icons.content_copy), onPressed: (){
-                                setState(() {
-                                  Clipboard.setData(ClipboardData(text: "${doyaDetailsModels[index].banglaTranslator}"));
-                                });
-
-                              },)
+                              Expanded(
+                                  flex:5,
+                                  child: Text('${doyaDetailsModels[index].reference}',maxLines:100,overflow: TextOverflow.ellipsis,)),
                             ],
                           )
 

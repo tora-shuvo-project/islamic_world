@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:searchtosu/FinalModels/ojifa_models.dart';
 import 'package:searchtosu/helpers/database_helper.dart';
+import 'package:searchtosu/pages/settings_page.dart';
+import 'package:searchtosu/utils/utils.dart';
 
 class OjifaDetailsScreen extends StatefulWidget {
 
@@ -16,10 +18,17 @@ class _OjifaDetailsScreenState extends State<OjifaDetailsScreen> {
 
   OjifaModels ojifaModels=OjifaModels();
 
+  double _fontSize=17;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    Utils.getArabiFontSizeFromPreference().then((value){
+      setState(() {
+        _fontSize=double.parse(value);
+      });
+    });
     DatabaseHelper.getAllOjifaFromOjifaTable(widget.topicNo, widget.subtopicNo).then((ojifaModel){
       setState(() {
         ojifaModels=ojifaModel;
@@ -47,17 +56,35 @@ class _OjifaDetailsScreenState extends State<OjifaDetailsScreen> {
             child: Container(
 
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  IconButton(icon: Icon(Icons.arrow_back, color: Colors.white,), onPressed: (){
-                    Navigator.of(context).pop();
-                  }),
-                  FittedBox(
+                  Expanded(
+                    child: IconButton(icon: Icon(Icons.arrow_back, color: Colors.white,), onPressed: (){
+                      Navigator.of(context).pop();
+                    }),
+                  ),
+                  Expanded(flex: 5,
                     child: Text('${widget.topicName}',style:  TextStyle(
                         color: Colors.white, fontSize: 20
                     ), ),
                   ),
+                  Expanded(
+                    child: IconButton(
+                      icon: Icon(Icons.settings,color: Colors.white,),
+                      onPressed: (){
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context)=>SettingsPage()
+                        )).then((_){
+                          setState(() {
+                            Utils.getArabiFontSizeFromPreference().then((value){
+                              setState(() {
+                                _fontSize=double.parse(value);
+                              });
+                            });
+                          });
+                        });
+                      },
+                    ),
+                  )
 
                 ],
               ),
@@ -87,11 +114,17 @@ class _OjifaDetailsScreenState extends State<OjifaDetailsScreen> {
                       ]))
               ),
               SizedBox(height: 10,),
-              Container(alignment: Alignment.center,child: ojifaModels.araby==null?Container(): Text('${ojifaModels.araby}',style: TextStyle(fontSize: 20))),
-              Container( alignment: Alignment.center,child: ojifaModels.banglaTranslator== null?Container():
-              Text(' ${ojifaModels.banglaTranslator}',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold))),
+              Container(alignment: Alignment.center,
+                  child: ojifaModels.araby==null?Container():
+                  Text('${ojifaModels.araby}',style: TextStyle(fontSize: _fontSize+2))),
+              Container( alignment: Alignment.center,
+                  child: ojifaModels.banglaTranslator== null?Container():
+              Text(' ${ojifaModels.banglaTranslator}',
+                  style: TextStyle(fontSize: _fontSize,fontWeight: FontWeight.bold))),
               SizedBox(height: 10,),
-              Container(alignment:Alignment.center,child: ojifaModels.banglaMeaning == null?Container():Text('বাংলা অর্থঃ ${ojifaModels.banglaMeaning}',style: TextStyle(fontSize: 15)))
+              Container(alignment:Alignment.center,
+                  child: ojifaModels.banglaMeaning == null?Container():
+                  Text('বাংলা অর্থঃ ${ojifaModels.banglaMeaning}',style: TextStyle(fontSize: _fontSize-1)))
             ],
           ),
         ),

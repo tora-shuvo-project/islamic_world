@@ -33,11 +33,13 @@ class _CalenderScreenState extends State<CalenderScreen> {
             children: <Widget>[
               Text(
                 '${selectedDate.toString()}',
-                style: Theme.of(context).textTheme.headline5,
+                style: Theme.of(context).textTheme.headline4,
               ),
-              Text(
-                '${selectedDate.fullDate()}',
-                style: Theme.of(context).textTheme.headline5,
+              FittedBox(
+                child: Text(
+                  '${selectedDate.fullDate()}',
+                  style: Theme.of(context).textTheme.headline4,
+                ),
               ),
 
             ],

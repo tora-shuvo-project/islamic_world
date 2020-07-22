@@ -32,13 +32,14 @@ class _ParaWiseQuranDetailsScreenState extends State<ParaWiseQuranDetailsScreen>
   AudioPlayer advancedPlayer,ayatPlayer;
   AudioCache audioCache;
   String audioUrl;
+  String arabytextstyle;
 
   bool isPlaying = true;
   bool isFullScreen=true;
   bool singleAyatplaying = true;
 
   //VideoPlayerController _controller;
-  double _value = 17;
+  double _fontSize = 17;
   String _fontName;
 
   void onSubmit(String result) {
@@ -53,6 +54,19 @@ class _ParaWiseQuranDetailsScreenState extends State<ParaWiseQuranDetailsScreen>
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    Utils.getArabiFormatNameFromPreference().then((value){
+      setState(() {
+        print(value);
+        arabytextstyle=value;
+      });
+    });
+
+    Utils.getQuranArabiFontSizeFromPreference().then((value){
+      setState(() {
+        _fontSize=double.parse(value);
+      });
+    });
 
     DatabaseHelper.getAllAyatFromParaTable(widget.paraModels.paraNo).then((rows){
       setState(() {
@@ -330,12 +344,12 @@ class _ParaWiseQuranDetailsScreenState extends State<ParaWiseQuranDetailsScreen>
                                                               TextSpan(text: '﷽',style: TextStyle(
                                                                   color: Colors.red,
                                                                   fontFamily: _fontName,
-                                                                  fontSize: _value+6)),
+                                                                  fontSize: _fontSize+6)),
                                                               TextSpan(text: '\n${ayatmodels[index].arbi_indopak.trim()}',
                                                                   style: TextStyle(
                                                                       color: Colors.black,
                                                                       fontFamily: _fontName,
-                                                                      fontSize: _value+6)),
+                                                                      fontSize: _fontSize+6)),
                                                             ],
                                                           ),
                                                         ):SizedBox(),
@@ -343,33 +357,36 @@ class _ParaWiseQuranDetailsScreenState extends State<ParaWiseQuranDetailsScreen>
                                                           style: TextStyle(
                                                               color: Colors.black87,
                                                               fontFamily: 'kalpurus',
-                                                              fontSize: _value-1),):SizedBox(),
+                                                              fontSize: _fontSize-1),):SizedBox(),
                                                         banglauccharon?Text('${ayatmodels[index].banglameaning.trim()}',
                                                           style: TextStyle(
                                                               color: Colors.black54,
                                                               fontFamily: 'kalpurus',
-                                                              fontSize: _value-1),):SizedBox()
+                                                              fontSize: _fontSize-1),):SizedBox()
                                                       ],
 
                                                     ):
                                                     Column(
                                                       children: <Widget>[
-                                                        arbi?Text('${ayatmodels[index].arbi_indopak.trim()}',
+                                                        arbi?Text(arabytextstyle=='Arabi Indopak'?
+                                                        '${ayatmodels[index].arbi_indopak.trim()}'
+                                                            :arabytextstyle=='Arabi Simple'?'${ayatmodels[index].arabi_simple.trim()}'
+                                                            :'${ayatmodels[index].arabi_utmanic.trim()}',
                                                           style: TextStyle(
                                                               color: Colors.black,
                                                               fontFamily: _fontName,
-                                                              fontSize: _value+6),
+                                                              fontSize: _fontSize+6),
                                                         ):SizedBox(),
                                                         banglameaning?Text('${ayatmodels[index].banglaTranslator.trim()}',
                                                           style: TextStyle(
                                                               color: Colors.black87,
                                                               fontFamily: 'kalpurus',
-                                                              fontSize: _value-1),):SizedBox(),
+                                                              fontSize: _fontSize-1),):SizedBox(),
                                                         banglauccharon?Text('${ayatmodels[index].banglameaning.trim()}',
                                                           style: TextStyle(
                                                               color: Colors.black54,
                                                               fontFamily: 'kalpurus',
-                                                              fontSize: _value-1),):SizedBox()
+                                                              fontSize: _fontSize-1),):SizedBox()
                                                       ],
 
                                                     ),
@@ -571,7 +588,7 @@ class _ParaWiseQuranDetailsScreenState extends State<ParaWiseQuranDetailsScreen>
                                                               icon: Icon(Icons.remove_circle,color: Colors.white,size: 30,),
                                                               onPressed: (){
                                                                 setState(() {
-                                                                  _value--;
+                                                                  _fontSize--;
                                                                 });
                                                               },
                                                             ),
@@ -581,7 +598,7 @@ class _ParaWiseQuranDetailsScreenState extends State<ParaWiseQuranDetailsScreen>
                                                               icon: Icon(Icons.add_circle,color: Colors.white,size: 30,),
                                                               onPressed: (){
                                                                 setState(() {
-                                                                  _value++;
+                                                                  _fontSize++;
                                                                 });
                                                               },
                                                             ),

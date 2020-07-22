@@ -72,24 +72,38 @@ class _KiblaScreenState extends State<KiblaScreen> {
       appBar: AppBar(
         title: const Text('কিবলা '),
       ),
-      body: StreamBuilder(
-        stream: Compasstools.azimuthStream,
-        builder: (BuildContext context, AsyncSnapshot<int> snapshot){
-          if(snapshot.hasData) {
-            return Container(
-              width: double.infinity,
-              height: MediaQuery.of(context).size.height,
-              child:Center(
-                child:new RotationTransition(
-                  turns: new AlwaysStoppedAnimation(-snapshot.data/360),
-                  child: Image.asset('images/compass1.png',width: double.infinity,height: double.infinity,),
-                ),
-              ),
-            );
-          } else
-            return Text("Error in stream");
-        },
-      ),
+      body:Stack(
+        children: <Widget>[
+          StreamBuilder(
+            stream: Compasstools.azimuthStream,
+            builder: (BuildContext context, AsyncSnapshot<int> snapshot){
+              if(snapshot.hasData) {
+                return Container(
+                  width: double.infinity,
+                  height: MediaQuery.of(context).size.height,
+                  child:Center(
+                    child:new RotationTransition(
+                      turns: new AlwaysStoppedAnimation(-snapshot.data/360),
+                      child: Image.asset('images/compass1.png',width: double.infinity,height: double.infinity,),
+                    ),
+                  ),
+                );
+              } else
+                return Text("Error in stream");
+            },
+          ),
+          Positioned(
+            bottom: 5,
+            left: 8,
+            right: 8,
+            child: Text('বিঃদ্রঃ ডিভাইসের কারিগরি সমস্যার কারণে সঠিক দিক নির্দেশনা নাও পেতে পারেন।\n'
+                'সঠিক দিক নির্দেশনা পেতে ডিভাইসটি ভালো ভাবে ক্যালিবারেট করে নিন।',style: TextStyle(
+              fontSize: 18,
+              color: Colors.black
+            ),),
+          ),
+        ],
+      )
     );
   }
 

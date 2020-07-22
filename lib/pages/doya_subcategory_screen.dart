@@ -99,7 +99,7 @@ class _DoyaSubcategoryScreenState extends State<DoyaSubcategoryScreen> {
                 title: Text('${doyaNameModels[index].name}'),
                 trailing: Icon(Icons.keyboard_arrow_right),
                 leading: CircleAvatar(
-                  child: Text('${index+1}'),
+                  child: Text('${convertEngToBangla(index+1)}'),
                 ),
               ),
             )),

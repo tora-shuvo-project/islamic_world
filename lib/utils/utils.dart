@@ -56,7 +56,7 @@ class Utils{
 
   static Future<String> getArabiFormatNameFromPreference()async{
     final prefs=await SharedPreferences.getInstance();
-    return prefs.getString('arabiformatname')??'Arabi Indopak';
+    return prefs.getString('arabiformatname')??'Arabi Utmanic';
   }
 
   static Future<void> saveArabyFontPreference(String formatname)async{
@@ -70,7 +70,35 @@ class Utils{
 
   static Future<String> getArabiFontFromPreference()async{
     final prefs=await SharedPreferences.getInstance();
-    return prefs.getString('arabifont')??'Maddina';
+    return prefs.getString('arabifont')??'QalamMajid';
+  }
+
+  static Future<void> saveQuranArabyFontsize(String size)async{
+    try{
+      final prefs=await SharedPreferences.getInstance();
+      prefs.setString('quranarabifont', size);
+    }catch(error){
+      throw error;
+    }
+  }
+
+  static Future<String> getQuranArabiFontSizeFromPreference()async{
+    final prefs=await SharedPreferences.getInstance();
+    return prefs.getString('quranarabifont')??'18';
+  }
+
+  static Future<void> saveArabyFontsize(String size)async{
+    try{
+      final prefs=await SharedPreferences.getInstance();
+      prefs.setString('arabifontSize', size);
+    }catch(error){
+      throw error;
+    }
+  }
+
+  static Future<String> getArabiFontSizeFromPreference()async{
+    final prefs=await SharedPreferences.getInstance();
+    return prefs.getString('arabifontSize')??'18';
   }
 
 }

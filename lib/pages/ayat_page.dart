@@ -48,8 +48,9 @@ class _AyatPageState extends State<AyatPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   //VideoPlayerController _controller;
-  double _value = 17;
+  double _fontSize = 17;
   String _fontName;
+  String arabytextstyle;
 
   void onSubmit(String result) {
     print(result);
@@ -418,6 +419,19 @@ class _AyatPageState extends State<AyatPage> {
     // TODO: implement initState
     super.initState();
 
+    Utils.getArabiFormatNameFromPreference().then((value){
+      setState(() {
+        print(value);
+        arabytextstyle=value;
+      });
+    });
+
+    Utils.getQuranArabiFontSizeFromPreference().then((value){
+      setState(() {
+        _fontSize=double.parse(value);
+      });
+    });
+
     Utils.getFontNameFromPreference().then((fontName){
       setState(() {
         print(fontName);
@@ -548,22 +562,25 @@ class _AyatPageState extends State<AyatPage> {
                                       Expanded(
                                         child: Column(
                                           children: <Widget>[
-                                            arbi?Text('${ayatmodels[index].arbi_indopak.trim()}',
+                                            arbi?Text(arabytextstyle=='Arabi Indopak'?
+                                            '${ayatmodels[index].arbi_indopak.trim()}'
+                                                :arabytextstyle=='Arabi Simple'?'${ayatmodels[index].arabi_simple.trim()}'
+                                                :'${ayatmodels[index].arabi_utmanic.trim()}',
                                               style: TextStyle(
                                                   color: Colors.black,
                                                   fontFamily: _fontName,
-                                                  fontSize: _value+6),
+                                                  fontSize: _fontSize+6),
                                             ):SizedBox(),
                                             banglameaning?Text('${ayatmodels[index].banglaTranslator.trim()}',
                                               style: TextStyle(
                                                   color: Colors.black87,
                                                   fontFamily: 'kalpurus',
-                                                  fontSize: _value-1),):SizedBox(),
+                                                  fontSize: _fontSize-1),):SizedBox(),
                                             banglauccharon?Text('${ayatmodels[index].banglameaning.trim()}',
                                               style: TextStyle(
                                                   color: Colors.black54,
                                                   fontFamily: 'kalpurus',
-                                                  fontSize: _value-1),):SizedBox()
+                                                  fontSize: _fontSize-1),):SizedBox()
                                           ],
 
                                         ),
@@ -773,7 +790,7 @@ class _AyatPageState extends State<AyatPage> {
                                                     icon: Icon(Icons.remove_circle,color: Colors.white,size: 30,),
                                                     onPressed: (){
                                                       setState(() {
-                                                        _value--;
+                                                        _fontSize--;
                                                       });
                                                     },
                                                   ),
@@ -783,7 +800,7 @@ class _AyatPageState extends State<AyatPage> {
                                                     icon: Icon(Icons.add_circle,color: Colors.white,size: 30,),
                                                     onPressed: (){
                                                       setState(() {
-                                                        _value++;
+                                                        _fontSize++;
                                                       });
                                                     },
                                                   ),

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:dropdown_formfield/dropdown_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:searchtosu/utils/utils.dart';
@@ -14,6 +16,9 @@ class _SettingsPageState extends State<SettingsPage> {
   String _arabyStyle;
   String _fontName;
   String _fontFamily;
+  String _quranArabiFontSize;
+  String _arabiFontSize;
+  double fontsize;
 
   @override
   void initState() {
@@ -23,7 +28,19 @@ class _SettingsPageState extends State<SettingsPage> {
     _arabyTextStyle = '';
     _fontName = '';
     _fontFamily='QalamMajid';
+    _arabiFontSize='';
     _arabyStyle = 'بسم الله الرحمن الرحيم';
+    Utils.getQuranArabiFontSizeFromPreference().then((value){
+      setState(() {
+        _quranArabiFontSize=value;
+        fontsize=double.parse(value);
+      });
+    });
+    Utils.getArabiFontSizeFromPreference().then((value){
+      setState(() {
+        _arabiFontSize=value;
+      });
+    });
     Utils.getQareNameFromPreference().then((value) {
       setState(() {
         _myActivity=value;
@@ -58,10 +75,107 @@ class _SettingsPageState extends State<SettingsPage> {
             padding: EdgeInsets.all(8),
             alignment: Alignment.center,
             child: Text('$_arabyStyle',style: TextStyle(
-              fontSize: 22,
+              fontSize: fontsize,
                 fontFamily: _fontFamily
             ),),
           ),
+          Container(
+            color: Colors.green.withOpacity(.2),
+            alignment: Alignment.center,
+            width: double.infinity,
+            child: DropDownFormField(
+              titleText: 'কুরআন আরাবি ফন্ট সাইজ',
+              hintText: 'Please choose one',
+              value: _quranArabiFontSize,
+              onSaved: (value) async{
+                setState(() {
+                  _quranArabiFontSize = value;
+                  Utils.saveQuranArabyFontsize(value);
+                  fontsize=double.parse(value);
+                });
+              },
+              onChanged: (value) {
+                setState(() {
+                  Utils.saveQuranArabyFontsize(value);
+                  _quranArabiFontSize = value;
+                  fontsize=double.parse(value);
+                });
+              },
+              dataSource: [
+                {
+                  "display": "১৪",
+                  "value": "14",
+                },
+                {
+                  "display": "১৫",
+                  "value": "15",
+                },
+                {
+                  "display": "১৬",
+                  "value": "16",
+                },
+                {
+                  "display": "১৭",
+                  "value": "17",
+                },
+                {
+                  "display": "১৮",
+                  "value": "18",
+                },
+                {
+                  "display": "১৯",
+                  "value": "19",
+                },
+                {
+                  "display": "২০",
+                  "value": "20",
+                },
+                {
+                  "display": "২১",
+                  "value": "21",
+                },
+                {
+                  "display": "২২",
+                  "value": "22",
+                },
+                {
+                  "display": "২৩",
+                  "value": "23",
+                },
+                {
+                  "display": "২৪",
+                  "value": "24",
+                },
+                {
+                  "display": "২৫",
+                  "value": "25",
+                },
+                {
+                  "display": "২৬",
+                  "value": "26",
+                },
+                {
+                  "display": "২৭",
+                  "value": "27",
+                },
+                {
+                  "display": "২৮",
+                  "value": "28",
+                },
+                {
+                  "display": "২৯",
+                  "value": "29",
+                },
+                {
+                  "display": "৩০",
+                  "value": '30',
+                },
+              ],
+              textField: 'display',
+              valueField: 'value',
+            ),
+          ),
+          SizedBox(height: 5,),
           Container(
             color: Colors.green.withOpacity(.2),
             alignment: Alignment.center,
@@ -168,6 +282,103 @@ class _SettingsPageState extends State<SettingsPage> {
                 {
                   "display": "আরাবি ইন্ডোপাক",
                   "value": "Arabi Indopak",
+                },
+              ],
+              textField: 'display',
+              valueField: 'value',
+            ),
+          ),
+          SizedBox(height: 5,),
+          Container(
+            color: Colors.green.withOpacity(.2),
+            alignment: Alignment.center,
+            width: double.infinity,
+            child: DropDownFormField(
+              titleText: 'অজিফা,দূয়া ইত্যাদির জন্য আরাবি ফন্ট সাইজ',
+              hintText: 'Please choose one',
+              value: _arabiFontSize,
+              onSaved: (value) async{
+                setState(() {
+                  _arabiFontSize = value;
+                  Utils.saveArabyFontsize(value);
+
+                });
+              },
+              onChanged: (value) {
+                setState(() {
+                  _arabiFontSize = value;
+                  Utils.saveArabyFontsize(value);
+
+                });
+              },
+              dataSource: [
+                {
+                  "display": "১৪",
+                  "value": "14",
+                },
+                {
+                  "display": "১৫",
+                  "value": "15",
+                },
+                {
+                  "display": "১৬",
+                  "value": "16",
+                },
+                {
+                  "display": "১৭",
+                  "value": "17",
+                },
+                {
+                  "display": "১৮",
+                  "value": "18",
+                },
+                {
+                  "display": "১৯",
+                  "value": "19",
+                },
+                {
+                  "display": "২০",
+                  "value": "20",
+                },
+                {
+                  "display": "২১",
+                  "value": "21",
+                },
+                {
+                  "display": "২২",
+                  "value": "22",
+                },
+                {
+                  "display": "২৩",
+                  "value": "23",
+                },
+                {
+                  "display": "২৪",
+                  "value": "24",
+                },
+                {
+                  "display": "২৫",
+                  "value": "25",
+                },
+                {
+                  "display": "২৬",
+                  "value": "26",
+                },
+                {
+                  "display": "২৭",
+                  "value": "27",
+                },
+                {
+                  "display": "২৮",
+                  "value": "28",
+                },
+                {
+                  "display": "২৯",
+                  "value": "29",
+                },
+                {
+                  "display": "৩০",
+                  "value": '30',
                 },
               ],
               textField: 'display',

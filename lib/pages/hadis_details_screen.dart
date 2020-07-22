@@ -1,11 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:searchtosu/FinalModels/hadis_models.dart';
 import 'package:searchtosu/pages/doya_subcategory_screen.dart';
+import 'package:searchtosu/pages/settings_page.dart';
+import 'package:searchtosu/utils/utils.dart';
 import 'package:share/share.dart';
 
-class HadisDetailsScreen extends StatelessWidget {
+class HadisDetailsScreen extends StatefulWidget {
   final HadisModels hadisModels;
   HadisDetailsScreen(this.hadisModels);
+
+  @override
+  _HadisDetailsScreenState createState() => _HadisDetailsScreenState();
+}
+
+class _HadisDetailsScreenState extends State<HadisDetailsScreen> {
+
+  double _fontSize;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Utils.getArabiFontSizeFromPreference().then((value){
+      setState(() {
+        _fontSize=double.parse(value);
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,22 +51,34 @@ class HadisDetailsScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  IconButton(icon: Icon(Icons.arrow_back, color: Colors.white,), onPressed: (){
-                    Navigator.of(context).pop();
-                  }),
-                  FittedBox(
-                    child: Text('হাদিসঃ ${convertEngToBangla(hadisModels.hadisNo)}',style:  TextStyle(
+                  Expanded(
+                    child: IconButton(icon: Icon(Icons.arrow_back, color: Colors.white,), onPressed: (){
+                      Navigator.of(context).pop();
+                    }),
+                  ),
+                  Expanded(flex: 5,
+                    child: Text('হাদিসঃ ${convertEngToBangla(widget.hadisModels.hadisNo)}',style:  TextStyle(
                         color: Colors.white, fontSize: 20
                     ), ),
                   ),
-//            IconButton(icon: Icon(Icons.share, color: Colors.white,), onPressed:() {
-//              setState(() {
-//                Share.share(' ${hadisModels.arabyHadis}\n ${widget
-//                    .doyaDetailsModels.arabic}'
-//                    '\n${hadisModels.banglaMeaning}\n${widget
-//                    .doyaDetailsModels.reference} ');
-//              });
-//            }
+                  Expanded(
+                    child: IconButton(
+                      icon: Icon(Icons.settings,color: Colors.white,),
+                      onPressed: (){
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context)=>SettingsPage()
+                        )).then((_){
+                          setState(() {
+                            Utils.getArabiFontSizeFromPreference().then((value){
+                              setState(() {
+                                _fontSize=double.parse(value);
+                              });
+                            });
+                          });
+                        });
+                      },
+                    ),
+                  )
                 ],
               ),
             ),
@@ -62,12 +95,12 @@ class HadisDetailsScreen extends StatelessWidget {
           padding: EdgeInsets.all(16),
           child: ListView(
             children: <Widget>[
-              Text('${hadisModels.arabyHadis}',style: TextStyle(
-                fontSize: 20,
+              Text('${widget.hadisModels.arabyHadis}',style: TextStyle(
+                fontSize: _fontSize,
                 fontFamily: 'QalamMajid'
               ),),
-              Text('${hadisModels.banglaMeaning}',style: TextStyle(
-                fontSize: 16,
+              Text('${widget.hadisModels.banglaMeaning}',style: TextStyle(
+                fontSize: _fontSize-3,
                 fontFamily: 'kalpurus'
               ),),
             ],
