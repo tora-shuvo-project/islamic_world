@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:searchtosu/pages/browser_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class BlogPages extends StatefulWidget {
@@ -45,8 +46,10 @@ class _BlogPagesState extends State<BlogPages> {
           Card(
             child: ListTile(
               onTap: (){
-                _launchURL('https://waytotawheed.com/%E0%A6%87%E0%A6%B8%E0%A6%B2%E0%A6%BE%E0%A6%AE%E0%A6%BF%E0%A6%95-%E0%A6%AC%E0%A6%87-%E0%A6%B8%E0%A6%AE%E0%A6%BE%E0%A6%B9%E0%A6%BE%E0%A6%B0/');
-              },
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context)=>BrowserScreen('https://waytotawheed.com/%E0%A6%87%E0%A6%B8%E0%A6%B2%E0%A6%BE%E0%A6%AE%E0%A6%BF%E0%A6%95-%E0%A6%AC%E0%A6%87-%E0%A6%B8%E0%A6%AE%E0%A6%BE%E0%A6%B9%E0%A6%BE%E0%A6%B0/')
+                ));
+                },
               leading: Text('2',style: TextStyle(
                 fontSize: 20,
 
@@ -64,7 +67,9 @@ class _BlogPagesState extends State<BlogPages> {
           Card(
             child: ListTile(
               onTap: (){
-                _launchURL('https://alquranbd.com/index.php');
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context)=>BrowserScreen('https://alquranbd.com/index.php')
+                ));
               },
               leading: Text('3',style: TextStyle(
                 fontSize: 20,
@@ -83,7 +88,9 @@ class _BlogPagesState extends State<BlogPages> {
           Card(
             child: ListTile(
               onTap: (){
-                _launchURL('http://www.quraanshareef.org/');
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context)=>BrowserScreen('http://www.quraanshareef.org/')
+                ));
               },
               leading: Text('4',style: TextStyle(
                 fontSize: 20,
@@ -102,7 +109,9 @@ class _BlogPagesState extends State<BlogPages> {
           Card(
             child: ListTile(
               onTap: (){
-                _launchURL('https://deenilhaq.wordpress.com/');
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context)=>BrowserScreen('https://deenilhaq.wordpress.com/')
+                ));
               },
               leading: Text('5',style: TextStyle(
                 fontSize: 20,
@@ -121,7 +130,9 @@ class _BlogPagesState extends State<BlogPages> {
           Card(
             child: ListTile(
               onTap: (){
-                _launchURL('https://islamqabd.com/');
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context)=>BrowserScreen('https://islamqabd.com/')
+                ));
               },
               leading: Text('6',style: TextStyle(
                 fontSize: 20,
@@ -140,7 +151,9 @@ class _BlogPagesState extends State<BlogPages> {
           Card(
             child: ListTile(
               onTap: (){
-                _launchURL('https://omukderkotha1.blogspot.com/');
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context)=>BrowserScreen('https://omukderkotha1.blogspot.com/')
+                ));
               },
               leading: Text('7',style: TextStyle(
                 fontSize: 20,
@@ -178,7 +191,9 @@ class _BlogPagesState extends State<BlogPages> {
           Card(
             child: ListTile(
               onTap: (){
-                _launchURL('https://tablighjammat.wordpress.com/');
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context)=>BrowserScreen('https://tablighjammat.wordpress.com/')
+                ));
               },
               leading: Text('9',style: TextStyle(
                 fontSize: 20,
@@ -197,7 +212,9 @@ class _BlogPagesState extends State<BlogPages> {
           Card(
             child: ListTile(
               onTap: (){
-                _launchURL('https://habibur.com/salat/districts/dhaka/fullyear/');
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context)=>BrowserScreen('https://habibur.com/salat/districts/dhaka/fullyear/')
+                ));
               },
               leading: Text('10',style: TextStyle(
                 fontSize: 20,
@@ -254,7 +271,9 @@ class _BlogPagesState extends State<BlogPages> {
           Card(
             child: ListTile(
               onTap: (){
-                _launchURL('https://tauheed-sunnat.com/quran-audio-mp3');
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context)=>BrowserScreen('https://tauheed-sunnat.com/quran-audio-mp3')
+                ));
               },
               leading: Text('13',style: TextStyle(
                 fontSize: 20,
@@ -273,7 +292,9 @@ class _BlogPagesState extends State<BlogPages> {
           Card(
             child: ListTile(
               onTap: (){
-                _launchURL('https://backtojannah.com/');
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context)=>BrowserScreen('https://backtojannah.com/')
+                ));
               },
               leading: Text('14',style: TextStyle(
                 fontSize: 20,
@@ -292,7 +313,9 @@ class _BlogPagesState extends State<BlogPages> {
           Card(
             child: ListTile(
               onTap: (){
-                _launchURL('https://islamqa.info/bn');
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context)=>BrowserScreen('https://islamqa.info/bn')
+                ));
               },
               leading: Text('15',style: TextStyle(
                 fontSize: 20,
@@ -311,7 +334,9 @@ class _BlogPagesState extends State<BlogPages> {
           Card(
             child: ListTile(
               onTap: (){
-                _launchURL('https://www.quraneralo.com/');
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context)=>BrowserScreen('https://www.quraneralo.com/')
+                ));
               },
               leading: Text('16',style: TextStyle(
                 fontSize: 20,
@@ -330,7 +355,9 @@ class _BlogPagesState extends State<BlogPages> {
           Card(
             child: ListTile(
               onTap: (){
-                _launchURL('https://amarspondon.wordpress.com/');
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context)=>BrowserScreen('https://amarspondon.wordpress.com/')
+                ));
               },
               leading: Text('17',style: TextStyle(
                 fontSize: 20,
@@ -349,7 +376,9 @@ class _BlogPagesState extends State<BlogPages> {
           Card(
             child: ListTile(
               onTap: (){
-                _launchURL('https://adnanfaisal.wordpress.com/');
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context)=>BrowserScreen('https://adnanfaisal.wordpress.com/')
+                ));
               },
               leading: Text('18',style: TextStyle(
                 fontSize: 20,
@@ -368,7 +397,9 @@ class _BlogPagesState extends State<BlogPages> {
           Card(
             child: ListTile(
               onTap: (){
-                _launchURL('https://quranerkotha.com/');
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context)=>BrowserScreen('https://quranerkotha.com/')
+                ));
               },
               leading: Text('19',style: TextStyle(
                 fontSize: 20,
@@ -425,7 +456,9 @@ class _BlogPagesState extends State<BlogPages> {
           Card(
             child: ListTile(
               onTap: (){
-                _launchURL('https://www.muslimmedia.info/');
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context)=>BrowserScreen('https://www.muslimmedia.info/')
+                ));
               },
               leading: Text('22',style: TextStyle(
                 fontSize: 20,

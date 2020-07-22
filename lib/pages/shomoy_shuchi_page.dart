@@ -119,24 +119,9 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
         zila=demoZila;
         print(demoZila);
 
-        if((demoZila.trim()=='Gazipur')||(demoZila.trim().trim()=='Shariatpur')||(demoZila.trim()=='Madaripur')||(demoZila.trim()=='Pirojpur')||(demoZila.trim()=='Barisal')||(demoZila.trim()=='Jhalakati')||(demoZila.trim()=='Barguna')){
+        if((demoZila.trim()=='Gazipur')||(demoZila.trim()=='Shariatpur')||(demoZila.trim()=='Madaripur')||(demoZila.trim()=='Pirojpur')||(demoZila.trim()=='Barisal')||(demoZila.trim()=='Jhalakati')||(demoZila.trim()=='Barguna')){
 
-          fojorMinute=foj+1;
-          magribMinute=mag+1;
 
-          if(fojorMinute>60){
-            fojorMinute=fojorMinute-60;
-            fojorHour=fojorHour+1;
-          }else{
-            fojorMinute=fojorMinute;
-          }
-
-          if(magribMinute>60){
-            magribMinute=magribMinute-60;
-            magribHour=magribHour+1;
-          }else{
-            magribMinute=magribMinute;
-          }
 
         }else if((demoZila.trim()=='Mymensingh')||(demoZila.trim()=='Tangail')||(demoZila.trim()=='Bagerhat')||(demoZila.trim()=='Jamalpur')||(demoZila.trim()=='Sherpur')||(demoZila.trim()=='Manikganj')){
 
