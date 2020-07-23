@@ -215,10 +215,10 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     });
 
-
-    Provider.of<LocationProvider>(context,listen: false).getDeviceCurrentLocation().then((position){
+    final postion = Provider.of<LocationProvider>(context, listen: false).pos;
+    Provider.of<LocationProvider>(context,listen: false).getDeviceCurrentLocation(postion: postion).then((_){
       setState(() {
-        _center=LatLng(position.latitude,position.longitude);
+        _center=LatLng(postion.latitude,postion.longitude);
       });
     });
 
@@ -337,7 +337,7 @@ class _HomeScreenState extends State<HomeScreen> {
          appBar: PreferredSize(child: _appBar(),preferredSize: Size(MediaQuery.of(context).size.width, 120),) ,
               body: SingleChildScrollView(
                 child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 15),
+                        padding: EdgeInsets.symmetric(horizontal: 10),
                         child: Column(
                           children: <Widget>[
                             Container(
@@ -354,9 +354,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 overflow: Overflow.visible,
                                     children: <Widget>[
                                       Positioned(
-                                          right: -20,
-                                          top: 14,
-                                          child: Image.asset("images/home_mousque.jpg", height: 150, width: 150,)),
+                                          right: -12,
+                                          top:5,
+                                          child: Image.asset("images/home_mousque.png", height: 150, width: 140,)),
                                       Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: <Widget>[

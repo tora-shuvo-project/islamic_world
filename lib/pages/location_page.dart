@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:libpray/libpray.dart';
+import 'package:provider/provider.dart';
+import 'package:searchtosu/helpers/provider_helpers.dart';
 import 'package:searchtosu/utils/utils.dart';
 
 
@@ -19,6 +22,7 @@ class LocationPage extends StatefulWidget {
 }
 
 class _LocationPageState extends State<LocationPage> {
+
 final _jelacontroller = TextEditingController();
 int selectedRadio=0;
 Set<Marker> markers={};
@@ -44,7 +48,7 @@ void _setlocation() async{
 
   Utils.getZilaNameFromPreference().then((value){
     setState(() {
-      print('Shuvo $value');
+      print('$value');
     });
   });
 
@@ -82,19 +86,20 @@ void _handleRadioValueChange(int value) {
 
 @override
 void initState() {
-  super.initState();
-  selectedRadio =0;
-  _selectedJelaName="";
-  markers.add(Marker(
-      markerId: MarkerId(widget.latLng.toString()),
-      position: widget.latLng,
-    infoWindow: InfoWindow(
-      title: '${widget.latLng}'
-    ),
-    icon: BitmapDescriptor.defaultMarker,
-  ));
-
-  _setlocation();
+  //final provider = Provider.of<LocationProvider>(context);
+//  super.initState();
+//  selectedRadio =0;
+//  _selectedJelaName="";
+//  markers.add(Marker(
+//      markerId: MarkerId(widget.latLng.toString()),
+//      position: widget.latLng,
+//    infoWindow: InfoWindow(
+//      title: '${widget.latLng}'
+//    ),
+//    icon: BitmapDescriptor.defaultMarker,
+//  ));
+//
+//  _setlocation();
 }
 
   Widget _appBar(){

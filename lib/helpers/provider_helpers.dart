@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 
 class LocationProvider with ChangeNotifier{
-  Position _position=Position(latitude: 0.0,longitude: 0.0);
+  Position _position=Position(latitude: 0.0,longitude: 0.0,altitude: 0.0);
   Position get pos=>_position;
 
   void setNewPosition(Position position){
@@ -10,7 +10,11 @@ class LocationProvider with ChangeNotifier{
     notifyListeners();
   }
 
-  Future<Position> getDeviceCurrentLocation()async{
-    return await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
+  Future<Position> getDeviceCurrentLocation({ @required Position postion})async{
+    return await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.best).then((value) {
+      _position= value;
+      notifyListeners();
+    });
   }
+
 }

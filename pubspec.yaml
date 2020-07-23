@@ -35,6 +35,8 @@ dependencies:
   dropdown_formfield: ^0.1.2
   flutter_speed_dial: ^1.2.5
   audioplayers: ^0.15.1
+  libpray: ^0.2.0
+  flutter_native_timezone: ^1.0.4
   toast: ^0.1.5
   animated_text_kit: ^2.2.0
   flutter_map: ^0.10.1
