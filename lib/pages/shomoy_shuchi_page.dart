@@ -127,6 +127,7 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
     int year = now.year;
     int month = now.month;
     int day = now.day;
+
     Geocoordinate geo;
     DateTime when = DateTime.utc(month, year, day);
     final PrayerCalculationSettings settings = PrayerCalculationSettings(
@@ -135,7 +136,7 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
           ..imsakParameter.type = PrayerCalculationParameterType.minutesAdjust
           ..calculationMethod.replace(CalculationMethod.fromPreset(
               preset: CalculationMethodPreset
-                  .universityOfIslamicSciencesKarachi,
+                  .ummAlQuraUniversity,
               when: DateTime.now().toUtc()))
           ..juristicMethod.replace(
               JuristicMethod.fromPreset(preset: JuristicMethodPreset.hanafi))
@@ -269,8 +270,8 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
 
           //timeString
           setState(() {
-            _timeString="${current.time.difference(later.time).inHours.abs()} ঘন্টা "
-                "${(((current.time.minute+60)-DateTime.now().minute)-1).abs()} মিনিট"
+            _timeString="${later.time.difference(DateTime.now()).inHours.abs()} ঘন্টা "
+                "${later.time.minute-DateTime.now().minute} মিনিট"
                 " ${60-DateTime.now().second}  সেকেন্ড পর  ";
           });
         }
@@ -365,8 +366,8 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
 
           //timeString
           setState(() {
-            _timeString="${current.time.difference(later.time).inHours.abs()} ঘন্টা "
-                "${(((current.time.minute+60)-DateTime.now().minute)-1).abs()} মিনিট"
+            _timeString="${later.time.difference(DateTime.now()).inHours.abs()} ঘন্টা "
+                "${later.time.minute-DateTime.now().minute} মিনিট"
                 " ${60-DateTime.now().second}  সেকেন্ড পর  ";
           });
         }
@@ -460,8 +461,8 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
 
           //timeString
           setState(() {
-            _timeString="${current.time.difference(later.time).inHours.abs()} ঘন্টা "
-                "${(((current.time.minute+60)-DateTime.now().minute)-1).abs()} মিনিট"
+            _timeString="${later.time.difference(DateTime.now()).inHours.abs()} ঘন্টা "
+                "${later.time.minute-DateTime.now().minute} মিনিট"
                 " ${60-DateTime.now().second}  সেকেন্ড পর  ";
           });
 
@@ -556,8 +557,8 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
 
           //timeString
           setState(() {
-            _timeString="${current.time.difference(later.time).inHours.abs()} ঘন্টা "
-                "${(((current.time.minute+60)-DateTime.now().minute)-1).abs()} মিনিট"
+            _timeString="${later.time.difference(DateTime.now()).inHours.abs()} ঘন্টা "
+                "${later.time.minute-DateTime.now().minute} মিনিট"
                 " ${60-DateTime.now().second}  সেকেন্ড পর  ";
           });
 
@@ -705,9 +706,9 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
 
           //timeString
           setState(() {
-            _timeString="${current.time.difference(later.time).inHours.abs()} ঘন্টা "
-                "${(((current.time.minute+60)-DateTime.now().minute)-1).abs()} মিনিট"
-                " ${60-current.time.second.abs()}  সেকেন্ড পর  ";
+            _timeString="${later.time.difference(DateTime.now()).inHours.abs()} ঘন্টা "
+                "${later.time.minute-DateTime.now().minute} মিনিট"
+                " ${60-DateTime.now().second}  সেকেন্ড পর  ";
           });
 
         }
