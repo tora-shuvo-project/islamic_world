@@ -129,21 +129,25 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
     int day = now.day;
     Geocoordinate geo;
     DateTime when = DateTime.utc(month, year, day);
-    PrayerCalculationSettings settings = PrayerCalculationSettings((PrayerCalculationSettingsBuilder b) =>
-    b
-      ..calculationMethod.replace(CalculationMethod.fromPreset(preset: CalculationMethodPreset.universityOfIslamicSciencesKarachi))
-      ..imsakParameter.replace(PrayerCalculationParameter((PrayerCalculationParameterBuilder c) => c..value = 0 ..type = PrayerCalculationParameterType.minutesAdjust))
-      ..juristicMethod.replace(JuristicMethod((JuristicMethodBuilder e) => e..preset = JuristicMethodPreset.hanafi ..timeOfShadow = 2))
-      ..highLatitudeAdjustment = HighLatitudeAdjustment.angleBased
-      ..imsakMinutesAdjustment = 0
-      ..fajrMinutesAdjustment = 0
-      ..sunriseMinutesAdjustment = 0
-      ..dhuhaMinutesAdjustment = 0
-      ..dhuhrMinutesAdjustment = 0
-      ..asrMinutesAdjustment = 0
-      ..maghribMinutesAdjustment = 0
-      ..ishaMinutesAdjustment = 0
-    );
+    final PrayerCalculationSettings settings = PrayerCalculationSettings(
+            (PrayerCalculationSettingsBuilder b) => b
+          ..imsakParameter.value = -10.0
+          ..imsakParameter.type = PrayerCalculationParameterType.minutesAdjust
+          ..calculationMethod.replace(CalculationMethod.fromPreset(
+              preset: CalculationMethodPreset
+                  .universityOfIslamicSciencesKarachi,
+              when: DateTime.now().toUtc()))
+          ..juristicMethod.replace(
+              JuristicMethod.fromPreset(preset: JuristicMethodPreset.hanafi))
+          ..highLatitudeAdjustment = HighLatitudeAdjustment.none
+          ..imsakMinutesAdjustment = 0
+          ..fajrMinutesAdjustment = 0
+          ..sunriseMinutesAdjustment = 0
+          ..dhuhaMinutesAdjustment = 0
+          ..dhuhrMinutesAdjustment = 0
+          ..asrMinutesAdjustment = 0
+          ..maghribMinutesAdjustment = 0
+          ..ishaMinutesAdjustment = 0);
     final postion = Provider.of<LocationProvider>(context, listen: false).pos;
     print(postion.longitude);
     print(postion.latitude);
@@ -190,203 +194,12 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
           esatoday= DateFormat.jm().format(prayers.isha);
           Sunrise = DateFormat.jm().format(prayers.sunrise);
           Sunset = DateFormat.jm().format(prayers.sunset);
-
+          print("duhur time ${prayers.dhuhr}");
           final Prayer current = Prayer.now(settings: settings, coordinate: geo, timeZone: 6.0);
 
-          print('${current.type}: ${current.time}');
+          print('${current.type}: current prayer time ${current.time}');
           print(prayers.dhuhr);
-
-          //current prayer name
-          if(current.type.toString()=="fazr"){
-            currentPrayername ="ফজর";
-            print(currentPrayername);
-          }
-          else if(current.type.toString()=="dhuhr"){
-            currentPrayername ="যোহর";
-            print(currentPrayername);
-          }
-          else if(current.type.toString()=="asr"){
-            currentPrayername ="আসর";
-            print(currentPrayername);
-          }
-          else if(current.type.toString()=="maghrib"){
-            currentPrayername ="মাগরিব";
-            print(currentPrayername);
-          }
-          else if(current.type.toString()=="isha"){
-            currentPrayername ="এশা";
-            print(currentPrayername);
-          }
-          else if(current.type.toString()=="imsak"){
-            currentPrayername="ইশরাক";
-            print(currentPrayername);
-          }
-          else if(current.type.toString()=="dhuha") {
-            currentPrayername = "চাশত";
-            print(currentPrayername);
-          }
-
-          //next prayer time
-          currentPrayerTime = DateFormat.jm().format(current.time);
-
-          //Next prayer Name
-          final Prayer later = Prayer.later(
-              settings: settings, coordinate: geo, timeZone: 6.0);
-          print('${later.type}: ${later.time}');
-          nextPrayerTime =DateFormat.jm().format(later.time);
-          if (later.type.toString() == "fazr") {
-            nextPrayerName = "ফজর";
-            print(nextPrayerName);
-          }
-          else if (later.type.toString() == "dhuhr") {
-            nextPrayerName = "যোহর";
-            print(nextPrayerName);
-          }
-          else if (later.type.toString() == "asr") {
-            nextPrayerName = "আসর";
-            print(nextPrayerName);
-          }
-          else if (later.type.toString() == "maghrib") {
-            nextPrayerName = "মাগরিব";
-            print(nextPrayerName);
-          }
-          else if (later.type.toString() == "isha") {
-            nextPrayerName = "এশা";
-            print(nextPrayerName);
-          }
-          else if (later.type.toString() == "imsak") {
-            nextPrayerName = "ইশরাক";
-            print(nextPrayerName);
-          }
-          else if (later.type.toString() == "dhuha") {
-            nextPrayerName = "চাশত";
-            print(nextPrayerName);
-          }
-
-          //timeString
-          setState(() {
-            _timeString="${current.time.difference(later.time).inHours.abs()} ঘন্টা "
-                "${(((current.time.minute+60)-DateTime.now().minute)-1).abs()} মিনিট"
-                " ${60-current.time.second.abs()}  সেকেন্ড পর  ";
-          });
-        }
-        else if(demoZila.trim()=='Bagerhat'){
-          geo = Geocoordinate((GeocoordinateBuilder b) => b
-            ..latitude = 22.6554187
-            ..longitude = 89.7971746
-            ..altitude = 9);
-
-          final Prayers prayers = Prayers.on(date: when, settings: settings, coordinate: geo, timeZone: 6.0);
-          fajartoday = DateFormat.jm().format(prayers.fajr);
-          israk = DateFormat.jm().format(prayers.imsak);
-          dohortoday = DateFormat.jm().format(prayers.dhuhr);
-          asortoday = DateFormat.jm().format(prayers.asr);
-          Chasttoday=DateFormat.jm().format(prayers.dhuha);
-          magribtoday = DateFormat.jm().format(prayers.maghrib);
-          esatoday= DateFormat.jm().format(prayers.isha);
-          Sunrise = DateFormat.jm().format(prayers.sunrise);
-          Sunset = DateFormat.jm().format(prayers.sunset);
-
-          final Prayer current = Prayer.now(settings: settings, coordinate: geo, timeZone: 6.0);
-
-          print('${current.type}: ${current.time}');
-          print(prayers.dhuhr);
-
-          //current prayer name
-          if(current.type.toString()=="fazr"){
-            currentPrayername ="ফজর";
-            print(currentPrayername);
-          }
-          else if(current.type.toString()=="dhuhr"){
-            currentPrayername ="যোহর";
-            print(currentPrayername);
-          }
-          else if(current.type.toString()=="asr"){
-            currentPrayername ="আসর";
-            print(currentPrayername);
-          }
-          else if(current.type.toString()=="maghrib"){
-            currentPrayername ="মাগরিব";
-            print(currentPrayername);
-          }
-          else if(current.type.toString()=="isha"){
-            currentPrayername ="এশা";
-            print(currentPrayername);
-          }
-          else if(current.type.toString()=="imsak"){
-            currentPrayername="ইশরাক";
-            print(currentPrayername);
-          }
-          else if(current.type.toString()=="dhuha") {
-            currentPrayername = "চাশত";
-            print(currentPrayername);
-          }
-
-          //next prayer time
-          currentPrayerTime = DateFormat.jm().format(current.time);
-
-          //Next prayer Name
-          final Prayer later = Prayer.later(
-              settings: settings, coordinate: geo, timeZone: 6.0);
-          print('${later.type}: ${later.time}');
-          nextPrayerTime =DateFormat.jm().format(later.time);
-          if (later.type.toString() == "fazr") {
-            nextPrayerName = "ফজর";
-            print(nextPrayerName);
-          }
-          else if (later.type.toString() == "dhuhr") {
-            nextPrayerName = "যোহর";
-            print(nextPrayerName);
-          }
-          else if (later.type.toString() == "asr") {
-            nextPrayerName = "আসর";
-            print(nextPrayerName);
-          }
-          else if (later.type.toString() == "maghrib") {
-            nextPrayerName = "মাগরিব";
-            print(nextPrayerName);
-          }
-          else if (later.type.toString() == "isha") {
-            nextPrayerName = "এশা";
-            print(nextPrayerName);
-          }
-          else if (later.type.toString() == "imsak") {
-            nextPrayerName = "ইশরাক";
-            print(nextPrayerName);
-          }
-          else if (later.type.toString() == "dhuha") {
-            nextPrayerName = "চাশত";
-            print(nextPrayerName);
-          }
-
-          //timeString
-          setState(() {
-            _timeString="${current.time.difference(later.time).inHours.abs()} ঘন্টা "
-                "${(((current.time.minute+60)-DateTime.now().minute)-1).abs()} মিনিট"
-                " ${60-current.time.second.abs()}  সেকেন্ড পর  ";
-          });
-        }
-        else if(demoZila.trim()=='Bandarban'){
-          geo = Geocoordinate((GeocoordinateBuilder b) => b
-            ..latitude = 22.1963002
-            ..longitude = 92.2198872
-            ..altitude = 24);
-          final Prayers prayers = Prayers.on(date: when, settings: settings, coordinate: geo, timeZone: 6.0);
-          fajartoday = DateFormat.jm().format(prayers.fajr);
-          israk = DateFormat.jm().format(prayers.imsak);
-          dohortoday = DateFormat.jm().format(prayers.dhuhr);
-          asortoday = DateFormat.jm().format(prayers.asr);
-          Chasttoday=DateFormat.jm().format(prayers.dhuha);
-          magribtoday = DateFormat.jm().format(prayers.maghrib);
-          esatoday= DateFormat.jm().format(prayers.isha);
-          Sunrise = DateFormat.jm().format(prayers.sunrise);
-          Sunset = DateFormat.jm().format(prayers.sunset);
-
-          final Prayer current = Prayer.now(settings: settings, coordinate: geo, timeZone: 6.0);
-
-          print('${current.type}: ${current.time}');
-          print(prayers.dhuhr);
-
+          print(prayers.dhuha);
           //current prayer name
           if(current.type.toString()=="fajr"){
             currentPrayername ="ফজর";
@@ -421,7 +234,7 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
           currentPrayerTime = DateFormat.jm().format(current.time);
 
           //Next prayer Name
-          final Prayer later = Prayer.later(
+          final Prayer later = Prayer.next(
               settings: settings, coordinate: geo, timeZone: 6.0);
           print('${later.type}: ${later.time}');
           nextPrayerTime =DateFormat.jm().format(later.time);
@@ -449,20 +262,306 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
             nextPrayerName = "ইশরাক";
             print(nextPrayerName);
           }
-//          else if (later.type.toString() == "dhuha") {
-//            nextPrayerName = "চাশত";
-//            print(nextPrayerName);
-//          }
+          else if (later.type.toString() == "dhuha") {
+            nextPrayerName = "চাশত";
+            print(nextPrayerName);
+          }
 
           //timeString
           setState(() {
             _timeString="${current.time.difference(later.time).inHours.abs()} ঘন্টা "
                 "${(((current.time.minute+60)-DateTime.now().minute)-1).abs()} মিনিট"
-                " \n${60-current.time.second.abs()}  সেকেন্ড পর  ";
+                " ${60-DateTime.now().second}  সেকেন্ড পর  ";
+          });
+        }
+        else if(demoZila.trim()=='Bagerhat'){
+          geo = Geocoordinate((GeocoordinateBuilder b) => b
+            ..latitude = 22.6554187
+            ..longitude = 89.7971746
+            ..altitude = 9);
+
+          final Prayers prayers = Prayers.on(date: when, settings: settings, coordinate: geo, timeZone: 6.0);
+          fajartoday = DateFormat.jm().format(prayers.fajr);
+          israk = DateFormat.jm().format(prayers.imsak);
+          dohortoday = DateFormat.jm().format(prayers.dhuhr);
+          asortoday = DateFormat.jm().format(prayers.asr);
+          Chasttoday=DateFormat.jm().format(prayers.dhuha);
+          magribtoday = DateFormat.jm().format(prayers.maghrib);
+          esatoday= DateFormat.jm().format(prayers.isha);
+          Sunrise = DateFormat.jm().format(prayers.sunrise);
+          Sunset = DateFormat.jm().format(prayers.sunset);
+          print("duhur time ${prayers.dhuhr}");
+          final Prayer current = Prayer.now(settings: settings, coordinate: geo, timeZone: 6.0);
+
+          print('${current.type}: current prayer time ${current.time}');
+          print(prayers.dhuhr);
+          print(prayers.dhuha);
+          //current prayer name
+          if(current.type.toString()=="fajr"){
+            currentPrayername ="ফজর";
+            print(currentPrayername);
+          }
+          else if(current.type.toString()=="dhuhr"){
+            currentPrayername ="যোহর";
+            print(currentPrayername);
+          }
+          else if(current.type.toString()=="asr"){
+            currentPrayername ="আসর";
+            print(currentPrayername);
+          }
+          else if(current.type.toString()=="maghrib"){
+            currentPrayername ="মাগরিব";
+            print(currentPrayername);
+          }
+          else if(current.type.toString()=="isha"){
+            currentPrayername ="এশা";
+            print(currentPrayername);
+          }
+          else if(current.type.toString()=="imsak"){
+            currentPrayername="ইশরাক";
+            print(currentPrayername);
+          }
+          else if(current.type.toString()=="dhuha") {
+            currentPrayername = "চাশত";
+            print(currentPrayername);
+          }
+
+          //next prayer time
+          currentPrayerTime = DateFormat.jm().format(current.time);
+
+          //Next prayer Name
+          final Prayer later = Prayer.next(
+              settings: settings, coordinate: geo, timeZone: 6.0);
+          print('${later.type}: ${later.time}');
+          nextPrayerTime =DateFormat.jm().format(later.time);
+          if (later.type.toString() == "fazr") {
+            nextPrayerName = "ফজর";
+            print(nextPrayerName);
+          }
+          else if (later.type.toString() == "dhuhr") {
+            nextPrayerName = "যোহর";
+            print(nextPrayerName);
+          }
+          else if (later.type.toString() == "asr") {
+            nextPrayerName = "আসর";
+            print(nextPrayerName);
+          }
+          else if (later.type.toString() == "maghrib") {
+            nextPrayerName = "মাগরিব";
+            print(nextPrayerName);
+          }
+          else if (later.type.toString() == "isha") {
+            nextPrayerName = "এশা";
+            print(nextPrayerName);
+          }
+          else if (later.type.toString() == "imsak") {
+            nextPrayerName = "ইশরাক";
+            print(nextPrayerName);
+          }
+          else if (later.type.toString() == "dhuha") {
+            nextPrayerName = "চাশত";
+            print(nextPrayerName);
+          }
+
+          //timeString
+          setState(() {
+            _timeString="${current.time.difference(later.time).inHours.abs()} ঘন্টা "
+                "${(((current.time.minute+60)-DateTime.now().minute)-1).abs()} মিনিট"
+                " ${60-DateTime.now().second}  সেকেন্ড পর  ";
+          });
+        }
+        else if(demoZila.trim()=='Bandarban'){
+          geo = Geocoordinate((GeocoordinateBuilder b) => b
+            ..latitude = 22.1963002
+            ..longitude = 92.2198872
+            ..altitude = 24);
+          final Prayers prayers = Prayers.on(date: when, settings: settings, coordinate: geo, timeZone: 6.0);
+          fajartoday = DateFormat.jm().format(prayers.fajr);
+          israk = DateFormat.jm().format(prayers.imsak);
+          dohortoday = DateFormat.jm().format(prayers.dhuhr);
+          asortoday = DateFormat.jm().format(prayers.asr);
+          Chasttoday=DateFormat.jm().format(prayers.dhuha);
+          magribtoday = DateFormat.jm().format(prayers.maghrib);
+          esatoday= DateFormat.jm().format(prayers.isha);
+          Sunrise = DateFormat.jm().format(prayers.sunrise);
+          Sunset = DateFormat.jm().format(prayers.sunset);
+          print("duhur time ${prayers.dhuhr}");
+          final Prayer current = Prayer.now(settings: settings, coordinate: geo, timeZone: 6.0);
+
+          print('${current.type}: current prayer time ${current.time}');
+          print(prayers.dhuhr);
+          print(prayers.dhuha);
+          //current prayer name
+          if(current.type.toString()=="fajr"){
+            currentPrayername ="ফজর";
+            print(currentPrayername);
+          }
+          else if(current.type.toString()=="dhuhr"){
+            currentPrayername ="যোহর";
+            print(currentPrayername);
+          }
+          else if(current.type.toString()=="asr"){
+            currentPrayername ="আসর";
+            print(currentPrayername);
+          }
+          else if(current.type.toString()=="maghrib"){
+            currentPrayername ="মাগরিব";
+            print(currentPrayername);
+          }
+          else if(current.type.toString()=="isha"){
+            currentPrayername ="এশা";
+            print(currentPrayername);
+          }
+          else if(current.type.toString()=="imsak"){
+            currentPrayername="ইশরাক";
+            print(currentPrayername);
+          }
+          else if(current.type.toString()=="dhuha") {
+            currentPrayername = "চাশত";
+            print(currentPrayername);
+          }
+
+          //next prayer time
+          currentPrayerTime = DateFormat.jm().format(current.time);
+
+          //Next prayer Name
+          final Prayer later = Prayer.next(
+              settings: settings, coordinate: geo, timeZone: 6.0);
+          print('${later.type}: ${later.time}');
+          nextPrayerTime =DateFormat.jm().format(later.time);
+          if (later.type.toString() == "fazr") {
+            nextPrayerName = "ফজর";
+            print(nextPrayerName);
+          }
+          else if (later.type.toString() == "dhuhr") {
+            nextPrayerName = "যোহর";
+            print(nextPrayerName);
+          }
+          else if (later.type.toString() == "asr") {
+            nextPrayerName = "আসর";
+            print(nextPrayerName);
+          }
+          else if (later.type.toString() == "maghrib") {
+            nextPrayerName = "মাগরিব";
+            print(nextPrayerName);
+          }
+          else if (later.type.toString() == "isha") {
+            nextPrayerName = "এশা";
+            print(nextPrayerName);
+          }
+          else if (later.type.toString() == "imsak") {
+            nextPrayerName = "ইশরাক";
+            print(nextPrayerName);
+          }
+          else if (later.type.toString() == "dhuha") {
+            nextPrayerName = "চাশত";
+            print(nextPrayerName);
+          }
+
+          //timeString
+          setState(() {
+            _timeString="${current.time.difference(later.time).inHours.abs()} ঘন্টা "
+                "${(((current.time.minute+60)-DateTime.now().minute)-1).abs()} মিনিট"
+                " ${60-DateTime.now().second}  সেকেন্ড পর  ";
           });
 
         }
+        else if(demoZila.trim()=='Dhaka'){
+          geo = Geocoordinate((GeocoordinateBuilder b) => b
+            ..latitude = 23.8175925
+            ..longitude = 90.21930546
+            ..altitude = 7);
+          final Prayers prayers = Prayers.on(date: when, settings: settings, coordinate: geo, timeZone: 6.0);
+          fajartoday = DateFormat.jm().format(prayers.fajr);
+          israk = DateFormat.jm().format(prayers.imsak);
+          dohortoday = DateFormat.jm().format(prayers.dhuhr);
+          asortoday = DateFormat.jm().format(prayers.asr);
+          Chasttoday=DateFormat.jm().format(prayers.dhuha);
+          magribtoday = DateFormat.jm().format(prayers.maghrib);
+          esatoday= DateFormat.jm().format(prayers.isha);
+          Sunrise = DateFormat.jm().format(prayers.sunrise);
+          Sunset = DateFormat.jm().format(prayers.sunset);
+          print("duhur time ${prayers.dhuhr}");
+          final Prayer current = Prayer.now(settings: settings, coordinate: geo, timeZone: 6.0);
 
+          print('${current.type}: current prayer time ${current.time}');
+          print(prayers.dhuhr);
+          print(prayers.dhuha);
+          //current prayer name
+          if(current.type.toString()=="fajr"){
+            currentPrayername ="ফজর";
+            print(currentPrayername);
+          }
+          else if(current.type.toString()=="dhuhr"){
+            currentPrayername ="যোহর";
+            print(currentPrayername);
+          }
+          else if(current.type.toString()=="asr"){
+            currentPrayername ="আসর";
+            print(currentPrayername);
+          }
+          else if(current.type.toString()=="maghrib"){
+            currentPrayername ="মাগরিব";
+            print(currentPrayername);
+          }
+          else if(current.type.toString()=="isha"){
+            currentPrayername ="এশা";
+            print(currentPrayername);
+          }
+          else if(current.type.toString()=="imsak"){
+            currentPrayername="ইশরাক";
+            print(currentPrayername);
+          }
+          else if(current.type.toString()=="dhuha") {
+            currentPrayername = "চাশত";
+            print(currentPrayername);
+          }
+
+          //next prayer time
+          currentPrayerTime = DateFormat.jm().format(current.time);
+
+          //Next prayer Name
+          final Prayer later = Prayer.next(
+              settings: settings, coordinate: geo, timeZone: 6.0);
+          print('${later.type}: ${later.time}');
+          nextPrayerTime =DateFormat.jm().format(later.time);
+          if (later.type.toString() == "fazr") {
+            nextPrayerName = "ফজর";
+            print(nextPrayerName);
+          }
+          else if (later.type.toString() == "dhuhr") {
+            nextPrayerName = "যোহর";
+            print(nextPrayerName);
+          }
+          else if (later.type.toString() == "asr") {
+            nextPrayerName = "আসর";
+            print(nextPrayerName);
+          }
+          else if (later.type.toString() == "maghrib") {
+            nextPrayerName = "মাগরিব";
+            print(nextPrayerName);
+          }
+          else if (later.type.toString() == "isha") {
+            nextPrayerName = "এশা";
+            print(nextPrayerName);
+          }
+          else if (later.type.toString() == "imsak") {
+            nextPrayerName = "ইশরাক";
+            print(nextPrayerName);
+          }
+          else if (later.type.toString() == "dhuha") {
+            nextPrayerName = "চাশত";
+            print(nextPrayerName);
+          }
+
+          //timeString
+          setState(() {
+            _timeString="${current.time.difference(later.time).inHours.abs()} ঘন্টা "
+                "${(((current.time.minute+60)-DateTime.now().minute)-1).abs()} মিনিট"
+                " ${60-DateTime.now().second}  সেকেন্ড পর  ";
+          });
+
+        }
 
         else if((demoZila.trim()=='Magura')||(demoZila.trim()=='Rajbari')||(demoZila.trim()=='Pabna')){
 
