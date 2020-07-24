@@ -35,6 +35,13 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
   String Sunrise="";
   String Sunset="";
   String _timeString="";
+  var timezone = DateTime.now().timeZoneOffset.inHours.toDouble();
+  int year = DateTime.now().year;
+  int month = DateTime.now().month;
+  int day = DateTime.now().day;
+  Geocoordinate geo;
+  
+  
   Widget _appBar(){
     return Container(
       color: Colors.green,
@@ -71,12 +78,7 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
                         builder: (context)=>LocationPage(_center)
                     )).then((_){
                       setState(() {
-                        Utils.getZilaNameFromPreference().then((value){
-                          setState(() {
-                            zila=value;
-                            _inital();
-                          });
-                        });
+                        _inital();
                       });
                     });
                   },
@@ -104,36 +106,186 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
     arabyDate=_today.toFormat("dd MMMM,yyyy");
     englishDate=DateFormat('dd MMMM,yyyy').format(DateTime.now());
     dayName=DateFormat('EEEE').format(DateTime.now());
-    final postion = Provider.of<LocationProvider>(context, listen: false).pos;
-    Provider.of<LocationProvider>(context,listen: false).getDeviceCurrentLocation(postion: postion).then((_){
+    Provider.of<LocationProvider>(context,listen: false).getDeviceCurrentLocation().then((postion){
       setState(() {
         _center=LatLng(postion.latitude,postion.longitude);
       });
     });
 
-  }
+    Utils.getZilaNameFromPreference().then((zilaName){
+      setState(() {
+        zila=zilaName;
 
-  @override
-  void initState() {
-    super.initState();
-    _inital();
-  }
+        if(zilaName.trim()=='Dhaka'){
+          print('Dhaka Called');
+          _getlatlngwithData(LatLng(23.7115253,90.4111451));
+        }else if(zilaName.trim()=='Faridpur'){
+          _getlatlngwithData(LatLng(23.6070822,89.8429406));
+        }else if(zilaName.trim()=='Gazipur'){
+          _getlatlngwithData(LatLng(24.0022858,90.4264283));
+        }else if(zilaName.trim()=='Gopalganj'){
+          _getlatlngwithData(LatLng(23.0050857,89.8266059));
+        }else if(zilaName.trim()=='Jamalpur'){
+          _getlatlngwithData(LatLng(24.937533,89.937775));
+        }else if(zilaName.trim()=='Kishoreganj'){
+          _getlatlngwithData(LatLng(24.444937,90.776575));
+        }else if(zilaName.trim()=='Madaripur'){
+          _getlatlngwithData(LatLng(23.164102,90.1896805));
+        }else if(zilaName.trim()=='Manikganj'){
+          _getlatlngwithData(LatLng(23.8644,90.0047));
+        }else if(zilaName.trim()=='Munshiganj'){
+          _getlatlngwithData(LatLng(23.5422,90.5305));
+        }else if(zilaName.trim()=='Mymensingh'){
+          _getlatlngwithData(LatLng(24.7471,90.4203));
+        }else if(zilaName.trim()=='Narayanganj'){
+          _getlatlngwithData(LatLng(23.63366,90.496482));
+        }else if(zilaName.trim()=='Narsingdi'){
+          _getlatlngwithData(LatLng(23.932233,90.71541));
+        }else if(zilaName.trim()=='Netrokona'){
+          _getlatlngwithData(LatLng(24.870955,90.727887));
+        }else if(zilaName.trim()=='Netrakona'){
+          _getlatlngwithData(LatLng(24.870955,90.727887));
+        }else if(zilaName.trim()=='Rajbari'){
+          _getlatlngwithData(LatLng(23.7574305,89.6444665));
+        }else if(zilaName.trim()=='Shariatpur'){
+          _getlatlngwithData(LatLng(23.2423,90.4348));
+        }else if(zilaName.trim()=='Sherpur'){
+          _getlatlngwithData(LatLng(25.0204933,90.0152966));
+        }else if(zilaName.trim()=='Tangail'){
+          _getlatlngwithData(LatLng(24.2513,89.9167));
+        }else if(zilaName.trim()=='Bogura'){
+          _getlatlngwithData(LatLng(24.8465228,89.377755));
+        }else if(zilaName.trim()=='Bogra'){
+          _getlatlngwithData(LatLng(24.8465228,89.377755));
+        }else if(zilaName.trim()=='Joypurhat'){
+          _getlatlngwithData(LatLng(25.0968,89.0227));
+        }else if(zilaName.trim()=='Jaipurhat'){
+          _getlatlngwithData(LatLng(25.0968,89.0227));
+        }else if(zilaName.trim()=='Naogaon'){
+          _getlatlngwithData(LatLng(24.7936,88.9318));
+        }else if(zilaName.trim()=='Natore'){
+          _getlatlngwithData(LatLng(24.420556,89.000282));
+        }else if(zilaName.trim()=='Nawabganj'){
+          _getlatlngwithData(LatLng(24.5965034,88.2775122));
+        }else if(zilaName.trim()=='Pabna'){
+          _getlatlngwithData(LatLng(23.998524,89.233645));
+        }else if(zilaName.trim()=='Rajshahi'){
+          _getlatlngwithData(LatLng(24.3745,88.6042));
+        }else if(zilaName.trim()=='Sirajgonj'){
+          _getlatlngwithData(LatLng(24.4533978,89.7006815));
+        }else if(zilaName.trim()=='Sirajganj'){
+          _getlatlngwithData(LatLng(24.4533978,89.7006815));
+        }else if(zilaName.trim()=='Dinajpur'){
+          _getlatlngwithData(LatLng(25.6217061,88.6354504));
+        }else if(zilaName.trim()=='Gaibandha'){
+          _getlatlngwithData(LatLng(25.328751,89.528088));
+        }else if(zilaName.trim()=='Kurigram'){
+          _getlatlngwithData(LatLng(25.805445,89.636174));
+        }else if(zilaName.trim()=='Lalmonirhat'){
+          _getlatlngwithData(LatLng(25.9923,89.2847));
+        }else if(zilaName.trim()=='Nilphamari'){
+          _getlatlngwithData(LatLng(25.931794,88.856006));
+        }else if(zilaName.trim()=='Panchagarh'){
+          _getlatlngwithData(LatLng(26.3411,88.5541606));
+        }else if(zilaName.trim()=='Rangpur'){
+          _getlatlngwithData(LatLng(25.7558096,89.244462));
+        }else if(zilaName.trim()=='Thakurgaon'){
+          _getlatlngwithData(LatLng(26.0336945,88.4616834));
+        }else if(zilaName.trim()=='Barguna'){
+          _getlatlngwithData(LatLng(22.0953,90.1121));
+        }else if(zilaName.trim()=='Barishal'){
+          _getlatlngwithData(LatLng(22.7010,90.3535));
+        }else if(zilaName.trim()=='Barisal'){
+          _getlatlngwithData(LatLng(22.7010,90.3535));
+        }else if(zilaName.trim()=='Bhola'){
+          _getlatlngwithData(LatLng(22.685923,90.648179));
+        }else if(zilaName.trim()=='Jhalokati'){
+          _getlatlngwithData(LatLng(22.6406,90.1987));
+        }else if(zilaName.trim()=='Jhalakati'){
+          _getlatlngwithData(LatLng(22.6406,90.1987));
+        }else if(zilaName.trim()=='Patuakhali'){
+          _getlatlngwithData(LatLng(22.3596316,90.3298712));
+        }else if(zilaName.trim()=='Pirojpur'){
+          _getlatlngwithData(LatLng(22.5841,89.9720));
+        }else if(zilaName.trim()=='Bandarban'){
+          _getlatlngwithData(LatLng(22.1953275,92.2183773));
+        }else if(zilaName.trim()=='Brahmanbaria'){
+          _getlatlngwithData(LatLng(23.9570904,91.1119286));
+        }else if(zilaName.trim()=='Chandpur'){
+          _getlatlngwithData(LatLng(23.2332585,90.6712912));
+        }else if(zilaName.trim()=='Chattogram'){
+          _getlatlngwithData(LatLng(22.335109,91.834073));
+        }else if(zilaName.trim()=='Chittagong'){
+          _getlatlngwithData(LatLng(22.335109,91.834073));
+        }else if(zilaName.trim()=='Cumilla'){
+          _getlatlngwithData(LatLng(23.4682747,91.1788135));
+        }else if(zilaName.trim()=='Comilla'){
+          _getlatlngwithData(LatLng(23.4682747,91.1788135));
+        }else if(zilaName.trim()=="Cox's Bazar"){
+          _getlatlngwithData(LatLng(21.4272,92.0058));
+        }else if(zilaName.trim()=='Feni'){
+          _getlatlngwithData(LatLng(23.0159,91.3976));
+        }else if(zilaName.trim()=='Khagrachari'){
+          _getlatlngwithData(LatLng(23.119285,91.984663));
+        }else if(zilaName.trim()=='Lakshmipur'){
+          _getlatlngwithData(LatLng(22.942477,90.841184));
+        }else if(zilaName.trim()=='Noakhali'){
+          _getlatlngwithData(LatLng(22.869563,91.099398));
+        }else if(zilaName.trim()=='Rangamati'){
+          _getlatlngwithData(LatLng(22.7324,92.2985));
+        }else if(zilaName.trim()=='Parbattya Chattagram'){
+          _getlatlngwithData(LatLng(22.7324,92.2985));
+        }else if(zilaName.trim()=='Habiganj'){
+          _getlatlngwithData(LatLng(24.374945,91.41553));
+        }else if(zilaName.trim()=='Maulvibazar'){
+          _getlatlngwithData(LatLng(24.482934,91.777417));
+        }else if(zilaName.trim()=='Moulvibazar'){
+          _getlatlngwithData(LatLng(24.482934,91.777417));
+        }else if(zilaName.trim()=='Sunamganj'){
+          _getlatlngwithData(LatLng(25.0658042,91.3950115));
+        }else if(zilaName.trim()=='Sylhet'){
+          _getlatlngwithData(LatLng(24.8897956,91.8697894));
+        }else if(zilaName.trim()=='Bagerhat'){
+          _getlatlngwithData(LatLng(22.651568,89.785938));
+        }else if(zilaName.trim()=='Chuadanga'){
+          _getlatlngwithData(LatLng(23.6401961,88.841841));
+        }else if(zilaName.trim()=='Jashore'){
+          _getlatlngwithData(LatLng(23.16643,89.2081126));
+        }else if(zilaName.trim()=='Jessore'){
+          _getlatlngwithData(LatLng(23.16643,89.2081126));
+        }else if(zilaName.trim()=='Jhenaidah'){
+          _getlatlngwithData(LatLng(23.5448176,89.1539213));
+        }else if(zilaName.trim()=='Khulna'){
+          _getlatlngwithData(LatLng(22.815774,89.568679));
+        }else if(zilaName.trim()=='Kushtia'){
+          _getlatlngwithData(LatLng(23.901258,89.120482));
+        }else if(zilaName.trim()=='Magura'){
+          _getlatlngwithData(LatLng(23.487337,89.419956));
+        }else if(zilaName.trim()=='Meherpur'){
+          _getlatlngwithData(LatLng(23.762213,88.631821));
+        }else if(zilaName.trim()=='Narail'){
+          _getlatlngwithData(LatLng(23.172534,89.512672));
+        }else if(zilaName.trim()=='Satkhira'){
+          _getlatlngwithData(LatLng(22.7185,89.0705));
+        } else{
+          print('Default Called');
+          _getlatlngwithData(LatLng(23.7115253,90.4111451));
+        }
 
-  @override
-  Widget build(BuildContext context) {
-    final provider = Provider.of<LocationProvider>(context);
-    var now = new DateTime.now();
-    var timezone = now.timeZoneOffset.inHours.toDouble();
-    int year = now.year;
-    int month = now.month;
-    int day = now.day;
-    Geocoordinate geo;
+      });
+    });
+
+  }
+  
+  _getlatlngwithData(LatLng latLng){
     DateTime when = DateTime.utc(month, year, day);
+
     PrayerCalculationSettings settings = PrayerCalculationSettings((PrayerCalculationSettingsBuilder b) =>
     b
-      ..calculationMethod.replace(CalculationMethod.fromPreset(preset: CalculationMethodPreset.universityOfIslamicSciencesKarachi))
+      ..calculationMethod.replace(CalculationMethod.fromPreset(preset: CalculationMethodPreset.islamicSocietyOfNorthAmerica))
       ..imsakParameter.replace(PrayerCalculationParameter((PrayerCalculationParameterBuilder c) => c..value = 0 ..type = PrayerCalculationParameterType.minutesAdjust))
-      ..juristicMethod.replace(JuristicMethod((JuristicMethodBuilder e) => e..preset = JuristicMethodPreset.hanafi ..timeOfShadow = 2))
+      ..juristicMethod.replace(JuristicMethod((JuristicMethodBuilder e) => e..preset = JuristicMethodPreset.hanafi
+        ..timeOfShadow = 2))
       ..highLatitudeAdjustment = HighLatitudeAdjustment.angleBased
       ..imsakMinutesAdjustment = 0
       ..fajrMinutesAdjustment = 0
@@ -144,477 +296,122 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
       ..maghribMinutesAdjustment = 0
       ..ishaMinutesAdjustment = 0
     );
-    final postion = Provider.of<LocationProvider>(context, listen: false).pos;
-    print(postion.longitude);
-    print(postion.latitude);
-    print(postion.altitude);
-//   geo = Geocoordinate((GeocoordinateBuilder b) => b
-//      ..latitude = provider.pos.latitude
-//      ..longitude = provider.pos.longitude
-//      ..altitude = provider.pos.altitude);
-//
-//
-//    print(provider.pos.latitude);
-//    print(provider.pos.longitude);
-//    print(provider.pos.altitude);
-//    final Prayers prayers = Prayers.on(date: when, settings: settings, coordinate: geo, timeZone: timezone);
-//    print(prayers.imsak);
-//    print(prayers.fajr);
-//    print(prayers.sunrise);
-//    print(prayers.dhuha);
-//    print(prayers.dhuhr);
-//    print(prayers.asr);
-//    print(prayers.sunset);
-//    print(prayers.maghrib);
-//    print(prayers.isha);
-//    print(prayers.midnight);
-    Utils.getZilaNameFromPreference().then((demoZila){
-      setState(() {
 
-        zila=demoZila;
-        print(demoZila);
-
-        if(demoZila.trim()=='Gazipur'){
-
-          geo = Geocoordinate((GeocoordinateBuilder b) => b
-            ..latitude = 23.9980797
-            ..longitude = 90.4229848
-            ..altitude = 12);
-          final Prayers prayers = Prayers.on(date: when, settings: settings, coordinate: geo, timeZone: 6.0);
-          fajartoday = DateFormat.jm().format(prayers.fajr);
-          israk = DateFormat.jm().format(prayers.imsak);
-          dohortoday = DateFormat.jm().format(prayers.dhuhr);
-          asortoday = DateFormat.jm().format(prayers.asr);
-          Chasttoday=DateFormat.jm().format(prayers.dhuha);
-          magribtoday = DateFormat.jm().format(prayers.maghrib);
-          esatoday= DateFormat.jm().format(prayers.isha);
-          Sunrise = DateFormat.jm().format(prayers.sunrise);
-          Sunset = DateFormat.jm().format(prayers.sunset);
-
-          final Prayer current = Prayer.now(settings: settings, coordinate: geo, timeZone: 6.0);
-
-          print('${current.type}: ${current.time}');
-          print(prayers.dhuhr);
-
-          //current prayer name
-          if(current.type.toString()=="fazr"){
-            currentPrayername ="ফজর";
-            print(currentPrayername);
-          }
-          else if(current.type.toString()=="dhuhr"){
-            currentPrayername ="যোহর";
-            print(currentPrayername);
-          }
-          else if(current.type.toString()=="asr"){
-            currentPrayername ="আসর";
-            print(currentPrayername);
-          }
-          else if(current.type.toString()=="maghrib"){
-            currentPrayername ="মাগরিব";
-            print(currentPrayername);
-          }
-          else if(current.type.toString()=="isha"){
-            currentPrayername ="এশা";
-            print(currentPrayername);
-          }
-          else if(current.type.toString()=="imsak"){
-            currentPrayername="ইশরাক";
-            print(currentPrayername);
-          }
-          else if(current.type.toString()=="dhuha") {
-            currentPrayername = "চাশত";
-            print(currentPrayername);
-          }
-
-          //next prayer time
-          currentPrayerTime = DateFormat.jm().format(current.time);
-
-          //Next prayer Name
-          final Prayer later = Prayer.later(
-              settings: settings, coordinate: geo, timeZone: 6.0);
-          print('${later.type}: ${later.time}');
-          nextPrayerTime =DateFormat.jm().format(later.time);
-          if (later.type.toString() == "fazr") {
-            nextPrayerName = "ফজর";
-            print(nextPrayerName);
-          }
-          else if (later.type.toString() == "dhuhr") {
-            nextPrayerName = "যোহর";
-            print(nextPrayerName);
-          }
-          else if (later.type.toString() == "asr") {
-            nextPrayerName = "আসর";
-            print(nextPrayerName);
-          }
-          else if (later.type.toString() == "maghrib") {
-            nextPrayerName = "মাগরিব";
-            print(nextPrayerName);
-          }
-          else if (later.type.toString() == "isha") {
-            nextPrayerName = "এশা";
-            print(nextPrayerName);
-          }
-          else if (later.type.toString() == "imsak") {
-            nextPrayerName = "ইশরাক";
-            print(nextPrayerName);
-          }
-          else if (later.type.toString() == "dhuha") {
-            nextPrayerName = "চাশত";
-            print(nextPrayerName);
-          }
-
-          //timeString
-          setState(() {
-            _timeString="${current.time.difference(later.time).inHours.abs()} ঘন্টা "
-                "${(((current.time.minute+60)-DateTime.now().minute)-1).abs()} মিনিট"
-                " ${60-current.time.second.abs()}  সেকেন্ড পর  ";
-          });
-        }
-        else if(demoZila.trim()=='Bagerhat'){
-          geo = Geocoordinate((GeocoordinateBuilder b) => b
-            ..latitude = 22.6554187
-            ..longitude = 89.7971746
-            ..altitude = 9);
-
-          final Prayers prayers = Prayers.on(date: when, settings: settings, coordinate: geo, timeZone: 6.0);
-          fajartoday = DateFormat.jm().format(prayers.fajr);
-          israk = DateFormat.jm().format(prayers.imsak);
-          dohortoday = DateFormat.jm().format(prayers.dhuhr);
-          asortoday = DateFormat.jm().format(prayers.asr);
-          Chasttoday=DateFormat.jm().format(prayers.dhuha);
-          magribtoday = DateFormat.jm().format(prayers.maghrib);
-          esatoday= DateFormat.jm().format(prayers.isha);
-          Sunrise = DateFormat.jm().format(prayers.sunrise);
-          Sunset = DateFormat.jm().format(prayers.sunset);
-
-          final Prayer current = Prayer.now(settings: settings, coordinate: geo, timeZone: 6.0);
-
-          print('${current.type}: ${current.time}');
-          print(prayers.dhuhr);
-
-          //current prayer name
-          if(current.type.toString()=="fazr"){
-            currentPrayername ="ফজর";
-            print(currentPrayername);
-          }
-          else if(current.type.toString()=="dhuhr"){
-            currentPrayername ="যোহর";
-            print(currentPrayername);
-          }
-          else if(current.type.toString()=="asr"){
-            currentPrayername ="আসর";
-            print(currentPrayername);
-          }
-          else if(current.type.toString()=="maghrib"){
-            currentPrayername ="মাগরিব";
-            print(currentPrayername);
-          }
-          else if(current.type.toString()=="isha"){
-            currentPrayername ="এশা";
-            print(currentPrayername);
-          }
-          else if(current.type.toString()=="imsak"){
-            currentPrayername="ইশরাক";
-            print(currentPrayername);
-          }
-          else if(current.type.toString()=="dhuha") {
-            currentPrayername = "চাশত";
-            print(currentPrayername);
-          }
-
-          //next prayer time
-          currentPrayerTime = DateFormat.jm().format(current.time);
-
-          //Next prayer Name
-          final Prayer later = Prayer.later(
-              settings: settings, coordinate: geo, timeZone: 6.0);
-          print('${later.type}: ${later.time}');
-          nextPrayerTime =DateFormat.jm().format(later.time);
-          if (later.type.toString() == "fazr") {
-            nextPrayerName = "ফজর";
-            print(nextPrayerName);
-          }
-          else if (later.type.toString() == "dhuhr") {
-            nextPrayerName = "যোহর";
-            print(nextPrayerName);
-          }
-          else if (later.type.toString() == "asr") {
-            nextPrayerName = "আসর";
-            print(nextPrayerName);
-          }
-          else if (later.type.toString() == "maghrib") {
-            nextPrayerName = "মাগরিব";
-            print(nextPrayerName);
-          }
-          else if (later.type.toString() == "isha") {
-            nextPrayerName = "এশা";
-            print(nextPrayerName);
-          }
-          else if (later.type.toString() == "imsak") {
-            nextPrayerName = "ইশরাক";
-            print(nextPrayerName);
-          }
-          else if (later.type.toString() == "dhuha") {
-            nextPrayerName = "চাশত";
-            print(nextPrayerName);
-          }
-
-          //timeString
-          setState(() {
-            _timeString="${current.time.difference(later.time).inHours.abs()} ঘন্টা "
-                "${(((current.time.minute+60)-DateTime.now().minute)-1).abs()} মিনিট"
-                " ${60-current.time.second.abs()}  সেকেন্ড পর  ";
-          });
-        }
-        else if(demoZila.trim()=='Bandarban'){
-          geo = Geocoordinate((GeocoordinateBuilder b) => b
-            ..latitude = 22.1963002
-            ..longitude = 92.2198872
-            ..altitude = 24);
-          final Prayers prayers = Prayers.on(date: when, settings: settings, coordinate: geo, timeZone: 6.0);
-          fajartoday = DateFormat.jm().format(prayers.fajr);
-          israk = DateFormat.jm().format(prayers.imsak);
-          dohortoday = DateFormat.jm().format(prayers.dhuhr);
-          asortoday = DateFormat.jm().format(prayers.asr);
-          Chasttoday=DateFormat.jm().format(prayers.dhuha);
-          magribtoday = DateFormat.jm().format(prayers.maghrib);
-          esatoday= DateFormat.jm().format(prayers.isha);
-          Sunrise = DateFormat.jm().format(prayers.sunrise);
-          Sunset = DateFormat.jm().format(prayers.sunset);
-
-          final Prayer current = Prayer.now(settings: settings, coordinate: geo, timeZone: 6.0);
-
-          print('${current.type}: ${current.time}');
-          print(prayers.dhuhr);
-
-          //current prayer name
-          if(current.type.toString()=="fajr"){
-            currentPrayername ="ফজর";
-            print(currentPrayername);
-          }
-          else if(current.type.toString()=="dhuhr"){
-            currentPrayername ="যোহর";
-            print(currentPrayername);
-          }
-          else if(current.type.toString()=="asr"){
-            currentPrayername ="আসর";
-            print(currentPrayername);
-          }
-          else if(current.type.toString()=="maghrib"){
-            currentPrayername ="মাগরিব";
-            print(currentPrayername);
-          }
-          else if(current.type.toString()=="isha"){
-            currentPrayername ="এশা";
-            print(currentPrayername);
-          }
-          else if(current.type.toString()=="imsak"){
-            currentPrayername="ইশরাক";
-            print(currentPrayername);
-          }
-          else if(current.type.toString()=="dhuha") {
-            currentPrayername = "চাশত";
-            print(currentPrayername);
-          }
-
-          //next prayer time
-          currentPrayerTime = DateFormat.jm().format(current.time);
-
-          //Next prayer Name
-          final Prayer later = Prayer.later(
-              settings: settings, coordinate: geo, timeZone: 6.0);
-          print('${later.type}: ${later.time}');
-          nextPrayerTime =DateFormat.jm().format(later.time);
-          if (later.type.toString() == "fazr") {
-            nextPrayerName = "ফজর";
-            print(nextPrayerName);
-          }
-          else if (later.type.toString() == "dhuhr") {
-            nextPrayerName = "যোহর";
-            print(nextPrayerName);
-          }
-          else if (later.type.toString() == "asr") {
-            nextPrayerName = "আসর";
-            print(nextPrayerName);
-          }
-          else if (later.type.toString() == "maghrib") {
-            nextPrayerName = "মাগরিব";
-            print(nextPrayerName);
-          }
-          else if (later.type.toString() == "isha") {
-            nextPrayerName = "এশা";
-            print(nextPrayerName);
-          }
-          else if (later.type.toString() == "imsak") {
-            nextPrayerName = "ইশরাক";
-            print(nextPrayerName);
-          }
-//          else if (later.type.toString() == "dhuha") {
-//            nextPrayerName = "চাশত";
-//            print(nextPrayerName);
-//          }
-
-          //timeString
-          setState(() {
-            _timeString="${current.time.difference(later.time).inHours.abs()} ঘন্টা "
-                "${(((current.time.minute+60)-DateTime.now().minute)-1).abs()} মিনিট"
-                " \n${60-current.time.second.abs()}  সেকেন্ড পর  ";
-          });
-
-        }
-
-
-        else if((demoZila.trim()=='Magura')||(demoZila.trim()=='Rajbari')||(demoZila.trim()=='Pabna')){
-
-
-
-        }else if((demoZila.trim()=='Satkhira')||(demoZila.trim()=='Kushtia')||(demoZila.trim()=='Jessore')||(demoZila.trim()=='Rangpur')||(demoZila.trim()=='Jhenaidah')){
-
-
-
-        }else if((demoZila.trim()=='Nilphamari')||(demoZila.trim()=='Chuadanga')||(demoZila.trim()=='Khagrachari')||(demoZila.trim()=='Gaibandha')){
-
-
-
-        }else if((demoZila.trim()=='Rajshahi')||(demoZila.trim()=='Bogra')||(demoZila.trim()=='Meherpur')||(demoZila.trim()=='Lalmonirhat')){
-
-
-        }else if((demoZila.trim()=='Nawabganj')||(demoZila.trim()=='Naogaon')||(demoZila.trim()=='Natore')){
-
-
-
-        }else if((demoZila.trim().trim()=='Dinajpur')||(demoZila.trim().trim()=='Thakurgaon')||(demoZila.trim().trim()=='Panchagarh')){
-
-
-
-        }else if((demoZila.trim()=='Narsingdi')||(demoZila.trim()=='Narayanganj')||(demoZila.trim()=='Munshiganj')||(demoZila.trim()=='Chandpur')){
-
-
-
-        }else if((demoZila.trim()=='Kishoreganj')||(demoZila.trim()=='Patuakhali')||(demoZila.trim()=='Bhola')||(demoZila.trim()=='Lakshmipur')){
-
-
-
-        }else if((demoZila.trim()=='Netrakona')||(demoZila.trim()=='Comilla')||(demoZila.trim()=='Brahmanbaria')){
-
-
-
-        }else if((demoZila.trim()=='Noakhali')||(demoZila.trim()=='Feni')||(demoZila.trim()=='Sunamganj')||(demoZila.trim()=='Habiganj')){
-
-
-        }else if((demoZila.trim()=='Chittagong')){
-
-
-
-        }else if((demoZila.trim()=='Cox\'s Bazar')||(demoZila.trim()=='Sylhet')||(demoZila.trim()=='Moulvibazar')){
-
-
-
-        }else if((demoZila.trim()=='Khagrachari')||(demoZila.trim()=='Bandarban')||(demoZila.trim()=='Parbattya Chattagram')){
-
-
-
-        }else{
-
-          geo = Geocoordinate((GeocoordinateBuilder b) => b
-            ..latitude = provider.pos.latitude
-            ..longitude = provider.pos.longitude
-            ..altitude = provider.pos.altitude);
-
-          final Prayers prayers = Prayers.on(date: when, settings: settings, coordinate: geo, timeZone: 6.0);
-          fajartoday = DateFormat.jm().format(prayers.fajr);
-          israk = DateFormat.jm().format(prayers.imsak);
-          dohortoday = DateFormat.jm().format(prayers.dhuhr);
-          asortoday = DateFormat.jm().format(prayers.asr);
-          Chasttoday=DateFormat.jm().format(prayers.dhuha);
-          magribtoday = DateFormat.jm().format(prayers.maghrib);
-          esatoday= DateFormat.jm().format(prayers.isha);
-          Sunrise = DateFormat.jm().format(prayers.sunrise);
-          Sunset = DateFormat.jm().format(prayers.sunset);
-
-          final Prayer current = Prayer.now(settings: settings, coordinate: geo, timeZone: 6.0);
-
-          print('${current.type}: ${current.time}');
-          print(prayers.dhuhr);
-
-          //current prayer name
-          if(current.type.toString()=="fazr"){
-            currentPrayername ="ফজর";
-            print(currentPrayername);
-          }
-          else if(current.type.toString()=="dhuhr"){
-            currentPrayername ="যোহর";
-            print(currentPrayername);
-          }
-          else if(current.type.toString()=="asr"){
-            currentPrayername ="আসর";
-            print(currentPrayername);
-          }
-          else if(current.type.toString()=="maghrib"){
-            currentPrayername ="মাগরিব";
-            print(currentPrayername);
-          }
-          else if(current.type.toString()=="isha"){
-            currentPrayername ="এশা";
-            print(currentPrayername);
-          }
-          else if(current.type.toString()=="imsak"){
-            currentPrayername="ইশরাক";
-            print(currentPrayername);
-          }
-          else if(current.type.toString()=="dhuha") {
-            currentPrayername = "চাশত";
-            print(currentPrayername);
-          }
-
-          //next prayer time
-          currentPrayerTime = DateFormat.jm().format(current.time);
-
-          //Next prayer Name
-          final Prayer later = Prayer.later(
-              settings: settings, coordinate: geo, timeZone: 6.0);
-          print('${later.type}: ${later.time}');
-          nextPrayerTime =DateFormat.jm().format(later.time);
-          if (later.type.toString() == "fazr") {
-            nextPrayerName = "ফজর";
-            print(nextPrayerName);
-          }
-          else if (later.type.toString() == "dhuhr") {
-            nextPrayerName = "যোহর";
-            print(nextPrayerName);
-          }
-          else if (later.type.toString() == "asr") {
-            nextPrayerName = "আসর";
-            print(nextPrayerName);
-          }
-          else if (later.type.toString() == "maghrib") {
-            nextPrayerName = "মাগরিব";
-            print(nextPrayerName);
-          }
-          else if (later.type.toString() == "isha") {
-            nextPrayerName = "এশা";
-            print(nextPrayerName);
-          }
-          else if (later.type.toString() == "imsak") {
-            nextPrayerName = "ইশরাক";
-            print(nextPrayerName);
-          }
-          else if (later.type.toString() == "dhuha") {
-            nextPrayerName = "চাশত";
-            print(nextPrayerName);
-          }
-
-          //timeString
-          setState(() {
-            _timeString="${current.time.difference(later.time).inHours.abs()} ঘন্টা "
-                "${(((current.time.minute+60)-DateTime.now().minute)-1).abs()} মিনিট"
-                " ${60-current.time.second.abs()}  সেকেন্ড পর  ";
-          });
-
-        }
-      });
+    geo = Geocoordinate((GeocoordinateBuilder b) => b
+      ..latitude = latLng.latitude
+      ..longitude = latLng.longitude
+      ..altitude = 14);
+    final Prayers prayers = Prayers.on(date: when, settings: settings, coordinate: geo, timeZone: 6.0);
+    fajartoday = DateFormat.jm().format(prayers.fajr);
+    israk = DateFormat.jm().format(prayers.imsak);
+    dohortoday = DateFormat.jm().format(prayers.dhuhr);
+    asortoday = DateFormat.jm().format(prayers.asr);
+    Chasttoday=DateFormat.jm().format(prayers.dhuha);
+    magribtoday = DateFormat.jm().format(prayers.maghrib);
+    esatoday= DateFormat.jm().format(prayers.isha);
+    Sunrise = DateFormat.jm().format(prayers.sunrise);
+    Sunset = DateFormat.jm().format(prayers.sunset);
+
+    final Prayer current = Prayer.now(settings: settings, coordinate: geo, timeZone: 6.0);
+
+    print('${current.type}:Shuvo Khan ${current.time}');
+    print(current.toString());
+    print('fajr: ${prayers.fajr}');
+    print('Dohor: ${prayers.dhuhr}');
+    print('Imshak: ${prayers.imsak}');
+    print('Sunrise: ${prayers.sunrise}');
+    print('Asor: ${prayers.asr}');
+    print(prayers.maghrib);
+    print(prayers.sunset);
+    print(prayers.isha);
+    print(prayers.midnight);
+
+    //current prayer name
+    if(current.type.toString()=="fazr"){
+      currentPrayername ="ফজর";
+      print(currentPrayername);
+    }
+    else if(current.type.toString()=="dhuhr"){
+      currentPrayername ="যোহর";
+      print(currentPrayername);
+    }
+    else if(current.type.toString()=="asr"){
+      currentPrayername ="আসর";
+      print(currentPrayername);
+    }
+    else if(current.type.toString()=="maghrib"){
+      currentPrayername ="মাগরিব";
+      print(currentPrayername);
+    }
+    else if(current.type.toString()=="isha"){
+      currentPrayername ="এশা";
+      print(currentPrayername);
+    }
+    else if(current.type.toString()=="imsak"){
+      currentPrayername="ইশরাক";
+      print(currentPrayername);
+    }
+    else if(current.type.toString()=="dhuha") {
+      currentPrayername = "চাশত";
+      print(currentPrayername);
+    }
+
+    //next prayer time
+    currentPrayerTime = DateFormat.jm().format(current.time);
+
+    //Next prayer Name
+    final Prayer later = Prayer.next(settings: settings, coordinate: geo, timeZone: 6.0);
+    print('Next Prayer: ${later.type}: ${later.time}');
+    nextPrayerTime =DateFormat.jm().format(later.time);
+    if (later.type.toString() == "fazr") {
+      nextPrayerName = "ফজর";
+      print(nextPrayerName);
+    }
+    else if (later.type.toString() == "dhuhr") {
+      nextPrayerName = "যোহর";
+      print(nextPrayerName);
+    }
+    else if (later.type.toString() == "asr") {
+      nextPrayerName = "আসর";
+      print(nextPrayerName);
+    }
+    else if (later.type.toString() == "maghrib") {
+      nextPrayerName = "মাগরিব";
+      print(nextPrayerName);
+    }
+    else if (later.type.toString() == "isha") {
+      nextPrayerName = "এশা";
+      print(nextPrayerName);
+    }
+    else if (later.type.toString() == "imsak") {
+      nextPrayerName = "ইশরাক";
+      print(nextPrayerName);
+    }
+    else if (later.type.toString() == "dhuha") {
+      nextPrayerName = "চাশত";
+      print(nextPrayerName);
+    }
+
+    //timeString
+    setState(() {
+      _timeString="${current.time.difference(later.time).inHours.abs()} ঘন্টা "
+          "${(((current.time.minute+60)-DateTime.now().minute)-1).abs()} মিনিট"
+          " ${60-current.time.second.abs()}  সেকেন্ড পর  ";
     });
-//
+    
+    
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _inital();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    
+    
     return SafeArea(
       child: Scaffold(
         appBar:PreferredSize(child: _appBar(),preferredSize: Size(MediaQuery.of(context).size.width, 120),) ,
