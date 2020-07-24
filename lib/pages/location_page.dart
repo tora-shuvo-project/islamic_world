@@ -5,9 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:libpray/libpray.dart';
-import 'package:provider/provider.dart';
-import 'package:searchtosu/helpers/provider_helpers.dart';
 import 'package:searchtosu/utils/utils.dart';
 
 
@@ -22,85 +19,83 @@ class LocationPage extends StatefulWidget {
 }
 
 class _LocationPageState extends State<LocationPage> {
+  final _jelacontroller = TextEditingController();
+  int selectedRadio=0;
+  Set<Marker> markers={};
+  Completer<GoogleMapController> _completer=Completer();
+  String _selectedJelaName;
+  String _dristric_from_gps;
 
-final _jelacontroller = TextEditingController();
-int selectedRadio=0;
-Set<Marker> markers={};
-Completer<GoogleMapController> _completer=Completer();
-String _selectedJelaName;
-String _dristric_from_gps;
-
-void _onmapCreated(GoogleMapController controller) {
-  _completer.complete(controller);
-}
-
-
-void _setlocation() async{
-
-  Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-  debugPrint('location: ${position.latitude}');
-  final coordinates = new Coordinates(widget.latLng.latitude,widget.latLng.longitude);
-  var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
-  var first = addresses.first;
-  print('${first.toMap()}');
-
-  _dristric_from_gps = first.subAdminArea.toString().replaceAll('District', "");
-
-  Utils.getZilaNameFromPreference().then((value){
-    setState(() {
-      print('$value');
-    });
-  });
+  void _onmapCreated(GoogleMapController controller) {
+    _completer.complete(controller);
+  }
 
 
-}
+  void _setlocation() async{
 
-void _handleRadioValueChange(int value) {
-  setState(() {
-    selectedRadio = value;
+    Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    debugPrint('location: ${position.latitude}');
+    final coordinates = new Coordinates(widget.latLng.latitude,widget.latLng.longitude);
+    var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    var first = addresses.first;
+    print('${first.toMap()}');
 
-    switch (selectedRadio) {
-      case 0:
-        print(_selectedJelaName);
-        print("Selected first value");
-        Utils.saveZilaFromPreference(_selectedJelaName).then((value){
-          setState(() {
+    _dristric_from_gps = first.subAdminArea.toString().replaceAll(' District', "");
 
-          });
-        });
-    
-    break;
-    case 1:
-      Utils.saveZilaFromPreference(_dristric_from_gps).then((value){
-        setState(() {
-
-        });
+    Utils.getZilaNameFromPreference().then((value){
+      setState(() {
+        print('Shuvo $value');
       });
-
-      print("Selected Second value");
-    break;
-    }
     });
-}
 
 
-@override
-void initState() {
-  //final provider = Provider.of<LocationProvider>(context);
-//  super.initState();
-//  selectedRadio =0;
-//  _selectedJelaName="";
-//  markers.add(Marker(
-//      markerId: MarkerId(widget.latLng.toString()),
-//      position: widget.latLng,
-//    infoWindow: InfoWindow(
-//      title: '${widget.latLng}'
-//    ),
-//    icon: BitmapDescriptor.defaultMarker,
-//  ));
-//
-//  _setlocation();
-}
+  }
+
+  void _handleRadioValueChange(int value) {
+    setState(() {
+      selectedRadio = value;
+
+      switch (selectedRadio) {
+        case 0:
+          print(_selectedJelaName);
+          print("Selected first value");
+          Utils.saveZilaFromPreference(_selectedJelaName).then((value){
+            setState(() {
+
+            });
+          });
+
+          break;
+        case 1:
+          Utils.saveZilaFromPreference(_dristric_from_gps).then((value){
+            setState(() {
+
+            });
+          });
+
+          print("Selected Second value");
+          break;
+      }
+    });
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    selectedRadio =0;
+    _selectedJelaName="";
+    markers.add(Marker(
+      markerId: MarkerId(widget.latLng.toString()),
+      position: widget.latLng,
+      infoWindow: InfoWindow(
+          title: '${widget.latLng}'
+      ),
+      icon: BitmapDescriptor.defaultMarker,
+    ));
+
+    _setlocation();
+  }
 
   Widget _appBar(){
     return Container(
@@ -155,30 +150,30 @@ void initState() {
               padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
               child: Column(
                 children: <Widget>[
-                        Container(
+                  Container(
 
-                            child: DropDownField(
-                                  controller: _jelacontroller,
-                              hintText: "জেলা নির্বাচন করুন",
-                              enabled:true,
-                              items: _jelaNames,
-                              onValueChanged: (value){
-                                    setState(() {
-                                   _selectedJelaName= value;
-                                   if(selectedRadio==0){
-                                     Utils.saveZilaFromPreference(_selectedJelaName).then((value){
-                                       setState(() {
+                    child: DropDownField(
+                      controller: _jelacontroller,
+                      hintText: "জেলা নির্বাচন করুন",
+                      enabled:true,
+                      items: _jelaNames,
+                      onValueChanged: (value){
+                        setState(() {
+                          _selectedJelaName= value;
+                          if(selectedRadio==0){
+                            Utils.saveZilaFromPreference(_selectedJelaName).then((value){
+                              setState(() {
 
-                                       });
-                                     });
-                                   }
-                                   print(value);
-                                    });
-                              },
+                              });
+                            });
+                          }
+                          print(value);
+                        });
+                      },
 
-                            ),
+                    ),
 
-                        ),
+                  ),
                   SizedBox(height: 10,),
                   Row(
                     children: <Widget>[
@@ -224,21 +219,21 @@ void initState() {
                   ),
 
                   Container(
-                    height: 500,
-                    child: Stack(
-                      children: <Widget>[
-                        GoogleMap(
-                          onMapCreated: _onmapCreated,
-                          initialCameraPosition: CameraPosition(
-                            target: widget.latLng,zoom: 15,
+                      height: 500,
+                      child: Stack(
+                        children: <Widget>[
+                          GoogleMap(
+                            onMapCreated: _onmapCreated,
+                            initialCameraPosition: CameraPosition(
+                              target: widget.latLng,zoom: 15,
+                            ),
+                            mapType: MapType.satellite,
+                            myLocationButtonEnabled: true,
+                            myLocationEnabled: true,
+                            markers: markers,
                           ),
-                          mapType: MapType.satellite,
-                          myLocationButtonEnabled: true,
-                          myLocationEnabled: true,
-                          markers: markers,
-                        ),
-                      ],
-                    )
+                        ],
+                      )
                   ),
                 ],
               ),
@@ -254,68 +249,68 @@ void initState() {
 }
 
 List<String> _jelaNames = [
-  " Bagerhat "	,
-  " Bandarban "	,
-  " Barguna	"	,
-  " Barisal	"	,
-  " Bhola	"	,
-  " Bogra	"	,
-  " Brahmanbaria	"	,
-  " Chandpur	"	,
-  " Chittagong	"	,
-  " Chuadanga	"	,
-  " Comilla	"	,
-  " Cox's Bazar	"	,
-  " Dhaka	"	,
-  " Dinajpur	"	,
-  " Faridpur	"	,
-  " Feni	"	,
-  " Gaibandha	"	,
-  " Gazipur	"	,
-  " Gopalganj	"	,
-  " Habiganj	"	,
-  " Jaipurhat	"	,
-  " Jamalpur	"	,
-  " Jessore	"	,
-  " Jhalakati	"	,
-  " Jhenaidah	"	,
-  " Khagrachari	"	,
-  " Khulna	"	,
-  " Kishoreganj	"	,
-  " Kurigram	"	,
-  " Kushtia	"	,
-  " Lakshmipur	"	,
-  " Lalmonirhat	"	,
-  " Madaripur	"	,
-  " Magura	"	,
-  " Manikganj	"	,
-  " Meherpur	"	,
-  " Moulvibazar	"	,
-  " Munshiganj	"	,
-  " Mymensingh	"	,
-  " Naogaon	"	,
-  " Narail	"	,
-  " Narayanganj	"	,
-  " Narsingdi	"	,
-  " Natore	"	,
-  " Nawabganj	"	,
-  " Netrakona	"	,
-  " Nilphamari	"	,
-  " Noakhali	"	,
-  " Pabna	"	,
-  " Panchagarh	"	,
-  " Parbattya Chattagram	"	,
-  " Patuakhali	"	,
-  " Pirojpur	"	,
-  " Rajbari	"	,
-  " Rajshahi	"	,
-  " Rangpur	"	,
-  " Satkhira	"	,
-  " Shariatpur	"	,
-  " Sherpur	"	,
-  " Sirajganj	"	,
-  " Sunamganj	"	,
-  " Sylhet "	,
-  " Tangail "	,
-  " Thakurgaon	"	,
+  "Bagerhat "	,
+  "Bandarban "	,
+  "Barguna	"	,
+  "Barisal	"	,
+  "Bhola	"	,
+  "Bogra	"	,
+  "Brahmanbaria	"	,
+  "Chandpur	"	,
+  "Chittagong	"	,
+  "Chuadanga	"	,
+  "Comilla	"	,
+  "Cox's Bazar	"	,
+  "Dhaka	"	,
+  "Dinajpur	"	,
+  "Faridpur	"	,
+  "Feni	"	,
+  "Gaibandha	"	,
+  "Gazipur	"	,
+  "Gopalganj	"	,
+  "Habiganj	"	,
+  "Jaipurhat	"	,
+  "Jamalpur	"	,
+  "Jessore	"	,
+  "Jhalakati	"	,
+  "Jhenaidah	"	,
+  "Khagrachari	"	,
+  "Khulna	"	,
+  "Kishoreganj	"	,
+  "Kurigram	"	,
+  "Kushtia	"	,
+  "Lakshmipur	"	,
+  "Lalmonirhat	"	,
+  "Madaripur	"	,
+  "Magura	"	,
+  "Manikganj	"	,
+  "Meherpur	"	,
+  "Moulvibazar	"	,
+  "Munshiganj	"	,
+  "Mymensingh	"	,
+  "Naogaon	"	,
+  "Narail	"	,
+  "Narayanganj	"	,
+  "Narsingdi	"	,
+  "Natore	"	,
+  "Nawabganj	"	,
+  "Netrakona	"	,
+  "Nilphamari	"	,
+  "Noakhali	"	,
+  "Pabna	"	,
+  "Panchagarh	"	,
+  "Parbattya Chattagram	"	,
+  "Patuakhali	"	,
+  "Pirojpur	"	,
+  "Rajbari	"	,
+  "Rajshahi	"	,
+  "Rangpur	"	,
+  "Satkhira	"	,
+  "Shariatpur	"	,
+  "Sherpur	"	,
+  "Sirajganj	"	,
+  "Sunamganj	"	,
+  "Sylhet "	,
+  "Tangail "	,
+  "Thakurgaon	"	,
 ];
