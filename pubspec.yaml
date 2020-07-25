@@ -61,10 +61,16 @@ dependencies:
   geocoder: ^0.2.1
   deivao_drawer: ^1.0.0+6
   webview_flutter: ^0.3.22+1
+  flutter_launcher_icons: ^0.7.5
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_icons:
+  image_path: "images/app_logo.png"
+  android: true
+  ios: true
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

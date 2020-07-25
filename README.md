@@ -11,9 +11,9 @@
    
    5.Tasbih 95 % ok
    
-   6.Doya 80% ok
+   6.Doya 100% ok
    
-   7.Calender 90% ok
+   7.Calender 100% ok
    
    8.Nearest Mosque 100% ok
    
@@ -33,6 +33,6 @@
    
    16. About Screen 95% ok
    
-   17. Settings Screen 80% ok
+   17. Settings Screen 100% ok
 
 

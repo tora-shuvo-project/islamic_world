@@ -253,7 +253,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
   void initializing() async {
 
-    androidInitializationSettings = AndroidInitializationSettings('sms');
+    androidInitializationSettings = AndroidInitializationSettings('notification_icon');
     iosInitializationSettings = IOSInitializationSettings(
         onDidReceiveLocalNotification: onDidReceiveLocalNotification);
     initializationSettings = InitializationSettings(
