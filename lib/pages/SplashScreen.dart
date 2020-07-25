@@ -1,4 +1,6 @@
 
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -56,11 +58,17 @@ class _SplashScreenState extends State<SplashScreen> {
     Utils.getZilaNameFromPreference().then((value){
       zilaName=value;
     });
+
+    Timer(
+        Duration(seconds: 3),
+            (){
+              Navigator.pushReplacementNamed(context, HomeScreen.route);
+            });
   }
 
   void initializing() async {
 
-    androidInitializationSettings = AndroidInitializationSettings('sms');
+    androidInitializationSettings = AndroidInitializationSettings('notification_icon');
     iosInitializationSettings = IOSInitializationSettings(
         onDidReceiveLocalNotification: onDidReceiveLocalNotification);
     initializationSettings = InitializationSettings(
@@ -150,31 +158,23 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Image.asset("images/kuranIcon.png", width:150,
-              height:  150,fit:BoxFit.cover,),
-            SizedBox(height: 25,),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(30),
-              child: Container(
-                width: 100,
-                height: 50,
-                decoration: BoxDecoration(
-                    color: Color(0xff178723)
-                ),
-                child: FlatButton(
-                    onPressed: (){
-                      _showNotificationsAfterSecond();
-                      Navigator.pushReplacementNamed(context, HomeScreen.route);
-                    }, child: Text("Welcome", style: TextStyle(color: Colors.white),)),
-              ),
-            ),
-          ],
-        ),
+      backgroundColor: Colors.green.withOpacity(.1),
+      body: Stack(
+        fit: StackFit.passthrough,
+        children: <Widget>[
+          Image.asset('images/splash1.png',
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,fit: BoxFit.fill,),
+          Positioned(
+            bottom: 30,
+            left: MediaQuery.of(context).size.width/3,
+            child: Text('সত্যের সন্ধানে।',style: TextStyle(
+              fontSize: 22,
+              color: Colors.white,
+
+            ),),
+          ),
+        ],
       ),
     );
   }

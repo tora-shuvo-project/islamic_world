@@ -80,7 +80,7 @@ class _AboutPagesState extends State<AboutPages> {
         children: <Widget>[
           Container(
             height: 200,
-            child: Image.asset('images/kuranIcon.png'),
+            child: Image.asset('images/notification_icon.png'),
           ),
           Container(
             child: Row(
@@ -175,11 +175,13 @@ class _AboutPagesState extends State<AboutPages> {
                                     showModalBottomSheet(context: context,
                                         enableDrag: true,
                                         builder: (BuildContext context){
-                                      return Container(
-                                        padding: EdgeInsets.all(8),
-                                        child: Text('আমি মোঃ মেহেদি হাসান শুভ ।বর্তমানে ঢাকা প্রকৌশল ও প্রযুক্তি বিশ্ববিদ্যালয় এ কম্পিউটার সাইন্স ডিপার্টমেন্ট এ অধ্যায়রত।',style: TextStyle(
-                                          fontSize: 18
-                                        ),),
+                                      return SingleChildScrollView(
+                                        child: Container(
+                                          padding: EdgeInsets.all(8),
+                                          child: Text('আসসালামুআলাইকুম।আমি মোঃ মেহেদি হাসান শুভ,বরিশাল সরকারী পলিটেকনিক থেকে ডিপ্লোমা ইন ইঞ্জিনিয়ারিং পাশ করে বর্তমানে ঢাকা প্রকৌশল ও প্রযুক্তি বিশ্ববিদ্যালয় এ কম্পিউটার সাইন্স এন্ড ইঞ্জিনিয়ারিং ডিপার্টমেন্ট এ অধ্যায়রত।আমার গ্রামের বাড়ি হচ্ছে কালকিনি,মাদারীপুর। ভাল লাগা থেকেই আমার এই কাজগুলো করা।আসলে অনেক দিন থেকেই এমন একটা জিনিস করার কথা মাথায় ছিল কিন্তু করা হয়ে উঠে নাই,অতঃপর এই করোনা মহামারি মধ্যে সময়টাকে আলহামদুরিয়াল্লাহ পরিপূর্ন ভাবে কাজে লাগাতে পেরেছি। যেহেতু এটা প্রথম ভার্শন তাই কিছু ভুল ভ্রান্তি থাকতেই পারে এর জন্য সকলের কাছে ক্ষমা চাচ্ছি আর ভুলগুলো ধরিয়ে দিতে পারলে অনেক উপকার হত। ভুলগুলো ইমেইল এ পাঠালে ভাল হবে। আমি সংশোধন করার চেষ্টা করব ইন-শা-আল্লাহ।অনেক কিছু এই ইচ্ছা ছিল কিন্তু সব কিছু ইমপ্লিমেন্ট করতে পারি নাই ইন-শা-আল্লাহ খুব তারা তারিই করে ফেলব। সবাই আমার জন্য দোয়া করবেন। যাযাকাল্লাহু খাইর।',style: TextStyle(
+                                            fontSize: 18
+                                          ),),
+                                        ),
                                       );
                                     });
                                   });
@@ -376,32 +378,42 @@ class _AboutPagesState extends State<AboutPages> {
             child: Column(
               children: <Widget>[
                 Card(
-                  child: ListTile(
+                  child: ListTile(onTap: (){
+                    _launchURL('https://web.facebook.com/rashedulalam.jacky/');
+                  },
                     title: Text('রাসেদুল আলম জ্যাকি'),
                     subtitle: Text('Database Helper'),
                   ),
                 ),
                 Card(
-                  child: ListTile(
+                  child: ListTile(onTap: (){
+                    _launchURL('https://web.facebook.com/hemtarikul/');
+                  },
                     title: Text('মোঃ তরিকুল ইসলাম'),
                     subtitle: Text('UI & UX Designer'),
                   ),
                 ),
                 Card(
-                  child: ListTile(
+                  child: ListTile(onTap: (){
+                    _launchURL('https://web.facebook.com/rafatul.islam.549/');
+                  },
                     title: Text('মোঃ রাফাতুল ইসলাম'),
                     subtitle: Text('Logo and Splash Designer'),
                   ),
                 ),
                 Card(
-                  child: ListTile(
+                  child: ListTile(onTap: (){
+                    _launchURL('https://web.facebook.com/mdrabiul.islamrabi.71');
+                  },
                     title: Text('মোঃ রবিউল ইসলাম'),
                     subtitle: Text('Content Writing'),
                   ),
                 ),
 
                 Card(
-                  child: ListTile(
+                  child: ListTile(onTap: (){
+                    _launchURL('https://web.facebook.com/hrhany1/');
+                  },
                     title: Text('হামিদুর রহমান'),
                     subtitle: Text('Content Writing'),
                   ),
@@ -409,48 +421,72 @@ class _AboutPagesState extends State<AboutPages> {
 
                 Card(
                   child: ListTile(
+                    onTap: (){
+                      _launchURL('https://web.facebook.com/dada.safwan.948/');
+                    },
+                    title: Text('মোহাম্মাদ মাঝহার'),
+                    subtitle: Text('Content Writing'),
+                  ),
+                ),
+
+                Card(
+                  child: ListTile(onTap: (){
+                    _launchURL('https://web.facebook.com/md.mahidi.52/');
+                  },
                     title: Text('মোঃ মেহেদি হাসান'),
                     subtitle: Text('Content Writing'),
                   ),
                 ),
 
                 Card(
-                  child: ListTile(
-                    title: Text('মোঃ তপু'),
+                  child: ListTile(onTap: (){
+                    _launchURL('https://web.facebook.com/mdmustafizur.rahman.522');
+                  },
+                    title: Text('মোঃ মোস্তাফিজুর রহমান তপু'),
                     subtitle: Text('Content Writing'),
                   ),
                 ),
 
                 Card(
-                  child: ListTile(
+                  child: ListTile(onTap: (){
+                    _launchURL('https://web.facebook.com/younos.duet/');
+                  },
                     title: Text('মোঃ ইউনুস'),
                     subtitle: Text('Content Writing'),
                   ),
                 ),
 
                 Card(
-                  child: ListTile(
+                  child: ListTile(onTap: (){
+                    _launchURL('https://web.facebook.com/mj.naymer');
+                  },
                     title: Text('মস্তফা কামাল মুন্না'),
                     subtitle: Text('Content Writing'),
                   ),
                 ),
 
                 Card(
-                  child: ListTile(
+                  child: ListTile(onTap: (){
+                    _launchURL('https://web.facebook.com/altafmahmud.altafmahmud.92');
+                  },
                     title: Text('আলতাফ মাহমুদ'),
                     subtitle: Text('Content Writing'),
                   ),
                 ),
 
                 Card(
-                  child: ListTile(
+                  child: ListTile(onTap: (){
+                    _launchURL('https://web.facebook.com/profile.php?id=100049340762128');
+                  },
                     title: Text('মোঃ আহ্নাফ জাইয়ান'),
                     subtitle: Text('Advisor'),
                   ),
                 ),
 
                 Card(
-                  child: ListTile(
+                  child: ListTile(onTap: (){
+                    _launchURL('https://web.facebook.com/shaifulislam.shawon.16');
+                  },
                     title: Text('মোঃ সাইফুল ইসলাম শাওন'),
                     subtitle: Text('Advisor'),
                   ),

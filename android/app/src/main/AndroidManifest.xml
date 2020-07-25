@@ -15,7 +15,7 @@
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="Islamic World"
+        android:label="Search Islam"
         android:icon="@mipmap/ic_launcher">
 
         <meta-data android:name="com.google.android.geo.API_KEY"
@@ -63,4 +63,3 @@
         <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
     </application>
 </manifest>
-
