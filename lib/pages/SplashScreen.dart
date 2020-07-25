@@ -158,21 +158,27 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green.withOpacity(.1),
+      backgroundColor: Colors.blueGrey,
       body: Stack(
         fit: StackFit.passthrough,
         children: <Widget>[
-          Image.asset('images/splash1.png',
+          Image.asset('images/splash.png',
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,fit: BoxFit.fill,),
+
+          Align(
+            alignment: Alignment.center,
+            child: AnimatedContainer(
+              duration: Duration(seconds: 13),
+              child: Image.asset('images/app_logo.png',width: 200,height: 200,),
+            ),
+          ),
+
           Positioned(
             bottom: 30,
-            left: MediaQuery.of(context).size.width/3,
-            child: Text('সত্যের সন্ধানে।',style: TextStyle(
-              fontSize: 22,
-              color: Colors.white,
-
-            ),),
+            left: 10,
+            right: 10,
+            child: Image.asset('images/splash_text.png',width: 20,height: 40,),
           ),
         ],
       ),

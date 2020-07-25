@@ -15,6 +15,7 @@ class _SettingsPageState extends State<SettingsPage> {
   String _arabyTextStyle;
   String _arabyStyle;
   String _fontName;
+  String _prayertype;
   String _fontFamily;
   String _quranArabiFontSize;
   String _arabiFontSize;
@@ -27,6 +28,7 @@ class _SettingsPageState extends State<SettingsPage> {
     _myActivity = '';
     _arabyTextStyle = '';
     _fontName = '';
+    _prayertype = '';
     _fontFamily='QalamMajid';
     _arabiFontSize='';
     _arabyStyle = 'بسم الله الرحمن الرحيم';
@@ -56,6 +58,13 @@ class _SettingsPageState extends State<SettingsPage> {
     Utils.getArabiFontFromPreference().then((value){
       setState(() {
         _fontName=value;
+        print(value);
+      });
+    });
+
+    Utils.getPrayerMethodFromPreference().then((value){
+      setState(() {
+        _prayertype=value;
         print(value);
       });
     });
@@ -447,6 +456,43 @@ class _SettingsPageState extends State<SettingsPage> {
                 {
                   "display": "মাদিনা ফন্ট",
                   "value": "Maddina",
+                },
+              ],
+              textField: 'display',
+              valueField: 'value',
+            ),
+          ),
+
+          SizedBox(height: 5,),
+          Container(
+            color: Colors.green.withOpacity(.2),
+            alignment: Alignment.center,
+            width: double.infinity,
+            child: DropDownFormField(
+              titleText: 'নামাজের জন্য মাজহাব সিলেক্ট করুণ',
+              hintText: 'Please choose one',
+              value: _prayertype,
+              onSaved: (value){
+                setState(() {
+                  Utils.savePrayerMethosTOPreference(value);
+                  _prayertype = value;
+                });
+              },
+              onChanged: (value) {
+                setState(() {
+                  _prayertype = value;
+                  Utils.savePrayerMethosTOPreference(value);
+
+                });
+              },
+              dataSource: [
+                {
+                  "display": "হানাফী মাজহাব",
+                  "value": "hanafi",
+                },
+                {
+                  "display": "সাফী,মালিকী,হানবালি",
+                  "value": "safe",
                 },
               ],
               textField: 'display',

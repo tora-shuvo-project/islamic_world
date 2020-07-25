@@ -31,6 +31,7 @@ class Utils{
     return prefs.getString('fontName')??'Maddina';
   }
 
+  // Save Zila Name
   static Future<void> saveZilaFromPreference(String zilaname)async{
     try{
       final prefs=await SharedPreferences.getInstance();
@@ -45,6 +46,7 @@ class Utils{
     return prefs.getString('zilaname')??'Dhaka';
   }
 
+  /// Save Arabi Text Format
   static Future<void> saveArabiFormatFromPreference(String formatname)async{
     try{
       final prefs=await SharedPreferences.getInstance();
@@ -59,6 +61,7 @@ class Utils{
     return prefs.getString('arabiformatname')??'Arabi Utmanic';
   }
 
+  // Save Arabi Font Name
   static Future<void> saveArabyFontPreference(String formatname)async{
     try{
       final prefs=await SharedPreferences.getInstance();
@@ -73,6 +76,7 @@ class Utils{
     return prefs.getString('arabifont')??'QalamMajid';
   }
 
+  // Save Quran Arabu Font Size
   static Future<void> saveQuranArabyFontsize(String size)async{
     try{
       final prefs=await SharedPreferences.getInstance();
@@ -87,6 +91,7 @@ class Utils{
     return prefs.getString('quranarabifont')??'18';
   }
 
+  // Save Arabi Font Size
   static Future<void> saveArabyFontsize(String size)async{
     try{
       final prefs=await SharedPreferences.getInstance();
@@ -99,6 +104,21 @@ class Utils{
   static Future<String> getArabiFontSizeFromPreference()async{
     final prefs=await SharedPreferences.getInstance();
     return prefs.getString('arabifontSize')??'18';
+  }
+
+  // Save Prayer Method
+  static Future<void> savePrayerMethosTOPreference(String type)async{
+    try{
+      final prefs=await SharedPreferences.getInstance();
+      prefs.setString('prayerMethod', type);
+    }catch(error){
+      throw error;
+    }
+  }
+
+  static Future<String> getPrayerMethodFromPreference()async{
+    final prefs=await SharedPreferences.getInstance();
+    return prefs.getString('prayerMethod')??'hanafi';
   }
 
 }

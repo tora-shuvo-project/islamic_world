@@ -44,6 +44,7 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
   var minute;
   bool loading = true;
   String _timeString="";
+  String majhabName='';
 
   Widget _appBar(){
     return Container(
@@ -127,6 +128,14 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
   void initState() {
     super.initState();
     _inital();
+
+    Utils.getPrayerMethodFromPreference().then((value){
+      print('Shuvo');
+      setState(() {
+        majhabName=value;
+      });
+    });
+
   }
 
   @override
@@ -799,7 +808,7 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
     );
   }
   Future<DateTime> getTodayFajrTime() async {
-    final adhan = AdhanFlutter.create(Coordinates(latitude, longitude), DateTime.now(), CalculationMethod.KARACHI);
+    final adhan = AdhanFlutter.create(Coordinates(latitude, longitude), DateTime.now(), CalculationMethod.KARACHI,);
     return await adhan.fajr;
   }
   Future<DateTime> getTodaydhuhurTime() async {
@@ -816,6 +825,16 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
   }
   Future<DateTime> getTodayAsorTime() async {
     final adhan = AdhanFlutter.create(Coordinates(latitude, longitude), DateTime.now(), CalculationMethod.KARACHI);
+
+
+    if(majhabName=='hanafi'){
+      adhan.setMadhab(Madhab.HANAFI);
+    }else if(majhabName=='safe'){
+      adhan.setMadhab(Madhab.SHAFI);
+    }else{
+      adhan.setMadhab(Madhab.HANAFI);
+    }
+
     return await adhan.asr;
   }
   Future<DateTime> getTodaySuriseTime() async {

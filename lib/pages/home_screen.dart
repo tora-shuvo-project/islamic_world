@@ -787,7 +787,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   ListView _buildDrawer(BuildContext context) {
     return ListView(
-      padding: EdgeInsets.all(0),
       children: <Widget>[
         Container(
           padding: EdgeInsets.only(top: 50, bottom: 20),
@@ -797,14 +796,14 @@ class _HomeScreenState extends State<HomeScreen> {
             children: <Widget>[
               ClipOval(
                 child: Image.asset(
-                  "images/mosque.png",
+                  "images/app_logo.png",
                   width: 70,
                   height: 70,
                 ),
               ),
               SizedBox(height: 15),
               Text(
-                'Bd Islamic World',
+                'Search Islam\n(সত্যের সন্ধানে)',
                 style: TextStyle(color: Colors.white, fontSize: 18),
               ),
             ],
