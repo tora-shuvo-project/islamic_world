@@ -1,13 +1,13 @@
 import 'dart:async';
 
+import 'package:android_intent/android_intent.dart';
 import 'package:dropdownfield/dropdownfield.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:libpray/libpray.dart';
-import 'package:provider/provider.dart';
-import 'package:searchtosu/helpers/provider_helpers.dart';
+import 'package:permission_handler/permission_handler.dart';
+
 import 'package:searchtosu/utils/utils.dart';
 
 
@@ -22,7 +22,61 @@ class LocationPage extends StatefulWidget {
 }
 
 class _LocationPageState extends State<LocationPage> {
-
+  final PermissionHandler permissionHandler = PermissionHandler();
+  Map<PermissionGroup, PermissionStatus> permissions;
+  void initState() {
+    super.initState();
+    requestLocationPermission();
+    _gpsService();
+  }
+  Future<bool> _requestPermission(PermissionGroup permission) async {
+    final PermissionHandler _permissionHandler = PermissionHandler();
+    var result = await _permissionHandler.requestPermissions([permission]);
+    if (result[permission] == PermissionStatus.granted) {
+      return true;
+    }
+    return false;
+  }
+  /*Checking if your App has been Given Permission*/
+  Future<bool> requestLocationPermission({Function onPermissionDenied}) async {
+    var granted = await _requestPermission(PermissionGroup.location);
+    if (granted!=true) {
+      requestLocationPermission();
+    }
+    debugPrint('requestContactsPermission $granted');
+    return granted;
+  }
+  /*Show dialog if GPS not enabled and open settings location*/
+  Future _checkGps() async {
+    if (!(await Geolocator().isLocationServiceEnabled())) {
+      if (Theme.of(context).platform == TargetPlatform.android) {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("Can't get gurrent location"),
+                content:const Text('Please make sure you enable GPS and try again'),
+                actions: <Widget>[
+                  FlatButton(child: Text('Ok'),
+                      onPressed: () {
+                        final AndroidIntent intent = AndroidIntent(
+                            action: 'android.settings.LOCATION_SOURCE_SETTINGS');
+                        intent.launch();
+                        Navigator.of(context, rootNavigator: true).pop();
+                        _gpsService();
+                      })],
+              );
+            });
+      }
+    }
+  }
+  Future _gpsService() async {
+    if (!(await Geolocator().isLocationServiceEnabled())) {
+      _checkGps();
+      return null;
+    } else
+      return true;
+  }
 final _jelacontroller = TextEditingController();
 int selectedRadio=0;
 Set<Marker> markers={};
@@ -84,23 +138,7 @@ void _handleRadioValueChange(int value) {
 }
 
 
-@override
-void initState() {
-  //final provider = Provider.of<LocationProvider>(context);
-//  super.initState();
-//  selectedRadio =0;
-//  _selectedJelaName="";
-//  markers.add(Marker(
-//      markerId: MarkerId(widget.latLng.toString()),
-//      position: widget.latLng,
-//    infoWindow: InfoWindow(
-//      title: '${widget.latLng}'
-//    ),
-//    icon: BitmapDescriptor.defaultMarker,
-//  ));
-//
-//  _setlocation();
-}
+
 
   Widget _appBar(){
     return Container(
@@ -150,7 +188,7 @@ void initState() {
         },
         child: Scaffold(
           appBar:PreferredSize(child: _appBar(),preferredSize: Size(MediaQuery.of(context).size.width, 120),) ,
-          body: SingleChildScrollView(
+          body:  SingleChildScrollView(
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
               child: Column(
