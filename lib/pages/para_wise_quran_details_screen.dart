@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +39,7 @@ class _ParaWiseQuranDetailsScreenState extends State<ParaWiseQuranDetailsScreen>
   bool isPlaying = true;
   bool isFullScreen=true;
   bool singleAyatplaying = true;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   //VideoPlayerController _controller;
   double _fontSize = 17;
@@ -282,6 +285,7 @@ class _ParaWiseQuranDetailsScreenState extends State<ParaWiseQuranDetailsScreen>
 
       SafeArea(
         child: Scaffold(
+          key: _scaffoldKey,
           appBar: PreferredSize(child: _appBar(),preferredSize: Size(MediaQuery.of(context).size.width, 120),),
           body: Center(
             child: ayatmodels.length<0?
@@ -324,10 +328,39 @@ class _ParaWiseQuranDetailsScreenState extends State<ParaWiseQuranDetailsScreen>
                                                         ],
                                                       ),
                                                       ayatmodels[index].sejda == "0"?Container(): Text("সিজদা", style: TextStyle(fontSize: 14, color: Colors.red),),
-                                                      IconButton(icon: Icon(Icons.volume_down ,color: Colors.black45,), onPressed: (){
+                                                      IconButton(icon: Icon(Icons.volume_down ,color: Colors.black45,), onPressed: ()async{
 
-                                                        ayatPlayer.play(ayatmodels[index].ayatAudio.trim());
+                                                        try {
+                                                          final result = await InternetAddress.lookup('google.com');
+                                                          if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+                                                            print('connected');
 
+                                                            try {
+                                                              ayatPlayer.play(ayatmodels[index].ayatAudio.trim());
+                                                            }
+
+                                                            /// on catching Exception return null
+                                                            catch (err) {
+                                                              print(err);
+                                                              Scaffold.of(context).showSnackBar(new SnackBar(
+                                                                content: new Text('Hello!'),
+                                                              ));
+                                                              return null;
+                                                            }
+                                                          }
+                                                        } on SocketException catch (_) {
+                                                          print('not connected');
+                                                          _scaffoldKey.currentState.showSnackBar(
+                                                              new SnackBar(
+                                                                  backgroundColor: Colors.green,
+                                                                  elevation: 2,
+                                                                  duration: Duration(seconds: 5),
+                                                                  content: Text('Please check your internet connection \'Thanks',style: TextStyle(
+                                                                    color: Colors.white,
+                                                                  ),)
+                                                              )
+                                                          );
+                                                        }
 
                                                       })
                                                     ],

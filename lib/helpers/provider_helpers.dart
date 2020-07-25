@@ -10,7 +10,11 @@ class LocationProvider with ChangeNotifier{
     notifyListeners();
   }
 
-  Future<Position> getDeviceCurrentLocation()async{
-    return await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
+  Future<Position> getDeviceCurrentLocation({ @required Position postion})async{
+    return await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.best).then((value) {
+      _position= value;
+      notifyListeners();
+    });
   }
+
 }

@@ -215,9 +215,10 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     });
 
-    Provider.of<LocationProvider>(context,listen: false).getDeviceCurrentLocation().then((position){
+    final postion = Provider.of<LocationProvider>(context, listen: false).pos;
+    Provider.of<LocationProvider>(context,listen: false).getDeviceCurrentLocation(postion: postion).then((_){
       setState(() {
-        _center=LatLng(position.latitude,position.longitude);
+        _center=LatLng(postion.latitude,postion.longitude);
       });
     });
 

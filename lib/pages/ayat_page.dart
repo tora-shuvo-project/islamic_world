@@ -14,6 +14,7 @@ import 'package:searchtosu/FinalModels/sura_name_table_model.dart';
 import 'package:searchtosu/helpers/database_helper.dart';
 import 'package:searchtosu/utils/utils.dart';
 import 'package:searchtosu/pages/doya_subcategory_screen.dart';
+import 'package:toast/toast.dart';
 
 import '../FinalModels/ayat_table_model.dart';
 
@@ -52,6 +53,8 @@ class _AyatPageState extends State<AyatPage> {
   String _fontName;
   String arabytextstyle;
 
+  bool isPlayAudio=true;
+
   void onSubmit(String result) {
     print(result);
     setState(() {
@@ -76,6 +79,11 @@ class _AyatPageState extends State<AyatPage> {
       }
 
 
+
+      print('Downloading.....');
+      Toast.show('Downloading........', context,duration: 1,gravity: Toast.CENTER);
+
+
       ///if file not present in local system then fetch it from server
       //String url = 'https://pbs.twimg.com/profile_images/973421479508328449/sEeIJkXq.jpg';
 
@@ -95,6 +103,8 @@ class _AyatPageState extends State<AyatPage> {
       /// writing bytes data of response in the file.
       await file.writeAsBytes(bytes);
 
+      Toast.show('Download complete Please Tab play button', context,duration: 2,gravity: Toast.CENTER);
+      isPlaying=false;
       /// returning file.
       return file.toString();
     }
@@ -162,7 +172,7 @@ class _AyatPageState extends State<AyatPage> {
                                         bottomRight: Radius.circular(0)),
                                     child: Container(
                                       color: Color(0xFFFFFFFF),
-                                      height: 500,
+                                      height: 330,
                                       child: Container(
                                         decoration: BoxDecoration(
                                           borderRadius: BorderRadius.only(
@@ -310,90 +320,90 @@ class _AyatPageState extends State<AyatPage> {
 
           ),
           Container(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.only(left: 16,top: 8,bottom: 4),
             child: Row(
               children: <Widget>[
-                Expanded(child: Text('Arabia:',style: TextStyle(
+                Expanded(child: Text('আরবি নামঃ:',style: TextStyle(
                     fontSize: 18,
                     color: Colors.blueGrey
                 ),)),
                 Expanded(flex:2,child: Text('${widget.suraNameTableModel.arbiSuraNam}',style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 19,
                     color: Colors.green
                 ),))
               ],
             ),
           ),
           Container(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.only(left: 16,top: 8,bottom: 4),
             child: Row(
               children: <Widget>[
-                Expanded(child: Text('Meaning:',style: TextStyle(
+                Expanded(child: Text('বাংলা অর্থঃ',style: TextStyle(
                     fontSize: 18,
                     color: Colors.blueGrey
                 ),)),
                 Expanded(flex:2,child: Text('${widget.suraNameTableModel.banglaMeaning}',style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 19,
                     color: Colors.green
                 ),))
               ],
             ),
           ),
           Container(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.only(left: 16,top: 8,bottom: 4),
             child: Row(
               children: <Widget>[
-                Expanded(child: Text('Sura No:',style: TextStyle(
+                Expanded(child: Text('সূরা নংঃ',style: TextStyle(
                     fontSize: 18,
                     color: Colors.blueGrey
                 ),)),
                 Expanded(flex:2,child: Text('${widget.suraNameTableModel.suraNo}',style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 19,
                     color: Colors.green
                 ),))
               ],
             ),
           ),
           Container(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.only(left: 16,top: 8,bottom: 4),
             child: Row(
               children: <Widget>[
-                Expanded(child: Text('Total Ayat:',style: TextStyle(
+                Expanded(child: Text('মোট আয়াতঃ',style: TextStyle(
                     fontSize: 18,
                     color: Colors.blueGrey
                 ),)),
                 Expanded(flex:2,child: Text('${widget.suraNameTableModel.ayatNo}',style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 19,
                     color: Colors.green
                 ),))
               ],
             ),
           ),
           Container(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.only(left: 16,top: 8,bottom: 4),
             child: Row(
               children: <Widget>[
-                Expanded(child: Text('Para:',style: TextStyle(
+                Expanded(child: Text('পারাঃ',style: TextStyle(
                     fontSize: 18,
                     color: Colors.blueGrey
                 ),)),
                 Expanded(flex:2,child: Text('${widget.suraNameTableModel.paraNumber}',style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 19,
                     color: Colors.green
                 ),))
               ],
             ),
           ),
           Container(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.only(left: 16,top: 8,bottom: 4),
             child: Row(
               children: <Widget>[
-                Expanded(child: Text('Obotirno:',style: TextStyle(
+                Expanded(child: Text('অবতীর্ণঃ',style: TextStyle(
                     fontSize: 18,
                     color: Colors.blueGrey
                 ),)),
                 Expanded(flex:2,child: Text('${widget.suraNameTableModel.obotirno}',style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 19,
                     color: Colors.green
                 ),))
               ],
@@ -464,7 +474,7 @@ class _AyatPageState extends State<AyatPage> {
 
       });
     }).catchError((error){
-      print(error.toString());
+      print('shuvo ${error.toString()}');
 
     });
 
@@ -550,9 +560,40 @@ class _AyatPageState extends State<AyatPage> {
                                             ],
                                           ),
                                           ayatmodels[index].sejda == "0"?Container(): Text("সিজদা", style: TextStyle(fontSize: 14, color: Colors.red),),
-                                          IconButton(icon: Icon(Icons.volume_down ,color: Colors.black45,), onPressed: (){
+                                          IconButton(icon: Icon(Icons.volume_down ,color: Colors.black45,), onPressed: ()async{
 
-                                            ayatPlayer.play(ayatmodels[index].ayatAudio.trim());
+                                            try {
+                                              final result = await InternetAddress.lookup('google.com');
+                                              if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+                                                print('connected');
+
+                                                try {
+
+                                                  ayatPlayer.play(ayatmodels[index].ayatAudio.trim());
+                                            }
+
+                                            /// on catching Exception return null
+                                            catch (err) {
+                                            print(err);
+                                            Scaffold.of(context).showSnackBar(new SnackBar(
+                                            content: new Text('Hello!'),
+                                            ));
+                                            return null;
+                                            }
+                                            }
+                                            } on SocketException catch (_) {
+                                            print('not connected');
+                                            _scaffoldKey.currentState.showSnackBar(
+                                            new SnackBar(
+                                            backgroundColor: Colors.green,
+                                            elevation: 2,
+                                            duration: Duration(seconds: 5),
+                                            content: Text('Please check your internet connection \'Thanks',style: TextStyle(
+                                            color: Colors.white,
+                                            ),)
+                                            )
+                                            );
+                                            }
 
 
                                           })
@@ -625,13 +666,11 @@ class _AyatPageState extends State<AyatPage> {
                                     setState(() {
                                       if(isPlaying){
                                         advancedPlayer.play(value);
-
                                         setState(() {
                                           isPlaying = false;
                                         });
                                       }else{
                                         advancedPlayer.pause();
-
                                         setState(() {
                                           isPlaying = true;
                                         });
