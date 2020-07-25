@@ -275,171 +275,163 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: <Widget>[
                                       FittedBox(child: Text("পরবর্তি ওয়াক্ত",style: TextStyle(fontSize: 17,color: Colors.white),)),
-                                     Container(
-                                          child: FutureBuilder(
+                                      FutureBuilder(
+
                                             future: getNextPrayer(),
                                                 builder: (context, AsyncSnapshot<Prayer> snapshot) {
-                                                  if (snapshot.connectionState != ConnectionState.done) {
+                                                  if (snapshot.hasData) {
+                                                    final prayer = snapshot.data;
+                                                    print(" next prayer ${prayer.toString()}");
+                                                    if(prayer.toString().trim()=="Prayer.ASR"){
+                                                      nextTime = "আসর";
+                                                      nextPrayerTime=asortoday;
+                                                      //TimeString
+                                                      if(AsorMinute.toString()== null){
+                                                        minute = 0;
+                                                      }else{
+                                                        if(Pminute.toInt()>AsorMinute){
+                                                          minute = Pminute-AsorMinute;
+                                                        }else{
+                                                          minute=AsorMinute-Pminute;
+                                                        }
+                                                      }
+                                                      //timeString
 
-                                                    print(snapshot.hasError);
-                                                    return SingleChildScrollView();
+                                                      _timeString="${AsorTime.difference(DateTime.now()).inHours.abs()} ঘন্টা "
+                                                          "${minute} মিনিট"
+                                                          " ${60-DateTime.now().second}  সেকেন্ড পর  ";
+
+                                                      print(" next prayer ${prayer.toString()}");
+                                                    }
+
+                                                    else if(prayer.toString().trim()=="Prayer.FAJR"){
+                                                      nextTime = "ফজর";
+                                                      nextPrayerTime=fajartoday;
+                                                      //TimeString
+                                                      if(FazrMinute.toString()== null){
+                                                        minute = 0;
+                                                      }else{
+                                                        if(DateTime.now().minute>FazrMinute){
+                                                          minute = DateTime.now().minute-FazrMinute;
+                                                        }else{
+                                                          minute=FazrMinute-DateTime.now().minute;
+                                                        }
+                                                      }
+                                                      //timeString
+
+                                                      _timeString="${FazrTime.difference(DateTime.now()).inHours.abs()} ঘন্টা "
+                                                          "${minute} মিনিট"
+                                                          " ${60-DateTime.now().second}  সেকেন্ড পর  ";
+
+
+                                                      print("next prayer ${prayer.toString()}");
+                                                    }
+
+                                                    else if(prayer.toString().trim()=="Prayer.DHUHR"){
+                                                      nextTime = "যোহর";
+                                                      nextPrayerTime=dohortoday;
+
+
+                                                      //TimeString
+                                                      if(DuhurMinute.toString()== null){
+                                                        minute = 0;
+                                                      }else{
+                                                        if(DateTime.now().minute>DuhurMinute){
+                                                          minute = DateTime.now().minute-DuhurMinute;
+                                                        }else{
+                                                          minute=DuhurMinute-DateTime.now().minute;
+                                                        }
+                                                      }
+
+                                                      //timeString
+
+                                                      _timeString="${DuhurTime.difference(DateTime.now()).inHours.abs()} ঘন্টা "
+                                                          "${minute} মিনিট"
+                                                          " ${60-DateTime.now().second}  সেকেন্ড পর  ";
+
+
+                                                      print("next prayer ${prayer.toString()}");
+                                                    }
+
+                                                    else if(prayer.toString().trim()=="Prayer.MAGHRIB"){
+                                                      nextTime = "মাগরিব";
+                                                      nextPrayerTime=magribtoday;
+
+                                                      //TimeString
+                                                      if(MagribMinute== null){
+                                                        minute = 0;
+                                                      }else{
+                                                        if(DateTime.now().minute>MagribMinute){
+                                                          minute = DateTime.now().minute-MagribMinute;
+                                                        }else{
+                                                          minute=MagribMinute-DateTime.now().minute;
+                                                        }
+                                                      }
+                                                      //timeString
+
+                                                      _timeString="${MagribTime.difference(DateTime.now()).inHours.abs()} ঘন্টা "
+                                                          "${minute} মিনিট"
+                                                          " ${60-DateTime.now().second}  সেকেন্ড পর  ";
+
+
+
+                                                      print("next prayer ${prayer.toString()}");
+                                                    }
+                                                    else if(prayer.toString().trim()=="Prayer.ISHA"){
+                                                      nextTime = "এশা";
+                                                      nextPrayerTime=esatoday;
+
+                                                      //TimeString
+                                                      if(IsharMunite== null){
+                                                        minute = 0;
+                                                      }else{
+                                                        if(DateTime.now().minute>IsharMunite){
+                                                          minute = DateTime.now().minute-IsharMunite;
+                                                        }else{
+                                                          minute=IsharMunite-DateTime.now().minute;
+                                                        }
+                                                      }
+                                                      //timeString
+
+                                                      _timeString="${IsharTime.difference(DateTime.now()).inHours.abs()} ঘন্টা "
+                                                          "${minute} মিনিট"
+                                                          " ${60-DateTime.now().second}  সেকেন্ড পর  ";
+
+
+
+                                                      print("next prayer ${prayer.toString()}");
+                                                    }else
+                                                    {
+                                                      nextTime = "নফল";
+                                                      print("next prayer ${prayer.toString()}");
+                                                    }
+                                                    return Row(
+                                                      children: <Widget>[
+                                                        //style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+                                                        // style: TextStyle(fontSize: 20,color: Colors.white),
+                                                        Text(nextTime,style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold) ),
+                                                        SizedBox(width: 10,),
+                                                        nextTime == "নফল" ? Container(): Text(nextPrayerTime,style: TextStyle(fontSize: 20,color: Colors.white),)
+
+
+                                                      ],
+                                                    );
                                                   }
                                                   else if(snapshot.hasError){
-                                                  print(snapshot.hasError);
-                                                  return SingleChildScrollView();
-
+                                                    print(snapshot.error);
                                                   }else{
-                                                    if (snapshot.hasData) {
-                                                      final prayer = snapshot.data;
-                                                      print(" next prayer ${prayer.toString()}");
-                                                      if(prayer.toString().trim()=="Prayer.ASR"){
-                                                        nextTime = "আসর";
-                                                        nextPrayerTime=asortoday;
-                                                        //TimeString
-                                                        if(AsorMinute.toString()== null){
-                                                          minute = 0;
-                                                        }else{
-                                                          if(Pminute.toInt()>AsorMinute){
-                                                            minute = Pminute-AsorMinute;
-                                                          }else{
-                                                            minute=AsorMinute-Pminute;
-                                                          }
-                                                        }
-                                                        //timeString
-
-                                                        _timeString="${AsorTime.difference(DateTime.now()).inHours.abs()} ঘন্টা "
-                                                            "${minute} মিনিট"
-                                                            " ${60-DateTime.now().second}  সেকেন্ড পর  ";
-
-                                                        print(" next prayer ${prayer.toString()}");
-                                                      }
-
-                                                      else if(prayer.toString().trim()=="Prayer.FAJR"){
-                                                        nextTime = "ফজর";
-                                                        nextPrayerTime=fajartoday;
-                                                        //TimeString
-                                                        if(FazrMinute.toString()== null){
-                                                          minute = 0;
-                                                        }else{
-                                                          if(DateTime.now().minute>FazrMinute){
-                                                            minute = DateTime.now().minute-FazrMinute;
-                                                          }else{
-                                                            minute=FazrMinute-DateTime.now().minute;
-                                                          }
-                                                        }
-                                                        //timeString
-
-                                                        _timeString="${FazrTime.difference(DateTime.now()).inHours.abs()} ঘন্টা "
-                                                            "${minute} মিনিট"
-                                                            " ${60-DateTime.now().second}  সেকেন্ড পর  ";
-
-
-                                                        print("next prayer ${prayer.toString()}");
-                                                      }
-
-                                                      else if(prayer.toString().trim()=="Prayer.DHUHR"){
-                                                        nextTime = "যোহর";
-                                                        nextPrayerTime=dohortoday;
-
-
-                                                        //TimeString
-                                                        if(DuhurMinute.toString()== null){
-                                                          minute = 0;
-                                                        }else{
-                                                          if(DateTime.now().minute>DuhurMinute){
-                                                            minute = DateTime.now().minute-DuhurMinute;
-                                                          }else{
-                                                            minute=DuhurMinute-DateTime.now().minute;
-                                                          }
-                                                        }
-
-                                                        //timeString
-
-                                                        _timeString="${DuhurTime.difference(DateTime.now()).inHours.abs()} ঘন্টা "
-                                                            "${minute} মিনিট"
-                                                            " ${60-DateTime.now().second}  সেকেন্ড পর  ";
-
-
-                                                        print("next prayer ${prayer.toString()}");
-                                                      }
-
-                                                      else if(prayer.toString().trim()=="Prayer.MAGHRIB"){
-                                                        nextTime = "মাগরিব";
-                                                        nextPrayerTime=magribtoday;
-
-                                                        //TimeString
-                                                        if(MagribMinute== null){
-                                                          minute = 0;
-                                                        }else{
-                                                          if(DateTime.now().minute>MagribMinute){
-                                                            minute = DateTime.now().minute-MagribMinute;
-                                                          }else{
-                                                            minute=MagribMinute-DateTime.now().minute;
-                                                          }
-                                                        }
-                                                        //timeString
-
-                                                        _timeString="${MagribTime.difference(DateTime.now()).inHours.abs()} ঘন্টা "
-                                                            "${minute} মিনিট"
-                                                            " ${60-DateTime.now().second}  সেকেন্ড পর  ";
-
-
-
-                                                        print("next prayer ${prayer.toString()}");
-                                                      }
-                                                      else if(prayer.toString().trim()=="Prayer.ISHA"){
-                                                        nextTime = "এশা";
-                                                        nextPrayerTime=esatoday;
-
-                                                        //TimeString
-                                                        if(IsharMunite== null){
-                                                          minute = 0;
-                                                        }else{
-                                                          if(DateTime.now().minute>IsharMunite){
-                                                            minute = DateTime.now().minute-IsharMunite;
-                                                          }else{
-                                                            minute=IsharMunite-DateTime.now().minute;
-                                                          }
-                                                        }
-                                                        //timeString
-                                                        setState(() {
-                                                          _timeString="${IsharTime.difference(DateTime.now()).inHours.abs()} ঘন্টা "
-                                                              "${minute} মিনিট"
-                                                              " ${60-DateTime.now().second}  সেকেন্ড পর  ";
-                                                        });
-
-
-                                                        print("next prayer ${prayer.toString()}");
-                                                      }else
-                                                      {
-                                                        nextTime = "নফল";
-                                                        print("next prayer ${prayer.toString()}");
-                                                      }
-                                                      return Row(
-                                                        children: <Widget>[
-                                                          //style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
-                                                          // style: TextStyle(fontSize: 20,color: Colors.white),
-                                                          Text(nextTime,style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold) ),
-                                                          SizedBox(width: 10,),
-                                                          nextTime == "নফল" ? Container(): Text(nextPrayerTime,style: TextStyle(fontSize: 20,color: Colors.white),)
-
-
-                                                        ],
-                                                      );
-                                                    }
-                                                    else {
-                                                      return Text('Waiting...');}
+                                                    print ("error");
                                                   }
 
-
+                                                    return Container();
                                             }
 
-                  )
+                  ),
 
 
 
 //
-                                        ),
+
 
                                       SizedBox(height: 10,),
                                       Text("$_timeString",style: TextStyle(fontSize: 17,color: Colors.white),),
