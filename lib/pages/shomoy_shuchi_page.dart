@@ -130,12 +130,16 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
     _inital();
 
     Utils.getPrayerMethodFromPreference().then((value){
-      print('Shuvo');
       setState(() {
         majhabName=value;
       });
     });
 
+  }
+
+  void _getlatlngwithData(LatLng latLng) {
+    latitude=latLng.latitude;
+    longitude=latLng.longitude;
   }
 
   @override
@@ -152,112 +156,276 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
     DateTime when = DateTime.utc(month, year, day);
 
     final postion = Provider.of<LocationProvider>(context, listen: false).pos;
-    print(provider.pos.longitude);
-    print(provider.pos.latitude);
-    print(postion.altitude);
-//   geo = Geocoordinate((GeocoordinateBuilder b) => b
-//      ..latitude = provider.pos.latitude
-//      ..longitude = provider.pos.longitude
-//      ..altitude = provider.pos.altitude);
-//
-//
-//    print(provider.pos.latitude);
-//    print(provider.pos.longitude);
-//    print(provider.pos.altitude);
-//    final Prayers prayers = Prayers.on(date: when, settings: settings, coordinate: geo, timeZone: timezone);
-//    print(prayers.imsak);
-//    print(prayers.fajr);
-//    print(prayers.sunrise);
-//    print(prayers.dhuha);
-//    print(prayers.dhuhr);
-//    print(prayers.asr);
-//    print(prayers.sunset);
-//    print(prayers.maghrib);
-//    print(prayers.isha);
-//    print(prayers.midnight);
-    Utils.getZilaNameFromPreference().then((demoZila){
+
+    Utils.getZilaNameFromPreference().then((zilaName){
       setState(() {
 
-        zila=demoZila;
-        print(demoZila);
+        zila=zilaName;
+        print(zilaName);
 
-        if(demoZila.trim()=='Gazipur'){
-
-
+        if(zilaName.trim()=='Dhaka'){
+          print('Dhaka Called');
+          _getlatlngwithData(LatLng(23.7115253,90.4111451));
+        }else if(zilaName.trim()=='Faridpur'){
+          _getlatlngwithData(LatLng(23.6070822,89.8429406));
+        }else if(zilaName.trim()=='Gazipur'){
+          _getlatlngwithData(LatLng(24.0022858,90.4264283));
+        }else if(zilaName.trim()=='Gopalganj'){
+          _getlatlngwithData(LatLng(23.0050857,89.8266059));
+        }else if(zilaName.trim()=='Jamalpur'){
+          _getlatlngwithData(LatLng(24.937533,89.937775));
+        }else if(zilaName.trim()=='Kishoreganj'){
+          _getlatlngwithData(LatLng(24.444937,90.776575));
+        }else if(zilaName.trim()=='Madaripur'){
+          _getlatlngwithData(LatLng(23.164102,90.1896805));
+        }else if(zilaName.trim()=='Manikganj'){
+          _getlatlngwithData(LatLng(23.8644,90.0047));
+        }else if(zilaName.trim()=='Munshiganj'){
+          _getlatlngwithData(LatLng(23.5422,90.5305));
+        }else if(zilaName.trim()=='Mymensingh'){
+          _getlatlngwithData(LatLng(24.7471,90.4203));
+        }else if(zilaName.trim()=='Narayanganj'){
+          _getlatlngwithData(LatLng(23.63366,90.496482));
+        }else if(zilaName.trim()=='Narsingdi'){
+          _getlatlngwithData(LatLng(23.932233,90.71541));
+        }else if(zilaName.trim()=='Netrokona'){
+          _getlatlngwithData(LatLng(24.870955,90.727887));
+        }else if(zilaName.trim()=='Netrakona'){
+          _getlatlngwithData(LatLng(24.870955,90.727887));
+        }else if(zilaName.trim()=='Rajbari'){
+          _getlatlngwithData(LatLng(23.7574305,89.6444665));
+        }else if(zilaName.trim()=='Shariatpur'){
+          _getlatlngwithData(LatLng(23.2423,90.4348));
+        }else if(zilaName.trim()=='Sherpur'){
+          _getlatlngwithData(LatLng(25.0204933,90.0152966));
+        }else if(zilaName.trim()=='Tangail'){
+          _getlatlngwithData(LatLng(24.2513,89.9167));
+        }else if(zilaName.trim()=='Bogura'){
+          _getlatlngwithData(LatLng(24.8465228,89.377755));
+        }else if(zilaName.trim()=='Bogra'){
+          _getlatlngwithData(LatLng(24.8465228,89.377755));
+        }else if(zilaName.trim()=='Joypurhat'){
+          _getlatlngwithData(LatLng(25.0968,89.0227));
+        }else if(zilaName.trim()=='Jaipurhat'){
+          _getlatlngwithData(LatLng(25.0968,89.0227));
+        }else if(zilaName.trim()=='Naogaon'){
+          _getlatlngwithData(LatLng(24.7936,88.9318));
+        }else if(zilaName.trim()=='Natore'){
+          _getlatlngwithData(LatLng(24.420556,89.000282));
+        }else if(zilaName.trim()=='Nawabganj'){
+          _getlatlngwithData(LatLng(24.5965034,88.2775122));
+        }else if(zilaName.trim()=='Pabna'){
+          _getlatlngwithData(LatLng(23.998524,89.233645));
+        }else if(zilaName.trim()=='Rajshahi'){
+          _getlatlngwithData(LatLng(24.3745,88.6042));
+        }else if(zilaName.trim()=='Sirajgonj'){
+          _getlatlngwithData(LatLng(24.4533978,89.7006815));
+        }else if(zilaName.trim()=='Sirajganj'){
+          _getlatlngwithData(LatLng(24.4533978,89.7006815));
+        }else if(zilaName.trim()=='Dinajpur'){
+          _getlatlngwithData(LatLng(25.6217061,88.6354504));
+        }else if(zilaName.trim()=='Gaibandha'){
+          _getlatlngwithData(LatLng(25.328751,89.528088));
+        }else if(zilaName.trim()=='Kurigram'){
+          _getlatlngwithData(LatLng(25.805445,89.636174));
+        }else if(zilaName.trim()=='Lalmonirhat'){
+          _getlatlngwithData(LatLng(25.9923,89.2847));
+        }else if(zilaName.trim()=='Nilphamari'){
+          _getlatlngwithData(LatLng(25.931794,88.856006));
+        }else if(zilaName.trim()=='Panchagarh'){
+          _getlatlngwithData(LatLng(26.3411,88.5541606));
+        }else if(zilaName.trim()=='Rangpur'){
+          _getlatlngwithData(LatLng(25.7558096,89.244462));
+        }else if(zilaName.trim()=='Thakurgaon'){
+          _getlatlngwithData(LatLng(26.0336945,88.4616834));
+        }else if(zilaName.trim()=='Barguna'){
+          _getlatlngwithData(LatLng(22.0953,90.1121));
+        }else if(zilaName.trim()=='Barishal'){
+          _getlatlngwithData(LatLng(22.7010,90.3535));
+        }else if(zilaName.trim()=='Barisal'){
+          _getlatlngwithData(LatLng(22.7010,90.3535));
+        }else if(zilaName.trim()=='Bhola'){
+          _getlatlngwithData(LatLng(22.685923,90.648179));
+        }else if(zilaName.trim()=='Jhalokati'){
+          _getlatlngwithData(LatLng(22.6406,90.1987));
+        }else if(zilaName.trim()=='Jhalakati'){
+          _getlatlngwithData(LatLng(22.6406,90.1987));
+        }else if(zilaName.trim()=='Patuakhali'){
+          _getlatlngwithData(LatLng(22.3596316,90.3298712));
+        }else if(zilaName.trim()=='Pirojpur'){
+          _getlatlngwithData(LatLng(22.5841,89.9720));
+        }else if(zilaName.trim()=='Bandarban'){
+          _getlatlngwithData(LatLng(22.1953275,92.2183773));
+        }else if(zilaName.trim()=='Brahmanbaria'){
+          _getlatlngwithData(LatLng(23.9570904,91.1119286));
+        }else if(zilaName.trim()=='Chandpur'){
+          _getlatlngwithData(LatLng(23.2332585,90.6712912));
+        }else if(zilaName.trim()=='Chattogram'){
+          _getlatlngwithData(LatLng(22.335109,91.834073));
+        }else if(zilaName.trim()=='Chittagong'){
+          _getlatlngwithData(LatLng(22.335109,91.834073));
+        }else if(zilaName.trim()=='Cumilla'){
+          _getlatlngwithData(LatLng(23.4682747,91.1788135));
+        }else if(zilaName.trim()=='Comilla'){
+          _getlatlngwithData(LatLng(23.4682747,91.1788135));
+        }else if(zilaName.trim()=="Cox's Bazar"){
+          _getlatlngwithData(LatLng(21.4272,92.0058));
+        }else if(zilaName.trim()=='Feni'){
+          _getlatlngwithData(LatLng(23.0159,91.3976));
+        }else if(zilaName.trim()=='Khagrachari'){
+          _getlatlngwithData(LatLng(23.119285,91.984663));
+        }else if(zilaName.trim()=='Lakshmipur'){
+          _getlatlngwithData(LatLng(22.942477,90.841184));
+        }else if(zilaName.trim()=='Noakhali'){
+          _getlatlngwithData(LatLng(22.869563,91.099398));
+        }else if(zilaName.trim()=='Rangamati'){
+          _getlatlngwithData(LatLng(22.7324,92.2985));
+        }else if(zilaName.trim()=='Parbattya Chattagram'){
+          _getlatlngwithData(LatLng(22.7324,92.2985));
+        }else if(zilaName.trim()=='Habiganj'){
+          _getlatlngwithData(LatLng(24.374945,91.41553));
+        }else if(zilaName.trim()=='Maulvibazar'){
+          _getlatlngwithData(LatLng(24.482934,91.777417));
+        }else if(zilaName.trim()=='Moulvibazar'){
+          _getlatlngwithData(LatLng(24.482934,91.777417));
+        }else if(zilaName.trim()=='Sunamganj'){
+          _getlatlngwithData(LatLng(25.0658042,91.3950115));
+        }else if(zilaName.trim()=='Sylhet'){
+          _getlatlngwithData(LatLng(24.8897956,91.8697894));
+        }else if(zilaName.trim()=='Bagerhat'){
+          _getlatlngwithData(LatLng(22.651568,89.785938));
+        }else if(zilaName.trim()=='Chuadanga'){
+          _getlatlngwithData(LatLng(23.6401961,88.841841));
+        }else if(zilaName.trim()=='Jashore'){
+          _getlatlngwithData(LatLng(23.16643,89.2081126));
+        }else if(zilaName.trim()=='Jessore'){
+          _getlatlngwithData(LatLng(23.16643,89.2081126));
+        }else if(zilaName.trim()=='Jhenaidah'){
+          _getlatlngwithData(LatLng(23.5448176,89.1539213));
+        }else if(zilaName.trim()=='Khulna'){
+          _getlatlngwithData(LatLng(22.815774,89.568679));
+        }else if(zilaName.trim()=='Kushtia'){
+          _getlatlngwithData(LatLng(23.901258,89.120482));
+        }else if(zilaName.trim()=='Magura'){
+          _getlatlngwithData(LatLng(23.487337,89.419956));
+        }else if(zilaName.trim()=='Meherpur'){
+          _getlatlngwithData(LatLng(23.762213,88.631821));
+        }else if(zilaName.trim()=='Narail'){
+          _getlatlngwithData(LatLng(23.172534,89.512672));
+        }else if(zilaName.trim()=='Satkhira'){
+          _getlatlngwithData(LatLng(22.7185,89.0705));
+        }else if(zilaName.trim()=='Alipur'){
+          _getlatlngwithData(LatLng(22.32,88.24));
+        }else if(zilaName.trim()=='Alipurduar'){
+          _getlatlngwithData(LatLng(26.30,89.35));
+        }else if(zilaName.trim()=='Arambagh'){
+          _getlatlngwithData(LatLng(22.53,87.50));
+        }else if(zilaName.trim()=='Asansol'){
+          _getlatlngwithData(LatLng(23.42,87.01));
+        }else if(zilaName.trim()=='Baharampur'){
+          _getlatlngwithData(LatLng(24.06,88.19));
+        }else if(zilaName.trim()=='Baksa Duar	'){
+          _getlatlngwithData(LatLng(26.45,89.35));
+        }else if(zilaName.trim()=='Balurghat'){
+          _getlatlngwithData(LatLng(25.14,88.47));
+        }else if(zilaName.trim()=='Bankura'){
+          _getlatlngwithData(LatLng(23.14,87.07));
+        }else if(zilaName.trim()=='Barackpore'){
+          _getlatlngwithData(LatLng(22.46,88.24));
+        }else if(zilaName.trim()=='Baranagar'){
+          _getlatlngwithData(LatLng(22.38,88.22));
+        }else if(zilaName.trim()=='Barddhaman'){
+          _getlatlngwithData(LatLng(23.16,87.54));
+        }else if(zilaName.trim()=='Beldanga'){
+          _getlatlngwithData(LatLng(23.58,88.20));
+        }else if(zilaName.trim()=='Benapol'){
+          _getlatlngwithData(LatLng(23.04,88.32));
+        }else if(zilaName.trim()=='Bhadreswar'){
+          _getlatlngwithData(LatLng(22.49,88.20));
+        }else if(zilaName.trim()=='Bhatpara'){
+          _getlatlngwithData(LatLng(22.54,88.25));
+        }else if(zilaName.trim()=='Bishnupur'){
+          _getlatlngwithData(LatLng(23.05,87.23));
+        }else if(zilaName.trim()=='Calcutta'){
+          _getlatlngwithData(LatLng(22.34,88.24));
+        }else if(zilaName.trim()=='Chandernagore'){
+          _getlatlngwithData(LatLng(22.52,88.25));
+        }else if(zilaName.trim()=='Chandrakona'){
+          _getlatlngwithData(LatLng(22.44,87.33));
+        }else if(zilaName.trim()=='Chanduria'){
+          _getlatlngwithData(LatLng(22.56,88.55));
+        }else if(zilaName.trim()=='Chinsura'){
+          _getlatlngwithData(LatLng(22.53,88.27));
+        }else if(zilaName.trim()=='Chittaranjan'){
+          _getlatlngwithData(LatLng(23.50,87.00));
+        }else if(zilaName.trim()=='Contai'){
+          _getlatlngwithData(LatLng(21.50,87.48));
+        }else if(zilaName.trim()=='Damodar, R.	'){
+          _getlatlngwithData(LatLng(23.17,87.35));
+        }else if(zilaName.trim()=='Darjilling'){
+          _getlatlngwithData(LatLng(27.03,88.18));
+        }else if(zilaName.trim()=='Diamond Harbour	'){
+          _getlatlngwithData(LatLng(22.11,88.14));
+        }else if(zilaName.trim()=='Dum-Dum	'){
+          _getlatlngwithData(LatLng(22.38,88.38));
+        }else if(zilaName.trim()=='Duragapur'){
+          _getlatlngwithData(LatLng(22.30,87.20));
+        }else if(zilaName.trim()=='Haora'){
+          _getlatlngwithData(LatLng(22.35,88.23));
+        }else if(zilaName.trim()=='Ingraj Bazar	'){
+          _getlatlngwithData(LatLng(25.00,88.11));
+        }else if(zilaName.trim()=='Jalpaiguri'){
+          _getlatlngwithData(LatLng(26.32,88.46));
+        }else if(zilaName.trim()=='Jangipur'){
+          _getlatlngwithData(LatLng(24.28,88.05));
+        }else if(zilaName.trim()=='Katoya'){
+          _getlatlngwithData(LatLng(23.39,88.11));
+        }else if(zilaName.trim()=='Kharagpur'){
+          _getlatlngwithData(LatLng(22.30,87.20));
+        }else if(zilaName.trim()=='Koch Bihar	'){
+          _getlatlngwithData(LatLng(26.20,89.29));
+        }else if(zilaName.trim()=='Kotalpur'){
+          _getlatlngwithData(LatLng(23.01,87.38));
+        }else if(zilaName.trim()=='Krishnanagar'){
+          _getlatlngwithData(LatLng(23.24,88.33));
+        }else if(zilaName.trim()=='Lalbagh'){
+          _getlatlngwithData(LatLng(24.13,88.19));
+        }else if(zilaName.trim()=='Mehinipur'){
+          _getlatlngwithData(LatLng(22.25,87.21));
+        }else if(zilaName.trim()=='Murshidabad'){
+          _getlatlngwithData(LatLng(24.11,88.19));
+        }else if(zilaName.trim()=='Nabadwip'){
+          _getlatlngwithData(LatLng(23.24,88.23));
+        }else if(zilaName.trim()=='Nalhati'){
+          _getlatlngwithData(LatLng(22.54,88.28));
+        }else if(zilaName.trim()=='Purulliya'){
+          _getlatlngwithData(LatLng(23.2,88.28));
+        }else if(zilaName.trim()=='Raghunathpur'){
+          _getlatlngwithData(LatLng(23.32,86.43));
+        }else if(zilaName.trim()=='Ramaghat'){
+          _getlatlngwithData(LatLng(23.11,88.37));
+        }else if(zilaName.trim()=='Raniganj'){
+          _getlatlngwithData(LatLng(25.52,57.52));
+        }else if(zilaName.trim()=='Sagar I.	'){
+          _getlatlngwithData(LatLng(21.4,88.1));
+        }else if(zilaName.trim()=='Santipur'){
+          _getlatlngwithData(LatLng(23.14,88.29));
+        }else if(zilaName.trim()=='Serampore'){
+          _getlatlngwithData(LatLng(22.45,88.23));
+        }else if(zilaName.trim()=='Siliguri'){
+          _getlatlngwithData(LatLng(26.42,88.25));
+        }else if(zilaName.trim()=='Tamluk'){
+          _getlatlngwithData(LatLng(22.18,87.58));
+        }else if(zilaName.trim()=='Tilpara'){
+          _getlatlngwithData(LatLng(23.58,87.32));
+        }else if(zilaName.trim()=='Arakan Rakhine'){
+          _getlatlngwithData(LatLng(20.1041,93.5813));
+        }else if(zilaName.trim()=='Yangon'){
+          _getlatlngwithData(LatLng(16.8409,96.1735));
         }
-        else if(demoZila.trim()=='Bagerhat'){
-          latitude=23.7598952;
-          longitude=90.37439346;
-        }
-        else if(demoZila.trim()=='Bandarban'){
-
-          //timeString
-          latitude=23.7598952;
-          longitude=90.37439346;
-
-        }
-        else if(demoZila.trim()=='Dhaka'){
-              latitude=23.7598952;
-              longitude=90.37439346;
-//          //timeString
-//
-
-        }
-
-        else if((demoZila.trim()=='Magura')||(demoZila.trim()=='Rajbari')||(demoZila.trim()=='Pabna')){
-
-
-
-        }else if((demoZila.trim()=='Satkhira')||(demoZila.trim()=='Kushtia')||(demoZila.trim()=='Jessore')||(demoZila.trim()=='Rangpur')||(demoZila.trim()=='Jhenaidah')){
-
-
-
-        }else if((demoZila.trim()=='Nilphamari')||(demoZila.trim()=='Chuadanga')||(demoZila.trim()=='Khagrachari')||(demoZila.trim()=='Gaibandha')){
-
-
-
-        }else if((demoZila.trim()=='Rajshahi')||(demoZila.trim()=='Bogra')||(demoZila.trim()=='Meherpur')||(demoZila.trim()=='Lalmonirhat')){
-
-
-        }else if((demoZila.trim()=='Nawabganj')||(demoZila.trim()=='Naogaon')||(demoZila.trim()=='Natore')){
-
-
-
-        }else if((demoZila.trim().trim()=='Dinajpur')||(demoZila.trim().trim()=='Thakurgaon')||(demoZila.trim().trim()=='Panchagarh')){
-
-
-
-        }else if((demoZila.trim()=='Narsingdi')||(demoZila.trim()=='Narayanganj')||(demoZila.trim()=='Munshiganj')||(demoZila.trim()=='Chandpur')){
-
-
-
-        }else if((demoZila.trim()=='Kishoreganj')||(demoZila.trim()=='Patuakhali')||(demoZila.trim()=='Bhola')||(demoZila.trim()=='Lakshmipur')){
-
-
-
-        }else if((demoZila.trim()=='Netrakona')||(demoZila.trim()=='Comilla')||(demoZila.trim()=='Brahmanbaria')){
-
-
-
-        }else if((demoZila.trim()=='Noakhali')||(demoZila.trim()=='Feni')||(demoZila.trim()=='Sunamganj')||(demoZila.trim()=='Habiganj')){
-
-
-        }else if((demoZila.trim()=='Chittagong')){
-
-
-
-        }else if((demoZila.trim()=='Cox\'s Bazar')||(demoZila.trim()=='Sylhet')||(demoZila.trim()=='Moulvibazar')){
-
-
-
-        }else if((demoZila.trim()=='Khagrachari')||(demoZila.trim()=='Bandarban')||(demoZila.trim()=='Parbattya Chattagram')){
-
-
-
-        }else{
-              latitude= provider.pos.latitude;
-              longitude=provider.pos.longitude;
-
+        else{
+          print('Default Called');
+          _getlatlngwithData(LatLng(23.7115253,90.4111451));
         }
       });
     });
@@ -336,10 +504,33 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
                                                       print("next prayer ${prayer.toString()}");
                                                     }
 
+                                                    else if(prayer.toString().trim()=="Prayer.SUNRISE"){
+                                                      nextTime = "নামাজের জন্য হারাম";
+                                                      nextPrayerTime=Sunrise;
+                                                      //TimeString
+                                                      if(SunriseMinute.toString()== null){
+                                                        minute = 0;
+                                                      }else{
+                                                        if(DateTime.now().minute>SunriseMinute){
+                                                          minute = DateTime.now().minute-SunriseMinute;
+                                                        }else{
+                                                          minute=SunriseMinute-DateTime.now().minute;
+                                                        }
+                                                      }
+                                                      //timeString
+
+                                                      _timeString="${SunRiseTime.difference(DateTime.now()).inHours.abs()} ঘন্টা "
+                                                          "${minute} মিনিট"
+                                                          " ${60-DateTime.now().second}  সেকেন্ড পর  ";
+
+
+                                                      print("next prayer ${prayer.toString()}");
+                                                    }
+
                                                     else if(prayer.toString().trim()=="Prayer.DHUHR"){
+
                                                       nextTime = "যোহর";
                                                       nextPrayerTime=dohortoday;
-
 
                                                       //TimeString
                                                       if(DuhurMinute.toString()== null){
@@ -359,7 +550,7 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
                                                           " ${60-DateTime.now().second}  সেকেন্ড পর  ";
 
 
-                                                      print("next prayer ${prayer.toString()}");
+                                                      print("next prayer shuvo dhaur ${prayer.toString()}");
                                                     }
 
                                                     else if(prayer.toString().trim()=="Prayer.MAGHRIB"){
@@ -412,7 +603,6 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
                                                     }else
                                                     {
                                                       nextTime = "নফল";
-                                                      print("next prayer ${prayer.toString()}");
                                                     }
                                                     return Row(
                                                       children: <Widget>[
@@ -485,7 +675,7 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
                                                 print(" current prayer ${prayer.toString()}");
                                               }else{
                                                 currentTime = "নফল";
-                                                print(" current prayer ${prayer.toString()}");
+                                                print(" current prayer Shuvo ${prayer.toString()}");
                                               }
                                               return Text(currentTime, style: TextStyle(
                                                   color: Colors.white,fontSize: 30, fontWeight: FontWeight.bold
@@ -850,4 +1040,6 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
     final adhan = AdhanFlutter.create(Coordinates(latitude, longitude), DateTime.now(), CalculationMethod.KARACHI);
     return await adhan.nextPrayer();
   }
+
+
 }

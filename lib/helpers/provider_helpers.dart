@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 
 class LocationProvider with ChangeNotifier{
-  Position _position=Position(latitude: 0.0,longitude: 0.0);
+  Position _position=Position(latitude: 23.8103,longitude: 90.4125);
   Position get pos=>_position;
 
   void setNewPosition(Position position){
