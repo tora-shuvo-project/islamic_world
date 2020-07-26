@@ -650,7 +650,8 @@ class _AyatPageState extends State<AyatPage> {
                         padding: EdgeInsets.all(8),
                         color: Colors.green,
                         width: double.infinity,
-                        child: Row(
+                        child:
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Expanded(flex:3,child: Text('${widget.qareName}',style: TextStyle(color: Colors.white),)),

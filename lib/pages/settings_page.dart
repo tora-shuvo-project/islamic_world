@@ -491,7 +491,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   "value": "hanafi",
                 },
                 {
-                  "display": "সাফী,মালিকী,হানবালি",
+                  "display": "সাফী,মালিকী,হাম্বলী",
                   "value": "safe",
                 },
               ],
