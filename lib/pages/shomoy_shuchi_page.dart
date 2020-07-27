@@ -261,7 +261,7 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
         }
       });
     });
-//
+
     return SafeArea(
       child: Scaffold(
         appBar:PreferredSize(child: _appBar(),preferredSize: Size(MediaQuery.of(context).size.width, 120),) ,

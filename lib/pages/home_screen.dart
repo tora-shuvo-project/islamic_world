@@ -27,6 +27,7 @@ import 'package:searchtosu/pages/donate_screen.dart';
 import 'package:searchtosu/pages/doya_name_page.dart';
 import 'package:searchtosu/pages/hadis_screen.dart';
 import 'package:searchtosu/pages/kibla_screen.dart';
+import 'package:searchtosu/pages/labbayekallahumma_screen.dart';
 import 'package:searchtosu/pages/location_page.dart';
 import 'package:searchtosu/pages/nearby_mosque_screen.dart';
 import 'package:searchtosu/pages/niyom_models.dart';
@@ -699,6 +700,29 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
+
+                                        Expanded(
+                                          child: InkWell(
+                                            onTap: (){
+                                              showDialog(
+                                                context: context,
+                                                builder: (_) => Labbayekallahumma_screen(),
+                                              );
+                                            },
+                                            child: Column(
+                                              children: <Widget>[
+                                                Card(
+
+                                                  child: Container(
+                                                      padding: EdgeInsets.all(15),
+                                                      child: Image.asset("images/labbaikkallahumma.png",height: 40, width: 40,)),
+                                                ),
+                                                Text("লাব্বাইক")
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+
                                         Expanded(
                                           child: InkWell(
                                             onTap: (){
@@ -759,13 +783,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ),
                                         ),
 
-                                        Expanded(
-                                          child: Column(
-                                            children: <Widget>[
 
-                                            ],
-                                          ),
-                                        )
                                       ],
                                     ),
                                     SizedBox(height: 15,),
@@ -829,7 +847,9 @@ class _HomeScreenState extends State<HomeScreen> {
           color: Colors.green.withOpacity(.5),
           child: ListTile(
               onTap: (){
-
+                setState(() {
+                  isOpenQuran=!isOpenQuran;
+                });
               },
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
@@ -916,6 +936,23 @@ class _HomeScreenState extends State<HomeScreen> {
                 backgroundColor: Colors.transparent,
                 child: Image.asset(('images/mosque (3).png'),width: 25,),
               ), title: Text("চারপাশের মসজিদ")),
+        ),
+        Container(
+          height: 1,
+          color: Colors.green.withOpacity(.4),
+        ),
+        Container(
+          color: Colors.green.withOpacity(.5),
+          child: ListTile(
+              onTap: (){
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context)=>Labbayekallahumma_screen()
+                ));
+              },
+              leading: CircleAvatar(
+                backgroundColor: Colors.transparent,
+                child: Image.asset(('images/labbaikkallahumma.png'),width: 25,),
+              ), title: Text("লাব্বাইকাল্লামুম্মা লাব্বাইক")),
         ),
         Container(
           height: 1,

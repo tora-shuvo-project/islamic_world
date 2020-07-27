@@ -61,7 +61,7 @@ class _DonateScreenState extends State<DonateScreen> {
                     child: Container(
                       color: Colors.green.withOpacity(.6),
                       child: FlatButton(
-                        child: Text('ডোনেট করুন',style: TextStyle(
+                        child: Text('পেমেন্ট করুন',style: TextStyle(
                             fontSize: 16
                         )),
                         onPressed: (){
@@ -93,21 +93,28 @@ class _DonateScreenState extends State<DonateScreen> {
                             borderRadius: BorderRadius.circular(5)
                           ),
                           padding: EdgeInsets.all(4),
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(child: Text('“সার্চ ইসলাম” মোবাইল আপ্লিকেশন সম্পর্কে সংক্ষেপে কিছু কথা আপনাদের উদ্দেশ্য,',style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16
-                              ),)),
-                              IconButton(
-                                icon: Icon(isExpanded1?Icons.arrow_downward:Icons.close,color: Colors.white,),
-                                onPressed: (){
-                                  setState(() {
-                                    isExpanded1=!isExpanded1;
-                                  });
-                                },
-                              ),
-                            ],
+                          child: InkWell(
+                            onTap: (){
+                              setState(() {
+                                isExpanded1=!isExpanded1;
+                              });
+                            },
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(child: Text('“সার্চ ইসলাম” মোবাইল আপ্লিকেশন সম্পর্কে সংক্ষেপে কিছু কথা আপনাদের উদ্দেশ্য,',style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16
+                                ),)),
+                                IconButton(
+                                  icon: Icon(isExpanded1?Icons.arrow_downward:Icons.close,color: Colors.white,),
+                                  onPressed: (){
+                                    setState(() {
+                                      isExpanded1=!isExpanded1;
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         isExpanded1?Container():
@@ -127,21 +134,28 @@ class _DonateScreenState extends State<DonateScreen> {
                             borderRadius: BorderRadius.circular(5)
                         ),
                           padding: EdgeInsets.all(4),
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(child: Text('আমাদের উদ্দেশ্য',style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16
-                              ),)),
-                              IconButton(
-                                icon: Icon(isExpanded2?Icons.arrow_downward:Icons.close,color: Colors.white,),
-                                onPressed: (){
-                                  setState(() {
-                                    isExpanded2=!isExpanded2;
-                                  });
-                                },
-                              ),
-                            ],
+                          child: InkWell(
+                            onTap: (){
+                              setState(() {
+                                isExpanded2=!isExpanded2;
+                              });
+                            },
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(child: Text('আমাদের উদ্দেশ্য',style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16
+                                ),)),
+                                IconButton(
+                                  icon: Icon(isExpanded2?Icons.arrow_downward:Icons.close,color: Colors.white,),
+                                  onPressed: (){
+                                    setState(() {
+                                      isExpanded2=!isExpanded2;
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         isExpanded2?Container():
@@ -160,21 +174,28 @@ class _DonateScreenState extends State<DonateScreen> {
                               borderRadius: BorderRadius.circular(5)
                           ),
                           padding: EdgeInsets.all(4),
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(child: Text('অন্য অ্যাাপে ডোনেশন চায় না এখানে কেন চায়?',style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16
-                              ),)),
-                              IconButton(
-                                icon: Icon(isExpanded3?Icons.arrow_downward:Icons.close,color: Colors.white,),
-                                onPressed: (){
-                                  setState(() {
-                                    isExpanded3=!isExpanded3;
-                                  });
-                                },
-                              ),
-                            ],
+                          child: InkWell(
+                            onTap: (){
+                              setState(() {
+                                isExpanded3=!isExpanded3;
+                              });
+                            },
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(child: Text('অন্য অ্যাাপে ডোনেশন চায় না এখানে কেন চায়?',style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16
+                                ),)),
+                                IconButton(
+                                  icon: Icon(isExpanded3?Icons.arrow_downward:Icons.close,color: Colors.white,),
+                                  onPressed: (){
+                                    setState(() {
+                                      isExpanded3=!isExpanded3;
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         isExpanded3?Container():
