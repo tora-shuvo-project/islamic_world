@@ -118,10 +118,9 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
     arabyDate=_today.toFormat("dd MMMM,yyyy");
     englishDate=DateFormat('dd MMMM,yyyy').format(DateTime.now());
     dayName=DateFormat('EEEE').format(DateTime.now());
-    final postion = Provider.of<LocationProvider>(context, listen: false).pos;
-    Provider.of<LocationProvider>(context,listen: false).getDeviceCurrentLocation(postion: postion).then((_){
+    Provider.of<LocationProvider>(context,listen: false).getDeviceCurrentLocation().then((position){
       setState(() {
-        _center=LatLng(postion.latitude,postion.longitude);
+        _center=LatLng(position.latitude,position.longitude);
       });
     });
 
