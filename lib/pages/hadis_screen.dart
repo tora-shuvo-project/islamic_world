@@ -1,5 +1,7 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:searchtosu/FinalModels/hadis_models.dart';
+import 'package:searchtosu/Widgets/SlideAnimation.dart';
 import 'package:searchtosu/helpers/database_helper.dart';
 import 'package:searchtosu/pages/doya_subcategory_screen.dart';
 import 'package:searchtosu/pages/hadis_details_screen.dart';
@@ -9,9 +11,12 @@ class HadisScreen extends StatefulWidget {
   _HadisScreenState createState() => _HadisScreenState();
 }
 
-class _HadisScreenState extends State<HadisScreen> {
+class _HadisScreenState extends State<HadisScreen> with SingleTickerProviderStateMixin {
+  AnimationController animationController;
 
+  int position=2;
   List<HadisModels> allHadisModels=new List();
+
 
   @override
   void initState() {
@@ -24,6 +29,7 @@ class _HadisScreenState extends State<HadisScreen> {
         });
       });
     });
+    animationController = AnimationController(vsync:this, duration: Duration(seconds: 1));
   }
 
   @override
@@ -73,32 +79,27 @@ class _HadisScreenState extends State<HadisScreen> {
         appBar:PreferredSize(child: _appBar(),preferredSize: Size(MediaQuery.of(context).size.width, 120),) ,
         body: ListView.builder(
             itemCount: allHadisModels.length,
-            itemBuilder: (context,index)=>Container(
-              margin: EdgeInsets.symmetric(vertical: 5,horizontal: 10),
-              child: InkWell(
-              onTap: (){
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context)=>HadisDetailsScreen(allHadisModels[index])
-                ));
-                  },
+            itemBuilder: (context,index)=>OpenContainer(
+              closedBuilder: (context,action)=> Container(
+                margin: EdgeInsets.symmetric(vertical: 5,horizontal: 10),
                 child: Card(
-                  elevation: 0,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text('হাদিসঃ ${convertEngToBangla(allHadisModels[index].hadisNo)}',style: TextStyle(fontSize: 20),),
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-                          height: 3,
-                          decoration: BoxDecoration(
-                              gradient: LinearGradient(colors: [
-                                const Color(0xffffffff),
-                                const Color(0xff178723),
-                                const Color(0xffffffff),
-                              ]))
-                      )
-                    ],
-                  ),
+                    elevation: 0.6,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text('হাদিসঃ ${convertEngToBangla(allHadisModels[index].hadisNo)}',style: TextStyle(fontSize: 20),),
+                        Container(
+                            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+                            height: 3,
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(colors: [
+                                  const Color(0xffffffff),
+                                  const Color(0xff178723),
+                                  const Color(0xffffffff),
+                                ]))
+                        )
+                      ],
+                    ),
 //            child: ListTile(
 //              onTap: (){
 //            Navigator.of(context).push(MaterialPageRoute(
@@ -107,9 +108,12 @@ class _HadisScreenState extends State<HadisScreen> {
 //              },
 //              title: Text('Hadis: ${allHadisModels[index].hadisNo}'),
 //            ),
-                ),
+                  ),
+
               ),
-            )),
+              openBuilder: (context,action)=>HadisDetailsScreen(allHadisModels[index]),
+            ),
+           ),
       ),
     );
   }
