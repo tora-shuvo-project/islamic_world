@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:adhan_flutter/adhan_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -43,8 +45,9 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
   var latitude;
   var minute;
   bool loading = true;
-  String _timeString="";
+  String _timeString='';
   String majhabName='';
+  bool isTimeString=false;
 
   Widget _appBar(){
     return Container(
@@ -129,11 +132,20 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
     super.initState();
     _inital();
 
+    _timeString='';
     Utils.getPrayerMethodFromPreference().then((value){
       setState(() {
         majhabName=value;
       });
     });
+
+    Timer(
+        Duration(seconds: 1),
+            (){
+          setState(() {
+            isTimeString=true;
+          });
+        });
 
   }
 
@@ -144,18 +156,600 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<LocationProvider>(context);
     var now = new DateTime.now();
     var Pminute = DateTime.now().minute;
-    var timezone = now.timeZoneOffset.inHours;
-    print(" time zone ${timezone}");
-    int year = now.year;
-    int month = now.month;
-    int day = now.day;
 
-    DateTime when = DateTime.utc(month, year, day);
+    zilaInitialization();
 
-    final postion = Provider.of<LocationProvider>(context, listen: false).pos;
+    return SafeArea(
+      child: Scaffold(
+        appBar:PreferredSize(child: _appBar(),preferredSize: Size(MediaQuery.of(context).size.width, 120),) ,
+        body: SingleChildScrollView(
+          child: Container(
+            child: Stack(
+              children: <Widget>[
+           Container(
+                  color: Colors.green,
+                  height: 280,
+                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                  width: MediaQuery.of(context).size.width,
+
+                    child: Column(
+                      children: <Widget>[
+                       Row(
+                            children: <Widget>[
+                              Expanded(flex:2,
+                                child:
+                                Center(
+                                  child:
+                                  isTimeString?
+                                  Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text("পরবর্তি ওয়াক্ত",style: TextStyle(fontSize: 17,color: Colors.white),),
+                                        Center(
+                                          child: FutureBuilder(
+                                                future: getNextPrayer(),
+                                                    builder: (context, AsyncSnapshot<Prayer> snapshot) {
+                                                      if (snapshot.hasData) {
+                                                        final prayer = snapshot.data;
+                                                        if(prayer.toString().trim()=="Prayer.ASR"){
+                                                          nextTime = "আসর";
+                                                          nextPrayerTime=asortoday;
+                                                          //TimeString
+                                                          if(AsorMinute.toString()== null){
+                                                            minute = 0;
+                                                          }else{
+                                                            if(Pminute.toInt()>AsorMinute){
+                                                              minute = Pminute-AsorMinute;
+                                                            }else{
+                                                              minute=AsorMinute-Pminute;
+                                                            }
+                                                          }
+                                                          //timeString
+
+                                                          _timeString="${AsorTime.difference(DateTime.now()).inHours.abs()} ঘন্টা "
+                                                              "${minute} মিনিট"
+                                                              " ${60-DateTime.now().second}  সেকেন্ড পর  ";
+
+                                                        }
+
+                                                        else if(prayer.toString().trim()=="Prayer.FAJR"){
+                                                          nextTime = "ফজর";
+                                                          nextPrayerTime=fajartoday;
+                                                          //TimeString
+                                                          if(FazrMinute.toString()== null){
+                                                            minute = 0;
+                                                          }else{
+                                                            if(DateTime.now().minute>FazrMinute){
+                                                              minute = DateTime.now().minute-FazrMinute;
+                                                            }else{
+                                                              minute=FazrMinute-DateTime.now().minute;
+                                                            }
+                                                          }
+                                                          //timeString
+
+                                                          _timeString="${FazrTime.difference(DateTime.now()).inHours.abs()} ঘন্টা "
+                                                              "${minute} মিনিট"
+                                                              " ${60-DateTime.now().second}  সেকেন্ড পর  ";
+
+
+                                                        }
+
+                                                        else if(prayer.toString().trim()=="Prayer.SUNRISE"){
+                                                          nextTime = "নামাজের জন্য হারাম";
+                                                          nextPrayerTime=Sunrise;
+                                                          //TimeString
+                                                          if(SunriseMinute.toString()== null){
+                                                            minute = 0;
+                                                          }else{
+                                                            if(DateTime.now().minute>SunriseMinute){
+                                                              minute = DateTime.now().minute-SunriseMinute;
+                                                            }else{
+                                                              minute=SunriseMinute-DateTime.now().minute;
+                                                            }
+                                                          }
+                                                          //timeString
+
+                                                          _timeString="${SunRiseTime.difference(DateTime.now()).inHours.abs()} ঘন্টা "
+                                                              "${minute} মিনিট"
+                                                              " ${60-DateTime.now().second}  সেকেন্ড পর  ";
+
+
+                                                        }
+
+                                                        else if(prayer.toString().trim()=="Prayer.DHUHR"){
+
+                                                          nextTime = "যোহর";
+                                                          nextPrayerTime=dohortoday;
+
+                                                          //TimeString
+                                                          if(DuhurMinute.toString()== null){
+                                                            minute = 0;
+                                                          }else{
+                                                            if(DateTime.now().minute>DuhurMinute){
+                                                              minute = DateTime.now().minute-DuhurMinute;
+                                                            }else{
+                                                              minute=DuhurMinute-DateTime.now().minute;
+                                                            }
+                                                          }
+
+                                                          //timeString
+
+                                                          _timeString="${DuhurTime.difference(DateTime.now()).inHours.abs()} ঘন্টা "
+                                                              "${minute} মিনিট"
+                                                              " ${60-DateTime.now().second}  সেকেন্ড পর  ";
+
+
+                                                        }
+
+                                                        else if(prayer.toString().trim()=="Prayer.MAGHRIB"){
+                                                          nextTime = "মাগরিব";
+                                                          nextPrayerTime=magribtoday;
+
+                                                          //TimeString
+                                                          if(MagribMinute== null){
+                                                            minute = 0;
+                                                          }else{
+                                                            if(DateTime.now().minute>MagribMinute){
+                                                              minute = DateTime.now().minute-MagribMinute;
+                                                            }else{
+                                                              minute=MagribMinute-DateTime.now().minute;
+                                                            }
+                                                          }
+                                                          //timeString
+
+                                                          _timeString="${MagribTime.difference(DateTime.now()).inHours.abs()} ঘন্টা "
+                                                              "${minute} মিনিট"
+                                                              " ${60-DateTime.now().second}  সেকেন্ড পর  ";
+
+
+
+                                                        }
+                                                        else if(prayer.toString().trim()=="Prayer.ISHA"){
+                                                          nextTime = "এশা";
+                                                          nextPrayerTime=esatoday;
+
+                                                          //TimeString
+                                                          if(IsharMunite== null){
+                                                            minute = 0;
+                                                          }else{
+                                                            if(DateTime.now().minute>IsharMunite){
+                                                              minute = DateTime.now().minute-IsharMunite;
+                                                            }else{
+                                                              minute=IsharMunite-DateTime.now().minute;
+                                                            }
+                                                          }
+                                                          //timeString
+
+                                                          _timeString="${IsharTime.difference(DateTime.now()).inHours.abs()} ঘন্টা "
+                                                              "${minute} মিনিট"
+                                                              " ${60-DateTime.now().second}  সেকেন্ড পর  ";
+
+
+
+                                                        }else
+                                                        {
+                                                          nextTime = "নফল";
+                                                        }
+                                                        return
+                                                          Row(
+                                                          children: <Widget>[
+                                                            Text(nextTime,style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold) ),
+                                                            SizedBox(width: 10,),
+                                                            nextTime == "নফল" ? Container(): Text(nextPrayerTime,style: TextStyle(fontSize: 20,color: Colors.white),)
+
+
+                                                          ],
+                                                        );
+                                                      }
+                                                      if(snapshot.hasError){
+                                                        print(snapshot.error);
+                                                        return Container();
+                                                      }
+                                                      return CircularProgressIndicator();
+                                                }
+
+                  ),
+                                        ),
+                                        SizedBox(height: 10,),
+                                        Text(_timeString,style: TextStyle(fontSize: 17,color: Colors.white),),
+                                        //    VerticalDivider(width: 2,thickness: 2, color: Colors.white,),
+                                        SizedBox(height: 10,),
+
+                                      ],
+                                    ):
+                                  Container(
+                                    child: Text('........অপেক্ষা করুণ......',style: TextStyle(color: Colors.white),),
+                                  ),
+                                ),
+                              ),
+
+                              Expanded(
+                                child: Column(
+                                  children: <Widget>[
+                                    FittedBox(child: Text("বর্তমান ওয়াক্ত",style: TextStyle(fontSize: 17,color: Colors.white),)),
+                                    //style: TextStyle(color: Colors.white,fontSize: 30, fontWeight: FontWeight.bold),
+                                     Container(
+                                        child:
+                                        FutureBuilder(
+                                          future: getCurrentPrayer(),
+                                          builder: (context, AsyncSnapshot<Prayer> snapshot) {
+                                            if (snapshot.hasData) {
+                                              final prayer = snapshot.data;
+                                              if(prayer.toString().trim()=="Prayer.ASR"){
+                                                currentTime = "আসর";
+                                              }else if(prayer.toString().trim()=="Prayer.FAJR"){
+                                                currentTime = "ফজর";
+                                              }else if(prayer.toString().trim()=="Prayer.DHUHR"){
+                                                currentTime = "যোহর";
+                                              }else if(prayer.toString().trim()=="Prayer.MAGHRIB"){
+                                                currentTime = "মাগরিব";
+                                              }else if(prayer.toString().trim()=="Prayer.ISHA"){
+                                                currentTime = "এশা";
+                                              }else{
+                                                currentTime = "নফল";
+                                              }
+                                              return Text(currentTime, style: TextStyle(
+                                                  color: Colors.white,fontSize: 30, fontWeight: FontWeight.bold
+                                              ),);
+                                            } else if (snapshot.hasError) {
+                                              print(snapshot.hasError);
+                                              return Container();
+                                            } else {
+                                              return Text('Waiting...');
+                                            }
+                                          },
+                                        ),
+                                      ),
+
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Column(
+                              children: <Widget>[
+                                Image.asset("images/sunrise.png", width: 50, height:50 ,),
+                                Text("Sunrise", style: TextStyle(color: Colors.white)),
+                                Container(child:
+
+                                FutureBuilder(
+                                  future: getTodaySuriseTime(),
+                                  builder: (context, AsyncSnapshot<DateTime> snapshot) {
+                                    if (snapshot.hasData) {
+                                      final dateTime = snapshot.data.toLocal();
+                                      Sunrise=DateFormat.jm().format(dateTime);
+                                      SunRiseTime=dateTime;
+                                      SunriseMinute= dateTime.minute;
+                                      return Text(Sunrise, style: TextStyle(
+
+                                          color: Colors.white
+                                      ),);
+                                    } else if (snapshot.hasError) {
+                                      print(snapshot.hasError);
+                                      return SingleChildScrollView();
+                                    } else {
+                                      return Text('Waiting...');
+                                    }
+                                  },
+                                ),),
+
+                              ],
+                            ),
+                            Column(
+                              children: <Widget>[
+                                Image.asset("images/sunset.png", width: 50, height:50 ,), //Text(Sunset,style: TextStyle(color: Colors.white))
+                                Text("Sunset",style: TextStyle(color: Colors.white)),
+                                Container(child:
+                                FutureBuilder(
+                                  future: getTodayMagribTime(),
+                                  builder: (context, AsyncSnapshot<DateTime> snapshot) {
+                                    if (snapshot.hasData) {
+                                      final dateTime = snapshot.data.toLocal();
+                                      Sunset=DateFormat.jm().format(dateTime);
+                                      SunsetTime=dateTime;
+                                      SunsetMinute= dateTime.minute;
+                                      return Text(Sunset, style: TextStyle(
+
+                                         color: Colors.white
+                                      ),);
+                                    } else if (snapshot.hasError) {
+                                      print(snapshot.hasError);
+                                      return SingleChildScrollView();
+                                    } else {
+                                      return Text('Waiting...');
+                                    }
+                                  },
+                                ),),
+
+                              ],
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 230,left: 10,right: 10),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
+                    child: Container(
+                        color: Colors.white,
+                        padding: EdgeInsets.symmetric(vertical: 20,horizontal: 20),
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              child:Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Icon(Icons.event),
+                                  SizedBox(width: 5,),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(dayName, style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),),
+
+                                      Text("$englishDate/ $arabyDate"),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 10,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text("ফজর"),
+                                Row(
+                                  children: <Widget>[
+                                    Container(child: FutureBuilder(
+                                      future: getTodayFajrTime(),
+                                      builder: (context, AsyncSnapshot<DateTime> snapshot) {
+                                        if (snapshot.hasData) {
+                                          final dateTime = snapshot.data.toLocal();
+                                          fajartoday=DateFormat.jm().format(dateTime);
+                                          FazrTime=dateTime;
+                                          FazrMinute= dateTime.minute;
+                                          return Text(fajartoday, style: TextStyle(
+                                              fontWeight: FontWeight.bold
+                                          ),);
+                                        } else if (snapshot.hasError) {
+                                          print(snapshot.hasError);
+                                          return SingleChildScrollView();
+                                        } else {
+                                          return Text('Waiting...');
+                                        }
+                                      },
+                                    ),),
+                                    IconButton(icon: Icon(Icons.notifications), onPressed: (){}),
+
+                                  ],
+                                )
+                              ],
+                            ),
+                            Container(
+                              height: 1,
+                              width: MediaQuery.of(context).size.width,
+                              color: Colors.black87,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text("যোহর"),
+                                Row(
+                                  children: <Widget>[
+                                    Container(child: FutureBuilder(
+                                      future: getTodaydhuhurTime(),
+                                      builder: (context, AsyncSnapshot<DateTime> snapshot) {
+                                        if (snapshot.hasData) {
+                                          final dateTime = snapshot.data.toLocal();
+                                          dohortoday=DateFormat.jm().format(dateTime);
+                                          DuhurTime=dateTime;
+                                          DuhurMinute= dateTime.minute;
+                                          return Text(dohortoday, style: TextStyle(
+
+                                              fontWeight: FontWeight.bold
+                                          ),);
+                                        } else if (snapshot.hasError) {
+                                          print(snapshot.hasError);
+                                          return SingleChildScrollView();
+                                        } else {
+                                          return Text('Waiting...');
+                                        }
+                                      },
+                                    ),),
+                                    IconButton(icon: Icon(Icons.notifications), onPressed: (){}),
+
+                                  ],
+                                )
+                              ],
+                            ),
+                            Container(
+                              height: 1,
+                              width: MediaQuery.of(context).size.width,
+                              color: Colors.black87,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text("আসর"),
+                                Row(
+                                  children: <Widget>[
+                                    Container(child: FutureBuilder(
+                                      future: getTodayAsorTime(),
+                                      builder: (context, AsyncSnapshot<DateTime> snapshot) {
+                                        if (snapshot.hasData) {
+                                          final dateTime = snapshot.data.toLocal();
+                                          asortoday=DateFormat.jm().format(dateTime);
+                                          AsorTime=dateTime;
+                                          AsorMinute= dateTime.minute;
+                                          return Text(asortoday, style: TextStyle(
+
+                                              fontWeight: FontWeight.bold
+                                          ),);
+                                        } else if (snapshot.hasError) {
+                                          print(snapshot.hasError);
+                                          return SingleChildScrollView();
+                                        } else {
+                                          return Text('Waiting...');
+                                        }
+                                      },
+                                    ),),
+                                    IconButton(icon: Icon(Icons.notifications), onPressed: (){}),
+
+                                  ],
+                                )
+                              ],
+                            ),
+                            Container(
+                              height: 1,
+                              width: MediaQuery.of(context).size.width,
+                              color: Colors.black87,
+                            ),
+                          Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text("মাগরিব"),
+                                  Row(
+                                    children: <Widget>[
+                                      Container(child: FutureBuilder(
+                                        future: getTodayMagribTime(),
+                                        builder: (context, AsyncSnapshot<DateTime> snapshot) {
+                                          if (snapshot.hasData) {
+                                            final dateTime = snapshot.data.toLocal();
+                                            magribtoday=DateFormat.jm().format(dateTime);
+                                            MagribTime=dateTime;
+                                            MagribMinute= dateTime.minute;
+                                            return Text(magribtoday, style: TextStyle(
+
+                                                fontWeight: FontWeight.bold
+                                            ),);
+                                          } else if (snapshot.hasError) {
+                                            print(snapshot.hasError);
+                                            return SingleChildScrollView();
+                                          } else {
+                                            return Text('Waiting...');
+                                          }
+                                        },
+                                      ),),
+                                      IconButton(icon: Icon(Icons.notifications), onPressed: (){}),
+
+                                    ],
+                                  )
+                                ],
+                              ),
+
+
+                            Container(
+                              height: 1,
+                              width: MediaQuery.of(context).size.width,
+                              color: Colors.black87,
+                            ),
+                           Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                Text("এশা"),
+                                Row(
+                                  children: <Widget>[
+                                    Container(child: FutureBuilder(
+                                      future: getTodayIsharTime(),
+                                      builder: (context, AsyncSnapshot<DateTime> snapshot) {
+                                        if (snapshot.hasData) {
+                                          final dateTime = snapshot.data.toLocal();
+                                          esatoday=DateFormat.jm().format(dateTime);
+                                          IsharTime=dateTime;
+                                          IsharMinute= dateTime.minute;
+                                          return Text(esatoday, style: TextStyle(
+                                              fontWeight: FontWeight.bold
+                                          ),);
+                                        } else if (snapshot.hasError) {
+                                          print(snapshot.hasError);
+                                          return SingleChildScrollView();
+                                        } else {
+                                          return Text('Waiting...');
+                                        }
+                                      },
+                                    ),),
+                                    IconButton(icon: Icon(Icons.notifications), onPressed: (){}),
+
+                                  ],
+                                )
+                              ],
+                              ),
+
+                            Container(
+                              height: 1,
+                              width: MediaQuery.of(context).size.width,
+                              color: Colors.black87,
+                            )
+                          ],
+                        )
+
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+
+    );
+  }
+  Future<DateTime> getTodayFajrTime() async {
+    final adhan = AdhanFlutter.create(Coordinates(latitude, longitude), DateTime.now(), CalculationMethod.KARACHI,);
+    return await adhan.fajr;
+  }
+  Future<DateTime> getTodaydhuhurTime() async {
+    final adhan = AdhanFlutter.create(Coordinates(latitude, longitude), DateTime.now(), CalculationMethod.KARACHI);
+    return await adhan.dhuhr;
+  }
+  Future<DateTime> getTodayIsharTime() async {
+    final adhan = AdhanFlutter.create(Coordinates(latitude, longitude), DateTime.now(), CalculationMethod.KARACHI);
+    return await adhan.isha;
+  }
+  Future<DateTime> getTodayMagribTime() async {
+    final adhan = AdhanFlutter.create(Coordinates(latitude, longitude), DateTime.now(), CalculationMethod.KARACHI);
+    return await adhan.maghrib;
+  }
+  Future<DateTime> getTodayAsorTime() async {
+    final adhan = AdhanFlutter.create(Coordinates(latitude, longitude), DateTime.now(), CalculationMethod.KARACHI);
+
+
+    if(majhabName=='hanafi'){
+      adhan.setMadhab(Madhab.HANAFI);
+    }else if(majhabName=='safe'){
+      adhan.setMadhab(Madhab.SHAFI);
+    }else{
+      adhan.setMadhab(Madhab.HANAFI);
+    }
+
+    return await adhan.asr;
+  }
+  Future<DateTime> getTodaySuriseTime() async {
+    final adhan = AdhanFlutter.create(Coordinates(latitude, longitude), DateTime.now(), CalculationMethod.KARACHI);
+    return await adhan.sunrise;
+  }
+  Future<Prayer> getCurrentPrayer() async {
+    final adhan = AdhanFlutter.create(Coordinates(latitude, longitude), DateTime.now(), CalculationMethod.KARACHI);
+    return await adhan.currentPrayer();
+  }
+
+  Future<Prayer> getNextPrayer() async {
+    final adhan = AdhanFlutter.create(Coordinates(latitude, longitude), DateTime.now(), CalculationMethod.KARACHI);
+    return await adhan.nextPrayer();
+  }
+
+  void zilaInitialization() {
 
     Utils.getZilaNameFromPreference().then((zilaName){
       setState(() {
@@ -429,616 +1023,6 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
         }
       });
     });
-
-    return SafeArea(
-      child: Scaffold(
-        appBar:PreferredSize(child: _appBar(),preferredSize: Size(MediaQuery.of(context).size.width, 120),) ,
-        body: SingleChildScrollView(
-          child: Container(
-            child: Stack(
-              children: <Widget>[
-           Container(
-                  color: Colors.green,
-                  height: 280,
-                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                  width: MediaQuery.of(context).size.width,
-
-                    child: Column(
-                      children: <Widget>[
-                       FittedBox(
-                         child: Row(
-                              children: <Widget>[
-                                Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: <Widget>[
-                                      FittedBox(child: Text("পরবর্তি ওয়াক্ত",style: TextStyle(fontSize: 17,color: Colors.white),)),
-                                      FutureBuilder(
-
-                                            future: getNextPrayer(),
-                                                builder: (context, AsyncSnapshot<Prayer> snapshot) {
-                                                  if (snapshot.hasData) {
-                                                    final prayer = snapshot.data;
-                                                    print(" next prayer ${prayer.toString()}");
-                                                    if(prayer.toString().trim()=="Prayer.ASR"){
-                                                      nextTime = "আসর";
-                                                      nextPrayerTime=asortoday;
-                                                      //TimeString
-                                                      if(AsorMinute.toString()== null){
-                                                        minute = 0;
-                                                      }else{
-                                                        if(Pminute.toInt()>AsorMinute){
-                                                          minute = Pminute-AsorMinute;
-                                                        }else{
-                                                          minute=AsorMinute-Pminute;
-                                                        }
-                                                      }
-                                                      //timeString
-
-                                                      _timeString="${AsorTime.difference(DateTime.now()).inHours.abs()} ঘন্টা "
-                                                          "${minute} মিনিট"
-                                                          " ${60-DateTime.now().second}  সেকেন্ড পর  ";
-
-                                                      print(" next prayer ${prayer.toString()}");
-                                                    }
-
-                                                    else if(prayer.toString().trim()=="Prayer.FAJR"){
-                                                      nextTime = "ফজর";
-                                                      nextPrayerTime=fajartoday;
-                                                      //TimeString
-                                                      if(FazrMinute.toString()== null){
-                                                        minute = 0;
-                                                      }else{
-                                                        if(DateTime.now().minute>FazrMinute){
-                                                          minute = DateTime.now().minute-FazrMinute;
-                                                        }else{
-                                                          minute=FazrMinute-DateTime.now().minute;
-                                                        }
-                                                      }
-                                                      //timeString
-
-                                                      _timeString="${FazrTime.difference(DateTime.now()).inHours.abs()} ঘন্টা "
-                                                          "${minute} মিনিট"
-                                                          " ${60-DateTime.now().second}  সেকেন্ড পর  ";
-
-
-                                                      print("next prayer ${prayer.toString()}");
-                                                    }
-
-                                                    else if(prayer.toString().trim()=="Prayer.SUNRISE"){
-                                                      nextTime = "নামাজের জন্য হারাম";
-                                                      nextPrayerTime=Sunrise;
-                                                      //TimeString
-                                                      if(SunriseMinute.toString()== null){
-                                                        minute = 0;
-                                                      }else{
-                                                        if(DateTime.now().minute>SunriseMinute){
-                                                          minute = DateTime.now().minute-SunriseMinute;
-                                                        }else{
-                                                          minute=SunriseMinute-DateTime.now().minute;
-                                                        }
-                                                      }
-                                                      //timeString
-
-                                                      _timeString="${SunRiseTime.difference(DateTime.now()).inHours.abs()} ঘন্টা "
-                                                          "${minute} মিনিট"
-                                                          " ${60-DateTime.now().second}  সেকেন্ড পর  ";
-
-
-                                                      print("next prayer ${prayer.toString()}");
-                                                    }
-
-                                                    else if(prayer.toString().trim()=="Prayer.DHUHR"){
-
-                                                      nextTime = "যোহর";
-                                                      nextPrayerTime=dohortoday;
-
-                                                      //TimeString
-                                                      if(DuhurMinute.toString()== null){
-                                                        minute = 0;
-                                                      }else{
-                                                        if(DateTime.now().minute>DuhurMinute){
-                                                          minute = DateTime.now().minute-DuhurMinute;
-                                                        }else{
-                                                          minute=DuhurMinute-DateTime.now().minute;
-                                                        }
-                                                      }
-
-                                                      //timeString
-
-                                                      _timeString="${DuhurTime.difference(DateTime.now()).inHours.abs()} ঘন্টা "
-                                                          "${minute} মিনিট"
-                                                          " ${60-DateTime.now().second}  সেকেন্ড পর  ";
-
-
-                                                      print("next prayer shuvo dhaur ${prayer.toString()}");
-                                                    }
-
-                                                    else if(prayer.toString().trim()=="Prayer.MAGHRIB"){
-                                                      nextTime = "মাগরিব";
-                                                      nextPrayerTime=magribtoday;
-
-                                                      //TimeString
-                                                      if(MagribMinute== null){
-                                                        minute = 0;
-                                                      }else{
-                                                        if(DateTime.now().minute>MagribMinute){
-                                                          minute = DateTime.now().minute-MagribMinute;
-                                                        }else{
-                                                          minute=MagribMinute-DateTime.now().minute;
-                                                        }
-                                                      }
-                                                      //timeString
-
-                                                      _timeString="${MagribTime.difference(DateTime.now()).inHours.abs()} ঘন্টা "
-                                                          "${minute} মিনিট"
-                                                          " ${60-DateTime.now().second}  সেকেন্ড পর  ";
-
-
-
-                                                      print("next prayer ${prayer.toString()}");
-                                                    }
-                                                    else if(prayer.toString().trim()=="Prayer.ISHA"){
-                                                      nextTime = "এশা";
-                                                      nextPrayerTime=esatoday;
-
-                                                      //TimeString
-                                                      if(IsharMunite== null){
-                                                        minute = 0;
-                                                      }else{
-                                                        if(DateTime.now().minute>IsharMunite){
-                                                          minute = DateTime.now().minute-IsharMunite;
-                                                        }else{
-                                                          minute=IsharMunite-DateTime.now().minute;
-                                                        }
-                                                      }
-                                                      //timeString
-
-                                                      _timeString="${IsharTime.difference(DateTime.now()).inHours.abs()} ঘন্টা "
-                                                          "${minute} মিনিট"
-                                                          " ${60-DateTime.now().second}  সেকেন্ড পর  ";
-
-
-
-                                                      print("next prayer ${prayer.toString()}");
-                                                    }else
-                                                    {
-                                                      nextTime = "নফল";
-                                                    }
-                                                    return Row(
-                                                      children: <Widget>[
-                                                        //style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
-                                                        // style: TextStyle(fontSize: 20,color: Colors.white),
-                                                        Text(nextTime,style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold) ),
-                                                        SizedBox(width: 10,),
-                                                        nextTime == "নফল" ? Container(): Text(nextPrayerTime,style: TextStyle(fontSize: 20,color: Colors.white),)
-
-
-                                                      ],
-                                                    );
-                                                  }
-                                                  else if(snapshot.hasError){
-                                                    print(snapshot.error);
-                                                  }else{
-                                                    print ("error");
-                                                  }
-
-                                                    return Container();
-                                            }
-
-                  ),
-
-
-
-//
-
-
-                                      SizedBox(height: 10,),
-                                      Text("$_timeString",style: TextStyle(fontSize: 17,color: Colors.white),),
-                                      //    VerticalDivider(width: 2,thickness: 2, color: Colors.white,),
-                                      SizedBox(height: 10,),
-
-                                    ],
-                                  ),
-
-                                SizedBox(width: 20,),
-                                Container(
-                                  width: 2,
-                                  height: 100,
-                                  color: Colors.white,
-                                ),
-                                SizedBox(width: 20,),
-                                Column(
-                                  children: <Widget>[
-                                    FittedBox(child: Text("বর্তমান ওয়াক্ত",style: TextStyle(fontSize: 17,color: Colors.white),)),
-                                    //style: TextStyle(color: Colors.white,fontSize: 30, fontWeight: FontWeight.bold),
-                                     Container(
-                                        child:FutureBuilder(
-                                          future: getCurrentPrayer(),
-                                          builder: (context, AsyncSnapshot<Prayer> snapshot) {
-                                            if (snapshot.hasData) {
-                                              final prayer = snapshot.data;
-                                              print(" current prayer ${prayer.toString()}");
-                                              if(prayer.toString().trim()=="Prayer.ASR"){
-                                                currentTime = "আসর";
-                                                print(" current prayer ${prayer.toString()}");
-                                              }else if(prayer.toString().trim()=="Prayer.FAJR"){
-                                                currentTime = "ফজর";
-                                                print(" current prayer ${prayer.toString()}");
-                                              }else if(prayer.toString().trim()=="Prayer.DHUHUR"){
-                                                currentTime = "যোহর";
-                                                print(" current prayer ${prayer.toString()}");
-                                              }else if(prayer.toString().trim()=="Prayer.MAGHRIB"){
-                                                currentTime = "মাগরিব";
-                                                print(" current prayer ${prayer.toString()}");
-                                              }else if(prayer.toString().trim()=="Prayer.ISHA"){
-                                                currentTime = "এশা";
-                                                print(" current prayer ${prayer.toString()}");
-                                              }else{
-                                                currentTime = "নফল";
-                                                print(" current prayer Shuvo ${prayer.toString()}");
-                                              }
-                                              return Text(currentTime, style: TextStyle(
-                                                  color: Colors.white,fontSize: 30, fontWeight: FontWeight.bold
-                                              ),);
-                                            } else if (snapshot.hasError) {
-                                              print(snapshot.hasError);
-                                              return SingleChildScrollView();
-                                            } else {
-                                              return Text('Waiting...');
-                                            }
-                                          },
-                                        ),
-                                      ),
-
-                                  ],
-                                ),
-                              ],
-                            ),
-                       ),
-
-
-                        Expanded(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Column(
-                                children: <Widget>[
-                                  Image.asset("images/sunrise.png", width: 50, height:50 ,),
-                                  Text("Sunrise", style: TextStyle(color: Colors.white)),
-                                  Container(child: FutureBuilder(
-                                    future: getTodaySuriseTime(),
-                                    builder: (context, AsyncSnapshot<DateTime> snapshot) {
-                                      if (snapshot.hasData) {
-                                        final dateTime = snapshot.data.toLocal();
-                                        print("Sunrise Time: ${dateTime}");
-                                        Sunrise=DateFormat.jm().format(dateTime);
-                                        SunRiseTime=dateTime;
-                                        SunriseMinute= dateTime.minute;
-                                        return Text(Sunrise, style: TextStyle(
-
-                                            color: Colors.white
-                                        ),);
-                                      } else if (snapshot.hasError) {
-                                        print(snapshot.hasError);
-                                        return SingleChildScrollView();
-                                      } else {
-                                        return Text('Waiting...');
-                                      }
-                                    },
-                                  ),),
-
-                                ],
-                              ),
-                              Column(
-                                children: <Widget>[
-                                  Image.asset("images/sunset.png", width: 50, height:50 ,), //Text(Sunset,style: TextStyle(color: Colors.white))
-                                  Text("Sunset",style: TextStyle(color: Colors.white)),
-                                  Container(child: FutureBuilder(
-                                    future: getTodayMagribTime(),
-                                    builder: (context, AsyncSnapshot<DateTime> snapshot) {
-                                      if (snapshot.hasData) {
-                                        final dateTime = snapshot.data.toLocal();
-                                        print("SunsetTime Time: ${dateTime}");
-                                        Sunset=DateFormat.jm().format(dateTime);
-                                        SunsetTime=dateTime;
-                                        SunsetMinute= dateTime.minute;
-                                        return Text(Sunset, style: TextStyle(
-
-                                           color: Colors.white
-                                        ),);
-                                      } else if (snapshot.hasError) {
-                                        print(snapshot.hasError);
-                                        return SingleChildScrollView();
-                                      } else {
-                                        return Text('Waiting...');
-                                      }
-                                    },
-                                  ),),
-
-                                ],
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 230,left: 10,right: 10),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
-                    child: Container(
-                        color: Colors.white,
-                        padding: EdgeInsets.symmetric(vertical: 20,horizontal: 20),
-                        child: Column(
-                          children: <Widget>[
-                            Container(
-                              child:Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Icon(Icons.event),
-                                  SizedBox(width: 5,),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(dayName, style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),),
-
-                                      Text("$englishDate/ $arabyDate"),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                            SizedBox(height: 10,),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text("ফজর"),
-                                Row(
-                                  children: <Widget>[
-                                    Container(child: FutureBuilder(
-                                      future: getTodayFajrTime(),
-                                      builder: (context, AsyncSnapshot<DateTime> snapshot) {
-                                        if (snapshot.hasData) {
-                                          final dateTime = snapshot.data.toLocal();
-                                          print("Fajar Time: ${dateTime}");
-                                          fajartoday=DateFormat.jm().format(dateTime);
-                                          FazrTime=dateTime;
-                                          FazrMinute= dateTime.minute;
-                                          return Text(fajartoday, style: TextStyle(
-                                              fontWeight: FontWeight.bold
-                                          ),);
-                                        } else if (snapshot.hasError) {
-                                          print(snapshot.hasError);
-                                          return SingleChildScrollView();
-                                        } else {
-                                          return Text('Waiting...');
-                                        }
-                                      },
-                                    ),),
-                                    IconButton(icon: Icon(Icons.notifications), onPressed: (){}),
-
-                                  ],
-                                )
-                              ],
-                            ),
-                            Container(
-                              height: 1,
-                              width: MediaQuery.of(context).size.width,
-                              color: Colors.black87,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text("যোহর"),
-                                Row(
-                                  children: <Widget>[
-                                    Container(child: FutureBuilder(
-                                      future: getTodaydhuhurTime(),
-                                      builder: (context, AsyncSnapshot<DateTime> snapshot) {
-                                        if (snapshot.hasData) {
-                                          final dateTime = snapshot.data.toLocal();
-                                          print("Duhur Time: ${dateTime}");
-                                          dohortoday=DateFormat.jm().format(dateTime);
-                                          DuhurTime=dateTime;
-                                          DuhurMinute= dateTime.minute;
-                                          return Text(dohortoday, style: TextStyle(
-
-                                              fontWeight: FontWeight.bold
-                                          ),);
-                                        } else if (snapshot.hasError) {
-                                          print(snapshot.hasError);
-                                          return SingleChildScrollView();
-                                        } else {
-                                          return Text('Waiting...');
-                                        }
-                                      },
-                                    ),),
-                                    IconButton(icon: Icon(Icons.notifications), onPressed: (){}),
-
-                                  ],
-                                )
-                              ],
-                            ),
-                            Container(
-                              height: 1,
-                              width: MediaQuery.of(context).size.width,
-                              color: Colors.black87,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text("আসর"),
-                                Row(
-                                  children: <Widget>[
-                                    Container(child: FutureBuilder(
-                                      future: getTodayAsorTime(),
-                                      builder: (context, AsyncSnapshot<DateTime> snapshot) {
-                                        if (snapshot.hasData) {
-                                          final dateTime = snapshot.data.toLocal();
-                                          print("Asor Time: ${dateTime}");
-                                          asortoday=DateFormat.jm().format(dateTime);
-                                          AsorTime=dateTime;
-                                          AsorMinute= dateTime.minute;
-                                          return Text(asortoday, style: TextStyle(
-
-                                              fontWeight: FontWeight.bold
-                                          ),);
-                                        } else if (snapshot.hasError) {
-                                          print(snapshot.hasError);
-                                          return SingleChildScrollView();
-                                        } else {
-                                          return Text('Waiting...');
-                                        }
-                                      },
-                                    ),),
-                                    IconButton(icon: Icon(Icons.notifications), onPressed: (){}),
-
-                                  ],
-                                )
-                              ],
-                            ),
-                            Container(
-                              height: 1,
-                              width: MediaQuery.of(context).size.width,
-                              color: Colors.black87,
-                            ),
-                          Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text("মাগরিব"),
-                                  Row(
-                                    children: <Widget>[
-                                      Container(child: FutureBuilder(
-                                        future: getTodayMagribTime(),
-                                        builder: (context, AsyncSnapshot<DateTime> snapshot) {
-                                          if (snapshot.hasData) {
-                                            final dateTime = snapshot.data.toLocal();
-                                            print("Magrib Time: ${dateTime}");
-                                            magribtoday=DateFormat.jm().format(dateTime);
-                                            MagribTime=dateTime;
-                                            MagribMinute= dateTime.minute;
-                                            return Text(magribtoday, style: TextStyle(
-
-                                                fontWeight: FontWeight.bold
-                                            ),);
-                                          } else if (snapshot.hasError) {
-                                            print(snapshot.hasError);
-                                            return SingleChildScrollView();
-                                          } else {
-                                            return Text('Waiting...');
-                                          }
-                                        },
-                                      ),),
-                                      IconButton(icon: Icon(Icons.notifications), onPressed: (){}),
-
-                                    ],
-                                  )
-                                ],
-                              ),
-
-
-                            Container(
-                              height: 1,
-                              width: MediaQuery.of(context).size.width,
-                              color: Colors.black87,
-                            ),
-                           Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                Text("এশা"),
-                                Row(
-                                  children: <Widget>[
-                                    Container(child: FutureBuilder(
-                                      future: getTodayIsharTime(),
-                                      builder: (context, AsyncSnapshot<DateTime> snapshot) {
-                                        if (snapshot.hasData) {
-                                          final dateTime = snapshot.data.toLocal();
-                                          print("Eshar Time: ${dateTime}");
-                                          esatoday=DateFormat.jm().format(dateTime);
-                                          IsharTime=dateTime;
-                                          IsharMinute= dateTime.minute;
-                                          return Text(esatoday, style: TextStyle(
-                                              fontWeight: FontWeight.bold
-                                          ),);
-                                        } else if (snapshot.hasError) {
-                                          print(snapshot.hasError);
-                                          return SingleChildScrollView();
-                                        } else {
-                                          return Text('Waiting...');
-                                        }
-                                      },
-                                    ),),
-                                    IconButton(icon: Icon(Icons.notifications), onPressed: (){}),
-
-                                  ],
-                                )
-                              ],
-                              ),
-
-                            Container(
-                              height: 1,
-                              width: MediaQuery.of(context).size.width,
-                              color: Colors.black87,
-                            )
-                          ],
-                        )
-
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-
-    );
-  }
-  Future<DateTime> getTodayFajrTime() async {
-    final adhan = AdhanFlutter.create(Coordinates(latitude, longitude), DateTime.now(), CalculationMethod.KARACHI,);
-    return await adhan.fajr;
-  }
-  Future<DateTime> getTodaydhuhurTime() async {
-    final adhan = AdhanFlutter.create(Coordinates(latitude, longitude), DateTime.now(), CalculationMethod.KARACHI);
-    return await adhan.dhuhr;
-  }
-  Future<DateTime> getTodayIsharTime() async {
-    final adhan = AdhanFlutter.create(Coordinates(latitude, longitude), DateTime.now(), CalculationMethod.KARACHI);
-    return await adhan.isha;
-  }
-  Future<DateTime> getTodayMagribTime() async {
-    final adhan = AdhanFlutter.create(Coordinates(latitude, longitude), DateTime.now(), CalculationMethod.KARACHI);
-    return await adhan.maghrib;
-  }
-  Future<DateTime> getTodayAsorTime() async {
-    final adhan = AdhanFlutter.create(Coordinates(latitude, longitude), DateTime.now(), CalculationMethod.KARACHI);
-
-
-    if(majhabName=='hanafi'){
-      adhan.setMadhab(Madhab.HANAFI);
-    }else if(majhabName=='safe'){
-      adhan.setMadhab(Madhab.SHAFI);
-    }else{
-      adhan.setMadhab(Madhab.HANAFI);
-    }
-
-    return await adhan.asr;
-  }
-  Future<DateTime> getTodaySuriseTime() async {
-    final adhan = AdhanFlutter.create(Coordinates(latitude, longitude), DateTime.now(), CalculationMethod.KARACHI);
-    return await adhan.sunrise;
-  }
-  Future<Prayer> getCurrentPrayer() async {
-    final adhan = AdhanFlutter.create(Coordinates(latitude, longitude), DateTime.now(), CalculationMethod.KARACHI);
-    return await adhan.currentPrayer();
-  }
-
-  Future<Prayer> getNextPrayer() async {
-    final adhan = AdhanFlutter.create(Coordinates(latitude, longitude), DateTime.now(), CalculationMethod.KARACHI);
-    return await adhan.nextPrayer();
   }
 
 

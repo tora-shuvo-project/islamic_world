@@ -1,7 +1,8 @@
 
 
-import 'dart:io';
+import 'dart:async';
 
+import 'package:adhan_flutter/adhan_flutter.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:deivao_drawer/deivao_drawer.dart';
 import 'package:deivao_drawer/drawer_controller.dart';
@@ -17,7 +18,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:searchtosu/FinalModels/prayer_time_models.dart';
 import 'package:searchtosu/Widgets/custome_dialog.dart';
-import 'package:searchtosu/helpers/database_helper.dart';
 import 'package:searchtosu/helpers/provider_helpers.dart';
 import 'package:searchtosu/pages/about_pages.dart';
 import 'package:searchtosu/pages/blog_pages.dart';
@@ -56,19 +56,33 @@ class _HomeScreenState extends State<HomeScreen> {
   String banglaDate,arabyDate,englishDate;
   String banglaDate1,arabyDate1,englishDate1;
   String zilaName;
+  String zila;
+  String currentTime='';
+  String nextTime='';
+
+
+  String nextPrayerName="";
+  String nextPrayerTime="";
+  String currentPrayerTime="";
+  String currentPrayername="";
+  String Sunrise="";
+  String Sunset="";
+  var longitude;
+  var latitude;
+  var minute;
+  bool loading = true;
+  String _timeString="";
+  String majhabName='';
 
   PrayerTimeModels prayerTimeModels;
   int date1;
   bool isOpenQuran=true;
 
   int fojorHour_start,johaurHour,asorHour,magribHour,esaHour,sunriseHour,aoyabinHour;
-  String currentPrayerTime='';
-  String nextPrayerName='';
-  String nextPrayerTime='';
   String sunrisetoday='';
   String sunsettoday='';
 
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   AndroidInitializationSettings androidInitializationSettings;
   IOSInitializationSettings iosInitializationSettings;
   InitializationSettings initializationSettings;
@@ -76,6 +90,9 @@ class _HomeScreenState extends State<HomeScreen> {
   LatLng _center;
 
   bool isOpen=true;
+  bool isTimeString=false;
+
+  String asortoday;
 
 
   Widget _appBar(){
@@ -145,12 +162,25 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  void _getlatlngwithData(LatLng latLng) {
+    latitude=latLng.latitude;
+    longitude=latLng.longitude;
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    androidInitializationSettings = new AndroidInitializationSettings('notification_icon');
+    iosInitializationSettings = new IOSInitializationSettings(
+        onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+    initializationSettings = new InitializationSettings(
+        androidInitializationSettings, iosInitializationSettings);
+    flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: onSelectNotification);
 
-    initializing();
+
 
     var _today = new HijriCalendar.now();
     banglaDate=BanglaUtility.getBanglaDate(day: DateTime.now().day, month: DateTime.now().month, year: DateTime.now().year);
@@ -160,61 +190,6 @@ class _HomeScreenState extends State<HomeScreen> {
     englishDate=DateFormat('dd MMMM,yyyy').format(DateTime.now());
     englishDate1='English Date: '+DateFormat('dd MMMM,yyyy').format(DateTime.now());
 
-
-    date1 = (DateTime.now().hour);
-    DatabaseHelper.getPrayerTimeModels('${DateFormat('MMM dd').format(DateTime.now())}').then((prayermodels){
-      setState(() {
-        prayerTimeModels=prayermodels;
-        sunrisetoday=prayermodels.fajr_end;
-        sunsettoday=prayermodels.magrib;
-
-        fojorHour_start=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.fajr_start}').hour;
-        johaurHour=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.dhuhr}').hour;
-        asorHour=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.asr}').hour;
-        magribHour=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.magrib}').hour;
-        esaHour=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.isha}').hour;
-        sunriseHour=DateFormat("yyyy: MM: dd: hh:mm a").parse('${DateTime.now().year}: ${DateTime.now().month}: ${DateTime.now().day}: ${prayermodels.fajr_end}').hour;
-
-
-
-        if(date1>=fojorHour_start&&date1<sunriseHour){
-          currentPrayerTime='ফজর';
-          nextPrayerName='ইশরাক';
-          nextPrayerTime='${prayermodels.fajr_end}';
-
-        }else if(date1>=sunriseHour&&date1<johaurHour){
-
-          currentPrayerTime='ইশরাক';
-          nextPrayerName='যহর';
-          nextPrayerTime='${prayermodels.dhuhr}';
-
-        }else if(date1>=johaurHour&&date1<asorHour){
-
-          currentPrayerTime='যহর';
-          nextPrayerName='আসর';
-          nextPrayerTime='${prayermodels.asr}';
-
-        }else if(date1>=asorHour&&date1<magribHour){
-
-          currentPrayerTime='আসর';
-          nextPrayerName='মাগরিব';
-          nextPrayerTime='${prayermodels.magrib}';
-
-        }else if(date1>=magribHour&&date1<esaHour){
-
-          currentPrayerTime='মাগরিব';
-          nextPrayerName='এশা';
-          nextPrayerTime='${prayermodels.isha}';
-
-        }else{
-
-          currentPrayerTime='এশা';
-          nextPrayerName='ফজর';
-          nextPrayerTime='${prayermodels.fajr_start}';
-        }
-
-      });
-    });
 
     final postion = Provider.of<LocationProvider>(context, listen: false).pos;
     Provider.of<LocationProvider>(context,listen: false).getDeviceCurrentLocation(postion: postion).then((_){
@@ -229,6 +204,13 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     });
 
+    Timer(
+        Duration(seconds: 1),
+            (){
+          setState(() {
+            isTimeString=true;
+          });
+        });
 
   }
 
@@ -252,18 +234,6 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
   }
-  void initializing() async {
-
-    androidInitializationSettings = AndroidInitializationSettings('notification_icon');
-    iosInitializationSettings = IOSInitializationSettings(
-        onDidReceiveLocalNotification: onDidReceiveLocalNotification);
-    initializationSettings = InitializationSettings(
-        androidInitializationSettings, iosInitializationSettings);
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: onSelectNotification);
-
-
-  }
 
   void _showNotificationsAfterAppClose() async {
     await notificationAfterAppClose();
@@ -284,42 +254,84 @@ class _HomeScreenState extends State<HomeScreen> {
     IOSNotificationDetails iosNotificationDetails = IOSNotificationDetails();
     NotificationDetails notificationDetails = NotificationDetails(androidNotificationDetails, iosNotificationDetails);
 
+    String dateFormate = DateFormat("dd").format(DateTime.parse("2019-09-03"));
+    print('Value Shuvo $dateFormate');
 
-    if(date1>=fojorHour_start&&date1<sunriseHour){
-
-      await flutterLocalNotificationsPlugin.schedule(1, 'বর্তমান ওয়াক্ত ফজর', 'শুরু হয়েছে ${prayerTimeModels.fajr_start}\nশেষ হবে ${prayerTimeModels.fajr_end}', timeDelayed, notificationDetails, androidAllowWhileIdle: false);
-
-    }else if(date1>=sunriseHour&&date1<johaurHour){
-
-      await flutterLocalNotificationsPlugin.schedule(1, 'বর্তমান ওয়াক্ত ইশরাক', 'শুরু হয়েছে ${prayerTimeModels.israk}\nশেষ হবে ${prayerTimeModels.dhuhr}', timeDelayed, notificationDetails, androidAllowWhileIdle: false);
-
-    }else if(date1>=johaurHour&&date1<asorHour){
-
-      await flutterLocalNotificationsPlugin.schedule(1, 'বর্তমান ওয়াক্ত যহর', 'শুরু হয়েছে ${prayerTimeModels.dhuhr}\nশেষ হবে ${prayerTimeModels.asr}', timeDelayed, notificationDetails, androidAllowWhileIdle: false);
-
-    }else if(date1>=asorHour&&date1<magribHour){
-
-      await flutterLocalNotificationsPlugin.schedule(1, 'বর্তমান ওয়াক্ত আসর', 'শুরু হয়েছে ${prayerTimeModels.asr}\nশেষ হবে ${prayerTimeModels.magrib}', timeDelayed, notificationDetails, androidAllowWhileIdle: false);
-
-    }else if(date1>=magribHour&&date1<aoyabinHour){
-
-      await flutterLocalNotificationsPlugin.schedule(1, 'বর্তমান ওয়াক্ত মাগরিব', 'শুরু হয়েছে ${prayerTimeModels.magrib}\nশেষ হবে ${prayerTimeModels.aoyabin}', timeDelayed, notificationDetails, androidAllowWhileIdle: false);
-
-    }else if(date1>=aoyabinHour&&date1<esaHour){
-
-      await flutterLocalNotificationsPlugin.schedule(1, 'বর্তমান ওয়াক্ত আওয়াবিন', 'শুরু হয়েছে ${prayerTimeModels.aoyabin}\nশেষ হবে ${prayerTimeModels.isha}', timeDelayed, notificationDetails, androidAllowWhileIdle: false);
-
+    if(dateFormate=='1'){
+      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', 'আসুন নিজের জীবনকে সুন্দর করি।', timeDelayed, notificationDetails);
+    }else if(dateFormate=='2'){
+      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“যে পবিত্র থাকতে চায় , তাকে আল্লাহ পবিত্র রাখেন।” \n– সহীহ বুখারী', timeDelayed, notificationDetails);
+    }else if(dateFormate=='3'){
+      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', 'যে জ্ঞান অর্জনের খোঁজে বের হয় , সে আল্লাহর পথে বের হয়।\n– তিরমিযী', timeDelayed, notificationDetails);
+    }else if(dateFormate=='4'){
+      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', 'কুরআনকে আঁকড়ে ধরলে কখনো বিপথগামী হবেনা।\n– মিশকাত', timeDelayed, notificationDetails);
+    }else if(dateFormate=='5'){
+      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“সব ধরনের দাগ দূর করার জন্য কিছু না কিছু আছে; মনের দাগ দূর করার জন্য আছে আল্লাহ্‌র স্মরণ”\n– বুখারী', timeDelayed, notificationDetails);
+    }else if(dateFormate=='6'){
+      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“তুমি যদি পূর্ণভাবে আল্লাহর ওপর ভরসা করো, যেমনটা করা উচিৎ, তাহলে তিনি অবশ্যই তোমার সব প্রয়োজন পূরণ করবেন, যেমনটা তিনি পাখিদের জন্য করেন। তারা ক্ষুধার্ত হয়ে বাসা থেকে বের হয়, কিন্তু ভরা পেট নিয়ে নীড়ে ফেরে”\n– তিরমিযী', timeDelayed, notificationDetails);
+    }else if(dateFormate=='7'){
+      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“সত্যিকার জ্ঞানী কারা? – যারা তাদের জ্ঞানকে বাস্তবে কাজে লাগায়”\n– বুখারী', timeDelayed, notificationDetails);
+    }else if(dateFormate=='8'){
+      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“মৃত্যুকে খুঁজো (অর্থাৎ, সাহসী হও) তাহলে তোমাদেরকে জীবন দান করা হবে।”', timeDelayed, notificationDetails);
+    }else if(dateFormate=='9'){
+      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', 'কোন ভাই যদি আপনাকে গোপনে কিছু কথা বলে চলে যাবার আগে যদি তা অন্য কাউকে বলতে নিষেধ না করেও থাকেন, তবু কথাগুলো আপনার জন্য আমানাত।', timeDelayed, notificationDetails);
+    }else if(dateFormate=='10'){
+      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“এসো আমরা আমাদের ঈমানকে বাড়াই, আর তাই চলো আমরা আল্লাহকে স্মরণ করি।”', timeDelayed, notificationDetails);
+    }else if(dateFormate=='11'){
+      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“যারা সবসময় ইস্তিগফার (ক্ষমা প্রার্থনা) করে তাদের সাথে উঠাবসা করুন, কেননা তাদের হৃদয় সবচেয়ে কোমল।”', timeDelayed, notificationDetails);
+    }else if(dateFormate=='12'){
+      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“আজকের কাজ আগামীকাল করার জন্য রেখে দিবেন না। পরে দেখা যাবে কাজগুলো জমা হয়ে যাবে এবং আপনি কিছুই অর্জন করতে পারবেন না।”', timeDelayed, notificationDetails);
+    }else if(dateFormate=='13'){
+      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“আল্লাহকে ভয় করো, কেননা যে তাকে ভয় করে সে কখনো একাকীত্ব অনুভব করে না।”', timeDelayed, notificationDetails);
+    }else if(dateFormate=='14'){
+      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“তোমরা অন্যদের আরবি ভাষা শেখাও কেননা এটা তোমাদের দ্বীনের একটি অংশ।”', timeDelayed, notificationDetails);
+    }else if(dateFormate=='15'){
+      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“আমাদের জীবনের সবচাইতে স্বাস্থ্যকর উপাদান হচ্ছে সবর (ধৈর্য)।”', timeDelayed, notificationDetails);
+    }else if(dateFormate=='16'){
+      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“দুনিয়া নিয়ে দুঃশ্চিন্তা করা অন্তর হলো অন্ধকারাচ্ছন্ন,আখিরাত নিয়ে দুঃশ্চিন্তা করা অন্তর হলো আলোকিত”', timeDelayed, notificationDetails);
+    }else if(dateFormate=='17'){
+      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“যেসব পাপকাজ তোমরা গোপনে করে থাকো সেগুলোকে ভয় করো, কেননা সেসব পাপের সাক্ষী বিচারক স্বয়ং নিজেই।”', timeDelayed, notificationDetails);
+    }else if(dateFormate==''){
+      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“কারো অধঃপতনে আনন্দ প্রকাশ করো না, কেননা ভবিষ্যত তোমার জন্য কী প্রস্তুত করে রেখেছে সে সম্পর্কে তোমার কোন জ্ঞানই নেই।”', timeDelayed, notificationDetails);
+    }else if(dateFormate=='18'){
+      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“অতিরিক্ত সমালোচনা করবেন না। অতিরিক্ত সমালোচনা ঘৃণা এবং খারাপ চরিত্রের দিকে এগিয়ে নিয়ে যায়।”', timeDelayed, notificationDetails);
+    }else if(dateFormate=='19'){
+      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“আপনার গর্বকে ছুঁড়ে ফেলুন, দাম্ভিকতাকে দমিয়ে দিন আর আপনার কবরকে স্মরণ করুন”', timeDelayed, notificationDetails);
+    }else if(dateFormate=='20'){
+      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“ফুলের মতন হও, যে তাকে দলিত করে তাকেও সে সুগন্ধ বিলায়।”', timeDelayed, notificationDetails);
+    }else if(dateFormate=='21'){
+      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“ভালো কাজকে যিনি বীজ হিসেবে বুনেছেন সম্ভবত তার ফসল হবে আশা,খারাপ কাজকে যে বীজ হিসেবে বুনেছে সম্ভবত তার ফসল হবে অনুতাপ।”', timeDelayed, notificationDetails);
+    }else if(dateFormate=='22'){
+      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“এই দুনিয়াতে কল্যাণময় হচ্ছে জ্ঞানার্জন ও আল্লাহর ইবাদাত করা এবং আখিরাতে কল্যাণময় হচ্ছে জান্নাত”।', timeDelayed, notificationDetails);
+    }else if(dateFormate=='22'){
+      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“আল্লাহর যিকরে, সলাতে এবং কুরআন তিলাওয়াতে যে ব্যক্তি সুখ খুঁজে পায় না, সে অন্য কোথাও তা খুঁজে পাবে না।”', timeDelayed, notificationDetails);
+    }else if(dateFormate=='24'){
+      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“পৃথিবীর জীবনটা তিনটি দিনের–গতকালের দিনটিতে যা করা হয়েছে সেগুলো নিয়ে সেটি চলে গেছে;আগামীকালের দিনটিতে হয়ত আপনি না-ও পৌছতে পারেন;কিন্তু আজকের দিনটি আপনার জন্য সুতরাং যা করার আজই করে নিন।”', timeDelayed, notificationDetails);
+    }else if(dateFormate=='25'){
+      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“কম বয়সে কোন কিছু শেখার প্রভাব অনেকটা পাথরের উপরে খোদাই করে লেখার মতন।”', timeDelayed, notificationDetails);
+    }else if(dateFormate=='26'){
+      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“দুনিয়ার জীবনকে আখিরাতের জন্য বিক্রি করলে আপনি দুই জীবনেই জয়ী হবেন।আখিরাতের জীবনকে দুনিয়ার জন্য বিক্রি করলে আপনি দুই জীবনেই পরাজিত হবেন।”', timeDelayed, notificationDetails);
+    }else if(dateFormate=='27'){
+      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“তুমি যদি পারো তো একজন আলেম হও। যদি তা না পারো তবে দ্বীনের জ্ঞানের একজন ছাত্র হও। যদি তা না পারো, তাহলে তাদের প্রতি ভালোবাসা দেখাও। যদি তুমি তা-ও না পারো, তাহলে (অন্ততপক্ষে) তাদের ঘৃণা করো না।”', timeDelayed, notificationDetails);
+    }else if(dateFormate=='28'){
+      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“নিজেকে আল্লাহর রাহমাতসমূহের কথা বেশি করে স্মরণ করিয়ে দিন, কেননা যিনি বেশি বেশি স্মরণ করেন তার কৃতজ্ঞতা প্রকাশ করার সম্ভাবনাও বেশি থাকে।”', timeDelayed, notificationDetails);
+    }else if(dateFormate=='29'){
+      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“তাহাজ্জুদের সময়ে করা দু’আ হলো এমন একটি তীরের মতন যা লক্ষ্যভ্রষ্ট হয় না।”', timeDelayed, notificationDetails);
+    }else if(dateFormate=='30'){
+      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“দায়িত্ব বেড়ে যাবার আগেই তোমার ইবাদাতের পরিমাণ বাড়িয়ে দাও। কেননা একদিন এমন সময় আসবে যখন যথেষ্ট ইবাদাত করার মতন সময় পাবে না।”', timeDelayed, notificationDetails);
     }else{
-
-      await flutterLocalNotificationsPlugin.schedule(1, 'বর্তমান ওয়াক্ত এশা', 'শুরু হয়েছে ${prayerTimeModels.isha}\nশেষ হবে ${prayerTimeModels.fajr_start}', timeDelayed, notificationDetails, androidAllowWhileIdle: false);
-
+      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', 'আসুন নিজের জীবনকে সুন্দর করি।', timeDelayed, notificationDetails);
     }
+
 
   }
 
 
   @override
   Widget build(BuildContext context) {
+
+    zilaInitialize();
+
     return DeivaoDrawer(
       controller: drawerController,
       drawer: _buildDrawer(context),
@@ -362,7 +374,35 @@ class _HomeScreenState extends State<HomeScreen> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Text("বর্তমান নামাজের ওয়াক্ত", style: TextStyle(color: Colors.white),),
-                                          Text('${currentPrayerTime}', style: TextStyle(fontSize: 20, color: Colors.white),),
+                                          FutureBuilder(
+                                            future: getCurrentPrayer(),
+                                            builder: (context, AsyncSnapshot<Prayer> snapshot) {
+                                              if (snapshot.hasData) {
+                                                final prayer = snapshot.data;
+                                                if(prayer.toString().trim()=="Prayer.ASR"){
+                                                  currentTime = "আসর";
+                                                }else if(prayer.toString().trim()=="Prayer.FAJR"){
+                                                  currentTime = "ফজর";
+                                                }else if(prayer.toString().trim()=="Prayer.DHUHR"){
+                                                  currentTime = "যোহর";
+                                                }else if(prayer.toString().trim()=="Prayer.MAGHRIB"){
+                                                  currentTime = "মাগরিব";
+                                                }else if(prayer.toString().trim()=="Prayer.ISHA"){
+                                                  currentTime = "এশা";
+                                                }else{
+                                                  currentTime = "নফল";
+                                                }
+                                                return Text(currentTime, style: TextStyle(
+                                                    fontSize: 20, color: Colors.white
+                                                ),);
+                                              } else if (snapshot.hasError) {
+                                                print(snapshot.hasError);
+                                                return Container();
+                                              } else {
+                                                return CircularProgressIndicator();
+                                              }
+                                            },
+                                          ),
                                           Container(
                                               decoration: BoxDecoration(
                                                   gradient: LinearGradient(colors: [
@@ -372,8 +412,98 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   ]))
                                           ),
                                           Text("পরবর্তি নামাজের ওয়াক্ত", style: TextStyle(color: Colors.white),),
-                                          Text('${nextPrayerName}', style: TextStyle(fontSize: 20, color: Colors.white),),
-                                          Text("সূর্যদয়ঃ ${sunrisetoday} । সুর্যাস্তঃ ${sunsettoday}",style: TextStyle( color: Colors.white),)
+                                          Center(child:
+                                            isTimeString?
+                                            Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                FutureBuilder(
+                                                    future: getNextPrayer(),
+                                                    builder: (context, AsyncSnapshot<Prayer> snapshot) {
+                                                      if (snapshot.hasData) {
+                                                        final prayer = snapshot.data;
+                                                        if(prayer.toString().trim()=="Prayer.ASR"){
+                                                          nextTime = "আসর";
+                                                        }
+                                                        else if(prayer.toString().trim()=="Prayer.FAJR"){
+                                                          nextTime = "ফজর";
+                                                        }
+                                                        else if(prayer.toString().trim()=="Prayer.SUNRISE"){
+                                                          nextTime = "নামাজের জন্য হারাম";
+                                                        }
+                                                        else if(prayer.toString().trim()=="Prayer.DHUHR"){
+                                                          nextTime = "যোহর";
+                                                        }
+                                                        else if(prayer.toString().trim()=="Prayer.MAGHRIB"){
+                                                          nextTime = "মাগরিব";
+                                                        }
+                                                        else if(prayer.toString().trim()=="Prayer.ISHA"){
+                                                          nextTime = "এশা";
+                                                        }else
+                                                        {
+                                                          nextTime = "নফল";
+                                                        }
+                                                        return Container(
+                                                            alignment: Alignment.centerLeft,
+                                                            child: Text(nextTime,style: TextStyle(fontSize: 20, color: Colors.white) ));
+                                                      }
+                                                      if(snapshot.hasError){
+                                                        print(snapshot.error);
+                                                        return Container();
+                                                      }
+                                                      return CircularProgressIndicator();
+                                                    }
+
+                                                ),
+
+                                              ],
+                                            ):
+                                            Container(
+                                              child: Text('',style: TextStyle(color: Colors.white),),
+                                            ),
+                                          ),
+
+                                          Row(
+                                            children: <Widget>[
+                                              FutureBuilder(
+                                                future: getTodaySuriseTime(),
+                                                builder: (context, AsyncSnapshot<DateTime> snapshot) {
+                                                  if (snapshot.hasData) {
+                                                    final dateTime = snapshot.data.toLocal();
+                                                    Sunrise=DateFormat.jm().format(dateTime);
+                                                    return Text('সূর্যদয়ঃ ${Sunrise} । ', style: TextStyle(
+
+                                                        color: Colors.white
+                                                    ),);
+                                                  } else if (snapshot.hasError) {
+                                                    print(snapshot.hasError);
+                                                    return SingleChildScrollView();
+                                                  } else {
+                                                    return Text('');
+                                                  }
+                                                },
+                                              ),
+                                              FutureBuilder(
+                                                future: getTodayMagribTime(),
+                                                builder: (context, AsyncSnapshot<DateTime> snapshot) {
+                                                  if (snapshot.hasData) {
+                                                    final dateTime = snapshot.data.toLocal();
+                                                    Sunset=DateFormat.jm().format(dateTime);
+                                                    return Text('সুর্যাস্তঃ ${Sunset}', style: TextStyle(
+
+                                                        color: Colors.white
+                                                    ),);
+                                                  } else if (snapshot.hasError) {
+                                                    print(snapshot.hasError);
+                                                    return SingleChildScrollView();
+                                                  } else {
+                                                    return Text('');
+                                                  }
+                                                },
+                                              ),
+                                            ],
+                                          ),
                                         ],
                                       ),
 
@@ -994,6 +1124,323 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ],
     );
+  }
+
+  Future<DateTime> getTodayFajrTime() async {
+    final adhan = AdhanFlutter.create(Coordinates(latitude, longitude), DateTime.now(), CalculationMethod.KARACHI,);
+    return await adhan.fajr;
+  }
+  Future<DateTime> getTodaydhuhurTime() async {
+    final adhan = AdhanFlutter.create(Coordinates(latitude, longitude), DateTime.now(), CalculationMethod.KARACHI);
+    return await adhan.dhuhr;
+  }
+  Future<DateTime> getTodayIsharTime() async {
+    final adhan = AdhanFlutter.create(Coordinates(latitude, longitude), DateTime.now(), CalculationMethod.KARACHI);
+    return await adhan.isha;
+  }
+  Future<DateTime> getTodayMagribTime() async {
+    final adhan = AdhanFlutter.create(Coordinates(latitude, longitude), DateTime.now(), CalculationMethod.KARACHI);
+    return await adhan.maghrib;
+  }
+  Future<DateTime> getTodayAsorTime() async {
+    final adhan = AdhanFlutter.create(Coordinates(latitude, longitude), DateTime.now(), CalculationMethod.KARACHI);
+
+
+    if(majhabName=='hanafi'){
+      adhan.setMadhab(Madhab.HANAFI);
+    }else if(majhabName=='safe'){
+      adhan.setMadhab(Madhab.SHAFI);
+    }else{
+      adhan.setMadhab(Madhab.HANAFI);
+    }
+
+    return await adhan.asr;
+  }
+  Future<DateTime> getTodaySuriseTime() async {
+    final adhan = AdhanFlutter.create(Coordinates(latitude, longitude), DateTime.now(), CalculationMethod.KARACHI);
+    return await adhan.sunrise;
+  }
+  Future<Prayer> getCurrentPrayer() async {
+    final adhan = AdhanFlutter.create(Coordinates(latitude, longitude), DateTime.now(), CalculationMethod.KARACHI);
+    return await adhan.currentPrayer();
+  }
+
+  Future<Prayer> getNextPrayer() async {
+    final adhan = AdhanFlutter.create(Coordinates(latitude, longitude), DateTime.now(), CalculationMethod.KARACHI);
+    return await adhan.nextPrayer();
+  }
+
+  void zilaInitialize(){
+    Utils.getZilaNameFromPreference().then((zilaName){
+      setState(() {
+
+        zila=zilaName;
+
+        if(zilaName.trim()=='Dhaka'){
+          _getlatlngwithData(LatLng(23.7115253,90.4111451));
+        }else if(zilaName.trim()=='Faridpur'){
+          _getlatlngwithData(LatLng(23.6070822,89.8429406));
+        }else if(zilaName.trim()=='Gazipur'){
+          _getlatlngwithData(LatLng(24.0022858,90.4264283));
+        }else if(zilaName.trim()=='Gopalganj'){
+          _getlatlngwithData(LatLng(23.0050857,89.8266059));
+        }else if(zilaName.trim()=='Jamalpur'){
+          _getlatlngwithData(LatLng(24.937533,89.937775));
+        }else if(zilaName.trim()=='Kishoreganj'){
+          _getlatlngwithData(LatLng(24.444937,90.776575));
+        }else if(zilaName.trim()=='Madaripur'){
+          _getlatlngwithData(LatLng(23.164102,90.1896805));
+        }else if(zilaName.trim()=='Manikganj'){
+          _getlatlngwithData(LatLng(23.8644,90.0047));
+        }else if(zilaName.trim()=='Munshiganj'){
+          _getlatlngwithData(LatLng(23.5422,90.5305));
+        }else if(zilaName.trim()=='Mymensingh'){
+          _getlatlngwithData(LatLng(24.7471,90.4203));
+        }else if(zilaName.trim()=='Narayanganj'){
+          _getlatlngwithData(LatLng(23.63366,90.496482));
+        }else if(zilaName.trim()=='Narsingdi'){
+          _getlatlngwithData(LatLng(23.932233,90.71541));
+        }else if(zilaName.trim()=='Netrokona'){
+          _getlatlngwithData(LatLng(24.870955,90.727887));
+        }else if(zilaName.trim()=='Netrakona'){
+          _getlatlngwithData(LatLng(24.870955,90.727887));
+        }else if(zilaName.trim()=='Rajbari'){
+          _getlatlngwithData(LatLng(23.7574305,89.6444665));
+        }else if(zilaName.trim()=='Shariatpur'){
+          _getlatlngwithData(LatLng(23.2423,90.4348));
+        }else if(zilaName.trim()=='Sherpur'){
+          _getlatlngwithData(LatLng(25.0204933,90.0152966));
+        }else if(zilaName.trim()=='Tangail'){
+          _getlatlngwithData(LatLng(24.2513,89.9167));
+        }else if(zilaName.trim()=='Bogura'){
+          _getlatlngwithData(LatLng(24.8465228,89.377755));
+        }else if(zilaName.trim()=='Bogra'){
+          _getlatlngwithData(LatLng(24.8465228,89.377755));
+        }else if(zilaName.trim()=='Joypurhat'){
+          _getlatlngwithData(LatLng(25.0968,89.0227));
+        }else if(zilaName.trim()=='Jaipurhat'){
+          _getlatlngwithData(LatLng(25.0968,89.0227));
+        }else if(zilaName.trim()=='Naogaon'){
+          _getlatlngwithData(LatLng(24.7936,88.9318));
+        }else if(zilaName.trim()=='Natore'){
+          _getlatlngwithData(LatLng(24.420556,89.000282));
+        }else if(zilaName.trim()=='Nawabganj'){
+          _getlatlngwithData(LatLng(24.5965034,88.2775122));
+        }else if(zilaName.trim()=='Pabna'){
+          _getlatlngwithData(LatLng(23.998524,89.233645));
+        }else if(zilaName.trim()=='Rajshahi'){
+          _getlatlngwithData(LatLng(24.3745,88.6042));
+        }else if(zilaName.trim()=='Sirajgonj'){
+          _getlatlngwithData(LatLng(24.4533978,89.7006815));
+        }else if(zilaName.trim()=='Sirajganj'){
+          _getlatlngwithData(LatLng(24.4533978,89.7006815));
+        }else if(zilaName.trim()=='Dinajpur'){
+          _getlatlngwithData(LatLng(25.6217061,88.6354504));
+        }else if(zilaName.trim()=='Gaibandha'){
+          _getlatlngwithData(LatLng(25.328751,89.528088));
+        }else if(zilaName.trim()=='Kurigram'){
+          _getlatlngwithData(LatLng(25.805445,89.636174));
+        }else if(zilaName.trim()=='Lalmonirhat'){
+          _getlatlngwithData(LatLng(25.9923,89.2847));
+        }else if(zilaName.trim()=='Nilphamari'){
+          _getlatlngwithData(LatLng(25.931794,88.856006));
+        }else if(zilaName.trim()=='Panchagarh'){
+          _getlatlngwithData(LatLng(26.3411,88.5541606));
+        }else if(zilaName.trim()=='Rangpur'){
+          _getlatlngwithData(LatLng(25.7558096,89.244462));
+        }else if(zilaName.trim()=='Thakurgaon'){
+          _getlatlngwithData(LatLng(26.0336945,88.4616834));
+        }else if(zilaName.trim()=='Barguna'){
+          _getlatlngwithData(LatLng(22.0953,90.1121));
+        }else if(zilaName.trim()=='Barishal'){
+          _getlatlngwithData(LatLng(22.7010,90.3535));
+        }else if(zilaName.trim()=='Barisal'){
+          _getlatlngwithData(LatLng(22.7010,90.3535));
+        }else if(zilaName.trim()=='Bhola'){
+          _getlatlngwithData(LatLng(22.685923,90.648179));
+        }else if(zilaName.trim()=='Jhalokati'){
+          _getlatlngwithData(LatLng(22.6406,90.1987));
+        }else if(zilaName.trim()=='Jhalakati'){
+          _getlatlngwithData(LatLng(22.6406,90.1987));
+        }else if(zilaName.trim()=='Patuakhali'){
+          _getlatlngwithData(LatLng(22.3596316,90.3298712));
+        }else if(zilaName.trim()=='Pirojpur'){
+          _getlatlngwithData(LatLng(22.5841,89.9720));
+        }else if(zilaName.trim()=='Bandarban'){
+          _getlatlngwithData(LatLng(22.1953275,92.2183773));
+        }else if(zilaName.trim()=='Brahmanbaria'){
+          _getlatlngwithData(LatLng(23.9570904,91.1119286));
+        }else if(zilaName.trim()=='Chandpur'){
+          _getlatlngwithData(LatLng(23.2332585,90.6712912));
+        }else if(zilaName.trim()=='Chattogram'){
+          _getlatlngwithData(LatLng(22.335109,91.834073));
+        }else if(zilaName.trim()=='Chittagong'){
+          _getlatlngwithData(LatLng(22.335109,91.834073));
+        }else if(zilaName.trim()=='Cumilla'){
+          _getlatlngwithData(LatLng(23.4682747,91.1788135));
+        }else if(zilaName.trim()=='Comilla'){
+          _getlatlngwithData(LatLng(23.4682747,91.1788135));
+        }else if(zilaName.trim()=="Cox's Bazar"){
+          _getlatlngwithData(LatLng(21.4272,92.0058));
+        }else if(zilaName.trim()=='Feni'){
+          _getlatlngwithData(LatLng(23.0159,91.3976));
+        }else if(zilaName.trim()=='Khagrachari'){
+          _getlatlngwithData(LatLng(23.119285,91.984663));
+        }else if(zilaName.trim()=='Lakshmipur'){
+          _getlatlngwithData(LatLng(22.942477,90.841184));
+        }else if(zilaName.trim()=='Noakhali'){
+          _getlatlngwithData(LatLng(22.869563,91.099398));
+        }else if(zilaName.trim()=='Rangamati'){
+          _getlatlngwithData(LatLng(22.7324,92.2985));
+        }else if(zilaName.trim()=='Parbattya Chattagram'){
+          _getlatlngwithData(LatLng(22.7324,92.2985));
+        }else if(zilaName.trim()=='Habiganj'){
+          _getlatlngwithData(LatLng(24.374945,91.41553));
+        }else if(zilaName.trim()=='Maulvibazar'){
+          _getlatlngwithData(LatLng(24.482934,91.777417));
+        }else if(zilaName.trim()=='Moulvibazar'){
+          _getlatlngwithData(LatLng(24.482934,91.777417));
+        }else if(zilaName.trim()=='Sunamganj'){
+          _getlatlngwithData(LatLng(25.0658042,91.3950115));
+        }else if(zilaName.trim()=='Sylhet'){
+          _getlatlngwithData(LatLng(24.8897956,91.8697894));
+        }else if(zilaName.trim()=='Bagerhat'){
+          _getlatlngwithData(LatLng(22.651568,89.785938));
+        }else if(zilaName.trim()=='Chuadanga'){
+          _getlatlngwithData(LatLng(23.6401961,88.841841));
+        }else if(zilaName.trim()=='Jashore'){
+          _getlatlngwithData(LatLng(23.16643,89.2081126));
+        }else if(zilaName.trim()=='Jessore'){
+          _getlatlngwithData(LatLng(23.16643,89.2081126));
+        }else if(zilaName.trim()=='Jhenaidah'){
+          _getlatlngwithData(LatLng(23.5448176,89.1539213));
+        }else if(zilaName.trim()=='Khulna'){
+          _getlatlngwithData(LatLng(22.815774,89.568679));
+        }else if(zilaName.trim()=='Kushtia'){
+          _getlatlngwithData(LatLng(23.901258,89.120482));
+        }else if(zilaName.trim()=='Magura'){
+          _getlatlngwithData(LatLng(23.487337,89.419956));
+        }else if(zilaName.trim()=='Meherpur'){
+          _getlatlngwithData(LatLng(23.762213,88.631821));
+        }else if(zilaName.trim()=='Narail'){
+          _getlatlngwithData(LatLng(23.172534,89.512672));
+        }else if(zilaName.trim()=='Satkhira'){
+          _getlatlngwithData(LatLng(22.7185,89.0705));
+        }else if(zilaName.trim()=='Alipur'){
+          _getlatlngwithData(LatLng(22.32,88.24));
+        }else if(zilaName.trim()=='Alipurduar'){
+          _getlatlngwithData(LatLng(26.30,89.35));
+        }else if(zilaName.trim()=='Arambagh'){
+          _getlatlngwithData(LatLng(22.53,87.50));
+        }else if(zilaName.trim()=='Asansol'){
+          _getlatlngwithData(LatLng(23.42,87.01));
+        }else if(zilaName.trim()=='Baharampur'){
+          _getlatlngwithData(LatLng(24.06,88.19));
+        }else if(zilaName.trim()=='Baksa Duar	'){
+          _getlatlngwithData(LatLng(26.45,89.35));
+        }else if(zilaName.trim()=='Balurghat'){
+          _getlatlngwithData(LatLng(25.14,88.47));
+        }else if(zilaName.trim()=='Bankura'){
+          _getlatlngwithData(LatLng(23.14,87.07));
+        }else if(zilaName.trim()=='Barackpore'){
+          _getlatlngwithData(LatLng(22.46,88.24));
+        }else if(zilaName.trim()=='Baranagar'){
+          _getlatlngwithData(LatLng(22.38,88.22));
+        }else if(zilaName.trim()=='Barddhaman'){
+          _getlatlngwithData(LatLng(23.16,87.54));
+        }else if(zilaName.trim()=='Beldanga'){
+          _getlatlngwithData(LatLng(23.58,88.20));
+        }else if(zilaName.trim()=='Benapol'){
+          _getlatlngwithData(LatLng(23.04,88.32));
+        }else if(zilaName.trim()=='Bhadreswar'){
+          _getlatlngwithData(LatLng(22.49,88.20));
+        }else if(zilaName.trim()=='Bhatpara'){
+          _getlatlngwithData(LatLng(22.54,88.25));
+        }else if(zilaName.trim()=='Bishnupur'){
+          _getlatlngwithData(LatLng(23.05,87.23));
+        }else if(zilaName.trim()=='Calcutta'){
+          _getlatlngwithData(LatLng(22.34,88.24));
+        }else if(zilaName.trim()=='Chandernagore'){
+          _getlatlngwithData(LatLng(22.52,88.25));
+        }else if(zilaName.trim()=='Chandrakona'){
+          _getlatlngwithData(LatLng(22.44,87.33));
+        }else if(zilaName.trim()=='Chanduria'){
+          _getlatlngwithData(LatLng(22.56,88.55));
+        }else if(zilaName.trim()=='Chinsura'){
+          _getlatlngwithData(LatLng(22.53,88.27));
+        }else if(zilaName.trim()=='Chittaranjan'){
+          _getlatlngwithData(LatLng(23.50,87.00));
+        }else if(zilaName.trim()=='Contai'){
+          _getlatlngwithData(LatLng(21.50,87.48));
+        }else if(zilaName.trim()=='Damodar, R.	'){
+          _getlatlngwithData(LatLng(23.17,87.35));
+        }else if(zilaName.trim()=='Darjilling'){
+          _getlatlngwithData(LatLng(27.03,88.18));
+        }else if(zilaName.trim()=='Diamond Harbour	'){
+          _getlatlngwithData(LatLng(22.11,88.14));
+        }else if(zilaName.trim()=='Dum-Dum	'){
+          _getlatlngwithData(LatLng(22.38,88.38));
+        }else if(zilaName.trim()=='Duragapur'){
+          _getlatlngwithData(LatLng(22.30,87.20));
+        }else if(zilaName.trim()=='Haora'){
+          _getlatlngwithData(LatLng(22.35,88.23));
+        }else if(zilaName.trim()=='Ingraj Bazar	'){
+          _getlatlngwithData(LatLng(25.00,88.11));
+        }else if(zilaName.trim()=='Jalpaiguri'){
+          _getlatlngwithData(LatLng(26.32,88.46));
+        }else if(zilaName.trim()=='Jangipur'){
+          _getlatlngwithData(LatLng(24.28,88.05));
+        }else if(zilaName.trim()=='Katoya'){
+          _getlatlngwithData(LatLng(23.39,88.11));
+        }else if(zilaName.trim()=='Kharagpur'){
+          _getlatlngwithData(LatLng(22.30,87.20));
+        }else if(zilaName.trim()=='Koch Bihar	'){
+          _getlatlngwithData(LatLng(26.20,89.29));
+        }else if(zilaName.trim()=='Kotalpur'){
+          _getlatlngwithData(LatLng(23.01,87.38));
+        }else if(zilaName.trim()=='Krishnanagar'){
+          _getlatlngwithData(LatLng(23.24,88.33));
+        }else if(zilaName.trim()=='Lalbagh'){
+          _getlatlngwithData(LatLng(24.13,88.19));
+        }else if(zilaName.trim()=='Mehinipur'){
+          _getlatlngwithData(LatLng(22.25,87.21));
+        }else if(zilaName.trim()=='Murshidabad'){
+          _getlatlngwithData(LatLng(24.11,88.19));
+        }else if(zilaName.trim()=='Nabadwip'){
+          _getlatlngwithData(LatLng(23.24,88.23));
+        }else if(zilaName.trim()=='Nalhati'){
+          _getlatlngwithData(LatLng(22.54,88.28));
+        }else if(zilaName.trim()=='Purulliya'){
+          _getlatlngwithData(LatLng(23.2,88.28));
+        }else if(zilaName.trim()=='Raghunathpur'){
+          _getlatlngwithData(LatLng(23.32,86.43));
+        }else if(zilaName.trim()=='Ramaghat'){
+          _getlatlngwithData(LatLng(23.11,88.37));
+        }else if(zilaName.trim()=='Raniganj'){
+          _getlatlngwithData(LatLng(25.52,57.52));
+        }else if(zilaName.trim()=='Sagar I.	'){
+          _getlatlngwithData(LatLng(21.4,88.1));
+        }else if(zilaName.trim()=='Santipur'){
+          _getlatlngwithData(LatLng(23.14,88.29));
+        }else if(zilaName.trim()=='Serampore'){
+          _getlatlngwithData(LatLng(22.45,88.23));
+        }else if(zilaName.trim()=='Siliguri'){
+          _getlatlngwithData(LatLng(26.42,88.25));
+        }else if(zilaName.trim()=='Tamluk'){
+          _getlatlngwithData(LatLng(22.18,87.58));
+        }else if(zilaName.trim()=='Tilpara'){
+          _getlatlngwithData(LatLng(23.58,87.32));
+        }else if(zilaName.trim()=='Arakan Rakhine'){
+          _getlatlngwithData(LatLng(20.1041,93.5813));
+        }else if(zilaName.trim()=='Yangon'){
+          _getlatlngwithData(LatLng(16.8409,96.1735));
+        }
+        else{
+          print('Default Called');
+          _getlatlngwithData(LatLng(23.7115253,90.4111451));
+        }
+      });
+    });
   }
 
 }
