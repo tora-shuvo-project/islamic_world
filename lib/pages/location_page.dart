@@ -22,13 +22,15 @@ class LocationPage extends StatefulWidget {
 }
 
 class _LocationPageState extends State<LocationPage> {
+  final _jelacontroller = TextEditingController();
+  int selectedRadio=0;
+  Set<Marker> markers={};
+  Completer<GoogleMapController> _completer=Completer();
+  String _selectedJelaName;
+  String _dristric_from_gps;
   final PermissionHandler permissionHandler = PermissionHandler();
   Map<PermissionGroup, PermissionStatus> permissions;
-  void initState() {
-    super.initState();
-    requestLocationPermission();
-    _gpsService();
-  }
+
   Future<bool> _requestPermission(PermissionGroup permission) async {
     final PermissionHandler _permissionHandler = PermissionHandler();
     var result = await _permissionHandler.requestPermissions([permission]);
@@ -74,71 +76,91 @@ class _LocationPageState extends State<LocationPage> {
     if (!(await Geolocator().isLocationServiceEnabled())) {
       _checkGps();
       return null;
-    } else
+    } else{
+
+      markers.add(Marker(
+        markerId: MarkerId(widget.latLng.toString()),
+        position: widget.latLng,
+        infoWindow: InfoWindow(
+            title: '${widget.latLng}'
+        ),
+        icon: BitmapDescriptor.defaultMarker,
+      ));
+
+      _setlocation();
+
       return true;
-  }
-final _jelacontroller = TextEditingController();
-int selectedRadio=0;
-Set<Marker> markers={};
-Completer<GoogleMapController> _completer=Completer();
-String _selectedJelaName;
-String _dristric_from_gps;
-
-void _onmapCreated(GoogleMapController controller) {
-  _completer.complete(controller);
-}
-
-
-void _setlocation() async{
-
-  Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-  debugPrint('location: ${position.latitude}');
-  final coordinates = new Coordinates(widget.latLng.latitude,widget.latLng.longitude);
-  var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
-  var first = addresses.first;
-  print('${first.toMap()}');
-
-  _dristric_from_gps = first.subAdminArea.toString().replaceAll('District', "");
-
-  Utils.getZilaNameFromPreference().then((value){
-    setState(() {
-      print('$value');
-    });
-  });
-
-
-}
-
-void _handleRadioValueChange(int value) {
-  setState(() {
-    selectedRadio = value;
-
-    switch (selectedRadio) {
-      case 0:
-        print(_selectedJelaName);
-        print("Selected first value");
-        Utils.saveZilaFromPreference(_selectedJelaName).then((value){
-          setState(() {
-
-          });
-        });
-    
-    break;
-    case 1:
-      Utils.saveZilaFromPreference(_dristric_from_gps).then((value){
-        setState(() {
-
-        });
-      });
-
-      print("Selected Second value");
-    break;
     }
+
+  }
+
+
+
+  void _onmapCreated(GoogleMapController controller) {
+    _completer.complete(controller);
+  }
+
+
+  void _setlocation() async{
+
+    Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    debugPrint('location: ${position.latitude}');
+    final coordinates = new Coordinates(widget.latLng.latitude,widget.latLng.longitude);
+    var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    var first = addresses.first;
+    print('${first.toMap()}');
+
+    _dristric_from_gps = first.subAdminArea.toString().replaceAll(' District', "");
+
+    Utils.getZilaNameFromPreference().then((value){
+      setState(() {
+        print('Shuvo $value');
+      });
     });
-}
 
 
+  }
 
+  void _handleRadioValueChange(int value) {
+    setState(() {
+      selectedRadio = value;
+
+      switch (selectedRadio) {
+        case 0:
+          print(_selectedJelaName);
+          print("Selected first value");
+          Utils.saveZilaFromPreference(_selectedJelaName).then((value){
+            setState(() {
+
+            });
+          });
+
+          break;
+        case 1:
+          Utils.saveZilaFromPreference(_dristric_from_gps).then((value){
+            setState(() {
+
+            });
+          });
+
+          print("Selected Second value");
+          break;
+      }
+    });
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    selectedRadio =0;
+    _selectedJelaName="";
+
+    requestLocationPermission();
+    _gpsService();
+
+
+  }
 
   Widget _appBar(){
     return Container(
@@ -188,35 +210,35 @@ void _handleRadioValueChange(int value) {
         },
         child: Scaffold(
           appBar:PreferredSize(child: _appBar(),preferredSize: Size(MediaQuery.of(context).size.width, 120),) ,
-          body:  SingleChildScrollView(
+          body: SingleChildScrollView(
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
               child: Column(
                 children: <Widget>[
-                        Container(
+                  Container(
 
-                            child: DropDownField(
-                                  controller: _jelacontroller,
-                              hintText: "জেলা নির্বাচন করুন",
-                              enabled:true,
-                              items: _jelaNames,
-                              onValueChanged: (value){
-                                    setState(() {
-                                   _selectedJelaName= value;
-                                   if(selectedRadio==0){
-                                     Utils.saveZilaFromPreference(_selectedJelaName).then((value){
-                                       setState(() {
+                    child: DropDownField(
+                      controller: _jelacontroller,
+                      hintText: "জেলা নির্বাচন করুন",
+                      enabled:true,
+                      items: _jelaNames,
+                      onValueChanged: (value){
+                        setState(() {
+                          _selectedJelaName= value;
+                          if(selectedRadio==0){
+                            Utils.saveZilaFromPreference(_selectedJelaName).then((value){
+                              setState(() {
 
-                                       });
-                                     });
-                                   }
-                                   print(value);
-                                    });
-                              },
+                              });
+                            });
+                          }
+                          print(value);
+                        });
+                      },
 
-                            ),
+                    ),
 
-                        ),
+                  ),
                   SizedBox(height: 10,),
                   Row(
                     children: <Widget>[
@@ -262,21 +284,21 @@ void _handleRadioValueChange(int value) {
                   ),
 
                   Container(
-                    height: 500,
-                    child: Stack(
-                      children: <Widget>[
-                        GoogleMap(
-                          onMapCreated: _onmapCreated,
-                          initialCameraPosition: CameraPosition(
-                            target: widget.latLng,zoom: 15,
+                      height: 500,
+                      child: Stack(
+                        children: <Widget>[
+                          GoogleMap(
+                            onMapCreated: _onmapCreated,
+                            initialCameraPosition: CameraPosition(
+                              target: widget.latLng,zoom: 15,
+                            ),
+                            mapType: MapType.satellite,
+                            myLocationButtonEnabled: true,
+                            myLocationEnabled: true,
+                            markers: markers,
                           ),
-                          mapType: MapType.satellite,
-                          myLocationButtonEnabled: true,
-                          myLocationEnabled: true,
-                          markers: markers,
-                        ),
-                      ],
-                    )
+                        ],
+                      )
                   ),
                 ],
               ),
