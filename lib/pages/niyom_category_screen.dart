@@ -32,7 +32,7 @@ class _NiyomCategoryScreenState extends State<NiyomCategoryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${widget.categoryName}'),
+        title:  Text('${widget.categoryName}'),
       ),
       body: ListView.builder(
           itemCount: niyomModels.length,

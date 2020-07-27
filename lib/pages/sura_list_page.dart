@@ -84,10 +84,13 @@ class _SuraListPageState extends State<SuraListPage> {
                     Expanded(flex: 2,
                       child: Container(
                         child: FlatButton(
-                          child: Text('পারা ক্রমে',style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),),
+                          child: Hero(
+                            tag: "parakrome",
+                            child: Text('পারা ক্রমে',style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),),
+                          ),
                           onPressed: (){
                             Navigator.of(context).push(MaterialPageRoute(
                               builder: (context)=>ParaWiseListPage()

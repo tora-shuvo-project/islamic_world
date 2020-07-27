@@ -36,6 +36,7 @@ dependencies:
   shared_preferences: ^0.5.7+3
   dropdown_formfield: ^0.1.2
   flutter_speed_dial: ^1.2.5
+  animations: ^1.1.1
   audioplayers: ^0.15.1
   adhan_flutter: ^0.0.4
   flutter_native_timezone: ^1.0.4

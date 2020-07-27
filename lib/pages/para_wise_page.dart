@@ -63,7 +63,7 @@ class _ParaWiseListPageState extends State<ParaWiseListPage> {
                         Navigator.of(context).pop();
                       }),
                     ),
-                    Expanded(flex:5,child: Text("পারা ক্রমে", style: TextStyle(color: Colors.white, fontSize: 20),)),
+                    Expanded(flex:5,child: Hero(tag:"parakrome",child: Text("পারা ক্রমে", style: TextStyle(color: Colors.white, fontSize: 20),))),
                     Expanded(
                       child: IconButton(icon: Icon(Icons.search,color: Colors.white,),
                         onPressed: (){
