@@ -96,7 +96,7 @@ class _QuranWordPagesDetailsScreenState extends State<QuranWordPagesDetailsScree
       print('not connected');
       _scaffoldKey.currentState.showSnackBar(
           new SnackBar(
-            backgroundColor: Colors.green,
+            backgroundColor: Colors.red,
               elevation: 2,
               duration: Duration(seconds: 5),
               content: Text('Please check your internet connection first time it download for you from server \'Thanks',style: TextStyle(

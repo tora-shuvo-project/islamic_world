@@ -22,6 +22,14 @@ class LocationPage extends StatefulWidget {
 }
 
 class _LocationPageState extends State<LocationPage> {
+
+  final _jelacontroller = TextEditingController();
+  int selectedRadio=0;
+  Set<Marker> markers={};
+  Completer<GoogleMapController> _completer=Completer();
+  String _selectedJelaName;
+  String _dristric_from_gps;
+
   final PermissionHandler permissionHandler = PermissionHandler();
   Map<PermissionGroup, PermissionStatus> permissions;
   void initState() {
@@ -77,12 +85,7 @@ class _LocationPageState extends State<LocationPage> {
     } else
       return true;
   }
-final _jelacontroller = TextEditingController();
-int selectedRadio=0;
-Set<Marker> markers={};
-Completer<GoogleMapController> _completer=Completer();
-String _selectedJelaName;
-String _dristric_from_gps;
+
 
 void _onmapCreated(GoogleMapController controller) {
   _completer.complete(controller);

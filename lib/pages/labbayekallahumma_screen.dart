@@ -64,9 +64,7 @@ class _Labbayekallahumma_screenState extends State<Labbayekallahumma_screen> {
       }
 
 
-
-      print('Downloading.....');
-      Toast.show('Downloading........', context,duration: 1,gravity: Toast.CENTER);
+      Toast.show('Downloading........', context,duration: 1,backgroundColor: Colors.green,gravity: Toast.CENTER);
 
 
       ///if file not present in local system then fetch it from server
@@ -88,7 +86,7 @@ class _Labbayekallahumma_screenState extends State<Labbayekallahumma_screen> {
       /// writing bytes data of response in the file.
       await file.writeAsBytes(bytes);
 
-      Toast.show('Download complete Please Tab play button', context,duration: 2,gravity: Toast.CENTER);
+      Toast.show('Download complete Please Tab play button', context,duration: 2,backgroundColor: Colors.green,gravity: Toast.CENTER);
       /// returning file.
       return file.toString();
     }
@@ -98,7 +96,7 @@ class _Labbayekallahumma_screenState extends State<Labbayekallahumma_screen> {
       print(err);
       _scaffoldKey.currentState.showSnackBar(
           new SnackBar(
-              backgroundColor: Colors.green,
+              backgroundColor: Colors.red,
               elevation: 2,
               duration: Duration(seconds: 5),
               content: Text('Please check your internet connection first time it download for you from server \'Thanks',style: TextStyle(

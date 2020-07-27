@@ -352,7 +352,7 @@ class _ParaWiseQuranDetailsScreenState extends State<ParaWiseQuranDetailsScreen>
                                                           print('not connected');
                                                           _scaffoldKey.currentState.showSnackBar(
                                                               new SnackBar(
-                                                                  backgroundColor: Colors.green,
+                                                                  backgroundColor: Colors.red,
                                                                   elevation: 2,
                                                                   duration: Duration(seconds: 5),
                                                                   content: Text('Please check your internet connection \'Thanks',style: TextStyle(
