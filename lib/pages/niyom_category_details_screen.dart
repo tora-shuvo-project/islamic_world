@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:searchtosu/FinalModels/niyom_models.dart';
+import 'package:searchtosu/pages/home_screen.dart';
 import 'package:searchtosu/pages/settings_page.dart';
 import 'package:searchtosu/utils/utils.dart';
 
@@ -28,37 +29,72 @@ class _NiyomCategoryDetailsScreenState extends State<NiyomCategoryDetailsScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('${widget.niyomModels.name}'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.settings,color: Colors.white,),
-            onPressed: (){
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context)=>SettingsPage()
-              )).then((_){
-                setState(() {
-                  Utils.getArabiFontSizeFromPreference().then((value){
-                    setState(() {
-                      _fontSize=double.parse(value);
-                    });
-                  });
-                });
-              });
-            },
-          ),
-        ],
-      ),
-      body: ListView(
-        children: <Widget>[
-          Container(
+    Widget _appBar(){
+      return Container(
 
-              padding: EdgeInsets.all(16),
-              child: Text('${widget.niyomModels.description}',style: TextStyle(
-                fontSize: _fontSize-1,
-              ),))
-        ],
+        child: ClipRRect(
+          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30)),
+          child: Container(
+            height:70,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+                gradient: LinearGradient(colors: [
+                  const Color(0xff178723),
+                  const Color(0xff27AB4B)
+                ])
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 17, vertical: 10),
+            child: Container(
+              color: Colors.green.withOpacity(.1),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  IconButton(icon: Icon(Icons.arrow_back, color: Colors.white,), onPressed: (){
+                    Navigator.of(context).pop();
+                  }),
+                  FittedBox(
+                    child: Text('${widget.niyomModels.name}',style:  TextStyle(
+                        color: Colors.white, fontSize: 20
+                    ), ),
+                  ),
+
+                IconButton(icon: Icon(Icons.settings,color: Colors.white,),
+                  onPressed: (){
+                    Navigator.of(context).push(ScaleRoute(
+                        page: SettingsPage()
+                    )).then((_){
+                      setState(() {
+                        Utils.getArabiFontSizeFromPreference().then((value){
+                          setState(() {
+                            _fontSize=double.parse(value);
+                          });
+                        });
+                      });
+                    });
+                  },)
+                ],
+              ),
+            ),
+
+          ),
+
+        ),
+      );
+    }
+    return SafeArea(
+      child: Scaffold(
+        appBar: PreferredSize(child: _appBar(),preferredSize: Size(MediaQuery.of(context).size.width, 120),) ,
+        body: ListView(
+          children: <Widget>[
+            Container(
+
+                padding: EdgeInsets.all(16),
+                child: Text('${widget.niyomModels.description}',style: TextStyle(
+                  fontSize: _fontSize-1,
+                ),))
+          ],
+        ),
       ),
     );
   }
