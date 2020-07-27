@@ -605,7 +605,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         children: <Widget>[
                                           InkWell(
                                             onTap: (){
-                                              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>SuraListPage()));
+                                              Navigator.of(context).push(ScaleRoute(page: SuraListPage()));
                                             },
                                             child: Column(
                                               children: <Widget>[
@@ -623,8 +623,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                           InkWell(
                                             onTap: (){
-                                              Navigator.of(context).push(MaterialPageRoute(
-                                        builder: (context)=>DoyaNameScren()
+                                              Navigator.of(context).push(ScaleRoute(
+                                        page: DoyaNameScren()
                                     ));
                                             },
                                             child: Column(
@@ -641,7 +641,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ),
                                           InkWell(
                                             onTap: (){
-                                              Navigator.of(context).pushNamed(QuranWordPages.route);
+                                              Navigator.of(context).push(ScaleRoute(page: QuranWordPages()));
                                             },
                                             child: Column(
                                               children: <Widget>[
@@ -658,8 +658,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                           InkWell(
                                             onTap: (){
-                                              Navigator.of(context).push(MaterialPageRoute(
-                                        builder: (context)=>CommentQuestionScreen()
+                                              Navigator.of(context).push(ScaleRoute(
+                                        page:CommentQuestionScreen()
                                     ));
                                             },
                                             child: Column(
@@ -683,8 +683,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         children: <Widget>[
                                           InkWell(
                                             onTap: (){
-                                              Navigator.of(context).push(MaterialPageRoute(
-                                                  builder: (context)=>OjifaScreen()
+                                              Navigator.of(context).push(ScaleRoute(
+                                                  page: OjifaScreen()
                                               ));
                                             },
                                             child: Column(
@@ -703,7 +703,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                           InkWell(
                                             onTap: (){
-                                              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ShomoyShuchi()));
+                                              Navigator.of(context).push(ScaleRoute(page:ShomoyShuchi()));
                                             },
                                             child: Column(
                                               children: <Widget>[
@@ -720,7 +720,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                           InkWell(
                                             onTap: (){
-                                              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>HadisScreen()));
+                                              Navigator.of(context).push(ScaleRoute(page: HadisScreen() ));
                                             },
                                             child: Column(
                                               children: <Widget>[
@@ -737,7 +737,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                           InkWell(
                                             onTap: (){
-                                              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>NiyomScreen()));
+                                              Navigator.of(context).push(ScaleRoute(page:NiyomScreen()));
                                             },
                                             child: Column(
                                               children: <Widget>[
@@ -760,7 +760,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       children: <Widget>[
                                         InkWell(
                                           onTap: (){
-                                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>KiblaScreen()));
+                                            Navigator.of(context).push(ScaleRoute(page: KiblaScreen()));
                                           },
                                           child: Column(
                                             children: <Widget>[
@@ -777,8 +777,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                         InkWell(
                                           onTap: (){
-                                            Navigator.of(context).push(MaterialPageRoute(
-                                        builder: (context)=>NearByMosqueScreen()
+                                            Navigator.of(context).push(ScaleRoute(
+                                        page: NearByMosqueScreen()
                                     ));
                                           },
                                           child: Column(
@@ -796,7 +796,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                         InkWell(
                                           onTap: (){
-                                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>TasbihScreen()));
+                                            Navigator.of(context).push(ScaleRoute(page:TasbihScreen()));
                                           },
                                           child: Column(
                                             children: <Widget>[
@@ -813,7 +813,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                         InkWell(
                                           onTap: (){
-                                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>CalenderScreen()));
+                                            Navigator.of(context).push(ScaleRoute(page: CalenderScreen()));
                                           },
                                           child: Column(
                                             children: <Widget>[
@@ -859,7 +859,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         Expanded(
                                           child: InkWell(
                                             onTap: (){
-                                              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>BlogPages()));
+                                              Navigator.of(context).push(ScaleRoute(page: BlogPages()));
                                             },
                                             child: Column(
                                               children: <Widget>[
@@ -878,7 +878,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         Expanded(
                                           child: InkWell(
                                             onTap: (){
-                                              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>SettingsPage()));
+                                              Navigator.of(context).push(ScaleRoute(page:  SettingsPage()));
                                             },
                                             child: Column(
                                               children: <Widget>[
@@ -1446,4 +1446,35 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+}
+
+class ScaleRoute extends PageRouteBuilder {
+  final Widget page;
+  ScaleRoute({@required this.page})
+      : super(
+    pageBuilder: (
+        BuildContext context,
+        Animation<double> animation,
+        Animation<double> secondaryAnimation,
+        ) =>
+    page,
+    transitionsBuilder: (
+        BuildContext context,
+        Animation<double> animation,
+        Animation<double> secondaryAnimation,
+        Widget child,
+        ) =>
+        ScaleTransition(
+          scale: Tween<double>(
+            begin: 0.0,
+            end: 1.0,
+          ).animate(
+            CurvedAnimation(
+              parent: animation,
+              curve: Curves.fastOutSlowIn,
+            ),
+          ),
+          child: child,
+        ),
+  );
 }

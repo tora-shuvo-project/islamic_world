@@ -31,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       vsync: this,
     )..repeat();
     Timer(
-        Duration(seconds: 3),
+        Duration(seconds: 1),
             (){
               Navigator.pushReplacementNamed(context, HomeScreen.route);
             });
