@@ -193,11 +193,49 @@ class _Labbayekallahumma_screenState extends State<Labbayekallahumma_screen> {
 
   @override
   Widget build(BuildContext context) {
+    Widget _appBar(){
+      return Container(
+        color: Colors.green,
+        child: ClipRRect(
+          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30)),
+          child: Container(
+            height:70,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+                gradient: LinearGradient(colors: [
+                  const Color(0xff178723),
+                  const Color(0xff27AB4B)
+                ])
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 17, vertical: 10),
+            child: Container(
+              color: Colors.green.withOpacity(.1),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  IconButton(icon: Icon(Icons.arrow_back, color: Colors.white,), onPressed: (){
+                    Navigator.of(context).pop();
+                  }),
+                  FittedBox(
+                    child: Text('লাব্বাইকাল-লাহুম্মা-লাব্বাইক',style:  TextStyle(
+                        color: Colors.white, fontSize: 20
+                    ), ),
+                  ),
+
+
+                ],
+              ),
+            ),
+
+          ),
+
+        ),
+      );
+    }
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar(
-        title: Text('লাব্বাইকাল-লাহুম্মা-লাব্বাইক'),
-      ),
+      appBar:PreferredSize(child: _appBar(),preferredSize: Size(MediaQuery.of(context).size.width, 120),),
         body: Column(
           children: <Widget>[
             Expanded(
