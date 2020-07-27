@@ -79,10 +79,10 @@ class NiyomScreen extends StatelessWidget {
               child: InkWell(
                   onTap: (){
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context)=>NiyomCategoryScreen(5,'মূত ব্যাক্তি')
+                        builder: (context)=>NiyomCategoryScreen(5,'মৃত ব্যাক্তি')
                     ));
                   },
-                  child: Text('মূত ব্যাক্তি',style: textStyle,)),
+                  child: Text('মৃত ব্যাক্তি',style: textStyle,)),
             ),
           ),
         ],

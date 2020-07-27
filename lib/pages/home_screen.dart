@@ -847,7 +847,9 @@ class _HomeScreenState extends State<HomeScreen> {
           color: Colors.green.withOpacity(.5),
           child: ListTile(
               onTap: (){
-
+                setState(() {
+                  isOpenQuran=!isOpenQuran;
+                });
               },
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,

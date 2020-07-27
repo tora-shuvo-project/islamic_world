@@ -94,11 +94,11 @@ class OjifaScreen extends StatelessWidget {
                     children: <Widget>[
                       Image.asset("images/ojifapageIcon.png", height: 50, width: 50,),
                       FlatButton(
-                        child: Text('দরূদ',style: TextStyle(color: Colors.black,fontSize: 20),),
-                                    onPressed: (){
-                                      Navigator.of(context).push(MaterialPageRoute(
-                                          builder: (context)=>SubOjifaScreen(2,'দরূদ')
-                                      ));
+                        child:  Text('দুরূদ পড়ার নিয়ম',style: TextStyle(color: Colors.black,fontSize: 20),),
+                        onPressed: (){
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context)=>OjifaDetailsScreen(2,1,'দুরূদ  পড়ার নিয়ম')
+                          ));
                         },
                       ),
                       Image.asset("images/ojifapageIcon.png", height: 50, width: 50,),
@@ -125,10 +125,10 @@ class OjifaScreen extends StatelessWidget {
                     children: <Widget>[
                       Image.asset("images/ojifapageIcon.png", height: 50, width: 50,),
                       FlatButton(
-                        child:  Text('খতম',style: TextStyle(color: Colors.black,fontSize: 20),),
+                        child: Text('দরূদে ইব্রাহিম',style: TextStyle(color: Colors.black,fontSize: 20),),
                                     onPressed: (){
                                       Navigator.of(context).push(MaterialPageRoute(
-                                          builder: (context)=>SubOjifaScreen(3,'খতম')
+                                          builder: (context)=>OjifaDetailsScreen(2,2,'দরূদে ইব্রাহিম')
                                       ));
                         },
                       ),
@@ -160,37 +160,6 @@ class OjifaScreen extends StatelessWidget {
                                     onPressed: (){
                                       Navigator.of(context).push(MaterialPageRoute(
                                           builder: (context)=>OjifaDetailsScreen(4,1,'ইসমে আজম')
-                                      ));
-                        },
-                      ),
-                      Image.asset("images/ojifapageIcon.png", height: 50, width: 50,),
-                    ],
-                  ),
-                  Container(
-                      height: 3,
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(colors: [
-                            const Color(0xffffffff),
-                            const Color(0xff178723),
-                            const Color(0xffffffff),
-                          ]))
-                  )
-                ],
-              ),
-            ),
-            SizedBox(height: 5,),
-            Container(
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Image.asset("images/ojifapageIcon.png", height: 50, width: 50,),
-                      FlatButton(
-                        child:  Text('আসমায়ে হুসনা',style: TextStyle(color: Colors.black,fontSize: 20),),
-                                    onPressed: (){
-                                      Navigator.of(context).push(MaterialPageRoute(
-                                          builder: (context)=>OjifaDetailsScreen(5,1,'আসমায়ে হুসনা')
                                       ));
                         },
                       ),
