@@ -44,7 +44,7 @@ class _BlogPagesState extends State<BlogPages> {
                     Navigator.of(context).pop();
                   }),
                   FittedBox(
-                    child: Text('Islamic Blog',style:  TextStyle(
+                    child: Text('ইসলামিক ব্লগ',style:  TextStyle(
                         color: Colors.white, fontSize: 20
                     ), ),
                   ),
@@ -74,7 +74,7 @@ class _BlogPagesState extends State<BlogPages> {
                   fontSize: 20,
 
                 ),),
-                title: Text('True Muslims',style: TextStyle(fontSize: 16),),
+                title: Text('ট্রু মুসলিম',style: TextStyle(fontSize: 16),),
                 subtitle: Text('Type: English (Audio)'),
                 trailing: IconButton(
                   icon: Icon(Icons.keyboard_arrow_right),
@@ -95,7 +95,7 @@ class _BlogPagesState extends State<BlogPages> {
                   fontSize: 20,
 
                 ),),
-                title: Text('Way To Tawheed',style: TextStyle(fontSize: 16),),
+                title: Text('ওয়ে টু তাওহীদ',style: TextStyle(fontSize: 16),),
                 subtitle: Text('Type: Bangla (Islamic Books)'),
                 trailing: IconButton(
                   icon: Icon(Icons.keyboard_arrow_right),
@@ -116,7 +116,7 @@ class _BlogPagesState extends State<BlogPages> {
                   fontSize: 20,
 
                 ),),
-                title: Text('Alquran Bd',style: TextStyle(fontSize: 16),),
+                title: Text('আল-কুরআন বিডি',style: TextStyle(fontSize: 16),),
                 subtitle: Text('Type: Bangla (Read Quran)'),
                 trailing: IconButton(
                   icon: Icon(Icons.keyboard_arrow_right),
@@ -137,7 +137,7 @@ class _BlogPagesState extends State<BlogPages> {
                   fontSize: 20,
 
                 ),),
-                title: Text('Quraan Shareef',style: TextStyle(fontSize: 16),),
+                title: Text('কুরআন-শরিফ',style: TextStyle(fontSize: 16),),
                 subtitle: Text('Type: Bangla (Read Quran)'),
                 trailing: IconButton(
                   icon: Icon(Icons.keyboard_arrow_right),
@@ -158,7 +158,7 @@ class _BlogPagesState extends State<BlogPages> {
                   fontSize: 20,
 
                 ),),
-                title: Text('Deen Ilhaq',style: TextStyle(fontSize: 16),),
+                title: Text('দীন ইলহক',style: TextStyle(fontSize: 16),),
                 subtitle: Text('Type: Bangla (Blog)'),
                 trailing: IconButton(
                   icon: Icon(Icons.keyboard_arrow_right),
@@ -179,7 +179,7 @@ class _BlogPagesState extends State<BlogPages> {
                   fontSize: 20,
 
                 ),),
-                title: Text('Islam Qa Bd',style: TextStyle(fontSize: 16),),
+                title: Text('ইসলাম কা বিডি',style: TextStyle(fontSize: 16),),
                 subtitle: Text('Type: Bangla (Blog & Question)'),
                 trailing: IconButton(
                   icon: Icon(Icons.keyboard_arrow_right),
@@ -200,7 +200,7 @@ class _BlogPagesState extends State<BlogPages> {
                   fontSize: 20,
 
                 ),),
-                title: Text('Omuk Der Kotha',style: TextStyle(fontSize: 16),),
+                title: Text('অমুক দের কথা',style: TextStyle(fontSize: 16),),
                 subtitle: Text('Type: Bangla (Thesis & Nastik)'),
                 trailing: IconButton(
                   icon: Icon(Icons.keyboard_arrow_right),
@@ -219,7 +219,7 @@ class _BlogPagesState extends State<BlogPages> {
                   fontSize: 20,
 
                 ),),
-                title: Text('Hadith Bd',style: TextStyle(fontSize: 16),),
+                title: Text('হাদীদ বিডি',style: TextStyle(fontSize: 16),),
                 subtitle: Text('Type: Bangla (Hadith)'),
                 trailing: IconButton(
                   icon: Icon(Icons.keyboard_arrow_right),
@@ -240,7 +240,7 @@ class _BlogPagesState extends State<BlogPages> {
                   fontSize: 20,
 
                 ),),
-                title: Text('Tabligh Jammat',style: TextStyle(fontSize: 16),),
+                title: Text('তাবলিক জামাত',style: TextStyle(fontSize: 16),),
                 subtitle: Text('Type: Bangla (Tabligh)'),
                 trailing: IconButton(
                   icon: Icon(Icons.keyboard_arrow_right),
@@ -261,7 +261,7 @@ class _BlogPagesState extends State<BlogPages> {
                   fontSize: 20,
 
                 ),),
-                title: Text('Habibur',style: TextStyle(fontSize: 16),),
+                title: Text('হাবিবুর',style: TextStyle(fontSize: 16),),
                 subtitle: Text('Type: English (Prayer Time)'),
                 trailing: IconButton(
                   icon: Icon(Icons.keyboard_arrow_right),
@@ -280,7 +280,7 @@ class _BlogPagesState extends State<BlogPages> {
                   fontSize: 20,
 
                 ),),
-                title: Text('Free Quran Mp3',style: TextStyle(fontSize: 16),),
+                title: Text('ফ্রী কুরআন Mp3',style: TextStyle(fontSize: 16),),
                 subtitle: Text('Type: English (Audio)'),
                 trailing: IconButton(
                   icon: Icon(Icons.keyboard_arrow_right),
@@ -299,7 +299,7 @@ class _BlogPagesState extends State<BlogPages> {
                   fontSize: 20,
 
                 ),),
-                title: Text('House Of Quran',style: TextStyle(fontSize: 16),),
+                title: Text('হাউস অফ কুরআন',style: TextStyle(fontSize: 16),),
                 subtitle: Text('Type: English (Web App Quran)'),
                 trailing: IconButton(
                   icon: Icon(Icons.keyboard_arrow_right),
@@ -320,7 +320,7 @@ class _BlogPagesState extends State<BlogPages> {
                   fontSize: 20,
 
                 ),),
-                title: Text('Tauheed Sunnat',style: TextStyle(fontSize: 16),),
+                title: Text('তাওহীদ সুন্নাত',style: TextStyle(fontSize: 16),),
                 subtitle: Text('Type: English (Audio)'),
                 trailing: IconButton(
                   icon: Icon(Icons.keyboard_arrow_right),
@@ -341,7 +341,7 @@ class _BlogPagesState extends State<BlogPages> {
                   fontSize: 20,
 
                 ),),
-                title: Text('Backto Jannah',style: TextStyle(fontSize: 16),),
+                title: Text('বাঁকতও জান্নাহ',style: TextStyle(fontSize: 16),),
                 subtitle: Text('Type: English (Blog)'),
                 trailing: IconButton(
                   icon: Icon(Icons.keyboard_arrow_right),
@@ -362,7 +362,7 @@ class _BlogPagesState extends State<BlogPages> {
                   fontSize: 20,
 
                 ),),
-                title: Text('Islam Qa',style: TextStyle(fontSize: 16),),
+                title: Text('ইসলাম কা',style: TextStyle(fontSize: 16),),
                 subtitle: Text('type: Bangla (Question)'),
                 trailing: IconButton(
                   icon: Icon(Icons.keyboard_arrow_right),
@@ -383,7 +383,7 @@ class _BlogPagesState extends State<BlogPages> {
                   fontSize: 20,
 
                 ),),
-                title: Text('Quraner Alo',style: TextStyle(fontSize: 16),),
+                title: Text('কুরআনের আলো',style: TextStyle(fontSize: 16),),
                 subtitle: Text('Type: Bangla (Blog)'),
                 trailing: IconButton(
                   icon: Icon(Icons.keyboard_arrow_right),
@@ -404,7 +404,7 @@ class _BlogPagesState extends State<BlogPages> {
                   fontSize: 20,
 
                 ),),
-                title: Text('Amar Spondon',style: TextStyle(fontSize: 16),),
+                title: Text('আমার স্পন্ধন',style: TextStyle(fontSize: 16),),
                 subtitle: Text('Type: Bangla (Blog)'),
                 trailing: IconButton(
                   icon: Icon(Icons.keyboard_arrow_right),
@@ -425,7 +425,7 @@ class _BlogPagesState extends State<BlogPages> {
                   fontSize: 20,
 
                 ),),
-                title: Text('Adnan Faisal',style: TextStyle(fontSize: 16),),
+                title: Text('আদনান ফয়সাল',style: TextStyle(fontSize: 16),),
                 subtitle: Text('Type: Bangla (Blog)'),
                 trailing: IconButton(
                   icon: Icon(Icons.keyboard_arrow_right),
@@ -446,7 +446,7 @@ class _BlogPagesState extends State<BlogPages> {
                   fontSize: 20,
 
                 ),),
-                title: Text('Quraner Kotha',style: TextStyle(fontSize: 16),),
+                title: Text('কুরআনের কথা',style: TextStyle(fontSize: 16),),
                 subtitle: Text('Type: Bangla (Blog)'),
                 trailing: IconButton(
                   icon: Icon(Icons.keyboard_arrow_right),
@@ -465,7 +465,7 @@ class _BlogPagesState extends State<BlogPages> {
                   fontSize: 20,
 
                 ),),
-                title: Text('Nak Bangla',style: TextStyle(fontSize: 16),),
+                title: Text('নাক বাংলা',style: TextStyle(fontSize: 16),),
                 subtitle: Text('Type: Bangla (Noman Ali Khan)'),
                 trailing: IconButton(
                   icon: Icon(Icons.keyboard_arrow_right),
@@ -484,7 +484,7 @@ class _BlogPagesState extends State<BlogPages> {
                   fontSize: 20,
 
                 ),),
-                title: Text('As Sunnah Trust',style: TextStyle(fontSize: 16),),
+                title: Text('আস সুন্নাহ ট্রাস্ট',style: TextStyle(fontSize: 16),),
                 subtitle: Text('Type: Bangla (Blog)'),
                 trailing: IconButton(
                   icon: Icon(Icons.keyboard_arrow_right),
@@ -505,7 +505,7 @@ class _BlogPagesState extends State<BlogPages> {
                   fontSize: 20,
 
                 ),),
-                title: Text('Muslim Media',style: TextStyle(fontSize: 16),),
+                title: Text('মুসলিম মিডিয়া',style: TextStyle(fontSize: 16),),
                 subtitle: Text('Type: Bangla (Blog)'),
                 trailing: IconButton(
                   icon: Icon(Icons.keyboard_arrow_right),

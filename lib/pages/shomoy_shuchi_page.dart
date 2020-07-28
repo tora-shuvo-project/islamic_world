@@ -188,7 +188,7 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
                                       mainAxisSize: MainAxisSize.min,
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: <Widget>[
-                                        Text("পরবর্তি ওয়াক্ত",style: TextStyle(fontSize: 17,color: Colors.white),),
+                                        Text("পরবর্তী ওয়াক্ত",style: TextStyle(fontSize: 17,color: Colors.white),),
                                         Center(
                                           child: FutureBuilder(
                                                 future: getNextPrayer(),
@@ -417,7 +417,7 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
                             Column(
                               children: <Widget>[
                                 Image.asset("images/sunrise.png", width: 50, height:50 ,),
-                                Text("Sunrise", style: TextStyle(color: Colors.white)),
+                                Text("সূর্যদয়ঃ", style: TextStyle(color: Colors.white)),
                                 Container(child:
 
                                 FutureBuilder(
@@ -446,7 +446,7 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
                             Column(
                               children: <Widget>[
                                 Image.asset("images/sunset.png", width: 50, height:50 ,), //Text(Sunset,style: TextStyle(color: Colors.white))
-                                Text("Sunset",style: TextStyle(color: Colors.white)),
+                                Text("সূর্যাস্তঃ",style: TextStyle(color: Colors.white)),
                                 Container(child:
                                 FutureBuilder(
                                   future: getTodayMagribTime(),

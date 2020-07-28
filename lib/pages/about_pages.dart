@@ -478,7 +478,7 @@ class _AboutPagesState extends State<AboutPages> {
                   child: ListTile(onTap: (){
                     _launchURL('https://web.facebook.com/profile.php?id=100049340762128');
                   },
-                    title: Text('আহাফ জাইয়ান aaa'),
+                    title: Text('আহনাফ জাইয়ান'),
                     subtitle: Text('Advisor'),
                   ),
                 ),

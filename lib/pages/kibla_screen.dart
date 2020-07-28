@@ -111,37 +111,50 @@ class _KiblaScreenState extends State<KiblaScreen> {
       child: Scaffold(
         backgroundColor: Colors.white,
           appBar:PreferredSize(child: _appBar(),preferredSize: Size(MediaQuery.of(context).size.width, 120),) ,
-        body:Stack(
-          children: <Widget>[
-            StreamBuilder(
-              stream: Compasstools.azimuthStream,
-              builder: (BuildContext context, AsyncSnapshot<int> snapshot){
-                if(snapshot.hasData) {
-                  return Container(
-                    width: double.infinity,
-                    height: MediaQuery.of(context).size.height,
-                    child:Center(
-                      child:new RotationTransition(
-                        turns: new AlwaysStoppedAnimation(-snapshot.data/360),
-                        child: Image.asset('images/compass1.png',width: double.infinity,height: double.infinity,),
-                      ),
+        body:Container(
+          child: StreamBuilder(
+            stream: Compasstools.azimuthStream,
+            builder: (BuildContext context, AsyncSnapshot<int> snapshot){
+              if(snapshot.hasData) {
+                return Stack(
+                  children: <Widget>[
+                Container(
+                width: double.infinity,
+                  height: MediaQuery.of(context).size.height,
+                  child:Center(
+                    child:new RotationTransition(
+                      turns: new AlwaysStoppedAnimation(-snapshot.data/360),
+                      child: Image.asset('images/compass1.png',width: double.infinity,height: double.infinity,),
                     ),
-                  );
-                } else
-                  return Text("Error in stream");
-              },
-            ),
-            Positioned(
-              bottom: 5,
-              left: 8,
-              right: 8,
-              child: Text('বিঃদ্রঃ ডিভাইসের কারিগরি সমস্যার কারণে সঠিক দিক নির্দেশনা নাও পেতে পারেন।\n'
-                  'সঠিক দিক নির্দেশনা পেতে ডিভাইসটি ভালো ভাবে ক্যালিবারেট করে নিন।',style: TextStyle(
-                fontSize: 18,
-                color: Colors.black
-              ),),
-            ),
-          ],
+                  ),
+                ),
+                    Positioned(
+                      bottom: 5,
+                      left: 8,
+                      right: 8,
+                      child: Text('বিঃদ্রঃ ডিভাইসের কারিগরি সমস্যার কারণে সঠিক দিক নির্দেশনা নাও পেতে পারেন।\n'
+                          'সঠিক দিক নির্দেশনা পেতে ডিভাইসটি ভালো ভাবে ক্যালিবারেট করে নিন।',style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.black
+                      ),),
+                    ),
+                  ],
+                );
+
+
+              }
+              if(snapshot.hasError){
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("এই অপশনটি আপনার ডিভাইসে উপস্থিত ম্যাগনেটিক সেন্সরগুলিতে কাজ করে।\nএই সেন্সরগুলো আপনার  মোবাইল ডিভাইসে উপস্থিত থাকার কথা। \nকিন্তু কিছু ডিভাইসের মধ্যে সিস্টেমেটিকালি চৌম্বক সেন্সর থাকে না।\nসুতরাং,এই ডিভাইসটির মধ্যে অ্যাপ্লিকেশনটি কাজ করবে না।\nএই ব্যাপার টার জন্য আমরা সত্যিই অনেক দুঃখিত।",style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.black,
+                  ),),
+                );
+              }
+              return CircularProgressIndicator();
+            },
+          ),
         )
       ),
     );

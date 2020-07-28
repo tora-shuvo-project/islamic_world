@@ -414,7 +414,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     const Color(0xffffffff),
                                                   ]))
                                           ),
-                                          Text("পরবর্তি নামাজের ওয়াক্ত", style: TextStyle(color: Colors.white),),
+                                          Text("পরবর্তী নামাজের ওয়াক্ত", style: TextStyle(color: Colors.white),),
                                           Center(child:
                                             isTimeString?
                                             Column(
@@ -493,7 +493,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   if (snapshot.hasData) {
                                                     final dateTime = snapshot.data.toLocal();
                                                     Sunset=DateFormat.jm().format(dateTime);
-                                                    return Text('সুর্যাস্তঃ ${Sunset}', style: TextStyle(
+                                                    return Text('সূর্যাস্তঃ ${Sunset}', style: TextStyle(
 
                                                         color: Colors.white
                                                     ),);
