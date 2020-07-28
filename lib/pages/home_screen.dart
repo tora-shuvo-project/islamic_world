@@ -333,7 +333,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
 
-    //zilaInitialize();
+    zilaInitialize();
 
     return DeivaoDrawer(
       controller: drawerController,
