@@ -211,7 +211,8 @@ class _HomeScreenState extends State<HomeScreen> {
           });
         });
 
-    _showNotificationsAfterAppClose();
+    _morning_notification_from_srarch_islam();
+    _evening_notification_from_srarch_islam();
 
   }
 
@@ -236,12 +237,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   }
 
-  void _showNotificationsAfterAppClose() async {
-    await notificationAfterAppClose();
+  void _morning_notification_from_srarch_islam() async {
+    await morning_notification();
   }
-  Future<void> notificationAfterAppClose() async {
+  Future<void> morning_notification() async {
+    var time = Time(5, 0, 0);
 
-    var timeDelayed = DateTime.now().add(Duration(seconds: 10));
     AndroidNotificationDetails androidNotificationDetails =
     AndroidNotificationDetails(
       'your channel id',
@@ -249,7 +250,6 @@ class _HomeScreenState extends State<HomeScreen> {
       'your channel description',
         priority: Priority.High,
         importance: Importance.Max,
-        autoCancel: false,
         ongoing: true,
         styleInformation: BigTextStyleInformation(''),
         );
@@ -257,75 +257,31 @@ class _HomeScreenState extends State<HomeScreen> {
     IOSNotificationDetails iosNotificationDetails = IOSNotificationDetails();
     NotificationDetails notificationDetails = NotificationDetails(androidNotificationDetails, iosNotificationDetails);
 
-    String dateFormate = DateFormat("dd").format(DateTime.now());
-    print('Value Shuvo $dateFormate');
+    await flutterLocalNotificationsPlugin.showDailyAtTime(1, 'সত্যের সন্ধানে', 'আসুন নিজের জীবনকে সুন্দর করি।', time, notificationDetails);
 
-    if(dateFormate=='01'){
-      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', 'আসুন নিজের জীবনকে সুন্দর করি।', timeDelayed, notificationDetails);
-    }else if(dateFormate=='02'){
-      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“যে পবিত্র থাকতে চায় , তাকে আল্লাহ পবিত্র রাখেন।” \n– সহীহ বুখারী', timeDelayed, notificationDetails);
-    }else if(dateFormate=='03'){
-      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', 'যে জ্ঞান অর্জনের খোঁজে বের হয় , সে আল্লাহর পথে বের হয়।\n– তিরমিযী', timeDelayed, notificationDetails);
-    }else if(dateFormate=='04'){
-      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', 'কুরআনকে আঁকড়ে ধরলে কখনো বিপথগামী হবেনা।\n– মিশকাত', timeDelayed, notificationDetails);
-    }else if(dateFormate=='05'){
-      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“সব ধরনের দাগ দূর করার জন্য কিছু না কিছু আছে; মনের দাগ দূর করার জন্য আছে আল্লাহ্‌র স্মরণ”\n– বুখারী', timeDelayed, notificationDetails);
-    }else if(dateFormate=='06'){
-      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“তুমি যদি পূর্ণভাবে আল্লাহর ওপর ভরসা করো, যেমনটা করা উচিৎ, তাহলে তিনি অবশ্যই তোমার সব প্রয়োজন পূরণ করবেন, যেমনটা তিনি পাখিদের জন্য করেন। তারা ক্ষুধার্ত হয়ে বাসা থেকে বের হয়, কিন্তু ভরা পেট নিয়ে নীড়ে ফেরে”\n– তিরমিযী', timeDelayed, notificationDetails);
-    }else if(dateFormate=='07'){
-      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“সত্যিকার জ্ঞানী কারা? – যারা তাদের জ্ঞানকে বাস্তবে কাজে লাগায়”\n– বুখারী', timeDelayed, notificationDetails);
-    }else if(dateFormate=='08'){
-      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“মৃত্যুকে খুঁজো (অর্থাৎ, সাহসী হও) তাহলে তোমাদেরকে জীবন দান করা হবে।”', timeDelayed, notificationDetails);
-    }else if(dateFormate=='09'){
-      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', 'কোন ভাই যদি আপনাকে গোপনে কিছু কথা বলে চলে যাবার আগে যদি তা অন্য কাউকে বলতে নিষেধ না করেও থাকেন, তবু কথাগুলো আপনার জন্য আমানাত।', timeDelayed, notificationDetails);
-    }else if(dateFormate=='10'){
-      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“এসো আমরা আমাদের ঈমানকে বাড়াই, আর তাই চলো আমরা আল্লাহকে স্মরণ করি।”', timeDelayed, notificationDetails);
-    }else if(dateFormate=='11'){
-      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“যারা সবসময় ইস্তিগফার (ক্ষমা প্রার্থনা) করে তাদের সাথে উঠাবসা করুন, কেননা তাদের হৃদয় সবচেয়ে কোমল।”', timeDelayed, notificationDetails);
-    }else if(dateFormate=='12'){
-      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“আজকের কাজ আগামীকাল করার জন্য রেখে দিবেন না। পরে দেখা যাবে কাজগুলো জমা হয়ে যাবে এবং আপনি কিছুই অর্জন করতে পারবেন না।”', timeDelayed, notificationDetails);
-    }else if(dateFormate=='13'){
-      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“আল্লাহকে ভয় করো, কেননা যে তাকে ভয় করে সে কখনো একাকীত্ব অনুভব করে না।”', timeDelayed, notificationDetails);
-    }else if(dateFormate=='14'){
-      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“তোমরা অন্যদের আরবি ভাষা শেখাও কেননা এটা তোমাদের দ্বীনের একটি অংশ।”', timeDelayed, notificationDetails);
-    }else if(dateFormate=='15'){
-      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“আমাদের জীবনের সবচাইতে স্বাস্থ্যকর উপাদান হচ্ছে সবর (ধৈর্য)।”', timeDelayed, notificationDetails);
-    }else if(dateFormate=='16'){
-      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“দুনিয়া নিয়ে দুঃশ্চিন্তা করা অন্তর হলো অন্ধকারাচ্ছন্ন,আখিরাত নিয়ে দুঃশ্চিন্তা করা অন্তর হলো আলোকিত”', timeDelayed, notificationDetails);
-    }else if(dateFormate=='17'){
-      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“যেসব পাপকাজ তোমরা গোপনে করে থাকো সেগুলোকে ভয় করো, কেননা সেসব পাপের সাক্ষী বিচারক স্বয়ং নিজেই।”', timeDelayed, notificationDetails);
-    }else if(dateFormate==''){
-      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“কারো অধঃপতনে আনন্দ প্রকাশ করো না, কেননা ভবিষ্যত তোমার জন্য কী প্রস্তুত করে রেখেছে সে সম্পর্কে তোমার কোন জ্ঞানই নেই।”', timeDelayed, notificationDetails);
-    }else if(dateFormate=='18'){
-      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“অতিরিক্ত সমালোচনা করবেন না। অতিরিক্ত সমালোচনা ঘৃণা এবং খারাপ চরিত্রের দিকে এগিয়ে নিয়ে যায়।”', timeDelayed, notificationDetails);
-    }else if(dateFormate=='19'){
-      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“আপনার গর্বকে ছুঁড়ে ফেলুন, দাম্ভিকতাকে দমিয়ে দিন আর আপনার কবরকে স্মরণ করুন”', timeDelayed, notificationDetails);
-    }else if(dateFormate=='20'){
-      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“ফুলের মতন হও, যে তাকে দলিত করে তাকেও সে সুগন্ধ বিলায়।”', timeDelayed, notificationDetails);
-    }else if(dateFormate=='21'){
-      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“ভালো কাজকে যিনি বীজ হিসেবে বুনেছেন সম্ভবত তার ফসল হবে আশা,খারাপ কাজকে যে বীজ হিসেবে বুনেছে সম্ভবত তার ফসল হবে অনুতাপ।”', timeDelayed, notificationDetails);
-    }else if(dateFormate=='22'){
-      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“এই দুনিয়াতে কল্যাণময় হচ্ছে জ্ঞানার্জন ও আল্লাহর ইবাদাত করা এবং আখিরাতে কল্যাণময় হচ্ছে জান্নাত”।', timeDelayed, notificationDetails);
-    }else if(dateFormate=='22'){
-      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“আল্লাহর যিকরে, সলাতে এবং কুরআন তিলাওয়াতে যে ব্যক্তি সুখ খুঁজে পায় না, সে অন্য কোথাও তা খুঁজে পাবে না।”', timeDelayed, notificationDetails);
-    }else if(dateFormate=='24'){
-      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“পৃথিবীর জীবনটা তিনটি দিনের–গতকালের দিনটিতে যা করা হয়েছে সেগুলো নিয়ে সেটি চলে গেছে;আগামীকালের দিনটিতে হয়ত আপনি না-ও পৌছতে পারেন;কিন্তু আজকের দিনটি আপনার জন্য সুতরাং যা করার আজই করে নিন।”', timeDelayed, notificationDetails);
-    }else if(dateFormate=='25'){
-      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“কম বয়সে কোন কিছু শেখার প্রভাব অনেকটা পাথরের উপরে খোদাই করে লেখার মতন।”', timeDelayed, notificationDetails);
-    }else if(dateFormate=='26'){
-      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“দুনিয়ার জীবনকে আখিরাতের জন্য বিক্রি করলে আপনি দুই জীবনেই জয়ী হবেন।আখিরাতের জীবনকে দুনিয়ার জন্য বিক্রি করলে আপনি দুই জীবনেই পরাজিত হবেন।”', timeDelayed, notificationDetails);
-    }else if(dateFormate=='27'){
-      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“তুমি যদি পারো তো একজন আলেম হও। \nযদি তা না পারো তবে দ্বীনের জ্ঞানের একজন ছাত্র হও। যদি তা না পারো, তাহলে তাদের প্রতি ভালোবাসা দেখাও। যদি তুমি তা-ও না পারো, তাহলে (অন্ততপক্ষে) তাদের ঘৃণা করো না।”', timeDelayed, notificationDetails);
-    }else if(dateFormate=='28'){
-      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“নিজেকে আল্লাহর রাহমাতসমূহের কথা বেশি করে স্মরণ করিয়ে দিন, কেননা যিনি বেশি বেশি স্মরণ করেন তার কৃতজ্ঞতা প্রকাশ করার সম্ভাবনাও বেশি থাকে।”', timeDelayed, notificationDetails);
-    }else if(dateFormate=='29'){
-      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“তাহাজ্জুদের সময়ে করা দু’আ হলো এমন একটি তীরের মতন যা লক্ষ্যভ্রষ্ট হয় না।”', timeDelayed, notificationDetails);
-    }else if(dateFormate=='30'){
-      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', '“দায়িত্ব বেড়ে যাবার আগেই তোমার ইবাদাতের পরিমাণ বাড়িয়ে দাও। কেননা একদিন এমন সময় আসবে যখন যথেষ্ট ইবাদাত করার মতন সময় পাবে না।”', timeDelayed, notificationDetails);
-    }else{
-      await flutterLocalNotificationsPlugin.schedule(1, 'সত্যের সন্ধানে', 'আসুন নিজের জীবনকে সুন্দর করি।', timeDelayed, notificationDetails);
-    }
+  }
 
+  void _evening_notification_from_srarch_islam() async {
+    await evening_notification();
+  }
+  Future<void> evening_notification() async {
+    var time = Time(19, 0, 0);
+
+    AndroidNotificationDetails androidNotificationDetails =
+    AndroidNotificationDetails(
+      'your channel id',
+      'your channel name',
+      'your channel description',
+        priority: Priority.High,
+        importance: Importance.Max,
+        ongoing: true,
+        styleInformation: BigTextStyleInformation(''),
+        );
+
+    IOSNotificationDetails iosNotificationDetails = IOSNotificationDetails();
+    NotificationDetails notificationDetails = NotificationDetails(androidNotificationDetails, iosNotificationDetails);
+
+    await flutterLocalNotificationsPlugin.showDailyAtTime(1, 'সত্যের সন্ধানে', '“আজকের কাজ আগামীকাল করার জন্য রেখে দিবেন না। পরে দেখা যাবে কাজগুলো জমা হয়ে যাবে এবং আপনি কিছুই অর্জন করতে পারবেন না।”', time, notificationDetails);
 
   }
 
@@ -342,7 +298,8 @@ class _HomeScreenState extends State<HomeScreen> {
         length: 9,
         child: WillPopScope(
           onWillPop: (){
-            _showNotificationsAfterAppClose();
+            _morning_notification_from_srarch_islam();
+            _evening_notification_from_srarch_islam();
             showDialog(
               context: context,
               builder: (_) => CustomeAlertDialog(),
