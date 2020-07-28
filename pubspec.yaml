@@ -63,6 +63,7 @@ dependencies:
   deivao_drawer: ^1.0.0+6
   webview_flutter: ^0.3.22+1
   flutter_launcher_icons: ^0.7.5
+  dio: ^3.0.9
 
 dev_dependencies:
   flutter_test:

@@ -1,10 +1,15 @@
 
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:searchtosu/FinalModels/quran_word_models.dart';
 import 'package:searchtosu/helpers/database_helper.dart';
 import 'package:searchtosu/pages/quran_word_pages_details_screen.dart';
+import 'package:toast/toast.dart';
 
 class QuranWordPages extends StatefulWidget {
 
@@ -16,6 +21,10 @@ class QuranWordPages extends StatefulWidget {
 
 class _QuranWordPagesState extends State<QuranWordPages> {
   List<QuranWordModels> quranwordmodels=new List();
+  double _percentage=0.0;
+  String downloadMessahge='';
+  bool isDownload=false;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -72,13 +81,14 @@ SingleChildScrollView _ShuruKotha(){
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       body: Stack(
         children: <Widget>[
           Container(
             child: Image.asset("images/bg.png", width: MediaQuery.of(context).size.width,),
           ),
           SafeArea(
-            child: Column(
+            child:Column(
               children: <Widget>[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -89,33 +99,33 @@ SingleChildScrollView _ShuruKotha(){
                     Text("কোরআনের শব্দ", style: TextStyle(color: Colors.white, fontSize: 20),),
                     FlatButton(  onPressed: (){
                       showModalBottomSheet(context: context, builder: (context){
-                      return Container(
-                        color: Color(0xFF737373),
-                        child: ClipRRect(
-                          clipBehavior: Clip.hardEdge,
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(25),
-                              topRight: Radius.circular(25),
-                              bottomLeft: Radius.circular(0),
-                              bottomRight: Radius.circular(0)),
-                          child: Container(
-                            color: Color(0xFFFFFFFF),
-                            height: 500,
+                        return Container(
+                          color: Color(0xFF737373),
+                          child: ClipRRect(
+                            clipBehavior: Clip.hardEdge,
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(25),
+                                topRight: Radius.circular(25),
+                                bottomLeft: Radius.circular(0),
+                                bottomRight: Radius.circular(0)),
                             child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: const Radius.circular(10),
-                                      topRight: const Radius.circular(10)
-                                  )
+                              color: Color(0xFFFFFFFF),
+                              height: 500,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: const Radius.circular(10),
+                                        topRight: const Radius.circular(10)
+                                    )
+                                ),
+                                child: _ShuruKotha(),
                               ),
-                              child: _ShuruKotha(),
                             ),
                           ),
-                        ),
-                      );
+                        );
 
                       });
-    },
+                    },
                         child: Text("শুরুর কথা",style: TextStyle(color: Colors.white, fontSize: 17),))
                   ],
                 ),
@@ -134,22 +144,69 @@ SingleChildScrollView _ShuruKotha(){
 
                           child: Container(
                               decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.white
-                                ),
+                                  border: Border.all(
+                                      color: Colors.white
+                                  ),
                                   borderRadius: BorderRadius.circular(10.0),
                                   gradient: LinearGradient(colors: [
                                     const Color(0xff178723),
                                     const Color(0xff27AB4B)
                                   ])
                               ),
-                             margin: EdgeInsets.all(5),
-                             // color: quranwordmodels[index].serial_no%2==0?Colors.green.withOpacity(.8):Colors.green.withOpacity(.9),
+                              margin: EdgeInsets.all(5),
+                              // color: quranwordmodels[index].serial_no%2==0?Colors.green.withOpacity(.8):Colors.green.withOpacity(.9),
                               child: ListTile(
-                                onTap: (){
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context)=>QuranWordPagesDetailsScreen(quranwordmodels[index],
-                                          quranwordmodels[index].serial_no)));
+                                onTap: ()async{
+                                  final filename = 'quran_word${quranwordmodels[index].serial_no}.png';
+
+                                  /// getting application doc directory's path in dir variable
+                                  String dir = (await getExternalStorageDirectory()).path;
+
+                                  Dio dio=Dio();
+
+                                  if (await File('$dir/$filename').exists()) {
+                                    print('$dir/$filename');
+                                    return Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (context)=>QuranWordPagesDetailsScreen(File('$dir/$filename'),quranwordmodels[index].taskNumber)));
+                                  }else{
+                                    return await dio.download('${quranwordmodels[index].image_url}',
+                                        '${dir}/${filename}',
+                                        onReceiveProgress:(actualbytes,totalbytes){
+                                          var percentage=actualbytes/totalbytes*100;
+                                          if(percentage<=100){
+                                            _percentage=percentage/100;
+                                            setState(() {
+                                              downloadMessahge='Downloading.......${percentage.floor()}';
+                                              if(percentage==100){
+                                                Navigator.of(context).push(MaterialPageRoute(
+                                                    builder: (context)=>QuranWordPagesDetailsScreen
+                                                      (File('$dir/$filename'),quranwordmodels[index].taskNumber)))
+                                                    .then((_){
+                                                        setState(() {
+                                                          isDownload=false;
+                                                        });
+                                                });
+                                              }
+                                            });
+
+                                          }
+                                          isDownload=true;
+                                          Toast.show(downloadMessahge, context);
+                                        }
+                                    ).catchError((error){
+                                      print('Shuvo');
+                                      _scaffoldKey.currentState.showSnackBar(
+                                          new SnackBar(
+                                              backgroundColor: Colors.red,
+                                              elevation: 2,
+                                              duration: Duration(seconds: 5),
+                                              content: Text('Please check your internet connection first time it download for you from server \'Thanks',style: TextStyle(
+                                                color: Colors.white,
+                                              ),)
+                                          )
+                                      );
+                                    });
+                                  }
                                 },
                                 title: Text('Day-${quranwordmodels[index].serial_no}',style: TextStyle(
                                     color: Colors.black,
@@ -184,8 +241,18 @@ SingleChildScrollView _ShuruKotha(){
                   ),
                 )
               ],
-            ),
+            )
           ),
+
+          Align(
+            alignment: Alignment.topCenter,
+            child: isDownload?Container(
+                padding: EdgeInsets.all(16),
+                margin: EdgeInsets.only(top: 70),
+                child: LinearProgressIndicator(
+                  backgroundColor: Colors.white,
+                  value: _percentage,)):Container(),
+          )
 
         ],
       ),
