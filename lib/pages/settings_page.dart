@@ -71,436 +71,475 @@ class _SettingsPageState extends State<SettingsPage> {
   }
   @override
   Widget build(BuildContext context) {
+    Widget _appBar(){
+      return Container(
 
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Settings'),
-      ),
-      body: ListView(
-        children: <Widget>[
-
-          Container(
-            padding: EdgeInsets.all(8),
-            alignment: Alignment.center,
-            child: Text('$_arabyStyle',style: TextStyle(
-              fontSize: fontsize,
-                fontFamily: _fontFamily
-            ),),
-          ),
-          Container(
-            color: Colors.green.withOpacity(.2),
-            alignment: Alignment.center,
-            width: double.infinity,
-            child: DropDownFormField(
-              titleText: 'কুরআন আরাবি ফন্ট সাইজ',
-              hintText: 'Please choose one',
-              value: _quranArabiFontSize,
-              onSaved: (value) async{
-                setState(() {
-                  _quranArabiFontSize = value;
-                  Utils.saveQuranArabyFontsize(value);
-                  fontsize=double.parse(value);
-                });
-              },
-              onChanged: (value) {
-                setState(() {
-                  Utils.saveQuranArabyFontsize(value);
-                  _quranArabiFontSize = value;
-                  fontsize=double.parse(value);
-                });
-              },
-              dataSource: [
-                {
-                  "display": "১৪",
-                  "value": "14",
-                },
-                {
-                  "display": "১৫",
-                  "value": "15",
-                },
-                {
-                  "display": "১৬",
-                  "value": "16",
-                },
-                {
-                  "display": "১৭",
-                  "value": "17",
-                },
-                {
-                  "display": "১৮",
-                  "value": "18",
-                },
-                {
-                  "display": "১৯",
-                  "value": "19",
-                },
-                {
-                  "display": "২০",
-                  "value": "20",
-                },
-                {
-                  "display": "২১",
-                  "value": "21",
-                },
-                {
-                  "display": "২২",
-                  "value": "22",
-                },
-                {
-                  "display": "২৩",
-                  "value": "23",
-                },
-                {
-                  "display": "২৪",
-                  "value": "24",
-                },
-                {
-                  "display": "২৫",
-                  "value": "25",
-                },
-                {
-                  "display": "২৬",
-                  "value": "26",
-                },
-                {
-                  "display": "২৭",
-                  "value": "27",
-                },
-                {
-                  "display": "২৮",
-                  "value": "28",
-                },
-                {
-                  "display": "২৯",
-                  "value": "29",
-                },
-                {
-                  "display": "৩০",
-                  "value": '30',
-                },
-              ],
-              textField: 'display',
-              valueField: 'value',
+        child: ClipRRect(
+          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30)),
+          child: Container(
+            height:70,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+                gradient: LinearGradient(colors: [
+                  const Color(0xff178723),
+                  const Color(0xff27AB4B)
+                ])
             ),
-          ),
-          SizedBox(height: 5,),
-          Container(
-            color: Colors.green.withOpacity(.2),
-            alignment: Alignment.center,
-            width: double.infinity,
-            child: DropDownFormField(
-              titleText: 'কারী সিলেক্ট করুণ',
-              hintText: 'Please choose one',
-              value: _myActivity,
-              onSaved: (value) async{
-                setState(() {
-                  _myActivity = value;
-                  Utils.saveQarenameFromPreference(value);
-                });
-              },
-              onChanged: (value) {
-                setState(() {
-                  Utils.saveQarenameFromPreference(value);
-                  _myActivity = value;
-                });
-              },
-              dataSource: [
-                {
-                  "display": "আব্দুর রহমান সুদাইস",
-                  "value": "Abdurrahman Sudais",
-                },
-                {
-                  "display": "সাদ আল গামিদি",
-                  "value": "Saad al Ghamidi",
-                },
-                {
-                  "display": "মিসারী বিন রাসেদ আল আফসি",
-                  "value": "al-mishary",
-                },
-                {
-                  "display": "সালাহ বুদির",
-                  "value": "Salah Budair",
-                },
-                {
-                  "display": "আহমেদ আল আজিমি",
-                  "value": "Ahmed al Ajmi",
-                },
-              ],
-              textField: 'display',
-              valueField: 'value',
+            padding: EdgeInsets.symmetric(horizontal: 17, vertical: 10),
+            child: Container(
+              color: Colors.green.withOpacity(.1),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  IconButton(icon: Icon(Icons.arrow_back, color: Colors.white,), onPressed: (){
+                    Navigator.of(context).pop();
+                  }),
+                  FittedBox(
+                    child: Text('Settings',style:  TextStyle(
+                        color: Colors.white, fontSize: 20
+                    ), ),
+                  ),
+
+
+                ],
+              ),
             ),
+
           ),
 
-          SizedBox(height: 5,),
-          Container(
-            color: Colors.green.withOpacity(.2),
-            alignment: Alignment.center,
-            width: double.infinity,
-            child: DropDownFormField(
-              titleText: 'কুরআন এর আরবি ফরম্যাট',
-              hintText: 'Please choose one',
-              value: _arabyTextStyle,
-              onSaved: (value) async{
-                setState(() {
-                  _arabyTextStyle = value;
-                  Utils.saveArabiFormatFromPreference(value);
-                  if(value==''){
-                    setState(() {
-                      _arabyStyle='بسم الله الرحمن الرحيم';
-                    });
-                  }else if(value==''){
-                    setState(() {
-                      _arabyStyle='بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ';
-                    });
-                  }else{
-                    setState(() {
-                      _arabyStyle='بِسۡمِ اللّٰہِ الرَّحۡمٰنِ الرَّحِیۡمِ ﴿۱﴾';
-                    });
-                  }
-                });
-              },
-              onChanged: (value) {
-                setState(() {
-                  _arabyTextStyle = value;
-                  Utils.saveArabiFormatFromPreference(value);
-                  if(value=='Arabi Simple'){
-                    setState(() {
-                      _arabyStyle='بسم الله الرحمن الرحيم';
-                    });
-                  }else if(value=='Arabi Utmanic'){
-                    setState(() {
-                      _arabyStyle='بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ';
-                    });
-                  }else{
-                    setState(() {
-                      _arabyStyle='بِسۡمِ اللّٰہِ الرَّحۡمٰنِ الرَّحِیۡمِ ﴿۱﴾';
-                    });
-                  }
-                });
-              },
-              dataSource: [
-                {
-                  "display": "আরাবি সিম্পল",
-                  "value": "Arabi Simple",
-                },
-                {
-                  "display": "আরাবি উঠ-মানিক",
-                  "value": "Arabi Utmanic",
-                },
-                {
-                  "display": "আরাবি ইন্ডোপাক",
-                  "value": "Arabi Indopak",
-                },
-              ],
-              textField: 'display',
-              valueField: 'value',
+        ),
+      );
+    }
+
+    return SafeArea(
+      child: Scaffold(
+        appBar:PreferredSize(child: _appBar(),preferredSize: Size(MediaQuery.of(context).size.width, 120),),
+        body: ListView(
+          children: <Widget>[
+
+            Container(
+              padding: EdgeInsets.all(8),
+              alignment: Alignment.center,
+              child: Text('$_arabyStyle',style: TextStyle(
+                fontSize: fontsize,
+                  fontFamily: _fontFamily
+              ),),
             ),
-          ),
-          SizedBox(height: 5,),
-          Container(
-            color: Colors.green.withOpacity(.2),
-            alignment: Alignment.center,
-            width: double.infinity,
-            child: DropDownFormField(
-              titleText: 'অজিফা,দূয়া ইত্যাদির জন্য আরাবি ফন্ট সাইজ',
-              hintText: 'Please choose one',
-              value: _arabiFontSize,
-              onSaved: (value) async{
-                setState(() {
-                  _arabiFontSize = value;
-                  Utils.saveArabyFontsize(value);
-
-                });
-              },
-              onChanged: (value) {
-                setState(() {
-                  _arabiFontSize = value;
-                  Utils.saveArabyFontsize(value);
-
-                });
-              },
-              dataSource: [
-                {
-                  "display": "১৪",
-                  "value": "14",
+            Container(
+              color: Colors.green.withOpacity(.2),
+              alignment: Alignment.center,
+              width: double.infinity,
+              child: DropDownFormField(
+                titleText: 'কুরআন আরাবি ফন্ট সাইজ',
+                hintText: 'Please choose one',
+                value: _quranArabiFontSize,
+                onSaved: (value) async{
+                  setState(() {
+                    _quranArabiFontSize = value;
+                    Utils.saveQuranArabyFontsize(value);
+                    fontsize=double.parse(value);
+                  });
                 },
-                {
-                  "display": "১৫",
-                  "value": "15",
+                onChanged: (value) {
+                  setState(() {
+                    Utils.saveQuranArabyFontsize(value);
+                    _quranArabiFontSize = value;
+                    fontsize=double.parse(value);
+                  });
                 },
-                {
-                  "display": "১৬",
-                  "value": "16",
-                },
-                {
-                  "display": "১৭",
-                  "value": "17",
-                },
-                {
-                  "display": "১৮",
-                  "value": "18",
-                },
-                {
-                  "display": "১৯",
-                  "value": "19",
-                },
-                {
-                  "display": "২০",
-                  "value": "20",
-                },
-                {
-                  "display": "২১",
-                  "value": "21",
-                },
-                {
-                  "display": "২২",
-                  "value": "22",
-                },
-                {
-                  "display": "২৩",
-                  "value": "23",
-                },
-                {
-                  "display": "২৪",
-                  "value": "24",
-                },
-                {
-                  "display": "২৫",
-                  "value": "25",
-                },
-                {
-                  "display": "২৬",
-                  "value": "26",
-                },
-                {
-                  "display": "২৭",
-                  "value": "27",
-                },
-                {
-                  "display": "২৮",
-                  "value": "28",
-                },
-                {
-                  "display": "২৯",
-                  "value": "29",
-                },
-                {
-                  "display": "৩০",
-                  "value": '30',
-                },
-              ],
-              textField: 'display',
-              valueField: 'value',
+                dataSource: [
+                  {
+                    "display": "১৪",
+                    "value": "14",
+                  },
+                  {
+                    "display": "১৫",
+                    "value": "15",
+                  },
+                  {
+                    "display": "১৬",
+                    "value": "16",
+                  },
+                  {
+                    "display": "১৭",
+                    "value": "17",
+                  },
+                  {
+                    "display": "১৮",
+                    "value": "18",
+                  },
+                  {
+                    "display": "১৯",
+                    "value": "19",
+                  },
+                  {
+                    "display": "২০",
+                    "value": "20",
+                  },
+                  {
+                    "display": "২১",
+                    "value": "21",
+                  },
+                  {
+                    "display": "২২",
+                    "value": "22",
+                  },
+                  {
+                    "display": "২৩",
+                    "value": "23",
+                  },
+                  {
+                    "display": "২৪",
+                    "value": "24",
+                  },
+                  {
+                    "display": "২৫",
+                    "value": "25",
+                  },
+                  {
+                    "display": "২৬",
+                    "value": "26",
+                  },
+                  {
+                    "display": "২৭",
+                    "value": "27",
+                  },
+                  {
+                    "display": "২৮",
+                    "value": "28",
+                  },
+                  {
+                    "display": "২৯",
+                    "value": "29",
+                  },
+                  {
+                    "display": "৩০",
+                    "value": '30',
+                  },
+                ],
+                textField: 'display',
+                valueField: 'value',
+              ),
             ),
-          ),
-          SizedBox(height: 5,),
-          Container(
-            color: Colors.green.withOpacity(.2),
-            alignment: Alignment.center,
-            width: double.infinity,
-            child: DropDownFormField(
-              titleText: 'অজিফা,দূয়া ইত্যাদির জন্য আরাবি ফন্ট সিলেক্ট করুণ',
-              hintText: 'Please choose one',
-              value: _fontName,
-              onSaved: (value) async{
-                setState(() {
-                  Utils.saveArabyFontPreference(value);
-                  _fontName = value;
-                });
-              },
-              onChanged: (value) {
-                setState(() {
-                  _fontName = value;
-                  Utils.saveArabyFontPreference(value);
-                  if(value=='Monserat'){
-                    setState(() {
-                      _fontFamily='Monserat';
-                    });
-                  }else if(value=='Mukadimah'){
-                    setState(() {
-                      _fontFamily='Mukadimah';
-                    });
-                  }else if(value=='QalamMajid'){
-                    setState(() {
-                      _fontFamily='QalamMajid';
-                    });
-                  }else if(value=='utman'){
-                    setState(() {
-                      _fontFamily='utman';
-                    });
-                  }else{
-                    setState(() {
-                      _fontFamily='Maddina';
-                    });
-                  }
-                });
-              },
-              dataSource: [
-                {
-                  "display": "মনসেরাত ফন্ট",
-                  "value": "Monserat",
+            SizedBox(height: 5,),
+            Container(
+              color: Colors.green.withOpacity(.2),
+              alignment: Alignment.center,
+              width: double.infinity,
+              child: DropDownFormField(
+                titleText: 'কারী সিলেক্ট করুণ',
+                hintText: 'Please choose one',
+                value: _myActivity,
+                onSaved: (value) async{
+                  setState(() {
+                    _myActivity = value;
+                    Utils.saveQarenameFromPreference(value);
+                  });
                 },
-                {
-                  "display": "মুকাদিমাহ ফন্ট",
-                  "value": "Mukadimah",
+                onChanged: (value) {
+                  setState(() {
+                    Utils.saveQarenameFromPreference(value);
+                    _myActivity = value;
+                  });
                 },
-                {
-                  "display": "কালাম মাজিদ(হাফীজি কুরআন) ফন্ট",
-                  "value": "QalamMajid",
-                },
-                {
-                  "display": "উটমান ফন্ট",
-                  "value": "utman",
-                },
-                {
-                  "display": "মাদিনা ফন্ট",
-                  "value": "Maddina",
-                },
-              ],
-              textField: 'display',
-              valueField: 'value',
+                dataSource: [
+                  {
+                    "display": "আব্দুর রহমান সুদাইস",
+                    "value": "Abdurrahman Sudais",
+                  },
+                  {
+                    "display": "সাদ আল গামিদি",
+                    "value": "Saad al Ghamidi",
+                  },
+                  {
+                    "display": "মিসারী বিন রাসেদ আল আফসি",
+                    "value": "al-mishary",
+                  },
+                  {
+                    "display": "সালাহ বুদির",
+                    "value": "Salah Budair",
+                  },
+                  {
+                    "display": "আহমেদ আল আজিমি",
+                    "value": "Ahmed al Ajmi",
+                  },
+                ],
+                textField: 'display',
+                valueField: 'value',
+              ),
             ),
-          ),
 
-          SizedBox(height: 5,),
-          Container(
-            color: Colors.green.withOpacity(.2),
-            alignment: Alignment.center,
-            width: double.infinity,
-            child: DropDownFormField(
-              titleText: 'নামাজের জন্য মাজহাব সিলেক্ট করুণ',
-              hintText: 'Please choose one',
-              value: _prayertype,
-              onSaved: (value){
-                setState(() {
-                  Utils.savePrayerMethosTOPreference(value);
-                  _prayertype = value;
-                });
-              },
-              onChanged: (value) {
-                setState(() {
-                  _prayertype = value;
-                  Utils.savePrayerMethosTOPreference(value);
-
-                });
-              },
-              dataSource: [
-                {
-                  "display": "হানাফী মাজহাব",
-                  "value": "hanafi",
+            SizedBox(height: 5,),
+            Container(
+              color: Colors.green.withOpacity(.2),
+              alignment: Alignment.center,
+              width: double.infinity,
+              child: DropDownFormField(
+                titleText: 'কুরআন এর আরবি ফরম্যাট',
+                hintText: 'Please choose one',
+                value: _arabyTextStyle,
+                onSaved: (value) async{
+                  setState(() {
+                    _arabyTextStyle = value;
+                    Utils.saveArabiFormatFromPreference(value);
+                    if(value==''){
+                      setState(() {
+                        _arabyStyle='بسم الله الرحمن الرحيم';
+                      });
+                    }else if(value==''){
+                      setState(() {
+                        _arabyStyle='بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ';
+                      });
+                    }else{
+                      setState(() {
+                        _arabyStyle='بِسۡمِ اللّٰہِ الرَّحۡمٰنِ الرَّحِیۡمِ ﴿۱﴾';
+                      });
+                    }
+                  });
                 },
-                {
-                  "display": "সাফী,মালিকী,হাম্বলী",
-                  "value": "safe",
+                onChanged: (value) {
+                  setState(() {
+                    _arabyTextStyle = value;
+                    Utils.saveArabiFormatFromPreference(value);
+                    if(value=='Arabi Simple'){
+                      setState(() {
+                        _arabyStyle='بسم الله الرحمن الرحيم';
+                      });
+                    }else if(value=='Arabi Utmanic'){
+                      setState(() {
+                        _arabyStyle='بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ';
+                      });
+                    }else{
+                      setState(() {
+                        _arabyStyle='بِسۡمِ اللّٰہِ الرَّحۡمٰنِ الرَّحِیۡمِ ﴿۱﴾';
+                      });
+                    }
+                  });
                 },
-              ],
-              textField: 'display',
-              valueField: 'value',
+                dataSource: [
+                  {
+                    "display": "আরাবি সিম্পল",
+                    "value": "Arabi Simple",
+                  },
+                  {
+                    "display": "আরাবি উঠ-মানিক",
+                    "value": "Arabi Utmanic",
+                  },
+                  {
+                    "display": "আরাবি ইন্ডোপাক",
+                    "value": "Arabi Indopak",
+                  },
+                ],
+                textField: 'display',
+                valueField: 'value',
+              ),
             ),
-          ),
+            SizedBox(height: 5,),
+            Container(
+              color: Colors.green.withOpacity(.2),
+              alignment: Alignment.center,
+              width: double.infinity,
+              child: DropDownFormField(
+                titleText: 'অজিফা,দূয়া ইত্যাদির জন্য আরাবি ফন্ট সাইজ',
+                hintText: 'Please choose one',
+                value: _arabiFontSize,
+                onSaved: (value) async{
+                  setState(() {
+                    _arabiFontSize = value;
+                    Utils.saveArabyFontsize(value);
 
-        ],
+                  });
+                },
+                onChanged: (value) {
+                  setState(() {
+                    _arabiFontSize = value;
+                    Utils.saveArabyFontsize(value);
+
+                  });
+                },
+                dataSource: [
+                  {
+                    "display": "১৪",
+                    "value": "14",
+                  },
+                  {
+                    "display": "১৫",
+                    "value": "15",
+                  },
+                  {
+                    "display": "১৬",
+                    "value": "16",
+                  },
+                  {
+                    "display": "১৭",
+                    "value": "17",
+                  },
+                  {
+                    "display": "১৮",
+                    "value": "18",
+                  },
+                  {
+                    "display": "১৯",
+                    "value": "19",
+                  },
+                  {
+                    "display": "২০",
+                    "value": "20",
+                  },
+                  {
+                    "display": "২১",
+                    "value": "21",
+                  },
+                  {
+                    "display": "২২",
+                    "value": "22",
+                  },
+                  {
+                    "display": "২৩",
+                    "value": "23",
+                  },
+                  {
+                    "display": "২৪",
+                    "value": "24",
+                  },
+                  {
+                    "display": "২৫",
+                    "value": "25",
+                  },
+                  {
+                    "display": "২৬",
+                    "value": "26",
+                  },
+                  {
+                    "display": "২৭",
+                    "value": "27",
+                  },
+                  {
+                    "display": "২৮",
+                    "value": "28",
+                  },
+                  {
+                    "display": "২৯",
+                    "value": "29",
+                  },
+                  {
+                    "display": "৩০",
+                    "value": '30',
+                  },
+                ],
+                textField: 'display',
+                valueField: 'value',
+              ),
+            ),
+            SizedBox(height: 5,),
+            Container(
+              color: Colors.green.withOpacity(.2),
+              alignment: Alignment.center,
+              width: double.infinity,
+              child: DropDownFormField(
+                titleText: 'অজিফা,দূয়া ইত্যাদির জন্য আরাবি ফন্ট সিলেক্ট করুণ',
+                hintText: 'Please choose one',
+                value: _fontName,
+                onSaved: (value) async{
+                  setState(() {
+                    Utils.saveArabyFontPreference(value);
+                    _fontName = value;
+                  });
+                },
+                onChanged: (value) {
+                  setState(() {
+                    _fontName = value;
+                    Utils.saveArabyFontPreference(value);
+                    if(value=='Monserat'){
+                      setState(() {
+                        _fontFamily='Monserat';
+                      });
+                    }else if(value=='Mukadimah'){
+                      setState(() {
+                        _fontFamily='Mukadimah';
+                      });
+                    }else if(value=='QalamMajid'){
+                      setState(() {
+                        _fontFamily='QalamMajid';
+                      });
+                    }else if(value=='utman'){
+                      setState(() {
+                        _fontFamily='utman';
+                      });
+                    }else{
+                      setState(() {
+                        _fontFamily='Maddina';
+                      });
+                    }
+                  });
+                },
+                dataSource: [
+                  {
+                    "display": "মনসেরাত ফন্ট",
+                    "value": "Monserat",
+                  },
+                  {
+                    "display": "মুকাদিমাহ ফন্ট",
+                    "value": "Mukadimah",
+                  },
+                  {
+                    "display": "কালাম মাজিদ(হাফীজি কুরআন) ফন্ট",
+                    "value": "QalamMajid",
+                  },
+                  {
+                    "display": "উটমান ফন্ট",
+                    "value": "utman",
+                  },
+                  {
+                    "display": "মাদিনা ফন্ট",
+                    "value": "Maddina",
+                  },
+                ],
+                textField: 'display',
+                valueField: 'value',
+              ),
+            ),
+
+            SizedBox(height: 5,),
+            Container(
+              color: Colors.green.withOpacity(.2),
+              alignment: Alignment.center,
+              width: double.infinity,
+              child: DropDownFormField(
+                titleText: 'নামাজের জন্য মাজহাব সিলেক্ট করুণ',
+                hintText: 'Please choose one',
+                value: _prayertype,
+                onSaved: (value){
+                  setState(() {
+                    Utils.savePrayerMethosTOPreference(value);
+                    _prayertype = value;
+                  });
+                },
+                onChanged: (value) {
+                  setState(() {
+                    _prayertype = value;
+                    Utils.savePrayerMethosTOPreference(value);
+
+                  });
+                },
+                dataSource: [
+                  {
+                    "display": "হানাফী মাজহাব",
+                    "value": "hanafi",
+                  },
+                  {
+                    "display": "সাফী,মালিকী,হাম্বলী",
+                    "value": "safe",
+                  },
+                ],
+                textField: 'display',
+                valueField: 'value',
+              ),
+            ),
+
+          ],
+        ),
       ),
     );
   }
