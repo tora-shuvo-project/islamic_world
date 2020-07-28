@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
@@ -36,6 +37,9 @@ class _Labbayekallahumma_screenState extends State<Labbayekallahumma_screen> {
   Duration postition = Duration();
   AudioPlayer advancedPlayer;
   AudioCache audioCache;
+  double _percentage=0.0;
+  String downloadMessahge='';
+  bool isDownload=true;
 
   @override
   void dispose() {
@@ -46,64 +50,97 @@ class _Labbayekallahumma_screenState extends State<Labbayekallahumma_screen> {
   }
 
 
+  _playAudioANdDownload()async{
+    final filename = 'labbaikallahummaaudio_${slNO}.mp3';
 
-  Future<String> createFile(String url) async {
+    /// getting application doc directory's path in dir variable
+    String dir = (await getExternalStorageDirectory()).path;
 
-    try {
-      /// setting filename
-      final filename = 'labbaikallahummaaudio_${slNO}.mp3';
+    /// if `filename` File exists in local system then return that file.
+    /// This is the fastest among all.
 
-      /// getting application doc directory's path in dir variable
-      String dir = (await getExternalStorageDirectory()).path;
+    Dio dio=Dio();
+    if (await File('$dir/$filename').exists()) {
+      print('$dir/$filename');
 
-      /// if `filename` File exists in local system then return that file.
-      /// This is the fastest among all.
-      if (await File('$dir/$filename').exists()) {
-        print('$dir/$filename');
-        return '$dir/$filename';
-      }
+      setState(() {
+
+        if(isPlaying){
+
+          advancedPlayer.play('$dir/$filename');
+          setState(() {
+            isPlaying = false;
+            audioCache.loop('$dir/$filename');
+            audioCache.fixedPlayer.onPlayerCompletion.forEach((_) {
+              advancedPlayer.play('$dir/$filename');
+            });
+          });
+        }else{
+          advancedPlayer.pause();
+          setState(() {
+            isPlaying = true;
+
+          });
+        }
+
+      });
 
 
-      Toast.show('Downloading........', context,duration: 1,backgroundColor: Colors.green,gravity: Toast.CENTER);
+    }else {
+      return await dio.download('${link}',
+          '${dir}/${filename}',
+          onReceiveProgress: (actualbytes, totalbytes) {
+            var percentage = actualbytes / totalbytes * 100;
+            if (percentage <= 100) {
+              _percentage = percentage / 100;
+              isDownload=false;
+              setState(() {
+                downloadMessahge = 'Downloading.......${percentage.floor()}';
+                if (percentage == 100) {
+                  isDownload = true;
+                  return setState(() {
 
+                    if(isPlaying){
 
-      ///if file not present in local system then fetch it from server
-      //String url = 'https://pbs.twimg.com/profile_images/973421479508328449/sEeIJkXq.jpg';
+                      advancedPlayer.play('$dir/$filename');
+                      setState(() {
+                        isPlaying = false;
+                        audioCache.loop('$dir/$filename');
+                        audioCache.fixedPlayer.onPlayerCompletion.forEach((_) {
+                          advancedPlayer.play('$dir/$filename');
+                        });
+                      });
+                    }else{
+                      advancedPlayer.pause();
+                      setState(() {
+                        isPlaying = true;
 
-      /// requesting http to get url
-      var request = await HttpClient().getUrl(Uri.parse(url));
+                      });
+                    }
 
+                  });
 
-      /// closing request and getting response
-      var response = await request.close();
+                }
+              });
+            }
 
-      /// getting response data in bytes
-      var bytes = await consolidateHttpClientResponseBytes(response);
-
-      /// generating a local system file with name as 'filename' and path as '$dir/$filename'
-      File file = new File('$dir/$filename');
-
-      /// writing bytes data of response in the file.
-      await file.writeAsBytes(bytes);
-
-      Toast.show('Download complete Please Tab play button', context,duration: 2,backgroundColor: Colors.green,gravity: Toast.CENTER);
-      /// returning file.
-      return file.toString();
-    }
-
-    /// on catching Exception return null
-    catch (err) {
-      print(err);
-      _scaffoldKey.currentState.showSnackBar(
-          new SnackBar(
-              backgroundColor: Colors.red,
-              elevation: 2,
-              duration: Duration(seconds: 5),
-              content: Text('Please check your internet connection first time it download for you from server \'Thanks',style: TextStyle(
-                color: Colors.white,
-              ),)
-          )
-      );
+            Toast.show(downloadMessahge, context);
+          }
+      ).catchError((error) {
+        print('Shuvo');
+        _scaffoldKey.currentState.showSnackBar(
+            new SnackBar(
+                backgroundColor: Colors.red,
+                elevation: 2,
+                duration: Duration(seconds: 5),
+                content: Text(
+                  'Please check your internet connection first time it download for you from server \'Thanks',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),)
+            )
+        );
+      });
     }
   }
 
@@ -190,49 +227,50 @@ class _Labbayekallahumma_screenState extends State<Labbayekallahumma_screen> {
 
         ]);
   }
-
-  @override
-  Widget build(BuildContext context) {
-    Widget _appBar(){
-      return Container(
-        color: Colors.green,
-        child: ClipRRect(
-          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30)),
+  Widget _appBar(){
+    return Container(
+      color: Colors.green,
+      child: ClipRRect(
+        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30)),
+        child: Container(
+          height:70,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+              gradient: LinearGradient(colors: [
+                const Color(0xff178723),
+                const Color(0xff27AB4B)
+              ])
+          ),
+          padding: EdgeInsets.symmetric(horizontal: 17, vertical: 10),
           child: Container(
-            height:70,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [
-                  const Color(0xff178723),
-                  const Color(0xff27AB4B)
-                ])
+            color: Colors.green.withOpacity(.1),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                IconButton(icon: Icon(Icons.arrow_back, color: Colors.white,), onPressed: (){
+                  Navigator.of(context).pop();
+                }),
+                FittedBox(
+                  child: Text('লাব্বাইকাল-লাহুম্মা-লাব্বাইক',style:  TextStyle(
+                      color: Colors.white, fontSize: 20
+                  ), ),
+                ),
+
+
+              ],
             ),
-            padding: EdgeInsets.symmetric(horizontal: 17, vertical: 10),
-            child: Container(
-              color: Colors.green.withOpacity(.1),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  IconButton(icon: Icon(Icons.arrow_back, color: Colors.white,), onPressed: (){
-                    Navigator.of(context).pop();
-                  }),
-                  FittedBox(
-                    child: Text('লাব্বাইকাল-লাহুম্মা-লাব্বাইক',style:  TextStyle(
-                        color: Colors.white, fontSize: 20
-                    ), ),
-                  ),
-
-
-                ],
-              ),
-            ),
-
           ),
 
         ),
-      );
-    }
+
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
     return Scaffold(
       key: _scaffoldKey,
       appBar:PreferredSize(child: _appBar(),preferredSize: Size(MediaQuery.of(context).size.width, 120),),
@@ -669,124 +707,109 @@ class _Labbayekallahumma_screenState extends State<Labbayekallahumma_screen> {
             Container(
               height: 70,
               color: Colors.green,
-              padding: EdgeInsets.only(left: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              padding: EdgeInsets.only(left: 10,top: 10),
+              child: Column(
                 children: <Widget>[
-                  Expanded(flex:3,child: Text(nameAudio,style: TextStyle(color: Colors.white),)),
-                  Expanded(flex:2,child: slider()),
-                  Expanded(
-                    child: IconButton(
-                      icon: Icon(isPlaying ?
-                      Icons.play_arrow :
-                      Icons.pause,color: Colors.white,),
-                      onPressed: (){
-                      setState(() {
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Expanded(flex:3,child: Text(nameAudio,style: TextStyle(color: Colors.white),)),
+                      Expanded(flex:2,child: slider()),
+                      Expanded(
+                        child: IconButton(
+                          icon: Icon(isPlaying ?
+                          Icons.play_arrow :
+                          Icons.pause,color: Colors.white,),
+                          onPressed: (){
+                            _playAudioANdDownload();
+                          },),
+                      ),
 
-                        createFile('${link}').then((value){
+                      Expanded(
+                        child: IconButton(icon: Icon(Icons.stop, color: Colors.white,), onPressed: (){
+                          advancedPlayer.stop();
                           setState(() {
-
-                            if(isPlaying){
-
-                              advancedPlayer.play(value);
-                              setState(() {
-                                isPlaying = false;
-                                audioCache.loop(value);
-                                audioCache.fixedPlayer.onPlayerCompletion.forEach((_) {
-                                  advancedPlayer.play(value);
-                                });
-                              });
-                            }else{
-                              advancedPlayer.pause();
-                              setState(() {
-                                isPlaying = true;
-
-                              });
-                            }
-
+                            isPlaying = true;
                           });
-                        });
-                      });
-                      },),
-                  ),
+                        }),
+                      ),
+                      Expanded(
+                        child: PopupMenuButton(
+                            icon: Icon(Icons.more_vert, color: Colors.white,),
+                            onSelected: (value){
+                              if(value == 0){
+                                //go to profile menu
+                              }
+                              else if(value==1){
+                                advancedPlayer.setPlaybackRate( playbackRate:  0.25);
+                              }
+                              else if(value==2){
+                                advancedPlayer.setPlaybackRate( playbackRate:  0.5);
+                              }
+                              else if(value==3){
+                                advancedPlayer.setPlaybackRate( playbackRate:  .75);
+                              }
+                              else if(value==4){
+                                advancedPlayer.setPlaybackRate( playbackRate:  1.0);
+                              }
+                              else if(value==5){
+                                advancedPlayer.setPlaybackRate( playbackRate:  1.25);
+                              }
+                              else if(value==6){
+                                advancedPlayer.setPlaybackRate( playbackRate:  1.5);
+                              }
+                              else if(value==7){
+                                advancedPlayer.setPlaybackRate( playbackRate:  2.0);
+                              }
+                            }
+                            ,
+                            itemBuilder: (context)=>[
+                              PopupMenuItem(
+                                child: Text('Speed'),
+                                value: 0,
+                              ),
+                              PopupMenuItem(
+                                child: Text('0.25'),
+                                value: 1,
+                              ),
+                              PopupMenuItem(
+                                child: Text('0.5'),
+                                value: 2,
+                              ),
+                              PopupMenuItem(
+                                child: Text('.75'),
+                                value: 3,
+                              ),
+                              PopupMenuItem(
+                                child: Text('Normal'),
+                                value: 4,
+                              ),
+                              PopupMenuItem(
+                                child: Text('1.25'),
+                                value: 5,
+                              ),
+                              PopupMenuItem(
+                                child: Text('1.5'),
+                                value: 6,
+                              ),
+                              PopupMenuItem(
+                                child: Text('2.0'),
+                                value: 7,
+                              ),
 
-                  Expanded(
-                    child: IconButton(icon: Icon(Icons.stop, color: Colors.white,), onPressed: (){
-                      advancedPlayer.stop();
-                      setState(() {
-                        isPlaying = true;
-                      });
-                    }),
-                  ),
-                  Expanded(
-                    child: PopupMenuButton(
-                        icon: Icon(Icons.more_vert, color: Colors.white,),
-                        onSelected: (value){
-                          if(value == 0){
-                            //go to profile menu
-                          }
-                          else if(value==1){
-                            advancedPlayer.setPlaybackRate( playbackRate:  0.25);
-                          }
-                          else if(value==2){
-                            advancedPlayer.setPlaybackRate( playbackRate:  0.5);
-                          }
-                          else if(value==3){
-                            advancedPlayer.setPlaybackRate( playbackRate:  .75);
-                          }
-                          else if(value==4){
-                            advancedPlayer.setPlaybackRate( playbackRate:  1.0);
-                          }
-                          else if(value==5){
-                            advancedPlayer.setPlaybackRate( playbackRate:  1.25);
-                          }
-                          else if(value==6){
-                            advancedPlayer.setPlaybackRate( playbackRate:  1.5);
-                          }
-                          else if(value==7){
-                            advancedPlayer.setPlaybackRate( playbackRate:  2.0);
-                          }
-                        }
-                        ,
-                        itemBuilder: (context)=>[
-                          PopupMenuItem(
-                            child: Text('Speed'),
-                            value: 0,
-                          ),
-                          PopupMenuItem(
-                            child: Text('0.25'),
-                            value: 1,
-                          ),
-                          PopupMenuItem(
-                            child: Text('0.5'),
-                            value: 2,
-                          ),
-                          PopupMenuItem(
-                            child: Text('.75'),
-                            value: 3,
-                          ),
-                          PopupMenuItem(
-                            child: Text('Normal'),
-                            value: 4,
-                          ),
-                          PopupMenuItem(
-                            child: Text('1.25'),
-                            value: 5,
-                          ),
-                          PopupMenuItem(
-                            child: Text('1.5'),
-                            value: 6,
-                          ),
-                          PopupMenuItem(
-                            child: Text('2.0'),
-                            value: 7,
-                          ),
+                            ]),
+                      ),
 
-                        ]),
+                    ],
                   ),
-
+                  isDownload?Container(height: 0,):Container(
+                    height: 2,
+                    padding: EdgeInsets.only(left: 10,right: 10),
+                    child: LinearProgressIndicator(value:_percentage,backgroundColor: Colors.white,),
+                  ),
                 ],
-              ),
+              )
+
             ),
           ],
         ),
