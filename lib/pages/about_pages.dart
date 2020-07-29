@@ -331,9 +331,7 @@ class _AboutPagesState extends State<AboutPages> {
 
                             InkWell(
                                 onTap:(){
-                                  onTap:(){
-                                    _mailto('adritatori3330@gmail.com');
-                                  },
+                                  _mailto('adritatori3330@gmail.com');
                                 },
                                 child: Image.asset('images/gmail.png',width: 40,height: 40,)),
                           ],
