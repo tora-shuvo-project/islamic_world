@@ -154,7 +154,6 @@ SingleChildScrollView _ShuruKotha(){
                                   ])
                               ),
                               margin: EdgeInsets.all(5),
-                              // color: quranwordmodels[index].serial_no%2==0?Colors.green.withOpacity(.8):Colors.green.withOpacity(.9),
                               child: ListTile(
                                 onTap: ()async{
                                   final filename = 'quran_word${quranwordmodels[index].serial_no}.png';

@@ -73,6 +73,18 @@ class NiyomScreen extends StatelessWidget {
                 child: InkWell(
                     onTap: (){
                       Navigator.of(context).push(ScaleRoute(
+                          page :NiyomCategoryScreen(7,'নামাজের পরে দোয়াসমূহ')
+                      ));
+                    },
+                    child: Text('নামাজের পরে দোয়াসমূহ',style: textStyle)),
+              ),
+            ),
+            Card(
+              child: Container(
+                padding: EdgeInsets.all(16),
+                child: InkWell(
+                    onTap: (){
+                      Navigator.of(context).push(ScaleRoute(
                           page: NiyomCategoryScreen(2,'ওজু')
                       ));
                     },

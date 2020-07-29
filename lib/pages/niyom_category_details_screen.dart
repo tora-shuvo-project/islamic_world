@@ -35,7 +35,7 @@ class _NiyomCategoryDetailsScreenState extends State<NiyomCategoryDetailsScreen>
         child: ClipRRect(
           borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30)),
           child: Container(
-            height:70,
+            height:75,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
                 gradient: LinearGradient(colors: [
@@ -50,29 +50,33 @@ class _NiyomCategoryDetailsScreenState extends State<NiyomCategoryDetailsScreen>
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  IconButton(icon: Icon(Icons.arrow_back, color: Colors.white,), onPressed: (){
-                    Navigator.of(context).pop();
-                  }),
-                  FittedBox(
+                  Expanded(
+                    child: IconButton(icon: Icon(Icons.arrow_back, color: Colors.white,), onPressed: (){
+                      Navigator.of(context).pop();
+                    }),
+                  ),
+                  Expanded(flex: 5,
                     child: Text('${widget.niyomModels.name}',style:  TextStyle(
-                        color: Colors.white, fontSize: 20
+                        color: Colors.white, fontSize: 18
                     ), ),
                   ),
 
-                IconButton(icon: Icon(Icons.settings,color: Colors.white,),
-                  onPressed: (){
-                    Navigator.of(context).push(ScaleRoute(
-                        page: SettingsPage()
-                    )).then((_){
-                      setState(() {
-                        Utils.getArabiFontSizeFromPreference().then((value){
-                          setState(() {
-                            _fontSize=double.parse(value);
+                Expanded(
+                  child: IconButton(icon: Icon(Icons.settings,color: Colors.white,),
+                    onPressed: (){
+                      Navigator.of(context).push(ScaleRoute(
+                          page: SettingsPage()
+                      )).then((_){
+                        setState(() {
+                          Utils.getArabiFontSizeFromPreference().then((value){
+                            setState(() {
+                              _fontSize=double.parse(value);
+                            });
                           });
                         });
                       });
-                    });
-                  },)
+                    },),
+                )
                 ],
               ),
             ),
