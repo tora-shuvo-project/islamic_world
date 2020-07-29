@@ -279,7 +279,7 @@ class _AboutPagesState extends State<AboutPages> {
                                         builder: (BuildContext context){
                                           return Container(
                                             padding: EdgeInsets.all(8),
-                                            child: Text('আমি মোঃ মেহেদি হাসান শুভ ।বর্তমানে ঢাকা প্রকৌশল ও প্রযুক্তি বিশ্ববিদ্যালয় এ কম্পিউটার সাইন্স ডিপার্টমেন্ট এ অধ্যায়রত।',style: TextStyle(
+                                            child: Text('আদ্রিতা রহমান তরী।বর্তমানে ঢাকা মহিলা পলিটেকনিক ইন্সটিউটে এ কম্পিউটার টেকনোলজিতে অধ্যায়রত।',style: TextStyle(
                                                 fontSize: 18
                                             ),),
                                           );
@@ -311,7 +311,9 @@ class _AboutPagesState extends State<AboutPages> {
                           children: <Widget>[
                             InkWell(
                                 onTap:(){
-
+                                  setState(() {
+                                    _launchURL('https://www.facebook.com/profile.php?id=100008599368267');
+                                  });
                                 },
                                 child: Image.asset('images/fb.png',width: 40,height: 40,)),
 
@@ -329,7 +331,9 @@ class _AboutPagesState extends State<AboutPages> {
 
                             InkWell(
                                 onTap:(){
-
+                                  onTap:(){
+                                    _mailto('adritatori3330@gmail.com');
+                                  },
                                 },
                                 child: Image.asset('images/gmail.png',width: 40,height: 40,)),
                           ],
