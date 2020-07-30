@@ -22,15 +22,15 @@ class _NearByMosqueScreenState extends State<NearByMosqueScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _myActivity = 5000;
-    getDistance(5000);
+    _myActivity = 1500;
+    getDistance(1500);
   }
 
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-   getDistance(5000);
+    getDistance(1500);
   }
 
   getDistance(int distance){
@@ -87,12 +87,12 @@ class _NearByMosqueScreenState extends State<NearByMosqueScreen> {
                       color: Colors.white, fontSize: 20
                   ), ),
                 ),
-          IconButton(
-            icon: Icon(Icons.refresh,color: Colors.white,),
-            onPressed: (){
-              getNextPageDistance(_myActivity);
-            },
-          )
+                IconButton(
+                  icon: Icon(Icons.refresh,color: Colors.white,),
+                  onPressed: (){
+                    getNextPageDistance(_myActivity);
+                  },
+                )
               ],
             ),
           ),
@@ -110,83 +110,83 @@ class _NearByMosqueScreenState extends State<NearByMosqueScreen> {
 
         body:  Stack(
 
-        children: <Widget>[
-          Container(
-           child: Image.asset("images/mapbg.jpg" , width: MediaQuery.of(context).size.width, height: 150, fit: BoxFit.cover,),
-          ),
-          Container(
+          children: <Widget>[
+            Container(
+              child: Image.asset("images/mapbg.jpg" , width: MediaQuery.of(context).size.width, height: 150, fit: BoxFit.cover,),
+            ),
+            Container(
 
-            margin: EdgeInsets.only(top: 50,left: 10,right: 10),
-            child: ClipRRect(
+              margin: EdgeInsets.only(top: 50,left: 10,right: 10),
+              child: ClipRRect(
 
-              borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30)),
-              child: Container(
-                color: Colors.white,
-                padding: EdgeInsets.only(top: 20),
-                child: Column(
-                  children: <Widget>[
-                    DropDownFormField(
-                      titleText: 'Distance',
-                      hintText: '$_myActivity',
-                      value: _myActivity,
-                      onSaved: (value){
-                        setState(() {
-                          _myActivity = value;
-                          getDistance(value);
-                        });
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          _myActivity = value;
-                          getDistance(value);
-                        });
-                      },
-                      dataSource: [
-                        {
-                          "display": "১০০ মি.",
-                          "value": 100,
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30)),
+                child: Container(
+                  color: Colors.white,
+                  padding: EdgeInsets.only(top: 20),
+                  child: Column(
+                    children: <Widget>[
+                      DropDownFormField(
+                        titleText: 'এরিয়া ⟱',
+                        hintText: '$_myActivity',
+                        value: _myActivity,
+                        onSaved: (value){
+                          setState(() {
+                            _myActivity = value;
+                            getDistance(value);
+                          });
                         },
-                        {
-                          "display": "৫০০ মি.",
-                          "value": 500,
+                        onChanged: (value) {
+                          setState(() {
+                            _myActivity = value;
+                            getDistance(value);
+                          });
                         },
-                        {
-                          "display": "১০০০ মি.",
-                          "value": 1000,
-                        },
-                        {
-                          "display": "১.৫ কিঃমিঃ",
-                          "value": 1500,
-                        },
-                        {
-                          "display": "২ কিঃমিঃ",
-                          "value": 2000,
-                        },
-                        {
-                          "display": "২.৫ কিঃমিঃ",
-                          "value": 2500,
-                        },
-                        {
-                          "display": "৫ কিঃমিঃ",
-                          "value": 5000,
-                        },
-                        {
-                          "display": "১০ কিঃমিঃ",
-                          "value": 10000,
-                        },
-                      ],
-                      textField: 'display',
-                      valueField: 'value',
-                    ),
-                    Expanded(
-                      child: Consumer<PlaceProvider>(
-                        builder: (context,data,child)=>isLoading?
-                        Center(
-                          child: CircularProgressIndicator(backgroundColor: Colors.green,),
-                        ):ListView.builder(
-                            itemCount: data.currentPlacesearch.results.length,
-                            itemBuilder: (context,index){
-                              return  Column(
+                        dataSource: [
+                          {
+                            "display": "১০০ মি.",
+                            "value": 100,
+                          },
+                          {
+                            "display": "৫০০ মি.",
+                            "value": 500,
+                          },
+                          {
+                            "display": "১০০০ মি.",
+                            "value": 1000,
+                          },
+                          {
+                            "display": "১.৫ কিঃমিঃ",
+                            "value": 1500,
+                          },
+                          {
+                            "display": "২ কিঃমিঃ",
+                            "value": 2000,
+                          },
+                          {
+                            "display": "২.৫ কিঃমিঃ",
+                            "value": 2500,
+                          },
+                          {
+                            "display": "৫ কিঃমিঃ",
+                            "value": 5000,
+                          },
+                          {
+                            "display": "১০ কিঃমিঃ",
+                            "value": 10000,
+                          },
+                        ],
+                        textField: 'display',
+                        valueField: 'value',
+                      ),
+                      Expanded(
+                        child: Consumer<PlaceProvider>(
+                          builder: (context,data,child)=>isLoading?
+                          Center(
+                            child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.green),),
+                          ):ListView.builder(
+                              itemCount: data.currentPlacesearch.results.length,
+                              itemBuilder: (context,index){
+                                return  Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Card(
@@ -213,17 +213,17 @@ class _NearByMosqueScreenState extends State<NearByMosqueScreen> {
                                   ],
                                 );
 
-                            }),
+                              }),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
         ),
-      
+
       ),
     );
   }

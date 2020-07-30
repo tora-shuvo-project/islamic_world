@@ -65,17 +65,18 @@ class _BlogPagesState extends State<BlogPages> {
         appBar:PreferredSize(child: _appBar(),preferredSize: Size(MediaQuery.of(context).size.width, 120),),
         body: ListView(
           children: <Widget>[
+
             Card(
               child: ListTile(
                 onTap: (){
-                  _launchURL('http://www.truemuslims.net/Bangla.html');
+                  _launchURL('https://www.alkawsar.com/bn/');
                 },
                 leading: Text('1',style: TextStyle(
                   fontSize: 20,
 
                 ),),
-                title: Text('ট্রু মুসলিম',style: TextStyle(fontSize: 16),),
-                subtitle: Text('Type: English (Audio)'),
+                title: Text('মাসিক আল কাওসার',style: TextStyle(fontSize: 16),),
+                subtitle: Text('Type: Bangla (Blog)'),
                 trailing: IconButton(
                   icon: Icon(Icons.keyboard_arrow_right),
                   onPressed: (){
@@ -90,7 +91,7 @@ class _BlogPagesState extends State<BlogPages> {
                   Navigator.of(context).push(SizeRoute(
                       page: BrowserScreen('https://waytotawheed.com/%E0%A6%87%E0%A6%B8%E0%A6%B2%E0%A6%BE%E0%A6%AE%E0%A6%BF%E0%A6%95-%E0%A6%AC%E0%A6%87-%E0%A6%B8%E0%A6%AE%E0%A6%BE%E0%A6%B9%E0%A6%BE%E0%A6%B0/')
                   ));
-                  },
+                },
                 leading: Text('2',style: TextStyle(
                   fontSize: 20,
 
@@ -397,7 +398,7 @@ class _BlogPagesState extends State<BlogPages> {
               child: ListTile(
                 onTap: (){
                   Navigator.of(context).push(SizeRoute(
-                     page: BrowserScreen('https://amarspondon.wordpress.com/')
+                      page: BrowserScreen('https://amarspondon.wordpress.com/')
                   ));
                 },
                 leading: Text('17',style: TextStyle(
@@ -507,6 +508,25 @@ class _BlogPagesState extends State<BlogPages> {
                 ),),
                 title: Text('মুসলিম মিডিয়া',style: TextStyle(fontSize: 16),),
                 subtitle: Text('Type: Bangla (Blog)'),
+                trailing: IconButton(
+                  icon: Icon(Icons.keyboard_arrow_right),
+                  onPressed: (){
+
+                  },
+                ),
+              ),
+            ),
+            Card(
+              child: ListTile(
+                onTap: (){
+                  _launchURL('http://www.truemuslims.net/Bangla.html');
+                },
+                leading: Text('23',style: TextStyle(
+                  fontSize: 20,
+
+                ),),
+                title: Text('ট্রু মুসলিম',style: TextStyle(fontSize: 16),),
+                subtitle: Text('Type: English (Audio)'),
                 trailing: IconButton(
                   icon: Icon(Icons.keyboard_arrow_right),
                   onPressed: (){

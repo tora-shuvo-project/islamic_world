@@ -39,6 +39,7 @@ import 'package:searchtosu/pages/shomoy_shuchi_page.dart';
 import 'package:searchtosu/pages/sura_list_page.dart';
 import 'package:searchtosu/pages/tasbih_page.dart';
 import 'package:searchtosu/utils/utils.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatefulWidget {
 
@@ -71,10 +72,8 @@ class _HomeScreenState extends State<HomeScreen> {
   var latitude;
   var minute;
   bool loading = true;
-  String _timeString="";
   String majhabName='';
 
-  PrayerTimeModels prayerTimeModels;
   int date1;
   bool isOpenQuran=true;
 
@@ -94,6 +93,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   String asortoday;
 
+  _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    } }
 
   Widget _appBar(){
     return Container(
@@ -104,57 +109,47 @@ class _HomeScreenState extends State<HomeScreen> {
           width: MediaQuery.of(context).size.width,
           padding: EdgeInsets.symmetric(horizontal: 17),
           child:
-          Expanded(
-            child: Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-//                  Expanded(child: IconButton(
-//                    icon:Icon(Icons.menu,color:Color(0xff06AB00)),
-//                    onPressed: drawerController.toggle,
-//                  )),
-                  Expanded(
-                    child:
-                    IconButton(
-                      icon:Icon(Icons.menu,color: Colors.green,),
-                      onPressed: drawerController.toggle,
+          Row(
+            children: <Widget>[
+              Expanded(
+                  child:
+                  IconButton(
+                    icon:Icon(Icons.menu,color: Colors.green,),
+                    onPressed: drawerController.toggle,
 
-                    )
-                  ),
-                  //Text(englishDate,style: TextStyle(color:Color(0xff06AB00), fontSize: 17)),
-
-                  Expanded(
-                      flex: 3,
-                      child: Text('Search Islam',style: TextStyle(fontSize: 18.0,color: Colors.green,fontWeight: FontWeight.bold),)),
-
-                  Expanded(flex: 2,
-                    child: InkWell(
-                        onTap: (){
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context)=>LocationPage(_center)
-                          )).then((_){
-                            setState(() {
-                              Utils.getZilaNameFromPreference().then((value){
-                                zilaName=value;
-                              });
-                            });
-                          });
-                        },
-                        child: FittedBox(
-                          child: Row(
-                            children: <Widget>[
-                              Icon(Icons.location_on,color:Color(0xff06AB00),),
-                              Text("|",style: TextStyle(color:Color(0xff06AB00), fontSize: 17),),
-                              Text(zilaName,style: TextStyle(color:Color(0xff06AB00), fontSize: 17), )
-                            ],
-                          ),
-                        ),
-                      ),
-                  ),
-                ],
+                  )
               ),
-            ),
+              //Text(englishDate,style: TextStyle(color:Color(0xff06AB00), fontSize: 17)),
+
+              Expanded(
+                  flex: 3,
+                  child: Text('Search Islam',style: TextStyle(fontSize: 18.0,color: Colors.green,fontWeight: FontWeight.bold),)),
+
+              Expanded(flex: 2,
+                child: InkWell(
+                  onTap: (){
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context)=>LocationPage(_center)
+                    )).then((_){
+                      setState(() {
+                        Utils.getZilaNameFromPreference().then((value){
+                          zilaName=value;
+                        });
+                      });
+                    });
+                  },
+                  child: FittedBox(
+                    child: Row(
+                      children: <Widget>[
+                        Icon(Icons.location_on,color:Color(0xff06AB00),),
+                        Text("|",style: TextStyle(color:Color(0xff06AB00), fontSize: 17),),
+                        Text(zilaName,style: TextStyle(color:Color(0xff06AB00), fontSize: 17), )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
 
         ),
@@ -248,11 +243,10 @@ class _HomeScreenState extends State<HomeScreen> {
       'your channel id',
       'your channel name',
       'your channel description',
-        priority: Priority.High,
-        importance: Importance.Max,
-        ongoing: true,
-        styleInformation: BigTextStyleInformation(''),
-        );
+      priority: Priority.High,
+      importance: Importance.Max,
+      styleInformation: BigTextStyleInformation(''),
+    );
 
     IOSNotificationDetails iosNotificationDetails = IOSNotificationDetails();
     NotificationDetails notificationDetails = NotificationDetails(androidNotificationDetails, iosNotificationDetails);
@@ -265,18 +259,17 @@ class _HomeScreenState extends State<HomeScreen> {
     await evening_notification();
   }
   Future<void> evening_notification() async {
-    var time = Time(19, 0, 0);
+    var time = Time(19, 00, 0);
 
     AndroidNotificationDetails androidNotificationDetails =
     AndroidNotificationDetails(
       'your channel id',
       'your channel name',
       'your channel description',
-        priority: Priority.High,
-        importance: Importance.Max,
-        ongoing: true,
-        styleInformation: BigTextStyleInformation(''),
-        );
+      priority: Priority.High,
+      importance: Importance.Max,
+      styleInformation: BigTextStyleInformation(''),
+    );
 
     IOSNotificationDetails iosNotificationDetails = IOSNotificationDetails();
     NotificationDetails notificationDetails = NotificationDetails(androidNotificationDetails, iosNotificationDetails);
@@ -307,583 +300,587 @@ class _HomeScreenState extends State<HomeScreen> {
           },
           child: SafeArea(
             child: Scaffold(
-         appBar: PreferredSize(child: _appBar(),preferredSize: Size(MediaQuery.of(context).size.width, 120),) ,
-              body: SingleChildScrollView(
-                child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: Column(
-                          children: <Widget>[
-                            Container(
-                              padding: EdgeInsets.all(15),
-                              decoration: BoxDecoration(
+              appBar: PreferredSize(child: _appBar(),
+                preferredSize: Size(MediaQuery.of(context).size.width, 120),) ,
+              body: ListView(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                            height:164,
+                            padding: EdgeInsets.all(15),
+                            decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                  gradient: LinearGradient(colors: [
-                                    const Color(0xff178723),
-                                    const Color(0xff27AB4B)
-                                  ])
-                              ),
-                              child:
-                              Stack(
-                                overflow: Overflow.visible,
-                                    children: <Widget>[
-                                      Positioned(
-                                          right: -12,
-                                          top:5,
-                                          child: Image.asset("images/home_mousque.png", height: 150, width: 140,)),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Text("বর্তমান নামাজের ওয়াক্ত", style: TextStyle(color: Colors.white),),
-                                          FutureBuilder(
-                                            future: getCurrentPrayer(),
+                                gradient: LinearGradient(colors: [
+                                  const Color(0xff178723),
+                                  const Color(0xff27AB4B)
+                                ])
+                            ),
+                            child:
+                            Stack(
+                              overflow: Overflow.visible,
+                              children: <Widget>[
+                                Positioned(
+                                    right: -12,
+                                    top:5,
+                                    child: Image.asset("images/home_mousque.png", height: 150, width: 140,)),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text("বর্তমান নামাজের ওয়াক্ত", style: TextStyle(color: Colors.white),),
+                                    FutureBuilder(
+                                      future: getCurrentPrayer(),
+                                      builder: (context, AsyncSnapshot<Prayer> snapshot) {
+                                        if (snapshot.hasData) {
+                                          final prayer = snapshot.data;
+                                          if(prayer.toString().trim()=="Prayer.ASR"){
+                                            currentTime = "আসর";
+                                          }else if(prayer.toString().trim()=="Prayer.FAJR"){
+                                            currentTime = "ফজর";
+                                          }else if(prayer.toString().trim()=="Prayer.DHUHR"){
+                                            currentTime = "যোহর";
+                                          }else if(prayer.toString().trim()=="Prayer.MAGHRIB"){
+                                            currentTime = "মাগরিব";
+                                          }else if(prayer.toString().trim()=="Prayer.ISHA"){
+                                            currentTime = "এশা";
+                                          }else{
+                                            currentTime = "নফল";
+                                          }
+                                          return Text(currentTime, style: TextStyle(
+                                              fontSize: 20, color: Colors.white
+                                          ),);
+                                        } else if (snapshot.hasError) {
+                                          print(snapshot.hasError);
+                                          return Container();
+                                        } else {
+                                          return CircularProgressIndicator();
+                                        }
+                                      },
+                                    ),
+                                    Container(
+                                        decoration: BoxDecoration(
+                                            gradient: LinearGradient(colors: [
+                                              const Color(0xffffffff),
+                                              const Color(0xff178723),
+                                              const Color(0xffffffff),
+                                            ]))
+                                    ),
+                                    Text("পরবর্তী নামাজের ওয়াক্ত", style: TextStyle(color: Colors.white),),
+                                    Center(child:
+                                    isTimeString?
+                                    Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        FutureBuilder(
+                                            future: getNextPrayer(),
                                             builder: (context, AsyncSnapshot<Prayer> snapshot) {
                                               if (snapshot.hasData) {
                                                 final prayer = snapshot.data;
                                                 if(prayer.toString().trim()=="Prayer.ASR"){
-                                                  currentTime = "আসর";
-                                                }else if(prayer.toString().trim()=="Prayer.FAJR"){
-                                                  currentTime = "ফজর";
-                                                }else if(prayer.toString().trim()=="Prayer.DHUHR"){
-                                                  currentTime = "যোহর";
-                                                }else if(prayer.toString().trim()=="Prayer.MAGHRIB"){
-                                                  currentTime = "মাগরিব";
-                                                }else if(prayer.toString().trim()=="Prayer.ISHA"){
-                                                  currentTime = "এশা";
-                                                }else{
-                                                  currentTime = "নফল";
+                                                  nextTime = "আসর";
                                                 }
-                                                return Text(currentTime, style: TextStyle(
-                                                    fontSize: 20, color: Colors.white
-                                                ),);
-                                              } else if (snapshot.hasError) {
-                                                print(snapshot.hasError);
-                                                return Container();
-                                              } else {
-                                                return CircularProgressIndicator();
+                                                else if(prayer.toString().trim()=="Prayer.FAJR"){
+                                                  nextTime = "ফজর";
+                                                }
+                                                else if(prayer.toString().trim()=="Prayer.SUNRISE"){
+                                                  nextTime = "নামাজের জন্য হারাম";
+                                                }
+                                                else if(prayer.toString().trim()=="Prayer.DHUHR"){
+                                                  nextTime = "যোহর";
+                                                }
+                                                else if(prayer.toString().trim()=="Prayer.MAGHRIB"){
+                                                  nextTime = "মাগরিব";
+                                                }
+                                                else if(prayer.toString().trim()=="Prayer.ISHA"){
+                                                  nextTime = "এশা";
+                                                }else
+                                                {
+                                                  nextTime = "নফল";
+                                                }
+                                                return Container(
+                                                    alignment: Alignment.centerLeft,
+                                                    child: Text(nextTime,style: TextStyle(fontSize: 20, color: Colors.white) ));
                                               }
-                                            },
-                                          ),
-                                          Container(
-                                              decoration: BoxDecoration(
-                                                  gradient: LinearGradient(colors: [
-                                                    const Color(0xffffffff),
-                                                    const Color(0xff178723),
-                                                    const Color(0xffffffff),
-                                                  ]))
-                                          ),
-                                          Text("পরবর্তী নামাজের ওয়াক্ত", style: TextStyle(color: Colors.white),),
-                                          Center(child:
-                                            isTimeString?
-                                            Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: <Widget>[
-                                                FutureBuilder(
-                                                    future: getNextPrayer(),
-                                                    builder: (context, AsyncSnapshot<Prayer> snapshot) {
-                                                      if (snapshot.hasData) {
-                                                        final prayer = snapshot.data;
-                                                        if(prayer.toString().trim()=="Prayer.ASR"){
-                                                          nextTime = "আসর";
-                                                        }
-                                                        else if(prayer.toString().trim()=="Prayer.FAJR"){
-                                                          nextTime = "ফজর";
-                                                        }
-                                                        else if(prayer.toString().trim()=="Prayer.SUNRISE"){
-                                                          nextTime = "নামাজের জন্য হারাম";
-                                                        }
-                                                        else if(prayer.toString().trim()=="Prayer.DHUHR"){
-                                                          nextTime = "যোহর";
-                                                        }
-                                                        else if(prayer.toString().trim()=="Prayer.MAGHRIB"){
-                                                          nextTime = "মাগরিব";
-                                                        }
-                                                        else if(prayer.toString().trim()=="Prayer.ISHA"){
-                                                          nextTime = "এশা";
-                                                        }else
-                                                        {
-                                                          nextTime = "নফল";
-                                                        }
-                                                        return Container(
-                                                            alignment: Alignment.centerLeft,
-                                                            child: Text(nextTime,style: TextStyle(fontSize: 20, color: Colors.white) ));
-                                                      }
-                                                      if(snapshot.hasError){
-                                                        print(snapshot.error);
-                                                        return Container();
-                                                      }
-                                                      return CircularProgressIndicator();
-                                                    }
+                                              if(snapshot.hasError){
+                                                print(snapshot.error);
+                                                return Container();
+                                              }
+                                              return CircularProgressIndicator();
+                                            }
 
-                                                ),
+                                        ),
 
-                                              ],
-                                            ):
-                                            Container(
-                                              child: Text('',style: TextStyle(color: Colors.white),),
-                                            ),
-                                          ),
+                                      ],
+                                    ):
+                                    Container(
+                                      child: Text('',style: TextStyle(color: Colors.white),),
+                                    ),
+                                    ),
 
-                                          Row(
-                                            children: <Widget>[
-                                              FutureBuilder(
-                                                future: getTodaySuriseTime(),
-                                                builder: (context, AsyncSnapshot<DateTime> snapshot) {
-                                                  if (snapshot.hasData) {
-                                                    final dateTime = snapshot.data.toLocal();
-                                                    Sunrise=DateFormat.jm().format(dateTime);
-                                                    return Text('সূর্যদয়ঃ ${Sunrise} । ', style: TextStyle(
+                                    Row(
+                                      children: <Widget>[
+                                        FutureBuilder(
+                                          future: getTodaySuriseTime(),
+                                          builder: (context, AsyncSnapshot<DateTime> snapshot) {
+                                            if (snapshot.hasData) {
+                                              final dateTime = snapshot.data.toLocal();
+                                              Sunrise=DateFormat.jm().format(dateTime);
+                                              return Text('সূর্যদয়ঃ ${Sunrise} । ', style: TextStyle(
 
-                                                        color: Colors.white
-                                                    ),);
-                                                  } else if (snapshot.hasError) {
-                                                    print(snapshot.hasError);
-                                                    return SingleChildScrollView();
-                                                  } else {
-                                                    return Text('');
-                                                  }
-                                                },
-                                              ),
-                                              FutureBuilder(
-                                                future: getTodayMagribTime(),
-                                                builder: (context, AsyncSnapshot<DateTime> snapshot) {
-                                                  if (snapshot.hasData) {
-                                                    final dateTime = snapshot.data.toLocal();
-                                                    Sunset=DateFormat.jm().format(dateTime);
-                                                    return Text('সূর্যাস্তঃ ${Sunset}', style: TextStyle(
+                                                  color: Colors.white
+                                              ),);
+                                            } else if (snapshot.hasError) {
+                                              print(snapshot.hasError);
+                                              return SingleChildScrollView();
+                                            } else {
+                                              return Text('');
+                                            }
+                                          },
+                                        ),
+                                        FutureBuilder(
+                                          future: getTodayMagribTime(),
+                                          builder: (context, AsyncSnapshot<DateTime> snapshot) {
+                                            if (snapshot.hasData) {
+                                              final dateTime = snapshot.data.toLocal();
+                                              Sunset=DateFormat.jm().format(dateTime);
+                                              return Text('সূর্যাস্তঃ ${Sunset}', style: TextStyle(
 
-                                                        color: Colors.white
-                                                    ),);
-                                                  } else if (snapshot.hasError) {
-                                                    print(snapshot.hasError);
-                                                    return SingleChildScrollView();
-                                                  } else {
-                                                    return Text('');
-                                                  }
-                                                },
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-
-                                    ],
-                                  )
-
-                            ),
-
-                            RotateAnimatedTextKit(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context)=>CalenderScreen()
-                                ));
-                              },
-                              duration: Duration(milliseconds: 5000),
-                              text: [
-                                englishDate1,
-                                arabyDate1,
-                                banglaDate1,
-                                englishDate1,
-                                arabyDate1,
-                                banglaDate1,
-                                englishDate1,
-                                arabyDate1,
-                                banglaDate1,
-                                englishDate1,
-                                arabyDate1,
-                                banglaDate1,
-                                englishDate1,
-                                arabyDate1,
-                                banglaDate1,
-                                englishDate1,
-                                arabyDate1,
-                                banglaDate1,
-                                englishDate1,
-                                arabyDate1,
-                                banglaDate1,
-                                englishDate1,
-                                arabyDate1,
-                                banglaDate1,
-                                englishDate1,
-                                arabyDate1,
-                                banglaDate1,
-                                englishDate1,
-                                banglaDate1,
-                                englishDate1,
-                                arabyDate1,
-                                banglaDate1,
-                                englishDate1,
-                                arabyDate1,
-                                banglaDate1,
-                                englishDate1,
-                                arabyDate1,
-                                banglaDate1,
-                                englishDate1,
-                                arabyDate1,
-                                banglaDate1,
-                                englishDate1,
-                                banglaDate1,
-                                englishDate1,
-                                arabyDate1,
-                                banglaDate1,
-                                englishDate1,
-                                arabyDate1,
-                                banglaDate1,
-                                englishDate1,
-                                arabyDate1,
-                                banglaDate1,
-                                englishDate1,
-                                arabyDate1,
-                                banglaDate1,
-                                englishDate1,
-                                banglaDate1,
-                                englishDate1,
-                                arabyDate1,
-                                banglaDate1,
-                                englishDate1,
-                                arabyDate1,
-                                banglaDate1,
-                                englishDate1,
+                                                  color: Colors.white
+                                              ),);
+                                            } else if (snapshot.hasError) {
+                                              print(snapshot.hasError);
+                                              return SingleChildScrollView();
+                                            } else {
+                                              return Text('');
+                                            }
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
 
                               ],
+                            )
 
-                              isRepeatingAnimation: true,
-                              textStyle: TextStyle(fontSize: 17.0,color: Colors.green),
-                              textAlign: TextAlign.start,
-                              // or Alignment.topLeft
-                            ),
-
-                           Container(
-                                child:Column(
-                                  children: <Widget>[
-                                    SizedBox(height: 5,),
-                                   Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          InkWell(
-                                            onTap: (){
-                                              Navigator.of(context).push(ScaleRoute(page: SuraListPage()));
-                                            },
-                                            child: Column(
-                                              children: <Widget>[
-                                                Card(
-
-                                                  child: Container(
-                                                    padding: EdgeInsets.all(15),
-                                                      child: Image.asset("images/quran.png",height: 40, width: 40,)),
-                                                ),
-                                                Text("কোরআন শরীফ")
-                                              ],
-                                            ),
-                                          ),
-
-
-                                          InkWell(
-                                            onTap: (){
-                                              Navigator.of(context).push(ScaleRoute(
-                                        page: DoyaNameScren()
-                                    ));
-                                            },
-                                            child: Column(
-                                              children: <Widget>[
-                                                Card(
-
-                                                  child: Container(
-                                                      padding: EdgeInsets.all(15),
-                                                      child: Image.asset("images/doya.png",height: 40, width: 40,)),
-                                                ),
-                                                Text("দোয়া")
-                                              ],
-                                            ),
-                                          ),
-                                          InkWell(
-                                            onTap: (){
-                                              Navigator.of(context).push(ScaleRoute(page: QuranWordPages()));
-                                            },
-                                            child: Column(
-                                              children: <Widget>[
-                                                Card(
-
-                                                  child: Container(
-                                                      padding: EdgeInsets.all(15),
-                                                      child: Image.asset("images/word.png",height: 40, width: 40,)),
-                                                ),
-                                                Text("কোরআন শব্দ")
-                                              ],
-                                            ),
-                                          ),
-
-                                          InkWell(
-                                            onTap: (){
-                                              Navigator.of(context).push(ScaleRoute(
-                                        page:CommentQuestionScreen()
-                                    ));
-                                            },
-                                            child: Column(
-                                              children: <Widget>[
-                                                Card(
-
-                                                  child: Container(
-                                                      padding: EdgeInsets.all(15),
-                                                      child: Image.asset("images/live_comment.png",height: 40, width: 40,)),
-                                                ),
-                                                Text("জিজ্ঞাসা")
-                                              ],
-                                            ),
-                                          )
-                                        ],
-                                      ),
-
-                                    SizedBox(height: 15,),
-                                   Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          InkWell(
-                                            onTap: (){
-                                              Navigator.of(context).push(ScaleRoute(
-                                                  page: OjifaScreen()
-                                              ));
-                                            },
-                                            child: Column(
-                                              children: <Widget>[
-                                                Card(
-
-                                                  child: Container(
-                                                      padding: EdgeInsets.all(15),
-                                                      child: Image.asset("images/ojifa.png",height: 40, width: 40,)),
-                                                ),
-                                                Text("অজিফা")
-                                              ],
-                                            ),
-                                          ),
-
-
-                                          InkWell(
-                                            onTap: (){
-                                              Navigator.of(context).push(ScaleRoute(page:ShomoyShuchi()));
-                                            },
-                                            child: Column(
-                                              children: <Widget>[
-                                                Card(
-
-                                                  child: Container(
-                                                      padding: EdgeInsets.all(15),
-                                                      child: Image.asset("images/time.png",height: 40, width: 40,)),
-                                                ),
-                                                Text("নামাজের সময়সূচী")
-                                              ],
-                                            ),
-                                          ),
-
-                                          InkWell(
-                                            onTap: (){
-                                              Navigator.of(context).push(ScaleRoute(page: HadisScreen() ));
-                                            },
-                                            child: Column(
-                                              children: <Widget>[
-                                                Card(
-
-                                                  child: Container(
-                                                      padding: EdgeInsets.all(15),
-                                                      child: Image.asset("images/hadis.png",height: 40, width: 40,)),
-                                                ),
-                                                Text("হাদিস")
-                                              ],
-                                            ),
-                                          ),
-
-                                          InkWell(
-                                            onTap: (){
-                                              Navigator.of(context).push(ScaleRoute(page:NiyomScreen()));
-                                            },
-                                            child: Column(
-                                              children: <Widget>[
-                                                Card(
-
-                                                  child: Container(
-                                                      padding: EdgeInsets.all(15),
-                                                      child: Image.asset("images/niyom.png",height: 40, width: 40,)),
-                                                ),
-                                                Text("নিয়ম")
-                                              ],
-                                            ),
-                                          )
-                                        ],
-                                      ),
-
-                                    SizedBox(height: 15,),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        InkWell(
-                                          onTap: (){
-                                            Navigator.of(context).push(ScaleRoute(page: KiblaScreen()));
-                                          },
-                                          child: Column(
-                                            children: <Widget>[
-                                              Card(
-
-                                                child: Container(
-                                                    padding: EdgeInsets.all(15),
-                                                    child: Image.asset("images/kibla.png",height: 40, width: 40,)),
-                                              ),
-                                              Text("কিবলা")
-                                            ],
-                                          ),
-                                        ),
-
-                                        InkWell(
-                                          onTap: (){
-                                            Navigator.of(context).push(ScaleRoute(
-                                        page: NearByMosqueScreen()
-                                    ));
-                                          },
-                                          child: Column(
-                                            children: <Widget>[
-                                              Card(
-
-                                                child: Container(
-                                                    padding: EdgeInsets.all(15),
-                                                    child: Image.asset("images/mosque.png",height: 40, width: 40,)),
-                                              ),
-                                              Text("নিকটবর্তী মসজিদ")
-                                            ],
-                                          ),
-                                        ),
-
-                                        InkWell(
-                                          onTap: (){
-                                            Navigator.of(context).push(ScaleRoute(page:TasbihScreen()));
-                                          },
-                                          child: Column(
-                                            children: <Widget>[
-                                              Card(
-
-                                                child: Container(
-                                                    padding: EdgeInsets.all(15),
-                                                    child: Image.asset("images/tasbih.png",height: 40, width: 40,)),
-                                              ),
-                                              Text("তাসবিহ")
-                                            ],
-                                          ),
-                                        ),
-
-                                        InkWell(
-                                          onTap: (){
-                                            Navigator.of(context).push(ScaleRoute(page: CalenderScreen()));
-                                          },
-                                          child: Column(
-                                            children: <Widget>[
-                                              Card(
-
-                                                child: Container(
-                                                    padding: EdgeInsets.all(15),
-                                                    child: Image.asset("images/calendar.png",height: 40, width: 40,)),
-                                              ),
-                                              Text("ক্যালেন্ডার")
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    SizedBox(height: 15,),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-
-                                        Expanded(
-                                          child: InkWell(
-                                            onTap: (){
-                                              showDialog(
-                                                context: context,
-                                                builder: (_) => Labbayekallahumma_screen(),
-                                              );
-                                            },
-                                            child: Column(
-                                              children: <Widget>[
-                                                Card(
-
-                                                  child: Container(
-                                                      padding: EdgeInsets.all(15),
-                                                      child: Image.asset("images/labbaikkallahumma.png",height: 40, width: 40,)),
-                                                ),
-                                                Text("লাব্বাইক")
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-
-                                        Expanded(
-                                          child: InkWell(
-                                            onTap: (){
-                                              Navigator.of(context).push(ScaleRoute(page: BlogPages()));
-                                            },
-                                            child: Column(
-                                              children: <Widget>[
-                                                Card(
-
-                                                  child: Container(
-                                                      padding: EdgeInsets.all(15),
-                                                      child: Image.asset("images/web.png",height: 40, width: 40,)),
-                                                ),
-                                                Text("ব্লগ")
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-
-                                        Expanded(
-                                          child: InkWell(
-                                            onTap: (){
-                                              Navigator.of(context).push(ScaleRoute(page:  SettingsPage()));
-                                            },
-                                            child: Column(
-                                              children: <Widget>[
-                                                Card(
-
-                                                  child: Container(
-                                                      padding: EdgeInsets.all(15),
-                                                      child: Image.asset("images/settings.png",height: 40, width: 40,)),
-                                                ),
-                                                Text("সেটিংস")
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-
-                                        Expanded(
-                                          child: InkWell(
-                                            onTap: (){
-                                              showDialog(
-                                                context: context,
-                                                builder: (_) => CustomeAlertDialog(),
-                                              );
-                                            },
-                                            child: Column(
-                                              children: <Widget>[
-                                                Card(
-
-                                                  child: Container(
-                                                      padding: EdgeInsets.all(15),
-                                                      child: Image.asset("images/close.png",height: 40, width: 40,)),
-                                                ),
-                                                Text("বন্ধ করুন")
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-
-
-                                      ],
-                                    ),
-                                    SizedBox(height: 15,),
-                                  ],
-                                )
-                              ),
-                            
-                          ],
                         ),
-                      ),
+
+                        RotateAnimatedTextKit(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context)=>CalenderScreen()
+                            ));
+                          },
+                          duration: Duration(milliseconds: 5000),
+                          text: [
+                            englishDate1,
+                            arabyDate1,
+                            banglaDate1,
+                            englishDate1,
+                            arabyDate1,
+                            banglaDate1,
+                            englishDate1,
+                            arabyDate1,
+                            banglaDate1,
+                            englishDate1,
+                            arabyDate1,
+                            banglaDate1,
+                            englishDate1,
+                            arabyDate1,
+                            banglaDate1,
+                            englishDate1,
+                            arabyDate1,
+                            banglaDate1,
+                            englishDate1,
+                            arabyDate1,
+                            banglaDate1,
+                            englishDate1,
+                            arabyDate1,
+                            banglaDate1,
+                            englishDate1,
+                            arabyDate1,
+                            banglaDate1,
+                            englishDate1,
+                            banglaDate1,
+                            englishDate1,
+                            arabyDate1,
+                            banglaDate1,
+                            englishDate1,
+                            arabyDate1,
+                            banglaDate1,
+                            englishDate1,
+                            arabyDate1,
+                            banglaDate1,
+                            englishDate1,
+                            arabyDate1,
+                            banglaDate1,
+                            englishDate1,
+                            banglaDate1,
+                            englishDate1,
+                            arabyDate1,
+                            banglaDate1,
+                            englishDate1,
+                            arabyDate1,
+                            banglaDate1,
+                            englishDate1,
+                            arabyDate1,
+                            banglaDate1,
+                            englishDate1,
+                            arabyDate1,
+                            banglaDate1,
+                            englishDate1,
+                            banglaDate1,
+                            englishDate1,
+                            arabyDate1,
+                            banglaDate1,
+                            englishDate1,
+                            arabyDate1,
+                            banglaDate1,
+                            englishDate1,
+
+                          ],
+
+                          isRepeatingAnimation: true,
+                          textStyle: TextStyle(fontSize: 17.0,color: Colors.green),
+                          textAlign: TextAlign.start,
+                          // or Alignment.topLeft
+                        ),
+
+                        Container(
+                            child:Column(
+                              children: <Widget>[
+                                SizedBox(height: 5,),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    InkWell(
+                                      onTap: (){
+                                        Navigator.of(context).push(ScaleRoute(page: SuraListPage()));
+                                      },
+                                      child: Column(
+                                        children: <Widget>[
+                                          Card(
+
+                                            child: Container(
+                                                padding: EdgeInsets.all(15),
+                                                child: Image.asset("images/quran.png",height: 40, width: 40,)),
+                                          ),
+                                          Text("কোরআন শরীফ")
+                                        ],
+                                      ),
+                                    ),
+
+
+                                    InkWell(
+                                      onTap: (){
+                                        Navigator.of(context).push(ScaleRoute(
+                                            page: DoyaNameScren()
+                                        ));
+                                      },
+                                      child: Column(
+                                        children: <Widget>[
+                                          Card(
+
+                                            child: Container(
+                                                padding: EdgeInsets.all(15),
+                                                child: Image.asset("images/doya.png",height: 40, width: 40,)),
+                                          ),
+                                          Text("দোয়া")
+                                        ],
+                                      ),
+                                    ),
+                                    InkWell(
+                                      onTap: (){
+                                        Navigator.of(context).push(ScaleRoute(page: QuranWordPages()));
+                                      },
+                                      child: Column(
+                                        children: <Widget>[
+                                          Card(
+
+                                            child: Container(
+                                                padding: EdgeInsets.all(15),
+                                                child: Image.asset("images/word.png",height: 40, width: 40,)),
+                                          ),
+                                          Text("কোরআন শব্দ")
+                                        ],
+                                      ),
+                                    ),
+
+                                    InkWell(
+                                      onTap: (){
+                                        Navigator.of(context).push(ScaleRoute(
+                                            page:CommentQuestionScreen()
+                                        ));
+                                      },
+                                      child: Column(
+                                        children: <Widget>[
+                                          Card(
+
+                                            child: Container(
+                                                padding: EdgeInsets.all(15),
+                                                child: Image.asset("images/live_comment.png",height: 40, width: 40,)),
+                                          ),
+                                          Text("জিজ্ঞাসা")
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+
+                                SizedBox(height: 15,),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    InkWell(
+                                      onTap: (){
+                                        Navigator.of(context).push(ScaleRoute(
+                                            page: OjifaScreen()
+                                        ));
+                                      },
+                                      child: Column(
+                                        children: <Widget>[
+                                          Card(
+
+                                            child: Container(
+                                                padding: EdgeInsets.all(15),
+                                                child: Image.asset("images/ojifa.png",height: 40, width: 40,)),
+                                          ),
+                                          Text("অজিফা")
+                                        ],
+                                      ),
+                                    ),
+
+
+                                    InkWell(
+                                      onTap: (){
+                                        Navigator.of(context).push(ScaleRoute(page:ShomoyShuchi()));
+                                      },
+                                      child: Column(
+                                        children: <Widget>[
+                                          Card(
+
+                                            child: Container(
+                                                padding: EdgeInsets.all(15),
+                                                child: Image.asset("images/time.png",height: 40, width: 40,)),
+                                          ),
+                                          Text("নামাজের সময়সূচী")
+                                        ],
+                                      ),
+                                    ),
+
+                                    InkWell(
+                                      onTap: (){
+                                        Navigator.of(context).push(ScaleRoute(page: HadisScreen() ));
+                                      },
+                                      child: Column(
+                                        children: <Widget>[
+                                          Card(
+
+                                            child: Container(
+                                                padding: EdgeInsets.all(15),
+                                                child: Image.asset("images/hadis.png",height: 40, width: 40,)),
+                                          ),
+                                          Text("হাদিস")
+                                        ],
+                                      ),
+                                    ),
+
+                                    InkWell(
+                                      onTap: (){
+                                        Navigator.of(context).push(ScaleRoute(page:NiyomScreen()));
+                                      },
+                                      child: Column(
+                                        children: <Widget>[
+                                          Card(
+
+                                            child: Container(
+                                                padding: EdgeInsets.all(15),
+                                                child: Image.asset("images/niyom.png",height: 40, width: 40,)),
+                                          ),
+                                          Text("নিয়ম")
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+
+                                SizedBox(height: 15,),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    InkWell(
+                                      onTap: (){
+                                        Navigator.of(context).push(ScaleRoute(page: KiblaScreen()));
+                                      },
+                                      child: Column(
+                                        children: <Widget>[
+                                          Card(
+
+                                            child: Container(
+                                                padding: EdgeInsets.all(15),
+                                                child: Image.asset("images/kibla.png",height: 40, width: 40,)),
+                                          ),
+                                          Text("কিবলা")
+                                        ],
+                                      ),
+                                    ),
+
+                                    InkWell(
+                                      onTap: (){
+                                        Navigator.of(context).push(ScaleRoute(
+                                            page: NearByMosqueScreen()
+                                        ));
+                                      },
+                                      child: Column(
+                                        children: <Widget>[
+                                          Card(
+
+                                            child: Container(
+                                                padding: EdgeInsets.all(15),
+                                                child: Image.asset("images/mosque.png",height: 40, width: 40,)),
+                                          ),
+                                          Text("নিকটবর্তী মসজিদ")
+                                        ],
+                                      ),
+                                    ),
+
+                                    InkWell(
+                                      onTap: (){
+                                        Navigator.of(context).push(ScaleRoute(page:TasbihScreen()));
+                                      },
+                                      child: Column(
+                                        children: <Widget>[
+                                          Card(
+
+                                            child: Container(
+                                                padding: EdgeInsets.all(15),
+                                                child: Image.asset("images/tasbih.png",height: 40, width: 40,)),
+                                          ),
+                                          Text("তাসবিহ")
+                                        ],
+                                      ),
+                                    ),
+
+                                    InkWell(
+                                      onTap: (){
+                                        Navigator.of(context).push(ScaleRoute(page: CalenderScreen()));
+                                      },
+                                      child: Column(
+                                        children: <Widget>[
+                                          Card(
+
+                                            child: Container(
+                                                padding: EdgeInsets.all(15),
+                                                child: Image.asset("images/calendar.png",height: 40, width: 40,)),
+                                          ),
+                                          Text("ক্যালেন্ডার")
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(height: 15,),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+
+                                    Expanded(
+                                      child: InkWell(
+                                        onTap: (){
+                                          showDialog(
+                                            context: context,
+                                            builder: (_) => Labbayekallahumma_screen(),
+                                          );
+                                        },
+                                        child: Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/labbaikkallahumma.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("লাব্বাইক")
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+
+                                    Expanded(
+                                      child: InkWell(
+                                        onTap: (){
+                                          Navigator.of(context).push(ScaleRoute(page: BlogPages()));
+                                        },
+                                        child: Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/web.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("ব্লগ")
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+
+                                    Expanded(
+                                      child: InkWell(
+                                        onTap: (){
+                                          Navigator.of(context).push(ScaleRoute(page:  SettingsPage()));
+                                        },
+                                        child: Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/settings.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("সেটিংস")
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+
+                                    Expanded(
+                                      child: InkWell(
+                                        onTap: (){
+                                          showDialog(
+                                            context: context,
+                                            builder: (_) => CustomeAlertDialog(),
+                                          );
+                                        },
+                                        child: Column(
+                                          children: <Widget>[
+                                            Card(
+
+                                              child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: Image.asset("images/close.png",height: 40, width: 40,)),
+                                            ),
+                                            Text("বন্ধ করুন")
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+
+
+                                  ],
+                                ),
+                                SizedBox(height: 15,),
+                              ],
+                            )
+                        ),
+
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -895,6 +892,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   ListView _buildDrawer(BuildContext context) {
     return ListView(
+      padding: EdgeInsets.all(0),
       children: <Widget>[
         Container(
           padding: EdgeInsets.only(top: 50, bottom: 20),
@@ -923,10 +921,10 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: (){
                 Navigator.of(context).pushReplacementNamed(HomeScreen.route);
               },
-    leading: CircleAvatar(
-    backgroundColor: Colors.transparent,
-    child: Image.asset('images/home.png',width: 25,),
-    ),
+              leading: CircleAvatar(
+                backgroundColor: Colors.transparent,
+                child: Image.asset('images/home.png',width: 25,),
+              ),
               title: Text("হোম")),
         ),
         Container(
@@ -945,19 +943,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 backgroundColor: Colors.transparent,
                 child: Image.asset(('images/quran.png'),width: 25,),
               ),
-            title: Text("সিলেক্ট কুরআন"),
+              title: Text("সিলেক্ট কুরআন"),
               subtitle: isOpenQuran?Container():Column(
                 children: <Widget>[
                   Container(
                     child: FlatButton(
                       child: Text('সূরা ক্রমে',style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500
+                          color: Colors.black,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500
                       ),),
                       onPressed: (){
                         Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context)=>SuraListPage()
+                            builder: (context)=>SuraListPage()
                         ));
                       },
                     ),
@@ -983,14 +981,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ),
-            trailing: IconButton(
-              icon: Icon(Icons.keyboard_arrow_down,color: Colors.white,),
-              onPressed: (){
-                setState(() {
-                  isOpenQuran=!isOpenQuran;
-                });
-              },
-            )),
+              trailing: IconButton(
+                icon: Icon(Icons.keyboard_arrow_down,color: Colors.white,),
+                onPressed: (){
+                  setState(() {
+                    isOpenQuran=!isOpenQuran;
+                  });
+                },
+              )),
         ),
         Container(
           height: 1,
@@ -1035,9 +1033,10 @@ class _HomeScreenState extends State<HomeScreen> {
           color: Colors.green.withOpacity(.5),
           child: ListTile(
               onTap: (){
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context)=>Labbayekallahumma_screen()
-                ));
+                showDialog(
+                  context: context,
+                  builder: (_) => Labbayekallahumma_screen(),
+                );
               },
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
@@ -1053,7 +1052,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: ListTile(
               onTap: (){
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context)=>DonateScreen()
+                    builder: (context)=>DonateScreen()
                 ));
               },
               leading: CircleAvatar(
@@ -1069,14 +1068,29 @@ class _HomeScreenState extends State<HomeScreen> {
           color: Colors.green.withOpacity(.5),
           child: ListTile(
               onTap: (){
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context)=>AboutPages()
-              ));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context)=>AboutPages()
+                ));
               },
               leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
                 child: Image.asset(('images/developer.png'),width: 25,),
               ), title: Text("আমাদের সম্পর্কে জানুন")),
+        ),
+        Container(
+          height: 1,
+          color: Colors.green.withOpacity(.4),
+        ),
+        Container(
+          color: Colors.green.withOpacity(.5),
+          child: ListTile(
+              onTap: (){
+                _launchURL('https://play.google.com/store/apps/developer?id=duetinmehedishuvo');
+              },
+              leading: CircleAvatar(
+                backgroundColor: Colors.transparent,
+                child: Image.asset(('images/share.png'),width: 25,),
+              ), title: Text("শেয়ার করুণ")),
         ),
         Container(
           height: 250,

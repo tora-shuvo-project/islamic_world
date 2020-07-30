@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:searchtosu/pages/donate_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CustomeAlertDialog extends StatefulWidget {
   @override
@@ -11,6 +12,13 @@ class CustomeAlertDialog extends StatefulWidget {
 }
 
 class _CustomeAlertDialogState extends State<CustomeAlertDialog> with SingleTickerProviderStateMixin{
+
+  _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    } }
 
   AnimationController controller;
   Animation<double> scaleAnimation;
@@ -58,8 +66,8 @@ class _CustomeAlertDialogState extends State<CustomeAlertDialog> with SingleTick
                     children: <Widget>[
                       Container(
                         decoration: BoxDecoration(
-                          color: Colors.green.withOpacity(.3),
-                          borderRadius: BorderRadius.circular(8)
+                            color: Colors.green.withOpacity(.3),
+                            borderRadius: BorderRadius.circular(8)
                         ),
                         child: FlatButton(
                           child: Text('হ্যাঁ'),
@@ -92,10 +100,10 @@ class _CustomeAlertDialogState extends State<CustomeAlertDialog> with SingleTick
                       child: Container(
                         margin: EdgeInsets.only(left: 10,right: 2),
                         decoration: BoxDecoration(
-                          color: Colors.green,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(8),
-                              bottomLeft: Radius.circular(8))
+                            color: Colors.green,
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(8),
+                                bottomLeft: Radius.circular(8))
                         ),
                         child: FlatButton(
                           child: Text('সহযোগিতা করুন',style: TextStyle(color: Colors.white,fontSize: 15),),
@@ -115,7 +123,7 @@ class _CustomeAlertDialogState extends State<CustomeAlertDialog> with SingleTick
                         child: FlatButton(
                           child: Text('রেটিং দিন',style: TextStyle(color: Colors.white,fontSize: 15),),
                           onPressed: (){
-
+                            _launchURL('https://play.google.com/store/apps/developer?id=duetinmehedishuvo');
                           },
                         ),
                       ),

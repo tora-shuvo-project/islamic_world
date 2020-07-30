@@ -64,7 +64,7 @@ class _CommentQuestionAnswerScreenState extends State<CommentQuestionAnswerScree
               onPressed: (){
                 setState(() {
                   //Clipboard.setData(ClipboardData(text: 'Shuvo'));
-                  Share.share('বিভাগঃ ${widget.commentModels.category}\nসময়ঃ ${widget.commentModels.date}\nপ্রশ্নঃ ${widget.commentModels.question} Show Answer Check Islamic World Android Application');
+                  Share.share('বিভাগঃ ${widget.commentModels.category}\nসময়ঃ ${widget.commentModels.date}\nপ্রশ্নঃ ${widget.commentModels.question} \n© Search Islam');
 
                 });
               },
@@ -134,69 +134,62 @@ class _CommentQuestionAnswerScreenState extends State<CommentQuestionAnswerScree
             SizedBox(height: 10,),
             Text('Answer Section:',style:
             TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Monserat',
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'Monserat',
 
             ),),
             SizedBox(height: 10,),
 
 
-          Expanded(
-            child: Center(
-              child:
-              FutureBuilder(
-                future: FirestoreDatabaseHelper.getAllReplySpecifyQuestion(widget.commentModels.id),
-                builder: (context,AsyncSnapshot<List<ComentFeedBackModels>> snapshot){
-                  if(snapshot.hasData){
-                    return ListView.builder(
-                        itemCount: snapshot.data.length,
-                        itemBuilder: (context,index){
-                          if(index<0){
-                            return Text('No Answer');
-                          }else{
-                            return Card(
-                              child: Container(
-                                padding: EdgeInsets.all(8),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text('উত্তর কারীর নামঃ ${snapshot.data[index].answername}',style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                    ),),
-                                    Text('উত্তর দেওয়ার সময়ঃ ${snapshot.data[index].date}',style: TextStyle(
-                                      fontWeight: FontWeight.w300,
-                                      fontSize: 16,
-                                    ),),
-                                    Text('উত্তরঃ ${snapshot.data[index].answer}',style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 18,
-                                    ),),
+            Expanded(
+              child: Center(
+                child:
+                FutureBuilder(
+                  future: FirestoreDatabaseHelper.getAllReplySpecifyQuestion(widget.commentModels.id),
+                  builder: (context,AsyncSnapshot<List<ComentFeedBackModels>> snapshot){
+                    if(snapshot.hasData){
+                      return ListView.builder(
+                          itemCount: snapshot.data.length,
+                          itemBuilder: (context,index){
+                            if(index<0){
+                              return Text('No Answer');
+                            }else{
+                              return Card(
+                                  child: Container(
+                                    padding: EdgeInsets.all(8),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text('উত্তর কারীর নামঃ ${snapshot.data[index].answername}',style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                        ),),
+                                        Text('উত্তর দেওয়ার সময়ঃ ${snapshot.data[index].date}',style: TextStyle(
+                                          fontWeight: FontWeight.w300,
+                                          fontSize: 16,
+                                        ),),
+                                        Text('উত্তরঃ ${snapshot.data[index].answer}',style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 18,
+                                        ),),
 
-                                  ],
-                                ),
-                              )
-                            );
-                          }
-                        });
-                  }
-                  if(snapshot.hasError){
-                    return Text('Data Fetch a Problems');
-                  }
-                  return CircularProgressIndicator(backgroundColor: Colors.green,);
-                },
+                                      ],
+                                    ),
+                                  )
+                              );
+                            }
+                          });
+                    }
+                    if(snapshot.hasError){
+                      return Text('Data Fetch a Problems');
+                    }
+                    return CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.green),);
+                  },
+                ),
               ),
             ),
-          ),
-
-//          widget.commentModels.commentFeedbackModels==null?
-//          Container(
-//            child: Text('No Answer Found'),
-//          ):
-
-
           ],
         ),
       ),

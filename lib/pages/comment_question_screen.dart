@@ -43,7 +43,7 @@ class _CommentQuestionScreenState extends State<CommentQuestionScreen> {
               icon: Icon(Icons.add_box),
               onPressed: (){
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context)=>CommentAddPages()
+                    builder: (context)=>CommentAddPages()
                 ));
               },
               tooltip: 'Add Question',
@@ -80,7 +80,7 @@ class _CommentQuestionScreenState extends State<CommentQuestionScreen> {
                             });
 
                             Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context)=>CommentQuestionAnswerScreen( comentModels[index],)
+                                builder: (context)=>CommentQuestionAnswerScreen( comentModels[index],)
                             )).then((value){
                               setState(() {
 
@@ -107,12 +107,12 @@ class _CommentQuestionScreenState extends State<CommentQuestionScreen> {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     Text('দেখা হয়েছেঃ ${comentModels[index].seen} বার',style: TextStyle(
-                                      color: Colors.green
+                                        color: Colors.green
                                     ),)
                                   ],
                                 ),
                                 Text('প্রশ্নকারীর নামঃ ${comentModels[index].name}',style: TextStyle(
-                                  color: Colors.pink
+                                    color: Colors.pink
                                 ),)
                               ],
                             ),
@@ -124,7 +124,9 @@ class _CommentQuestionScreenState extends State<CommentQuestionScreen> {
               if(snapshot.hasError){
                 return Text('Data Fetch a Problems');
               }
-              return CircularProgressIndicator(backgroundColor: Colors.green,);
+              return CircularProgressIndicator(
+                valueColor: new AlwaysStoppedAnimation<Color>(Colors.green),
+              );
             },
           ),
         ),

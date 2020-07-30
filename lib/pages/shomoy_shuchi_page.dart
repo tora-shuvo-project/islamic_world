@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:searchtosu/helpers/provider_helpers.dart';
 import 'package:searchtosu/pages/location_page.dart';
 import 'package:searchtosu/utils/utils.dart';
+import 'package:toast/toast.dart';
 
 class ShomoyShuchi extends StatefulWidget {
   static final route='/shomoyShuchi';
@@ -156,7 +157,7 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
 
   @override
   Widget build(BuildContext context) {
-    var now = new DateTime.now();
+
     var Pminute = DateTime.now().minute;
 
     zilaInitialization();
@@ -168,313 +169,313 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
           child: Container(
             child: Stack(
               children: <Widget>[
-           Container(
+                Container(
                   color: Colors.green,
                   height: 280,
                   padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                   width: MediaQuery.of(context).size.width,
 
-                    child: Column(
-                      children: <Widget>[
-                       Row(
-                            children: <Widget>[
-                              Expanded(flex:2,
-                                child:
-                                Center(
-                                  child:
-                                  isTimeString?
-                                  Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Text("পরবর্তী ওয়াক্ত",style: TextStyle(fontSize: 17,color: Colors.white),),
-                                        Center(
-                                          child: FutureBuilder(
-                                                future: getNextPrayer(),
-                                                    builder: (context, AsyncSnapshot<Prayer> snapshot) {
-                                                      if (snapshot.hasData) {
-                                                        final prayer = snapshot.data;
-                                                        if(prayer.toString().trim()=="Prayer.ASR"){
-                                                          nextTime = "আসর";
-                                                          nextPrayerTime=asortoday;
-                                                          //TimeString
-                                                          if(AsorMinute.toString()== null){
-                                                            minute = 0;
-                                                          }else{
-                                                            if(Pminute.toInt()>AsorMinute){
-                                                              minute = Pminute-AsorMinute;
-                                                            }else{
-                                                              minute=AsorMinute-Pminute;
-                                                            }
-                                                          }
-                                                          //timeString
-
-                                                          _timeString="${AsorTime.difference(DateTime.now()).inHours.abs()} ঘন্টা "
-                                                              "${minute} মিনিট"
-                                                              " ${60-DateTime.now().second}  সেকেন্ড পর  ";
-
-                                                        }
-
-                                                        else if(prayer.toString().trim()=="Prayer.FAJR"){
-                                                          nextTime = "ফজর";
-                                                          nextPrayerTime=fajartoday;
-                                                          //TimeString
-                                                          if(FazrMinute.toString()== null){
-                                                            minute = 0;
-                                                          }else{
-                                                            if(DateTime.now().minute>FazrMinute){
-                                                              minute = DateTime.now().minute-FazrMinute;
-                                                            }else{
-                                                              minute=FazrMinute-DateTime.now().minute;
-                                                            }
-                                                          }
-                                                          //timeString
-
-                                                          _timeString="${FazrTime.difference(DateTime.now()).inHours.abs()} ঘন্টা "
-                                                              "${minute} মিনিট"
-                                                              " ${60-DateTime.now().second}  সেকেন্ড পর  ";
-
-
-                                                        }
-
-                                                        else if(prayer.toString().trim()=="Prayer.SUNRISE"){
-                                                          nextTime = "নামাজের জন্য হারাম";
-                                                          nextPrayerTime=Sunrise;
-                                                          //TimeString
-                                                          if(SunriseMinute.toString()== null){
-                                                            minute = 0;
-                                                          }else{
-                                                            if(DateTime.now().minute>SunriseMinute){
-                                                              minute = DateTime.now().minute-SunriseMinute;
-                                                            }else{
-                                                              minute=SunriseMinute-DateTime.now().minute;
-                                                            }
-                                                          }
-                                                          //timeString
-
-                                                          _timeString="${SunRiseTime.difference(DateTime.now()).inHours.abs()} ঘন্টা "
-                                                              "${minute} মিনিট"
-                                                              " ${60-DateTime.now().second}  সেকেন্ড পর  ";
-
-
-                                                        }
-
-                                                        else if(prayer.toString().trim()=="Prayer.DHUHR"){
-
-                                                          nextTime = "যোহর";
-                                                          nextPrayerTime=dohortoday;
-
-                                                          //TimeString
-                                                          if(DuhurMinute.toString()== null){
-                                                            minute = 0;
-                                                          }else{
-                                                            if(DateTime.now().minute>DuhurMinute){
-                                                              minute = DateTime.now().minute-DuhurMinute;
-                                                            }else{
-                                                              minute=DuhurMinute-DateTime.now().minute;
-                                                            }
-                                                          }
-
-                                                          //timeString
-
-                                                          _timeString="${DuhurTime.difference(DateTime.now()).inHours.abs()} ঘন্টা "
-                                                              "${minute} মিনিট"
-                                                              " ${60-DateTime.now().second}  সেকেন্ড পর  ";
-
-
-                                                        }
-
-                                                        else if(prayer.toString().trim()=="Prayer.MAGHRIB"){
-                                                          nextTime = "মাগরিব";
-                                                          nextPrayerTime=magribtoday;
-
-                                                          //TimeString
-                                                          if(MagribMinute== null){
-                                                            minute = 0;
-                                                          }else{
-                                                            if(DateTime.now().minute>MagribMinute){
-                                                              minute = DateTime.now().minute-MagribMinute;
-                                                            }else{
-                                                              minute=MagribMinute-DateTime.now().minute;
-                                                            }
-                                                          }
-                                                          //timeString
-
-                                                          _timeString="${MagribTime.difference(DateTime.now()).inHours.abs()} ঘন্টা "
-                                                              "${minute} মিনিট"
-                                                              " ${60-DateTime.now().second}  সেকেন্ড পর  ";
-
-
-
-                                                        }
-                                                        else if(prayer.toString().trim()=="Prayer.ISHA"){
-                                                          nextTime = "এশা";
-                                                          nextPrayerTime=esatoday;
-
-                                                          //TimeString
-                                                          if(IsharMunite== null){
-                                                            minute = 0;
-                                                          }else{
-                                                            if(DateTime.now().minute>IsharMunite){
-                                                              minute = DateTime.now().minute-IsharMunite;
-                                                            }else{
-                                                              minute=IsharMunite-DateTime.now().minute;
-                                                            }
-                                                          }
-                                                          //timeString
-
-                                                          _timeString="${IsharTime.difference(DateTime.now()).inHours.abs()} ঘন্টা "
-                                                              "${minute} মিনিট"
-                                                              " ${60-DateTime.now().second}  সেকেন্ড পর  ";
-
-
-
-                                                        }else
-                                                        {
-                                                          nextTime = "নফল";
-                                                        }
-                                                        return
-                                                          Row(
-                                                          children: <Widget>[
-                                                            Text(nextTime,style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold) ),
-                                                            SizedBox(width: 10,),
-                                                            nextTime == "নফল" ? Container(): Text(nextPrayerTime,style: TextStyle(fontSize: 20,color: Colors.white),)
-
-
-                                                          ],
-                                                        );
-                                                      }
-                                                      if(snapshot.hasError){
-                                                        print(snapshot.error);
-                                                        return Container();
-                                                      }
-                                                      return CircularProgressIndicator();
-                                                }
-
-                  ),
-                                        ),
-                                        SizedBox(height: 10,),
-                                        Text(_timeString,style: TextStyle(fontSize: 17,color: Colors.white),),
-                                        //    VerticalDivider(width: 2,thickness: 2, color: Colors.white,),
-                                        SizedBox(height: 10,),
-
-                                      ],
-                                    ):
-                                  Container(
-                                    child: Text('........অপেক্ষা করুণ......',style: TextStyle(color: Colors.white),),
-                                  ),
-                                ),
-                              ),
-
-                              Expanded(
-                                child: Column(
-                                  children: <Widget>[
-                                    FittedBox(child: Text("বর্তমান ওয়াক্ত",style: TextStyle(fontSize: 17,color: Colors.white),)),
-                                    //style: TextStyle(color: Colors.white,fontSize: 30, fontWeight: FontWeight.bold),
-                                     Container(
-                                        child:
-                                        FutureBuilder(
-                                          future: getCurrentPrayer(),
-                                          builder: (context, AsyncSnapshot<Prayer> snapshot) {
-                                            if (snapshot.hasData) {
-                                              final prayer = snapshot.data;
-                                              if(prayer.toString().trim()=="Prayer.ASR"){
-                                                currentTime = "আসর";
-                                              }else if(prayer.toString().trim()=="Prayer.FAJR"){
-                                                currentTime = "ফজর";
-                                              }else if(prayer.toString().trim()=="Prayer.DHUHR"){
-                                                currentTime = "যোহর";
-                                              }else if(prayer.toString().trim()=="Prayer.MAGHRIB"){
-                                                currentTime = "মাগরিব";
-                                              }else if(prayer.toString().trim()=="Prayer.ISHA"){
-                                                currentTime = "এশা";
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          Expanded(flex:2,
+                            child:
+                            Center(
+                              child:
+                              isTimeString?
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text("পরবর্তী ওয়াক্ত",style: TextStyle(fontSize: 17,color: Colors.white),),
+                                  Center(
+                                    child: FutureBuilder(
+                                        future: getNextPrayer(),
+                                        builder: (context, AsyncSnapshot<Prayer> snapshot) {
+                                          if (snapshot.hasData) {
+                                            final prayer = snapshot.data;
+                                            if(prayer.toString().trim()=="Prayer.ASR"){
+                                              nextTime = "আসর";
+                                              nextPrayerTime=asortoday;
+                                              //TimeString
+                                              if(AsorMinute.toString()== null){
+                                                minute = 0;
                                               }else{
-                                                currentTime = "নফল";
+                                                if(Pminute.toInt()>AsorMinute){
+                                                  minute = Pminute-AsorMinute;
+                                                }else{
+                                                  minute=AsorMinute-Pminute;
+                                                }
                                               }
-                                              return Text(currentTime, style: TextStyle(
-                                                  color: Colors.white,fontSize: 30, fontWeight: FontWeight.bold
-                                              ),);
-                                            } else if (snapshot.hasError) {
-                                              print(snapshot.hasError);
-                                              return Container();
-                                            } else {
-                                              return Text('Waiting...');
-                                            }
-                                          },
-                                        ),
-                                      ),
+                                              //timeString
 
-                                  ],
-                                ),
+                                              _timeString="${AsorTime.difference(DateTime.now()).inHours.abs()} ঘন্টা "
+                                                  "${minute} মিনিট"
+                                                  " ${60-DateTime.now().second}  সেকেন্ড পর  ";
+
+                                            }
+
+                                            else if(prayer.toString().trim()=="Prayer.FAJR"){
+                                              nextTime = "ফজর";
+                                              nextPrayerTime=fajartoday;
+                                              //TimeString
+                                              if(FazrMinute.toString()== null){
+                                                minute = 0;
+                                              }else{
+                                                if(DateTime.now().minute>FazrMinute){
+                                                  minute = DateTime.now().minute-FazrMinute;
+                                                }else{
+                                                  minute=FazrMinute-DateTime.now().minute;
+                                                }
+                                              }
+                                              //timeString
+
+                                              _timeString="${FazrTime.difference(DateTime.now()).inHours.abs()} ঘন্টা "
+                                                  "${minute} মিনিট"
+                                                  " ${60-DateTime.now().second}  সেকেন্ড পর  ";
+
+
+                                            }
+
+                                            else if(prayer.toString().trim()=="Prayer.SUNRISE"){
+                                              nextTime = "নামাজের জন্য হারাম";
+                                              nextPrayerTime=Sunrise;
+                                              //TimeString
+                                              if(SunriseMinute.toString()== null){
+                                                minute = 0;
+                                              }else{
+                                                if(DateTime.now().minute>SunriseMinute){
+                                                  minute = DateTime.now().minute-SunriseMinute;
+                                                }else{
+                                                  minute=SunriseMinute-DateTime.now().minute;
+                                                }
+                                              }
+                                              //timeString
+
+                                              _timeString="${SunRiseTime.difference(DateTime.now()).inHours.abs()} ঘন্টা "
+                                                  "${minute} মিনিট"
+                                                  " ${60-DateTime.now().second}  সেকেন্ড পর  ";
+
+
+                                            }
+
+                                            else if(prayer.toString().trim()=="Prayer.DHUHR"){
+
+                                              nextTime = "যোহর";
+                                              nextPrayerTime=dohortoday;
+
+                                              //TimeString
+                                              if(DuhurMinute.toString()== null){
+                                                minute = 0;
+                                              }else{
+                                                if(DateTime.now().minute>DuhurMinute){
+                                                  minute = DateTime.now().minute-DuhurMinute;
+                                                }else{
+                                                  minute=DuhurMinute-DateTime.now().minute;
+                                                }
+                                              }
+
+                                              //timeString
+
+                                              _timeString="${DuhurTime.difference(DateTime.now()).inHours.abs()} ঘন্টা "
+                                                  "${minute} মিনিট"
+                                                  " ${60-DateTime.now().second}  সেকেন্ড পর  ";
+
+
+                                            }
+
+                                            else if(prayer.toString().trim()=="Prayer.MAGHRIB"){
+                                              nextTime = "মাগরিব";
+                                              nextPrayerTime=magribtoday;
+
+                                              //TimeString
+                                              if(MagribMinute== null){
+                                                minute = 0;
+                                              }else{
+                                                if(DateTime.now().minute>MagribMinute){
+                                                  minute = DateTime.now().minute-MagribMinute;
+                                                }else{
+                                                  minute=MagribMinute-DateTime.now().minute;
+                                                }
+                                              }
+                                              //timeString
+
+                                              _timeString="${MagribTime.difference(DateTime.now()).inHours.abs()} ঘন্টা "
+                                                  "${minute} মিনিট"
+                                                  " ${60-DateTime.now().second}  সেকেন্ড পর  ";
+
+
+
+                                            }
+                                            else if(prayer.toString().trim()=="Prayer.ISHA"){
+                                              nextTime = "এশা";
+                                              nextPrayerTime=esatoday;
+
+                                              //TimeString
+                                              if(IsharMunite== null){
+                                                minute = 0;
+                                              }else{
+                                                if(DateTime.now().minute>IsharMunite){
+                                                  minute = DateTime.now().minute-IsharMunite;
+                                                }else{
+                                                  minute=IsharMunite-DateTime.now().minute;
+                                                }
+                                              }
+                                              //timeString
+
+                                              _timeString="${IsharTime.difference(DateTime.now()).inHours.abs()} ঘন্টা "
+                                                  "${minute} মিনিট"
+                                                  " ${60-DateTime.now().second}  সেকেন্ড পর  ";
+
+
+
+                                            }else
+                                            {
+                                              nextTime = "নফল";
+                                            }
+                                            return
+                                              Row(
+                                                children: <Widget>[
+                                                  Text(nextTime,style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold) ),
+                                                  SizedBox(width: 10,),
+                                                  nextTime == "নফল" ? Container(): Text(nextPrayerTime,style: TextStyle(fontSize: 20,color: Colors.white),)
+
+
+                                                ],
+                                              );
+                                          }
+                                          if(snapshot.hasError){
+                                            print(snapshot.error);
+                                            return Container();
+                                          }
+                                          return CircularProgressIndicator();
+                                        }
+
+                                    ),
+                                  ),
+                                  SizedBox(height: 10,),
+                                  Text(_timeString,style: TextStyle(fontSize: 17,color: Colors.white),),
+                                  //    VerticalDivider(width: 2,thickness: 2, color: Colors.white,),
+                                  SizedBox(height: 10,),
+
+                                ],
+                              ):
+                              Container(
+                                child: Text('........অপেক্ষা করুণ......',style: TextStyle(color: Colors.white),),
                               ),
-                            ],
+                            ),
                           ),
 
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Column(
+                          Expanded(
+                            child: Column(
                               children: <Widget>[
-                                Image.asset("images/sunrise.png", width: 50, height:50 ,),
-                                Text("সূর্যদয়ঃ", style: TextStyle(color: Colors.white)),
-                                Container(child:
-
-                                FutureBuilder(
-                                  future: getTodaySuriseTime(),
-                                  builder: (context, AsyncSnapshot<DateTime> snapshot) {
-                                    if (snapshot.hasData) {
-                                      final dateTime = snapshot.data.toLocal();
-                                      Sunrise=DateFormat.jm().format(dateTime);
-                                      SunRiseTime=dateTime;
-                                      SunriseMinute= dateTime.minute;
-                                      return Text(Sunrise, style: TextStyle(
-
-                                          color: Colors.white
-                                      ),);
-                                    } else if (snapshot.hasError) {
-                                      print(snapshot.hasError);
-                                      return SingleChildScrollView();
-                                    } else {
-                                      return Text('Waiting...');
-                                    }
-                                  },
-                                ),),
+                                FittedBox(child: Text("বর্তমান ওয়াক্ত",style: TextStyle(fontSize: 17,color: Colors.white),)),
+                                //style: TextStyle(color: Colors.white,fontSize: 30, fontWeight: FontWeight.bold),
+                                Container(
+                                  child:
+                                  FutureBuilder(
+                                    future: getCurrentPrayer(),
+                                    builder: (context, AsyncSnapshot<Prayer> snapshot) {
+                                      if (snapshot.hasData) {
+                                        final prayer = snapshot.data;
+                                        if(prayer.toString().trim()=="Prayer.ASR"){
+                                          currentTime = "আসর";
+                                        }else if(prayer.toString().trim()=="Prayer.FAJR"){
+                                          currentTime = "ফজর";
+                                        }else if(prayer.toString().trim()=="Prayer.DHUHR"){
+                                          currentTime = "যোহর";
+                                        }else if(prayer.toString().trim()=="Prayer.MAGHRIB"){
+                                          currentTime = "মাগরিব";
+                                        }else if(prayer.toString().trim()=="Prayer.ISHA"){
+                                          currentTime = "এশা";
+                                        }else{
+                                          currentTime = "নফল";
+                                        }
+                                        return Text(currentTime, style: TextStyle(
+                                            color: Colors.white,fontSize: 30, fontWeight: FontWeight.bold
+                                        ),);
+                                      } else if (snapshot.hasError) {
+                                        print(snapshot.hasError);
+                                        return Container();
+                                      } else {
+                                        return Text('Waiting...');
+                                      }
+                                    },
+                                  ),
+                                ),
 
                               ],
                             ),
-                            Column(
-                              children: <Widget>[
-                                Image.asset("images/sunset.png", width: 50, height:50 ,), //Text(Sunset,style: TextStyle(color: Colors.white))
-                                Text("সূর্যাস্তঃ",style: TextStyle(color: Colors.white)),
-                                Container(child:
-                                FutureBuilder(
-                                  future: getTodayMagribTime(),
-                                  builder: (context, AsyncSnapshot<DateTime> snapshot) {
-                                    if (snapshot.hasData) {
-                                      final dateTime = snapshot.data.toLocal();
-                                      Sunset=DateFormat.jm().format(dateTime);
-                                      SunsetTime=dateTime;
-                                      SunsetMinute= dateTime.minute;
-                                      return Text(Sunset, style: TextStyle(
+                          ),
+                        ],
+                      ),
 
-                                         color: Colors.white
-                                      ),);
-                                    } else if (snapshot.hasError) {
-                                      print(snapshot.hasError);
-                                      return SingleChildScrollView();
-                                    } else {
-                                      return Text('Waiting...');
-                                    }
-                                  },
-                                ),),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Column(
+                            children: <Widget>[
+                              Image.asset("images/sunrise.png", width: 50, height:50 ,),
+                              Text("সূর্যদয়ঃ", style: TextStyle(color: Colors.white)),
+                              Container(child:
 
-                              ],
-                            )
-                          ],
-                        )
-                      ],
-                    ),
+                              FutureBuilder(
+                                future: getTodaySuriseTime(),
+                                builder: (context, AsyncSnapshot<DateTime> snapshot) {
+                                  if (snapshot.hasData) {
+                                    final dateTime = snapshot.data.toLocal();
+                                    Sunrise=DateFormat.jm().format(dateTime);
+                                    SunRiseTime=dateTime;
+                                    SunriseMinute= dateTime.minute;
+                                    return Text(Sunrise, style: TextStyle(
+
+                                        color: Colors.white
+                                    ),);
+                                  } else if (snapshot.hasError) {
+                                    print(snapshot.hasError);
+                                    return SingleChildScrollView();
+                                  } else {
+                                    return Text('Waiting...');
+                                  }
+                                },
+                              ),),
+
+                            ],
+                          ),
+                          Column(
+                            children: <Widget>[
+                              Image.asset("images/sunset.png", width: 50, height:50 ,), //Text(Sunset,style: TextStyle(color: Colors.white))
+                              Text("সূর্যাস্তঃ",style: TextStyle(color: Colors.white)),
+                              Container(child:
+                              FutureBuilder(
+                                future: getTodayMagribTime(),
+                                builder: (context, AsyncSnapshot<DateTime> snapshot) {
+                                  if (snapshot.hasData) {
+                                    final dateTime = snapshot.data.toLocal();
+                                    Sunset=DateFormat.jm().format(dateTime);
+                                    SunsetTime=dateTime;
+                                    SunsetMinute= dateTime.minute;
+                                    return Text(Sunset, style: TextStyle(
+
+                                        color: Colors.white
+                                    ),);
+                                  } else if (snapshot.hasError) {
+                                    print(snapshot.hasError);
+                                    return SingleChildScrollView();
+                                  } else {
+                                    return Text('Waiting...');
+                                  }
+                                },
+                              ),),
+
+                            ],
+                          )
+                        ],
+                      )
+                    ],
+                  ),
 
                 ),
                 Container(
@@ -530,7 +531,7 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
                                         }
                                       },
                                     ),),
-                                    IconButton(icon: Icon(Icons.notifications), onPressed: (){}),
+                                    IconButton(icon: Icon(Icons.notifications), onPressed: (){Toast.show('Upcoming.....', context);}),
 
                                   ],
                                 )
@@ -567,7 +568,7 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
                                         }
                                       },
                                     ),),
-                                    IconButton(icon: Icon(Icons.notifications), onPressed: (){}),
+                                    IconButton(icon: Icon(Icons.notifications), onPressed: (){Toast.show('Upcoming.....', context);}),
 
                                   ],
                                 )
@@ -604,7 +605,7 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
                                         }
                                       },
                                     ),),
-                                    IconButton(icon: Icon(Icons.notifications), onPressed: (){}),
+                                    IconButton(icon: Icon(Icons.notifications), onPressed: (){Toast.show('Upcoming.....', context);}),
 
                                   ],
                                 )
@@ -615,38 +616,38 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
                               width: MediaQuery.of(context).size.width,
                               color: Colors.black87,
                             ),
-                          Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text("মাগরিব"),
-                                  Row(
-                                    children: <Widget>[
-                                      Container(child: FutureBuilder(
-                                        future: getTodayMagribTime(),
-                                        builder: (context, AsyncSnapshot<DateTime> snapshot) {
-                                          if (snapshot.hasData) {
-                                            final dateTime = snapshot.data.toLocal();
-                                            magribtoday=DateFormat.jm().format(dateTime);
-                                            MagribTime=dateTime;
-                                            MagribMinute= dateTime.minute;
-                                            return Text(magribtoday, style: TextStyle(
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text("মাগরিব"),
+                                Row(
+                                  children: <Widget>[
+                                    Container(child: FutureBuilder(
+                                      future: getTodayMagribTime(),
+                                      builder: (context, AsyncSnapshot<DateTime> snapshot) {
+                                        if (snapshot.hasData) {
+                                          final dateTime = snapshot.data.toLocal();
+                                          magribtoday=DateFormat.jm().format(dateTime);
+                                          MagribTime=dateTime;
+                                          MagribMinute= dateTime.minute;
+                                          return Text(magribtoday, style: TextStyle(
 
-                                                fontWeight: FontWeight.bold
-                                            ),);
-                                          } else if (snapshot.hasError) {
-                                            print(snapshot.hasError);
-                                            return SingleChildScrollView();
-                                          } else {
-                                            return Text('Waiting...');
-                                          }
-                                        },
-                                      ),),
-                                      IconButton(icon: Icon(Icons.notifications), onPressed: (){}),
+                                              fontWeight: FontWeight.bold
+                                          ),);
+                                        } else if (snapshot.hasError) {
+                                          print(snapshot.hasError);
+                                          return SingleChildScrollView();
+                                        } else {
+                                          return Text('Waiting...');
+                                        }
+                                      },
+                                    ),),
+                                    IconButton(icon: Icon(Icons.notifications), onPressed: (){Toast.show('Upcoming.....', context);}),
 
-                                    ],
-                                  )
-                                ],
-                              ),
+                                  ],
+                                )
+                              ],
+                            ),
 
 
                             Container(
@@ -654,9 +655,9 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
                               width: MediaQuery.of(context).size.width,
                               color: Colors.black87,
                             ),
-                           Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
                                 Text("এশা"),
                                 Row(
                                   children: <Widget>[
@@ -679,12 +680,12 @@ class _ShomoyShuchiState extends State<ShomoyShuchi> {
                                         }
                                       },
                                     ),),
-                                    IconButton(icon: Icon(Icons.notifications), onPressed: (){}),
+                                    IconButton(icon: Icon(Icons.notifications), onPressed: (){Toast.show('Upcoming.....', context);}),
 
                                   ],
                                 )
                               ],
-                              ),
+                            ),
 
                             Container(
                               height: 1,

@@ -166,44 +166,44 @@ class _AyatPageState extends State<AyatPage> {
                   children: <Widget>[
 
                     InkWell(
-                              onTap:(){
-                                Navigator.of(context).pop();
-                              },
-                              child: Icon(Icons.arrow_back, color: Colors.white,)),
+                        onTap:(){
+                          Navigator.of(context).pop();
+                        },
+                        child: Icon(Icons.arrow_back, color: Colors.white,)),
                     Text("بسم الله الرحمن الرحيم", style: TextStyle(color: Colors.white, fontSize: 20)),
-                         //
+                    //
                     Container(
-                        child: InkWell(
-                            onTap: (){
-                              showModalBottomSheet(context: context, builder: (BuildContext context){
-                                return Container(
-                                  color: Color(0xFF737373),
-                                  child: ClipRRect(
-                                    clipBehavior: Clip.hardEdge,
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(25),
-                                        topRight: Radius.circular(25),
-                                        bottomLeft: Radius.circular(0),
-                                        bottomRight: Radius.circular(0)),
+                      child: InkWell(
+                          onTap: (){
+                            showModalBottomSheet(context: context, builder: (BuildContext context){
+                              return Container(
+                                color: Color(0xFF737373),
+                                child: ClipRRect(
+                                  clipBehavior: Clip.hardEdge,
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(25),
+                                      topRight: Radius.circular(25),
+                                      bottomLeft: Radius.circular(0),
+                                      bottomRight: Radius.circular(0)),
+                                  child: Container(
+                                    color: Color(0xFFFFFFFF),
+                                    height: 330,
                                     child: Container(
-                                      color: Color(0xFFFFFFFF),
-                                      height: 330,
-                                      child: Container(
-                                        decoration: BoxDecoration(
+                                      decoration: BoxDecoration(
                                           borderRadius: BorderRadius.only(
-                                            topLeft: const Radius.circular(10),
-                                            topRight: const Radius.circular(10)
+                                              topLeft: const Radius.circular(10),
+                                              topRight: const Radius.circular(10)
                                           )
-                                        ),
-                                        child: bottomNavbar(),
                                       ),
+                                      child: bottomNavbar(),
                                     ),
                                   ),
-                                );
-                              });
-                            },
-                            child: Icon(Icons.info,color: Colors.white,)),
-                      ),
+                                ),
+                              );
+                            });
+                          },
+                          child: Icon(Icons.info,color: Colors.white,)),
+                    ),
 
 
 
@@ -248,11 +248,11 @@ class _AyatPageState extends State<AyatPage> {
                       Theme(
                         data: ThemeData(unselectedWidgetColor: Colors.white),
                         child: Checkbox(
-                            value: banglameaning,
+                            value: banglauccharon,
                             activeColor: Colors.green,
                             onChanged:(bool changed){
                               setState(() {
-                                banglameaning = changed;
+                                banglauccharon = changed;
                               });
                             }
                         ),
@@ -261,11 +261,11 @@ class _AyatPageState extends State<AyatPage> {
                       Theme(
                         data: ThemeData(unselectedWidgetColor: Colors.white),
                         child: Checkbox(
-                            value: banglauccharon,
+                            value: banglameaning,
                             activeColor: Colors.green,
                             onChanged:(bool changed){
                               setState(() {
-                                banglauccharon = changed;
+                                banglameaning = changed;
                               });
                             }
                         ),
@@ -562,104 +562,114 @@ class _AyatPageState extends State<AyatPage> {
                               child: Container(
                                 padding: EdgeInsets.only(right: 13),
                                 child: Column(
-                                children: <Widget>[
-                                  Row(
+                                  children: <Widget>[
+                                    Row(
 
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Column(
-                                        children: <Widget>[
-                                          Stack(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Expanded(flex: 1,
+                                          child: Column(
                                             children: <Widget>[
-                                              Image.asset("images/ayatnumberIcon.png", height: 40, width: 40, fit: BoxFit.cover,),
-                                              Container(
-                                                  width: 40,
-                                                  height: 40,
-                                                  alignment: Alignment.center,
-                                                  child: Text('${convertEngToBangla(ayatmodels[index].ayatno)}'))
-                                            ],
-                                          ),
-                                          ayatmodels[index].sejda == "0"?Container(): Text("সিজদা", style: TextStyle(fontSize: 14, color: Colors.red),),
-                                          IconButton(icon: Icon(Icons.volume_down ,color: Colors.black45,), onPressed: ()async{
-
-                                            try {
-                                              final result = await InternetAddress.lookup('google.com');
-                                              if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-                                                print('connected');
+                                              Stack(
+                                                children: <Widget>[
+                                                  Image.asset("images/ayatnumberIcon.png", height: 40, width: 40, fit: BoxFit.cover,),
+                                                  Container(
+                                                      width: 40,
+                                                      height: 40,
+                                                      alignment: Alignment.center,
+                                                      child: Text('${convertEngToBangla(ayatmodels[index].ayatno)}'))
+                                                ],
+                                              ),
+                                              ayatmodels[index].sejda == "0"?Container(): Text("সিজদা", style: TextStyle(fontSize: 14, color: Colors.red),),
+                                              IconButton(icon: Icon(Icons.volume_down ,color: Colors.black45,), onPressed: ()async{
 
                                                 try {
+                                                  final result = await InternetAddress.lookup('google.com');
+                                                  if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+                                                    print('connected');
 
-                                                  ayatPlayer.play(ayatmodels[index].ayatAudio.trim());
-                                            }
+                                                    try {
 
-                                            /// on catching Exception return null
-                                            catch (err) {
-                                            print(err);
-                                            Scaffold.of(context).showSnackBar(new SnackBar(
-                                            content: new Text('Hello!'),
-                                            ));
-                                            return null;
-                                            }
-                                            }
-                                            } on SocketException catch (_) {
-                                            print('not connected');
-                                            _scaffoldKey.currentState.showSnackBar(
-                                            new SnackBar(
-                                            backgroundColor: Colors.red,
-                                            elevation: 2,
-                                            duration: Duration(seconds: 5),
-                                            content: Text('Please check your internet connection \'Thanks',style: TextStyle(
-                                            color: Colors.white,
-                                            ),)
-                                            )
-                                            );
-                                            }
+                                                      ayatPlayer.play(ayatmodels[index].ayatAudio.trim());
+                                                    }
+
+                                                    /// on catching Exception return null
+                                                    catch (err) {
+                                                      print(err);
+                                                      Scaffold.of(context).showSnackBar(new SnackBar(
+                                                        content: new Text('Hello!'),
+                                                      ));
+                                                      return null;
+                                                    }
+                                                  }
+                                                } on SocketException catch (_) {
+                                                  print('not connected');
+                                                  _scaffoldKey.currentState.showSnackBar(
+                                                      new SnackBar(
+                                                          backgroundColor: Colors.red,
+                                                          elevation: 2,
+                                                          duration: Duration(seconds: 5),
+                                                          content: Text('Please check your internet connection \'Thanks',style: TextStyle(
+                                                            color: Colors.white,
+                                                          ),)
+                                                      )
+                                                  );
+                                                }
 
 
-                                          })
-                                        ],
-                                      ),
-                                      SizedBox(width: 10,),
-                                      Expanded(
-                                        child: Column(
-                                          children: <Widget>[
-                                            arbi?Text(arabytextstyle=='Arabi Indopak'?
-                                            '${ayatmodels[index].arbi_indopak.trim()}'
-                                                :arabytextstyle=='Arabi Simple'?'${ayatmodels[index].arabi_simple.trim()}'
-                                                :'${ayatmodels[index].arabi_utmanic.trim()}',
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontFamily: _fontName,
-                                                  fontSize: _fontSize+6),
-                                            ):SizedBox(),
-                                            banglameaning?Text('${ayatmodels[index].banglaTranslator.trim()}',
-                                              style: TextStyle(
-                                                  color: Colors.black87,
-                                                  fontFamily: 'kalpurus',
-                                                  fontSize: _fontSize-1),):SizedBox(),
-                                            banglauccharon?Text('${ayatmodels[index].banglameaning.trim()}',
-                                              style: TextStyle(
-                                                  color: Colors.black54,
-                                                  fontFamily: 'kalpurus',
-                                                  fontSize: _fontSize-1),):SizedBox()
-                                          ],
-
+                                              })
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  Container(
-                                      height: 3,
-                                      decoration: BoxDecoration(
-                                          gradient: LinearGradient(colors: [
-                                            const Color(0xffffffff),
-                                            const Color(0xff178723),
-                                            const Color(0xffffffff),
-                                          ]))
-                                  )
-                                ],
-                              ),
+                                        Expanded(flex: 6,
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: <Widget>[
+                                              arbi?Container(
+                                                alignment: Alignment.topRight,
+                                                child: Text(arabytextstyle=='Arabi Indopak'?
+                                                '${ayatmodels[index].arbi_indopak}'
+                                                    :arabytextstyle=='Arabi Simple'?'${ayatmodels[index].arabi_simple}'
+                                                    :'${ayatmodels[index].arabi_utmanic}',
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontFamily: _fontName,
+                                                      fontSize: _fontSize+6),textAlign: TextAlign.right,
+                                                ),
+                                              ):SizedBox(),
+                                              banglameaning?Text('${ayatmodels[index].banglaTranslator.trim()}',
+                                                style: TextStyle(
+                                                    color: Colors.black87,
+                                                    fontFamily: 'kalpurus',
+                                                    fontSize: _fontSize-1),textAlign: TextAlign.left,):SizedBox(),
+                                              banglauccharon?Container(
+                                                alignment: Alignment.topLeft,
+                                                child: Text('${ayatmodels[index].banglameaning.trim()}',
+                                                  style: TextStyle(
+                                                      color: Colors.black54,
+                                                      fontFamily: 'kalpurus',
+                                                      fontSize: _fontSize-1),textAlign: TextAlign.left,),
+                                              ):SizedBox()
+                                            ],
+
+                                          ),
+                                        ),
+                                        SizedBox(height: 8,)
+                                      ],
+                                    ),
+                                    Container(
+                                        height: 3,
+                                        decoration: BoxDecoration(
+                                            gradient: LinearGradient(colors: [
+                                              const Color(0xffffffff),
+                                              const Color(0xff178723),
+                                              const Color(0xffffffff),
+                                            ]))
+                                    )
+                                  ],
+                                ),
                               ),
 
                             )),
@@ -683,9 +693,9 @@ class _AyatPageState extends State<AyatPage> {
                                 Icons.play_arrow :
                                 Icons.pause,color: Colors.white,),
                                 onPressed: (){
-                                _playAudioANdDownload();
+                                  _playAudioANdDownload();
 
-                              },),
+                                },),
                             ),
 
                             Expanded(
@@ -1035,4 +1045,3 @@ class _MyFormState extends State<MyForm> {
     );
   }
 }
-

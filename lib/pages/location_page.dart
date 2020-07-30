@@ -176,21 +176,13 @@ class _LocationPageState extends State<LocationPage> {
           height:70,
           width: MediaQuery.of(context).size.width,
           padding: EdgeInsets.symmetric(horizontal: 17),
-          child:
-          Expanded(
-            child: Container(
-
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  IconButton(icon: Icon(Icons.arrow_back,color: Colors.white), onPressed: (){
-                    Navigator.of(context).pop();
-                  },),
-                  Text("লোকেশন", style: TextStyle(color:Colors.white, fontSize: 20),),
-                ],
-              ),
-            ),
+          child: Row(
+            children: <Widget>[
+              IconButton(icon: Icon(Icons.arrow_back,color: Colors.white), onPressed: (){
+                Navigator.of(context).pop();
+              },),
+              Text("লোকেশন", style: TextStyle(color:Colors.white, fontSize: 20),),
+            ],
           ),
 
 
@@ -250,7 +242,7 @@ class _LocationPageState extends State<LocationPage> {
                       SizedBox(width: 10,),
                       Container(
 
-                        child: Expanded(child: Text("Gps বন্ধ থাকলে বা ডিভাইসের লোকেশন পাওয়া না গেলে Dhaka শহরের লোকেশনের উপর ভিত্তি করে সকল সময় দেখানো হবে। " )),
+                        child: Expanded(child: Text("GPS বন্ধ থাকলে বা ডিভাইসের লোকেশন পাওয়া না গেলে Dhaka শহরের লোকেশনের উপর ভিত্তি করে সকল সময় দেখানো হবে। " )),
                       ),
                     ],
                   ),
@@ -266,7 +258,7 @@ class _LocationPageState extends State<LocationPage> {
                             activeColor: Colors.green,
                             onChanged: _handleRadioValueChange,
                           ),
-                          Text("নির্দিস্ট একটি জেলা সিলেক্ট করতে চাই।")
+                          Text("নির্দিষ্ট একটি জেলা নির্বাচন করতে চাই।")
                         ],
                       ),
                       Row(
