@@ -1,6 +1,6 @@
 # Islamic Application With Bangla Content
 
-## Fetchers
+## Complete Fetchers
    1.Prayer Time. 85% ok
    
    2.Quran Sorif 98% ok
@@ -35,4 +35,15 @@
    
    17. Settings Screen 100% ok
 
-
+## Upcoming Fetchers
+   1. Listen & Set Ringtone
+   
+   2. Live Wallpaper
+   
+   3. Islamic Video
+   
+   4. Bangla Quran Resource
+   
+   5. Story of prophet( Adam, Idris, Nuh, Hud, Saleh, Ibrahim, Lut, Ismail, Ishaq, Yaqub, Yasuf, Ayyub, Shu'ayb, Musa, Harun, Dhul-Kifi, Dawud, Sulayman, Ilyas, Yanus, Zakariyya, Yahya, Isa, Muhammad)
+   
+   6. and more......
